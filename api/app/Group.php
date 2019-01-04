@@ -4,14 +4,14 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Project extends Model
+class Group extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'projects';
+    protected $table = 'groups';
 
     /**
      * The attributes that are mass assignable.
@@ -21,7 +21,12 @@ class Project extends Model
     protected $fillable = [
         'title',
         'description',
-        'parent_id',
+        'abbreviation',
+        'icon_size',
+        'icon_path',
+        'position_x',
+        'position_y',
+        'project_id',
         'status'
     ];
 
