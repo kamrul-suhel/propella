@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePeopleTypeTable extends Migration
+class CreateCompetitorsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreatePeopleTypeTable extends Migration
      */
     public function up()
     {
-        Schema::create('people_type', function (Blueprint $table) {
+        Schema::create('competitors', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
-            $table->integer('project_id')->unsigned()->index();
-            $table->tinyInteger('status');
+            $table->text('description');
+            $table->integer('group_id')->index()->unsigned();
+            $table->tinyInteger('status')->index();
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ class CreatePeopleTypeTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('people_type');
+        Schema::dropIfExists('competitors');
     }
 }

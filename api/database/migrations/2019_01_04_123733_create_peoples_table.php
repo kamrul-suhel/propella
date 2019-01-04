@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePeopleTable extends Migration
+class CreatePeoplesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreatePeopleTable extends Migration
      */
     public function up()
     {
-        Schema::create('people', function (Blueprint $table) {
+        Schema::create('peoples', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
             $table->text('description');
-            $table->integer('type_id');
+            $table->integer('type_id')->index()->unsigned();
             $table->integer('organisation_id')->index()->unsigned();
             $table->text('icon_path');
             $table->text('icon_preset');
