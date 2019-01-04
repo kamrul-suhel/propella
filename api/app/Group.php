@@ -37,4 +37,16 @@ class Group extends Model
      */
     protected $hidden = [
     ];
+
+
+    /**
+     * @return mixed
+     */
+    public function project(){
+        return $this->belongsTo('App\Project', 'project_id');
+    }
+
+    public function organisations(){
+        return $this->hasMany('App\Organisation', 'group_id');
+    }
 }

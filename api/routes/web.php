@@ -23,3 +23,11 @@ $router->group(['prefix' => 'v1/projects'] , function () use ($router) {
     $router->get('/{id}', 'ProjectController@single');
     $router->delete('/{id}', 'ProjectController@delete');
 });
+
+$router->group(['prefix' => 'v1/groups'] , function () use ($router) {
+    $router->post('/', 'GroupController@create');
+    $router->patch('/{id}', 'GroupController@update');
+    $router->get('/', 'GroupController@list');
+    $router->get('/{id}', 'GroupController@single');
+    $router->delete('/{id}', 'GroupController@delete');
+});
