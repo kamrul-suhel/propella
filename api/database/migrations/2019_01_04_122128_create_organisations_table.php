@@ -14,7 +14,7 @@ class CreateOrganisationsTable extends Migration
     public function up()
     {
         Schema::create('organisations', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('title');
             $table->text('description');
             $table->string('abbreviation');
@@ -23,8 +23,8 @@ class CreateOrganisationsTable extends Migration
             $table->string('icon_size');
             $table->text('icon_path');
             $table->tinyInteger('trajectory')->default('1');
-            $table->integer('group_id')->unsigned()->index();
-            $table->integer('type_id')->unsigned()->index();
+            $table->bigInteger('group_id')->unsigned()->index();
+            $table->bigInteger('type_id')->unsigned()->index();
             $table->tinyInteger('status');
             $table->timestamps();
         });

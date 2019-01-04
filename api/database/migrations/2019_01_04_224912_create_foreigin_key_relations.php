@@ -21,6 +21,7 @@ class CreateForeiginKeyRelations extends Migration
         // Relation  organisations with groups table.
         Schema::table('organisations', function(Blueprint $table){
             $table->foreign('group_id')->references('id')->on('groups');
+            $table->foreign('type_id')->references('id')->on('organisation_types');
         });
 
         Schema::table('peoples', function(Blueprint $table){

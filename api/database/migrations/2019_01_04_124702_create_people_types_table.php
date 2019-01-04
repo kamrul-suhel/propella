@@ -14,9 +14,9 @@ class CreatePeopleTypesTable extends Migration
     public function up()
     {
         Schema::create('people_types', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('title');
-            $table->integer('project_id')->unsigned()->index();
+            $table->bigInteger('project_id')->unsigned()->index();
             $table->tinyInteger('status');
             $table->timestamps();
         });

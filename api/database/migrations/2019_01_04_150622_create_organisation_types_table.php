@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCompetitorsTable extends Migration
+class CreateOrganisationTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateCompetitorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('competitors', function (Blueprint $table) {
+        Schema::create('organisation_types', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('title');
-            $table->text('description');
-            $table->bigInteger('group_id')->index()->unsigned();
-            $table->tinyInteger('status')->index();
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ class CreateCompetitorsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('competitors');
+        Schema::dropIfExists('organisation_type');
     }
 }

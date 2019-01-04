@@ -14,7 +14,7 @@ class CreateGroupsTable extends Migration
     public function up()
     {
         Schema::create('groups', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('title');
             $table->text('description');
             $table->string('abbreviation');
@@ -22,8 +22,8 @@ class CreateGroupsTable extends Migration
             $table->text('icon_path');
             $table->double('position_x');
             $table->double('position_y');
-            $table->integer('project_id')->unsigned()->index();
-            $table->integer('created_by')->unsigned()->index();
+            $table->bigInteger('project_id')->unsigned()->index();
+            $table->bigInteger('created_by')->unsigned()->index();
             $table->tinyInteger('status');
             $table->timestamps();
         });

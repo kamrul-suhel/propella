@@ -16,6 +16,10 @@ $router->get('/', function () use ($router) {
 });
 
 
-//$router->group('v1', function () use ($router) {
-//    $router->get('');
-//});
+$router->group(['prefix' => 'v1/projects'] , function () use ($router) {
+    $router->post('/', 'ProjectController@create');
+    $router->get('/{id}', 'ProjectController@update');
+    $router->get('/', 'ProjectController@list');
+    $router->get('/{id}', 'ProjectController@single');
+    $router->delete('/{id}', 'ProjectController@delete');
+});
