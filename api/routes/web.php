@@ -18,7 +18,7 @@ $router->get('/', function () use ($router) {
 
 $router->group(['prefix' => 'v1/projects'] , function () use ($router) {
     $router->post('/', 'ProjectController@create');
-    $router->get('/{id}', 'ProjectController@update');
+    $router->patch('/{id}', 'ProjectController@update');
     $router->get('/', 'ProjectController@list');
     $router->get('/{id}', 'ProjectController@single');
     $router->delete('/{id}', 'ProjectController@delete');

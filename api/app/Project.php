@@ -32,4 +32,12 @@ class Project extends Model
      */
     protected $hidden = [
     ];
+
+
+    /**
+     * @return mixed
+     */
+    public function groups(){
+        return $this->hasMany('App\Group', 'project_id');
+    }
 }

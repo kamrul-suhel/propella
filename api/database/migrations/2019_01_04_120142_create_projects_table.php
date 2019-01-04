@@ -17,7 +17,7 @@ class CreateProjectsTable extends Migration
             $table->bigIncrements('id');
             $table->string('title');
             $table->text('description');
-            $table->bigInteger('parent_id')->unsigned()->index()->nullable();
+            $table->bigInteger('parent_id')->unsigned()->index()->nullable()->default(0);
             $table->tinyInteger('status')->unsigned()->index();
             $table->timestamps();
         });
