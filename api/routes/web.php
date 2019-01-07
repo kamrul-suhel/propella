@@ -31,3 +31,11 @@ $router->group(['prefix' => 'v1/groups'] , function () use ($router) {
     $router->get('/{id}', 'GroupController@single');
     $router->delete('/{id}', 'GroupController@delete');
 });
+
+$router->group(['prefix' => 'v1/organisations'] , function () use ($router) {
+    $router->post('/', 'OrganisationController@create');
+    $router->get('/', 'OrganisationController@list');
+    $router->get('/{id}', 'OrganisationController@single');
+    $router->patch('/{id}', 'OrganisationController@update');
+    $router->delete('/{id}', 'OrganisationController@delete');
+});

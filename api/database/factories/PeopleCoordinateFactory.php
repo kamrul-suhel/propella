@@ -18,6 +18,6 @@ $factory->define(App\PeopleCoordinate::class, function (Faker\Generator $faker) 
         'icon_size' => $faker->imageUrl(50, 50, 'people', true, 'Faker'),
         'position_x' => $faker->numberBetween(10, 50),
         'position_y' => $faker->numberBetween(10, 50),
-        'trajectory' => $faker->randomElement([0,1])
+        'character_id' => $faker->numberBetween(1, 20),
     ];
 });

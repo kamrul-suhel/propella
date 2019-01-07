@@ -37,6 +37,24 @@ class Organisation extends Model
 
 
     public function coordinates(){
-        return $this->hasMany('App\OrganisationCoordinate', 'organisation_id');
+        return $this->hasMany('App\OrganisationCoordinate', 'organisation_id')
+            ->orderBy('created_at', 'DESC');
+    }
+
+    public function type(){
+        return $this->belongTo();
+    }
+
+    public static function getDefaultField(){
+        return self::select([
+            'organisations.id',
+            'organisations.title',
+            'organisations.description',
+            'organisations.abbreviation',
+            'organisation_types.title as organisation_type_title',
+            'organisation_types.title as organisation_type_description'
+        ])
+            ->leftJoin('organisation_types', 'organisation_types.id', '=', 'organisations.type_id');
+
     }
 }

@@ -30,4 +30,23 @@ class OrganisationType extends Model
      */
     protected $hidden = [
     ];
+
+    public static function getOrganisationTypeByTitle($title, $object = false){
+        $organisationType = Self::where('title', $title)
+            ->first();
+
+        if($organisationType){
+            // Existing organisation type.
+            return $object ? $organisationType : $organisationType->id;
+        }else{
+            // Create new organisation type.
+            $organisationType = new OrganisationType();
+            $organisationType->title = $title;
+
+            // Save organisation type
+            $organisationType->save();
+
+            return $object ? $organisationType : $organisationType->id;
+        }
+    }
 }

@@ -14,12 +14,13 @@ class CreatePeopleCoordinatesTable extends Migration
     public function up()
     {
         Schema::create('people_coordinates', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->text('icon_path');
             $table->enum('icon_size', ['s','m','l']);
             $table->double('position_x');
             $table->double('position_y');
             $table->tinyInteger('trajectory')->default(1);
+            $table->bigInteger('character_id')->unsigned()->index();
             $table->bigInteger('people_id')->unsigned()->index();
             $table->timestamps();
         });

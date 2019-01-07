@@ -34,6 +34,17 @@ class ProjectController extends PropellaBaseController
         // Save project.
         $project->save();
 
+        if($this->request->has('people')){
+            $peoples = [];
+            foreach($this->request->peoples as $people){
+                $newPeople['title'] = $people['title'];
+                $newPeople['status'] = $people['status'];
+                $peoples[] = $newPeople;
+            }
+
+            $project->people()->createMany($peoples);
+        }
+
         return response()->json($project);
 
     }
@@ -71,7 +82,7 @@ class ProjectController extends PropellaBaseController
         $this->status != null ? $projects->where('status', $this->status) : '';
 
         // return all data without pagination.
-        $this->allData ? $projects->get() : $projects->paginate($this->perPage);
+        $projects = $this->allData ? $projects->get() : $projects->paginate($this->perPage);
 
         return response()->json($projects);
     }
@@ -109,8 +120,8 @@ class ProjectController extends PropellaBaseController
             'description' => 'required|string|min:1',
             'status' => 'required|integer|between:1,3',
             'people' => 'array',
-            'people.*.title',
-            ''
+            'people.*.title' => 'required|string|min:1',
+            'people.*.status' => 'required|integer|min:0'
         ]);
 
         if(!$create){

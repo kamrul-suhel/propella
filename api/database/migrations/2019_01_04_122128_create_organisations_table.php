@@ -19,6 +19,7 @@ class CreateOrganisationsTable extends Migration
             $table->text('description');
             $table->string('abbreviation');
             $table->bigInteger('group_id')->unsigned()->index();
+            $table->bigInteger('created_by')->unsigned()->index();
             $table->bigInteger('type_id')->unsigned()->index();
             $table->tinyInteger('status');
             $table->timestamps();

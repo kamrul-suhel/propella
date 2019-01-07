@@ -25,13 +25,22 @@ class DatabaseSeeder extends Seeder
             $coordinates = [];
             $competitors = [];
 
+            $prevPositionX = 0;
+            $prevPositionY = 0;
+
             for($i = 0; $i < $coordinatesItems; $i++){
+                $positionX = $prevPositionX == 0 ? $faker->numberBetween(10, 50) : $prevPositionX + $faker->numberBetween(5, 15);
+                $positionY = $prevPositionY == 0 ? $faker->numberBetween(10, 50) : $prevPositionY + $faker->numberBetween(5, 15);
+
                 $coordinates[] = [
                     'icon_size' => $faker->randomElement(['s','m','l']),
                     'icon_path' => $faker->imageUrl(50, 50, 'cats', true, 'Faker'),
-                    'position_x' => $faker->numberBetween(10, 50),
-                    'position_y' => $faker->numberBetween(10, 50),
+                    'position_x' => $positionX,
+                    'position_y' => $positionY,
                 ];
+
+                $prevPositionX = $positionX;
+                $prevPositionY = $positionY;
 
                 $competitors[] = [
                     'title' => $faker->company('catchPhrase'),
@@ -56,13 +65,22 @@ class DatabaseSeeder extends Seeder
 
             $coordinates = [];
 
+            $prevPositionX = 0;
+            $prevPositionY = 0;
+
             for($i = 0; $i < $coordinatesItems; $i++){
+                $positionX = $prevPositionX == 0 ? $faker->numberBetween(10, 50) : $prevPositionX + $faker->numberBetween(5, 15);
+                $positionY = $prevPositionY == 0 ? $faker->numberBetween(10, 50) : $prevPositionY + $faker->numberBetween(5, 15);
+
                 $coordinates[] = [
                     'icon_size' => $faker->randomElement(['s','m','l']),
                     'icon_path' => $faker->imageUrl(50, 50, 'cats', true, 'Faker'),
-                    'position_x' => $faker->numberBetween(10, 50),
-                    'position_y' => $faker->numberBetween(10, 50),
+                    'position_x' => $positionX,
+                    'position_y' => $positionY,
                 ];
+
+                $prevPositionX = $positionX;
+                $prevPositionY = $positionY;
             }
             $organisation->coordinates()->createMany($coordinates);
         });
@@ -73,14 +91,24 @@ class DatabaseSeeder extends Seeder
             $coordinatesItems = $faker->numberBetween(1, 4);
 
             $coordinates = [];
+            $prevPositionX = 0;
+            $prevPositionY = 0;
 
             for($i = 0; $i < $coordinatesItems; $i++){
+                $positionX = $prevPositionX == 0 ? $faker->numberBetween(10, 50) : $prevPositionX + $faker->numberBetween(5, 15);
+                $positionY = $prevPositionY == 0 ? $faker->numberBetween(10, 50) : $prevPositionY + $faker->numberBetween(5, 15);
+
                 $coordinates[] = [
                     'icon_size' => $faker->randomElement(['s','m','l']),
                     'icon_path' => $faker->imageUrl(50, 50, 'cats', true, 'Faker'),
-                    'position_x' => $faker->numberBetween(10, 50),
-                    'position_y' => $faker->numberBetween(10, 50),
+                    'position_x' => $positionX,
+                    'position_y' => $positionY,
+                    'trajectory' => $faker->randomElement([0,1]),
+                    'character_id' => $faker->numberBetween(1, 20),
                 ];
+
+                $prevPositionX = $positionX;
+                $prevPositionY = $positionY;
             }
             $people->coordinates()->createMany($coordinates);
         });
