@@ -92,7 +92,7 @@ class ProjectController extends PropellaBaseController
      * @return mixed
      */
     public function single($id){
-        $project = Project::with(['groups', 'people'])
+        $project = Project::with(['groups.coordinates', 'people'])
             ->findOrFail($id);
         
         return response()->json($project);

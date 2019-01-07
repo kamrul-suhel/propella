@@ -42,4 +42,23 @@ class People extends Model
     public function coordinates(){
         return $this->hasMany('App\PeopleCoordinate', 'people_id');
     }
+
+    /**
+     * @return mixed
+     */
+    public static function getDefaultField(){
+        return self::select([
+            'people.id',
+            'people.title',
+            'people.description',
+            'people.status',
+            'organisations.title as organisation_title',
+            'organisations.description as organisation_description'
+        ])
+            ->leftJoin('organisations', 'people.organisation_id', '=', 'organisations.id');
+    }
+
+    public function organisation(){
+        return $this->belongsTo('App\Organisation', 'organisation_id');
+    }
 }

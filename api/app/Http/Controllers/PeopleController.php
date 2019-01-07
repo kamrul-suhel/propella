@@ -8,6 +8,7 @@ use App\GroupCoordinate;
 use App\Organisation;
 use App\OrganisationCoordinate;
 use App\OrganisationType;
+use App\People;
 use Illuminate\Http\Request;
 
 class PeopleController extends PropellaBaseController
@@ -59,8 +60,7 @@ class PeopleController extends PropellaBaseController
      */
     public function list()
     {
-        $organisations = Organisation::getDefaultField()
-            ->with(['coordinates']);
+        $organisations = People::with(['organisation','coordinates']);
 
         // project status, default it will give your 1, active records.
         $this->status != null ? $organisations = $organisations->where('status', $this->status) : '';
@@ -77,8 +77,7 @@ class PeopleController extends PropellaBaseController
      */
     public function single($id)
     {
-        $organisation = Organisation::getDefaultField()
-            ->with(['coordinates'])
+        $organisation = People::with(['organisation', 'coordinates'])
             ->findOrFail($id);
 
         return response()->json($organisation);
@@ -90,15 +89,15 @@ class PeopleController extends PropellaBaseController
      */
     public function delete($id)
     {
-        $project = Group::findOrFail($id);
+        $people = People::findOrFail($id);
 
         // If has file then delete file.
-        propellaRemoveImage($project->icon_path);
+        propellaRemoveImage($people->icon_path);
 
         // Remove record.
-        $project->delete();
+        $people->delete();
 
-        return response()->json($project);
+        return response()->json($people);
     }
 
     /**

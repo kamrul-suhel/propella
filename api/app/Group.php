@@ -59,4 +59,19 @@ class Group extends Model
     public function coordinates(){
         return $this->hasMany('App\GroupCoordinate', 'group_id');
     }
+
+    /**
+     * @return mixed
+     */
+    public static function getDefaultField(){
+        return self::select([
+            'groups.id',
+            'groups.title',
+            'groups.description',
+            'groups.status',
+            'project.title as project_title',
+            'project.description as project_description'
+        ])
+            ->leftJoin('project', 'groups.project_id', '=', 'project.id');
+    }
 }

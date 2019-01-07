@@ -57,10 +57,10 @@ class GroupController extends PropellaBaseController
      */
     public function list()
     {
-        $groups = Group::with(['project']);
+        $groups = Group::with('project');
 
         // project status, default it will give your 1, active records.
-        $$this->status != null ? $groups = $groups->where('status', $this->status) : '';
+        $this->status != null ? $groups = $groups->where('status', $this->status) : '';
 
         // return all data without pagination.
         $groups = $this->allData ? $groups->get() : $groups->paginate($this->perPage);
