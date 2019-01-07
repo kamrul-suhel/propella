@@ -22,11 +22,6 @@ class Organisation extends Model
         'title',
         'description',
         'abbreviation',
-        'position_x',
-        'position_y',
-        'icon_size',
-        'icon_path',
-        'trajectory',
         'group_id',
         'type_id',
         'status'
@@ -39,4 +34,9 @@ class Organisation extends Model
      */
     protected $hidden = [
     ];
+
+
+    public function coordinates(){
+        return $this->hasMany('App\OrganisationCoordinate', 'organisation_id');
+    }
 }

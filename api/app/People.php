@@ -11,7 +11,7 @@ class People extends Model
      *
      * @var string
      */
-    protected $table = 'peoples';
+    protected $table = 'people';
 
     /**
      * The attributes that are mass assignable.
@@ -23,11 +23,6 @@ class People extends Model
         'description',
         'type_id',
         'organisation_id',
-        'icon_path',
-        'icon_preset',
-        'position_x',
-        'position_y',
-        'trajectory',
         'character_id',
         'parent_id',
         'status'
@@ -40,4 +35,11 @@ class People extends Model
      */
     protected $hidden = [
     ];
+
+    /**
+     * @return mixed
+     */
+    public function coordinates(){
+        return $this->hasMany('App\PeopleCoordinate', 'people_id');
+    }
 }

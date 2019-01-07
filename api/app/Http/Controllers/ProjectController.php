@@ -81,7 +81,7 @@ class ProjectController extends PropellaBaseController
      * @return mixed
      */
     public function single($id){
-        $project = Project::with('groups')
+        $project = Project::with(['groups', 'people'])
             ->findOrFail($id);
         
         return response()->json($project);
@@ -107,7 +107,10 @@ class ProjectController extends PropellaBaseController
         $this->validate($this->request, [
             'title' => 'required|string|min:1',
             'description' => 'required|string|min:1',
-            'status' => 'required|integer|between:1,3'
+            'status' => 'required|integer|between:1,3',
+            'people' => 'array',
+            'people.*.title',
+            ''
         ]);
 
         if(!$create){

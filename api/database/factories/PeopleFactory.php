@@ -25,7 +25,7 @@ $factory->define(App\People::class, function (Faker\Generator $faker) {
         'description' => $faker->sentence(3),
         'type_id' => $peopleTypeId,
         'organisation_id' => $organasitionTypeId,
-        'character_id' => $faker->numberBetween(1, 50),
+        'character_id' => $faker->numberBetween(1, 20),
         'status' => $faker->randomElement([0,1, 2]) // 0 disabled, 1 active, 2 deleted
     ];
 });

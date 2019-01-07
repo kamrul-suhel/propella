@@ -22,10 +22,6 @@ class Group extends Model
         'title',
         'description',
         'abbreviation',
-        'icon_size',
-        'icon_path',
-        'position_x',
-        'position_y',
         'project_id',
         'status'
     ];
@@ -48,5 +44,19 @@ class Group extends Model
 
     public function organisations(){
         return $this->hasMany('App\Organisation', 'group_id');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function competitors(){
+        return $this->hasMany('App\Competitor', 'group_id');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function coordinates(){
+        return $this->hasMany('App\GroupCoordinate', 'group_id');
     }
 }

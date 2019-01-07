@@ -19,6 +19,7 @@ $factory->define(App\Group::class, function (Faker\Generator $faker) {
         'title' => $faker->company('catchPhrase'),
         'description' => $faker->sentence(3),
         'abbreviation' =>$faker->address('regionAbbr'),
+        'project_id' => $projectId,
         'created_by' => $faker->numberBetween(1, 10),
         'status' => $faker->randomElement([0,1, 2]) // 0 disabled, 1 active, 2 deleted
     ];

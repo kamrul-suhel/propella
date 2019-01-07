@@ -11,7 +11,7 @@ class OrganisationCoordinate extends Model
      *
      * @var string
      */
-    protected $table = 'organisations';
+    protected $table = 'organisation_coordinates';
 
     /**
      * The attributes that are mass assignable.

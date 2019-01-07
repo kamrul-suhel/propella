@@ -17,7 +17,7 @@ class CreateOrganisationCoordinatesTable extends Migration
             $table->bigIncrements('id');
             $table->double('position_x')->index();
             $table->double('position_y')->index();
-            $table->string('icon_size');
+            $table->enum('icon_size', ['s','m','l']);
             $table->text('icon_path');
             $table->tinyInteger('trajectory')->default('1');
             $table->bigInteger('organisation_id')->unsigned()->index();

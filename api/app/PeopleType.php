@@ -30,5 +30,6 @@ class PeopleType extends Model
      * @var array
      */
     protected $hidden = [
+        'project_id'
     ];
 }

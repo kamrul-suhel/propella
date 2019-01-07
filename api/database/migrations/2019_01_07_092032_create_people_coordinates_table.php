@@ -16,7 +16,7 @@ class CreatePeopleCoordinatesTable extends Migration
         Schema::create('people_coordinates', function (Blueprint $table) {
             $table->increments('id');
             $table->text('icon_path');
-            $table->text('icon_size');
+            $table->enum('icon_size', ['s','m','l']);
             $table->double('position_x');
             $table->double('position_y');
             $table->tinyInteger('trajectory')->default(1);

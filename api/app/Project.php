@@ -21,7 +21,6 @@ class Project extends Model
     protected $fillable = [
         'title',
         'description',
-        'parent_id',
         'status'
     ];
 
@@ -39,5 +38,9 @@ class Project extends Model
      */
     public function groups(){
         return $this->hasMany('App\Group', 'project_id');
+    }
+
+    public function people(){
+        return $this->hasMany('App\PeopleType', 'project_id');
     }
 }
