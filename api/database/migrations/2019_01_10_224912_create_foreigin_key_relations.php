@@ -24,7 +24,7 @@ class CreateForeiginKeyRelations extends Migration
             $table->foreign('type_id')->references('id')->on('organisation_types');
         });
 
-        Schema::table('peoples', function(Blueprint $table){
+        Schema::table('people', function(Blueprint $table){
             $table->foreign('organisation_id')->references('id')->on('organisations')->onDelete('cascade');
             $table->foreign('type_id')->references('id')->on('people_types');
         });
@@ -36,6 +36,23 @@ class CreateForeiginKeyRelations extends Migration
         Schema::table('people_types', function(Blueprint $table){
            $table->foreign('project_id')->references('id')->on('projects');
         });
+
+        // Group_coordinate
+        Schema::table('group_coordinates', function(Blueprint $table){
+            $table->foreign('group_id')->references('id')->on('groups');
+        });
+
+        // Organisations foreign
+        Schema::table('organisation_coordinates', function(Blueprint $table){
+            $table->foreign('organisation_id')->references('id')->on('organisations');
+        });
+
+        // Peoples foreign
+        Schema::table('people_coordinates', function(Blueprint $table){
+            $table->foreign('people_id')->references('id')->on('people');
+        });
+
+
     }
 
     /**

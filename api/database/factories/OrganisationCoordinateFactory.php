@@ -11,15 +11,21 @@
 |
 */
 
-use App\Project;
 
-$factory->define(App\Group::class, function (Faker\Generator $faker) {
-    $projectId = Project::all()->random()->id;
+$factory->define(App\Organisation::class, function (Faker\Generator $faker) {
+
+    // Get group id
+    $groupId = \App\Group::all()->random()->id;
+
+    // get the organisation type id
+    $organasitionTypeId = \App\OrganisationType::all()->random()->id;
+
     return [
-        'title' => $faker->company('catchPhrase'),
+        'title' => $faker->company('company'),
         'description' => $faker->sentence(3),
         'abbreviation' =>$faker->address('regionAbbr'),
-        'created_by' => $faker->numberBetween(1, 10),
+        'group_id' => $groupId,
+        'type_id' => $organasitionTypeId,
         'status' => $faker->randomElement([0,1, 2]) // 0 disabled, 1 active, 2 deleted
     ];
 });

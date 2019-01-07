@@ -18,11 +18,6 @@ class CreateOrganisationsTable extends Migration
             $table->string('title');
             $table->text('description');
             $table->string('abbreviation');
-            $table->double('position_x')->index();
-            $table->double('position_y')->index();
-            $table->string('icon_size');
-            $table->text('icon_path');
-            $table->tinyInteger('trajectory')->default('1');
             $table->bigInteger('group_id')->unsigned()->index();
             $table->bigInteger('type_id')->unsigned()->index();
             $table->tinyInteger('status');

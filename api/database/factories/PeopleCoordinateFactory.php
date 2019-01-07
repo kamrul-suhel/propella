@@ -11,10 +11,13 @@
 |
 */
 
-$factory->define(App\Project::class, function (Faker\Generator $faker) {
+
+$factory->define(App\PeopleCoordinate::class, function (Faker\Generator $faker) {
     return [
-        'title' => 'Project '. $faker->company('catchPhrase'),
-        'description' => $faker->sentence(3),
-        'status' => $faker->randomElement([0,1])
+        'icon_path' => $faker->imageUrl(50, 50, 'people', true, 'Faker'),
+        'icon_size' => $faker->imageUrl(50, 50, 'people', true, 'Faker'),
+        'position_x' => $faker->numberBetween(10, 50),
+        'position_y' => $faker->numberBetween(10, 50),
+        'trajectory' => $faker->randomElement([0,1])
     ];
 });

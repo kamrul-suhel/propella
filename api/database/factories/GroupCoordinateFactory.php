@@ -11,10 +11,11 @@
 |
 */
 
-$factory->define(App\Project::class, function (Faker\Generator $faker) {
+$factory->define(App\GroupCoordinate::class, function (Faker\Generator $faker) {
     return [
-        'title' => 'Project '. $faker->company('catchPhrase'),
-        'description' => $faker->sentence(3),
-        'status' => $faker->randomElement([0,1])
+        'icon_size' => $faker->randomElement([0,1]),
+        'icon_path' => $faker->imageUrl(50, 50, 'cats', true, 'Faker'),
+        'position_x' => $faker->numberBetween(10, 50),
+        'position_y' => $faker->numberBetween(10, 50),
     ];
 });

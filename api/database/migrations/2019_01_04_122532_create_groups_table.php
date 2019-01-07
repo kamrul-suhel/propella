@@ -18,10 +18,6 @@ class CreateGroupsTable extends Migration
             $table->string('title');
             $table->text('description');
             $table->string('abbreviation');
-            $table->string('icon_size');
-            $table->text('icon_path');
-            $table->double('position_x');
-            $table->double('position_y');
             $table->bigInteger('project_id')->unsigned()->index();
             $table->bigInteger('created_by')->unsigned()->index();
             $table->tinyInteger('status');
