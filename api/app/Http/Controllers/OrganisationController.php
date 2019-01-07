@@ -77,11 +77,11 @@ class OrganisationController extends PropellaBaseController
      */
     public function single($id)
     {
-        $group = Organisation::getDefaultField()
+        $organisation = Organisation::getDefaultField()
             ->with(['coordinates'])
             ->findOrFail($id);
 
-        return response()->json($group);
+        return response()->json($organisation);
     }
 
     /**

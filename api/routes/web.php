@@ -39,3 +39,11 @@ $router->group(['prefix' => 'v1/organisations'] , function () use ($router) {
     $router->patch('/{id}', 'OrganisationController@update');
     $router->delete('/{id}', 'OrganisationController@delete');
 });
+
+$router->group(['prefix' => 'v1/people'] , function () use ($router) {
+    $router->post('/', 'PeopleController@create');
+    $router->patch('/{id}', 'PeopleController@update');
+    $router->get('/', 'PeopleController@list');
+    $router->get('/{id}', 'PeopleController@single');
+    $router->delete('/{id}', 'PeopleController@delete');
+});
