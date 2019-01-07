@@ -40,7 +40,8 @@ class People extends Model
      * @return mixed
      */
     public function coordinates(){
-        return $this->hasMany('App\PeopleCoordinate', 'people_id');
+        return $this->hasMany('App\PeopleCoordinate', 'people_id')
+            ->orderBy('created_by', 'DESC');
     }
 
     /**

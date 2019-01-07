@@ -40,6 +40,9 @@ class Project extends Model
         return $this->hasMany('App\Group', 'project_id');
     }
 
+    /**
+     * @return mixed
+     */
     public function people(){
         return $this->hasMany('App\PeopleType', 'project_id');
     }

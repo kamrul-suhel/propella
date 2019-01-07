@@ -57,7 +57,8 @@ class Group extends Model
      * @return mixed
      */
     public function coordinates(){
-        return $this->hasMany('App\GroupCoordinate', 'group_id');
+        return $this->hasMany('App\GroupCoordinate', 'group_id')
+            ->orderBy('created_at', 'DESC');
     }
 
     /**
