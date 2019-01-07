@@ -76,10 +76,10 @@ class ProjectController extends PropellaBaseController
      * @return mixed
      */
     public function list(){
-        $projects = Project::with('groups');
+        $projects = new Project();
 
         // project status, default it will give your 1, active records.
-        $this->status != null ? $projects->where('status', $this->status) : '';
+        $this->status != null ? $projects  = $projects->where('status', $this->status) : '';
 
         // return all data without pagination.
         $projects = $this->allData ? $projects->get() : $projects->paginate($this->perPage);
