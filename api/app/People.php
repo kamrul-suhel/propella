@@ -41,7 +41,7 @@ class People extends Model
      */
     public function coordinates(){
         return $this->hasMany('App\PeopleCoordinate', 'people_id')
-            ->orderBy('created_by', 'DESC');
+            ->orderBy('created_at', 'DESC');
     }
 
     /**
@@ -53,12 +53,15 @@ class People extends Model
             'people.title',
             'people.description',
             'people.status',
-            'organisations.title as organisation_title',
+            'organisations.title as organisation',
             'organisations.description as organisation_description'
         ])
             ->leftJoin('organisations', 'people.organisation_id', '=', 'organisations.id');
     }
 
+    /**
+     * @return mixed
+     */
     public function organisation(){
         return $this->belongsTo('App\Organisation', 'organisation_id');
     }

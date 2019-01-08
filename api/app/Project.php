@@ -37,7 +37,8 @@ class Project extends Model
      * @return mixed
      */
     public function groups(){
-        return $this->hasMany('App\Group', 'project_id');
+        return $this->hasMany('App\Group', 'project_id')
+            ->whereIn('status', [0,1]);
     }
 
     /**

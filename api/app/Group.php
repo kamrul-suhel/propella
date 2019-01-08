@@ -42,6 +42,9 @@ class Group extends Model
         return $this->belongsTo('App\Project', 'project_id');
     }
 
+    /**
+     * @return mixed
+     */
     public function organisations(){
         return $this->hasMany('App\Organisation', 'group_id');
     }
@@ -59,6 +62,15 @@ class Group extends Model
     public function coordinates(){
         return $this->hasMany('App\GroupCoordinate', 'group_id')
             ->orderBy('created_at', 'DESC');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function coordinate(){
+        return $this->hasMany('App\GroupCoordinate', 'group_id')
+            ->orderBy('created_at', 'DESC')
+            ->take(1);
     }
 
     /**
