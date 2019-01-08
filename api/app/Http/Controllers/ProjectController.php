@@ -96,7 +96,6 @@ class ProjectController extends PropellaBaseController
             ->findOrFail($id);
         
         return response()->json($project);
-
     }
 
     /**

@@ -17,8 +17,8 @@ class CreateGroupsCoordinatesTable extends Migration
             $table->bigIncrements('id');
             $table->enum('icon_size', ['s','m','l']);
             $table->text('icon_path');
-            $table->double('position_x');
-            $table->double('position_y');
+            $table->double('position_X');
+            $table->double('position_Y');
             $table->bigInteger('group_id')->unsigned()->index();
             $table->timestamps();
         });

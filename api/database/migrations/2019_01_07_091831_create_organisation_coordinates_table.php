@@ -15,8 +15,8 @@ class CreateOrganisationCoordinatesTable extends Migration
     {
         Schema::create('organisation_coordinates', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->double('position_x')->index();
-            $table->double('position_y')->index();
+            $table->double('position_X')->index();
+            $table->double('position_Y')->index();
             $table->enum('icon_size', ['s','m','l']);
             $table->text('icon_path');
             $table->tinyInteger('trajectory')->default('1');

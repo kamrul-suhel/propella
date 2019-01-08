@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             $prevPositionX = 0;
             $prevPositionY = 0;
 
+
             for($i = 0; $i < $coordinatesItems; $i++){
                 $positionX = $prevPositionX == 0 ? $faker->numberBetween(10, 50) : $prevPositionX + $faker->numberBetween(5, 15);
                 $positionY = $prevPositionY == 0 ? $faker->numberBetween(10, 50) : $prevPositionY + $faker->numberBetween(5, 15);
@@ -35,8 +36,8 @@ class DatabaseSeeder extends Seeder
                 $coordinates[] = [
                     'icon_size' => $faker->randomElement(['s','m','l']),
                     'icon_path' => $faker->imageUrl(50, 50, 'cats', true, 'Faker'),
-                    'position_x' => $positionX,
-                    'position_y' => $positionY,
+                    'position_X' => $positionX,
+                    'position_Y' => $positionY,
                 ];
 
                 $prevPositionX = $positionX;
@@ -75,8 +76,8 @@ class DatabaseSeeder extends Seeder
                 $coordinates[] = [
                     'icon_size' => $faker->randomElement(['s','m','l']),
                     'icon_path' => $faker->imageUrl(50, 50, 'cats', true, 'Faker'),
-                    'position_x' => $positionX,
-                    'position_y' => $positionY,
+                    'position_X' => $positionX,
+                    'position_Y' => $positionY,
                 ];
 
                 $prevPositionX = $positionX;
@@ -101,8 +102,8 @@ class DatabaseSeeder extends Seeder
                 $coordinates[] = [
                     'icon_size' => $faker->randomElement(['s','m','l']),
                     'icon_path' => $faker->imageUrl(50, 50, 'cats', true, 'Faker'),
-                    'position_x' => $positionX,
-                    'position_y' => $positionY,
+                    'position_X' => $positionX,
+                    'position_Y' => $positionY,
                     'trajectory' => $faker->randomElement([0,1]),
                     'character_id' => $faker->numberBetween(1, 20),
                 ];

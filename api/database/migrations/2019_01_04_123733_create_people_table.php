@@ -19,6 +19,7 @@ class CreatePeopleTable extends Migration
             $table->text('description');
             $table->bigInteger('type_id')->index()->unsigned();
             $table->bigInteger('organisation_id')->index()->unsigned();
+            $table->bigInteger('created_by')->unsigned()->index();
             $table->tinyInteger('status');
             $table->timestamps();
         });

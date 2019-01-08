@@ -21,8 +21,8 @@ class PeopleCoordinate extends Model
     protected $fillable = [
         'icon_path',
         'icon_size',
-        'position_x',
-        'position_y',
+        'position_X',
+        'position_Y',
         'trajectory'
     ];
 
@@ -32,5 +32,6 @@ class PeopleCoordinate extends Model
      * @var array
      */
     protected $hidden = [
+        'people_id'
     ];
 }

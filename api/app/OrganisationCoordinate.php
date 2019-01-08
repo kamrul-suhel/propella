@@ -19,8 +19,8 @@ class OrganisationCoordinate extends Model
      * @var array
      */
     protected $fillable = [
-        'position_x',
-        'position_y',
+        'position_X',
+        'position_Y',
         'icon_size',
         'icon_path',
         'trajectory'

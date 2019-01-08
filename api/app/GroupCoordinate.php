@@ -21,8 +21,8 @@ class GroupCoordinate extends Model
     protected $fillable = [
         'icon_size',
         'icon_path',
-        'position_x',
-        'position_y',
+        'position_X',
+        'position_Y',
         'project_id'
     ];
 
@@ -32,5 +32,6 @@ class GroupCoordinate extends Model
      * @var array
      */
     protected $hidden = [
+        'group_id'
     ];
 }
