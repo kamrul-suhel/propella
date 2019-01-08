@@ -1,0 +1,44 @@
+.tab {
+
+	.tab-header-wrapper {
+		ul {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+			display: flex;
+			flex-direction: row;
+
+			li {
+				background-color: $brand-color;
+				padding: 10px;
+				margin-right: 5px;
+				color: #FFFFFF;
+				border: 2px solid $brand-color;
+				cursor: pointer;
+				position: relative;
+
+				&.is-selected {
+					background-color: #FFFFFF;
+					color: $brand-color;
+
+					&:after {
+						content: '';
+						position: absolute;
+						bottom: -2px;
+						left: 0;
+						right: 0;
+						height: 2px;
+						background-color: #FFFFFF;
+					}
+				}
+			}
+		}
+	}
+
+	.tab-content-wrapper {
+		width: 100%;
+		border: 2px solid $brand-color;
+		padding: 40px;
+		margin-top: -2px;
+	}
+}

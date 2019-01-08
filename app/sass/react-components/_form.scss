@@ -1,0 +1,245 @@
+.form-wrapper {
+	position: relative;
+
+	&.form-loading {
+		pointer-events: none;
+
+		&:before {
+			content: "";
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			z-index: 1;
+			background-color: rgba(255, 255, 255, 0.8);
+		}
+
+		&:after {
+			content: "\f29c";
+			display: block;
+			font-family: "Ionicons";
+			color: $brand-color;
+			font-size: 60px;
+			line-height: 60px;
+			animation: loader 2s infinite;
+			animation-timing-function: linear;
+			position: absolute;
+			top: calc(50% - 30px);
+			left: calc(50% - 30px);
+			width: 60px;
+			height: 60px;
+			text-align: center;
+			z-index: 2;
+		}
+	}
+}
+
+.form {
+	justify-content: space-between;
+	display: flex;
+	flex-flow: row wrap;
+	align-items: flex-start;
+
+	button {
+		@extend .button;
+		width: 100%;
+		margin-top: 20px;
+	}
+}
+
+.form-group {
+	margin: 8px 0;
+	width: calc(50% - 15px);
+	position: relative;
+
+	&.is-disabled {
+		pointer-events: none;
+		opacity: 0.75;
+	}
+
+	&.form-group-wide {
+		width: 100%;
+	}
+
+	&.has-multiple-options {
+
+		.form-options {
+			display: flex;
+			flex-flow: row wrap;
+		}
+
+		.form-option {
+			margin: 0 30px 5px 0;
+			display: flex;
+			align-items: baseline;
+		}
+	}
+
+	&.has-single-option {
+		display: flex;
+		align-items: baseline;
+
+		.form-label {
+			width: auto;
+			margin-right: 15px;
+		}
+	}
+
+	&.can-float {
+		padding-top: 12px;
+
+		&.is-focused {
+			.form-label {
+				color: $brand-color;
+			}
+
+			.form-field-wrapper {
+				border-bottom-color: $brand-color;
+			}
+		}
+
+		&.should-float, &.form-type-radio {
+
+			.form-label {
+				font-size: 12px;
+				transform: translateY(0);
+				top: 0;
+			}
+
+		}
+
+		.form-label {
+			position: absolute;
+			top: calc(50% + 6px);
+			left: 0;
+			transform: translateY(-50%);
+			transition: all 0.3s ease;
+		}
+
+		.form-field-wrapper {
+			transition: all 0.3s ease;
+			border-bottom: 2px solid #333333;
+		}
+
+		input,
+		textarea {
+			min-height: 0;
+			border: 0;
+			padding: 4px 0;
+			background-color: transparent;
+		}
+
+		&.form-type-select {
+			.react-select__control {
+				background-color: transparent;
+				border: 0;
+				border-radius: 0;
+				min-height: 0;
+			}
+
+			.react-select__control--is-focused {
+				box-shadow: none;
+			}
+
+			.react-select__value-container {
+				padding: 0;
+			}
+
+			.react-select__placeholder {
+				display: none;
+			}
+
+			.react-select__indicator {
+				padding: 0 8px;
+			}
+		}
+
+		&.form-type-radio,
+		&.form-type-checkbox {
+
+			.form-field-wrapper {
+				padding: 6px 0;
+				border-bottom: 0;
+			}
+
+			.form-option {
+				margin-bottom: 0;
+				display: flex;
+				align-items: center;
+			}
+		}
+
+	}
+
+	.form-field-error-wrapper {
+		font-size: 14px;
+		color: red;
+
+		ul {
+			padding-left: 20px;
+			margin: 5px 0 0 0;
+		}
+	}
+
+	.form-options {
+		input {
+			min-height: 0;
+			margin: 0;
+		}
+
+		.form-type-radio {
+			min-width: 14px;
+		}
+	}
+
+	.form-field-wrapper {
+		position: relative;
+		width: 100%;
+		display: flex;
+		align-items: stretch;
+
+		.form-field {
+			flex: 1;
+		}
+	}
+
+	.form-field-reset {
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		right: 8px;
+		padding: 4px;
+		cursor: pointer;
+		z-index: 100;
+
+		&:hover {
+			color: $brand-color-alt;
+		}
+
+		&:after {
+			@include font-icon;
+			content: "\f12a";
+			font-size: 12px;
+			line-height: 9px;
+			display: block;
+		}
+	}
+
+	.form-field-append,
+	.form-field-prepend {
+		background-color: $brand-color;
+		color: white;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: 0 6px;
+		min-width: 38px;
+		font-size: 20px;
+	}
+}
+
+.form-label {
+	display: block;
+	margin-bottom: 4px;
+}

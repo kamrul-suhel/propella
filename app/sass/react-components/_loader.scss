@@ -1,0 +1,24 @@
+@keyframes loader {
+	0% { transform: rotate(0); }
+	100% { transform: rotate(360deg); }
+}
+
+.loader {
+	padding: 50px;
+	text-align: center;
+
+	&:before {
+		content: "\f29c";
+		display: inline-block;
+		font-family: "Ionicons";
+		color: rgba($brand-color, 0.75);
+		font-size: 80px;
+		line-height: 1;
+		animation: loader 2s infinite;
+		animation-timing-function: linear;
+	}
+
+	.loading-text {
+		display: none;
+	}
+}

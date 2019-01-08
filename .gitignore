@@ -1,0 +1,60 @@
+## Xanda Ltd ##
+
+# Ignore Mac DS_Store files
+.DS_Store
+
+# Ignore node modules
+node_modules
+
+# Ignore Sass Cache
+**/.sass-cache
+**/.sass-cache/*
+
+# lock files
+**/*.lock
+
+
+# If you previously had this project undr version control with subversion - this will ignore all subversion files
+.svn
+.project
+
+!favicon.ico
+!apple-touch-icon.png
+!apple-touch-icon-ipad.png
+!apple-touch-icon-iphone4.png
+!apple-touch-icon.png
+
+# wordpress specific
+wp-content/uploads/
+wp-content/blogs.dir/
+wp-content/upgrade/*
+wp-content/backup-db/*
+wp-content/advanced-cache.php
+wp-content/wp-cache-config.php
+wp-content/cache/*
+wp-content/cache/supercache/*
+
+# Elastic Beanstalk Files
+
+.elasticbeanstalk/*
+
+!.elasticbeanstalk/*.cfg.yml
+
+!.elasticbeanstalk/*.global.yml
+
+#tsconfig
+tsconfig.json
+
+# eslint
+.eslintrc
+
+.idea
+/api/vendor
+/api/.env
+/api/.env.example
+/api/database/*
+/api/public/*
+/api/storage
+/api/tests
+
+SAM.md

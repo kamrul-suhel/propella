@@ -1,0 +1,67 @@
+.table {
+	table {
+		width: 100%;
+	}
+
+	th, td {
+		padding: 15px 20px;
+	}
+
+	thead {
+		th, td {
+			background-color: $brand-color;
+			color: #FFFFFF;
+
+			&.header-is-sortable {
+				cursor: pointer;
+				position: relative;
+
+				&.sorted-asc:after {
+					color: rgba(#FFFFFF, 1);
+				}
+
+				&.sorted-desc:before {
+					color: rgba(#FFFFFF, 1);
+				}
+
+				&:before {
+					content: "\f10d";
+					font-family: 'Ionicons';
+					color: rgba(#FFFFFF, 0.35);
+					position: absolute;
+					right: 12px;
+					top: calc(50% - 4px);
+					transform: translateY(-50%);
+					font-size: 12px;
+				}
+
+				&:after {
+					content: "\f104";
+					font-family: 'Ionicons';
+					color: rgba(#FFFFFF, 0.35);
+					position: absolute;
+					right: 12px;
+					top: calc(50% + 4px);
+					transform: translateY(-50%);
+					font-size: 12px;
+				}
+			}
+		}
+	}
+
+	tbody {
+		tr:nth-child(odd) {
+			th, td {
+				background-color: #f5f5f5;
+			}
+		}
+	}
+
+	& + .table-actions {
+		margin-top: 20px;
+	}
+
+	a {
+		text-decoration: none;
+	}
+}

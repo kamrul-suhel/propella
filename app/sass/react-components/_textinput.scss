@@ -1,0 +1,42 @@
+.form-type-input {
+	display: inline-block;
+
+	&.is-disabled {
+		input {
+			background-color: #e6e6e6;
+		}
+	}
+
+	.clear-input {
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		right: 8px;
+		padding: 4px;
+		cursor: pointer;
+
+		&:hover {
+			color: orange;
+		}
+
+		&:after {
+			content: "\f12a";
+			font-size: 12px;
+			line-height: 9px;
+			display: block;
+		}
+	}
+
+	input,
+	textarea {
+		outline: 0;
+		display: block;
+		margin: 0;
+		outline: 0;
+	}
+
+	textarea {
+		margin-right: 0 !important;
+		resize: none;
+	}
+}

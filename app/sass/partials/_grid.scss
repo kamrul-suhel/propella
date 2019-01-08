@@ -1,0 +1,85 @@
+.grid {
+    @extend %clearfix;
+    display: flex;
+    flex-flow: row wrap;
+    position: relative;
+    margin-left: -#{$grid-gutter};
+    margin-right: -#{$grid-gutter};
+
+    @include until($tablet) {
+        margin: 0 -20px;
+    }
+}
+
+[class^='grid-'],
+[class*=' grid-'] {
+    padding: #{$grid-gutter};
+
+    &.center {
+        display: flex;
+        justify-content: center;
+    }
+
+    &.bottom {
+        display: flex;
+        align-items: flex-end;
+    }
+}
+
+@for $i from 1 through $grid-columns {
+    .grid-xs-#{$i} {
+        width: calc( 100% / (  #{$grid-columns} / #{$i} ) );
+    }
+
+    .offset-xs-#{$i} {
+        margin-left: calc( 100% / (  #{$grid-columns} / #{$i} ) );
+    }
+}
+
+@include at-least($small-tablet) {
+    @for $i from 1 through $grid-columns {
+        .grid-s-#{$i} {
+            width: calc( 100% / (  #{$grid-columns} / #{$i} ) );
+        }
+
+        .offset-s-#{$i} {
+            margin-left: calc( 100% / (  #{$grid-columns} / #{$i} ) );
+        }
+    }
+}
+
+@include at-least($tablet) {
+    @for $i from 1 through $grid-columns {
+        .grid-m-#{$i} {
+            width: calc( 100% / (  #{$grid-columns} / #{$i} ) );
+        }
+
+        .offset-m-#{$i} {
+            margin-left: calc( 100% / (  #{$grid-columns} / #{$i} ) );
+        }
+    }
+}
+
+@include at-least($small-desktop) {
+    @for $i from 1 through $grid-columns {
+        .grid-md-#{$i} {
+            width: calc( 100% / (  #{$grid-columns} / #{$i} ) );
+        }
+
+        .offset-md-#{$i} {
+            margin-left: calc( 100% / (  #{$grid-columns} / #{$i} ) );
+        }
+    }
+}
+
+@include at-least($desktop){
+    @for $i from 1 through $grid-columns {
+        .grid-#{$i} {
+            width: calc( 100% / (  #{$grid-columns} / #{$i} ) );
+        }
+
+        .offset-#{$i} {
+            margin-left: calc( 100% / (  #{$grid-columns} / #{$i} ) );
+        }
+    }
+}
