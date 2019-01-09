@@ -41,9 +41,18 @@ $router->group(['prefix' => 'v1/organisations'] , function () use ($router) {
     $router->post('/', 'OrganisationController@create');
     $router->get('/', 'OrganisationController@list');
     $router->get('/{id}', 'OrganisationController@single');
-    $router->patch('/{id}', 'OrganisationController@update');
     $router->put('/{id}', 'OrganisationController@update');
     $router->delete('/{id}', 'OrganisationController@delete');
+});
+
+// OrganisationType route
+$router->group(['prefix' => 'v1/organisation_types'] , function () use ($router) {
+    $router->post('/', 'OrganisationTypeController@create');
+    $router->get('/', 'OrganisationTypeController@list');
+    $router->get('/user_group_id/{id}', 'OrganisationTypeController@getOrganisationTypeByUserGroupId');
+    $router->get('/{id}', 'OrganisationTypeController@single');
+    $router->put('/{id}', 'OrganisationTypeController@update');
+    $router->delete('/', 'OrganisationTypeController@delete');
 });
 
 // People route.
@@ -62,7 +71,7 @@ $router->group(['prefix' => 'v1/people_types'] , function () use ($router) {
     $router->patch('/{id}', 'PeopleTypeController@update');
     $router->put('/{id}', 'PeopleTypeController@update');
     $router->get('/', 'PeopleTypeController@list');
-    $router->get('/user_id/{id}', 'PeopleTypeController@getPeopleTypeByUserGroupId');
+    $router->get('/user_group_id/{id}', 'PeopleTypeController@getPeopleTypeByUserGroupId');
     $router->get('/{id}', 'PeopleTypeController@single');
     $router->delete('/{id}', 'PeopleTypeController@delete');
 });

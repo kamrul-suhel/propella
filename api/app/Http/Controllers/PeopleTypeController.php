@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Group;
+use App\People;
 use App\PeopleType;
 use App\Project;
 use Illuminate\Http\Request;
@@ -68,13 +69,13 @@ class PeopleTypeController extends PropellaBaseController
      */
     private function saveData(){
         $people = [];
-        if ($this->request->has('users')) {
-            foreach ($this->request->users as $user) {
+        if ($this->request->has('types')) {
+            foreach ($this->request->types as $type) {
 
-                $peopleType = $this->getPeopleTypeModel($user['id']);
-                $peopleType->title = $user['title'];
-                $peopleType->user_group_id = (int) $user['id'];
-                $peopleType->status = isset($user['status']) ? $user['status'] : 1;
+                $peopleType = $this->getPeopleTypeModel($type['user_group_id'], $type['title']);
+                $peopleType->title = $type['title'];
+                $peopleType->user_group_id = (int) $type['user_group_id'];
+                $peopleType->status = isset($user['status']) ? $type['status'] : 1;
 
                 // Save people type.
                 $peopleType->save();
@@ -133,9 +134,17 @@ class PeopleTypeController extends PropellaBaseController
     public function delete($id)
     {
         $peopleType = PeopleType::findOrFail($id);
+        
+        // Check is has any people, if yes then you can not remove this record.
+        $people = People::where('type_id', $peopleType->id)
+            ->first();
+        
+        if($people){
+            return response()->json(['data' => 'You can not delete this record, it has people.']);
+        }
 
         // Removing record.
-        $peopleType->remove();
+        $peopleType->delete();
 
         return response()->json($peopleType);
     }
@@ -146,9 +155,9 @@ class PeopleTypeController extends PropellaBaseController
     private function validateData($create = true)
     {
         $this->validate($this->request, [
-            'users' => 'required|array',
-            'users.*.id' => 'required|integer|min:1',
-            'users.*.title' => 'required|string|min:1'
+            'types' => 'required|array',
+            'types.*.user_group_id' => 'required|integer|min:1',
+            'types.*.title' => 'required|string|min:1'
         ]);
 
         if ($create) {
@@ -164,8 +173,11 @@ class PeopleTypeController extends PropellaBaseController
      * @param $userGroupId
      * @return PeopleType
      */
-    private function getPeopleTypeModel($userGroupId){
-        $peopleType = PeopleType::where('user_group_id', $userGroupId)
+    private function getPeopleTypeModel($userGroupId, $title){
+        $peopleType = PeopleType::where([
+            'user_group_id' => $userGroupId,
+            'title' => $title
+        ])
             ->first();
 
         return $peopleType ? $peopleType : new PeopleType();

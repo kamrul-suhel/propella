@@ -30,7 +30,7 @@ class CreateForeiginKeyRelations extends Migration
         });
 
         Schema::table('competitors', function(Blueprint $table){
-            $table->foreign('group_id')->references('id')->on('groups');
+            $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');
         });
 
         // Group_coordinate
@@ -40,12 +40,12 @@ class CreateForeiginKeyRelations extends Migration
 
         // Organisations foreign
         Schema::table('organisation_coordinates', function(Blueprint $table){
-            $table->foreign('organisation_id')->references('id')->on('organisations');
+            $table->foreign('organisation_id')->references('id')->on('organisations')->onDelete('cascade');
         });
 
         // Peoples foreign
         Schema::table('people_coordinates', function(Blueprint $table){
-            $table->foreign('people_id')->references('id')->on('people');
+            $table->foreign('people_id')->references('id')->on('people')->onDelete('cascade');
         });
 
 
