@@ -37,18 +37,6 @@ class ProjectController extends PropellaBaseController
         // Save project.
         $project->save();
 
-        // Create people type, if set.
-        if ($this->request->has('people')) {
-            $peoples = [];
-            foreach ($this->request->peoples as $people) {
-                $newPeople['title'] = $people['title'];
-                $newPeople['status'] = $people['status'];
-                $peoples[] = $newPeople;
-            }
-
-            $project->people()->createMany($peoples);
-        }
-
         return response()->json($project);
 
     }
@@ -72,19 +60,6 @@ class ProjectController extends PropellaBaseController
 
         // Update project
         $project->save();
-
-        // Update or create people type, if set.
-        if ($this->request->has('people')) {
-            foreach ($this->request->peoples as $people) {
-                $newPeople = isset($people['id']) ? PeopleType::find($people['id']) : new PeopleType();
-
-                $newPeople->title = $people['title'];
-                $newPeople->status = isset($people['status']) ? $people['status'] : 1;
-
-                $project->people()->saveMany($newPeople);
-            }
-        }
-
         return response()->json($project);
 
     }
@@ -126,7 +101,7 @@ class ProjectController extends PropellaBaseController
      */
     public function single($id)
     {
-        $project = Project::with(['people'])
+        $project = Project::with(['groups'])
             ->findOrFail($id);
 
         $project->groups->map(function ($group) {

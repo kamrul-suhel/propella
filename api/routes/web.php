@@ -32,7 +32,7 @@ $router->group(['prefix' => 'v1/groups'] , function () use ($router) {
     $router->put('/{id}', 'GroupController@update');
     $router->get('/', 'GroupController@list');
     $router->get('/{id}', 'GroupController@single');
-    $router->get('/{id}/people', 'GroupController@getPeople');
+    $router->get('/{id}/people', 'GroupController@getPeopleByGroupId');
     $router->delete('/{id}', 'GroupController@delete');
 });
 

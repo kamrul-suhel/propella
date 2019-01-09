@@ -40,11 +40,4 @@ class Project extends Model
         return $this->hasMany('App\Group', 'project_id')
             ->whereIn('status', [0,1]);
     }
-
-    /**
-     * @return mixed
-     */
-    public function people(){
-        return $this->hasMany('App\PeopleType', 'project_id');
-    }
 }

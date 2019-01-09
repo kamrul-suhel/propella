@@ -19,7 +19,6 @@ class GroupController extends PropellaBaseController
      */
     public function __construct(Request $request)
     {
-        //
         parent::__construct($request);
     }
 
@@ -35,7 +34,6 @@ class GroupController extends PropellaBaseController
         $group = $this->saveGroup();
 
         return response()->json($group);
-
     }
 
     /**
@@ -61,7 +59,7 @@ class GroupController extends PropellaBaseController
         $groups = Group::with('project');
 
         // project status, default it will give your 1, active records.
-        $status = $this->status == null ? [0,1] : $this->status;
+        $status = $this->status == null ? [0, 1] : $this->status;
         $groups = $groups->whereIn('status', $status);
 
         // return all data without pagination.
@@ -76,30 +74,36 @@ class GroupController extends PropellaBaseController
      */
     public function single($id)
     {
-        $group = Group::with(['coordinate','project', 'organisations.coordinates','organisations.people'])
+        // Get all group
+        $group = Group::with([
+            'coordinate',
+            'project',
+            'organisations.coordinates',
+            'organisations.people'
+        ])
             ->findOrFail($id);
 
-//         set coordinate data.
+        // set first coordinate data.
         $group->positionX = $group->coordinate[0]->positionX;
         $group->positionY = $group->coordinate[0]->positionY;
         $group->icon_size = $group->coordinate[0]->icon_size;
         $group->icon_path = $group->coordinate[0]->icon_path;
 
-        // get the organisation latest coordinate.
-        $group->organisations->map(function($organisation){
-           if($organisation->has('coordinates')){
-               $organisation->positionX = $organisation->coordinates[0]->positionX;
-               $organisation->positionY = $organisation->coordinates[0]->positionY;
-               $organisation->icon_path = $organisation->coordinates[0]->icon_path;
-               $organisation->icon_size = $organisation->coordinates[0]->icon_size;
-               $organisation->trajectory = $organisation->coordinates[0]->trajectory;
+        // get the organisation latest coordinate
+        $group->organisations->map(function ($organisation) {
+            if ($organisation->has('coordinates')) {
+                $organisation->positionX = $organisation->coordinates[0]->positionX;
+                $organisation->positionY = $organisation->coordinates[0]->positionY;
+                $organisation->icon_path = $organisation->coordinates[0]->icon_path;
+                $organisation->icon_size = $organisation->coordinates[0]->icon_size;
+                $organisation->trajectory = $organisation->coordinates[0]->trajectory;
 
-               // Unset coordinates array
-               unset($organisation->coordinates);
-           }
+                // Unset coordinates array
+                unset($organisation->coordinates);
+            }
         });
 
-//         Unset coordinate for result.
+        // Unset coordinate
         unset($group->coordinate);
 
         return response()->json($group);
@@ -110,7 +114,8 @@ class GroupController extends PropellaBaseController
      * @param $id
      * @return mixed
      */
-    public function getPeople($id){
+    public function getPeopleByGroupId($id)
+    {
         // Get the people
         $people = People::select([
             'people.title',
@@ -122,8 +127,8 @@ class GroupController extends PropellaBaseController
             ->leftJoin('organisations', 'organisations.id', '=', 'people.organisation_id')
             ->leftJoin('groups', 'groups.id', '=', 'organisations.group_id')
             ->where('groups.id', $id)
-        ->get();
-        
+            ->get();
+
         return response()->json($people);
     }
 
@@ -190,13 +195,13 @@ class GroupController extends PropellaBaseController
         $group->abbreviation = $this->request->abbreviation;
 
         // Set project id
-        $group->project_id = (int) $this->request->project_id;
+        $group->project_id = (int)$this->request->project_id;
 
         // Set status
         $group->status = $this->request->has('status') ? $this->request->status : 1;
 
         // Set created by
-        $group->created_by = $this->request->has('created_by') ? $this->request->created_by : 0 ;
+        $group->created_by = $this->request->has('created_by') ? $this->request->created_by : 0;
 
         // Save group.
         $group->save();
@@ -215,7 +220,7 @@ class GroupController extends PropellaBaseController
         // Upload file, if file exists & it is update.
         if ($create) {
             // Upload file
-            if($this->request->has('icon_path') && $this->request->hasFile('icon_path')){
+            if ($this->request->has('icon_path') && $this->request->hasFile('icon_path')) {
                 $iconPath = propellaUploadImage($this->request->icon_path, $this->folderName);
 
                 // Set image path into database
@@ -223,14 +228,14 @@ class GroupController extends PropellaBaseController
             }
         } else {
             // First check is has file.
-            if($this->request->has('icon_path') && $this->request->hasFile('icon_path')){
+            if ($this->request->has('icon_path') && $this->request->hasFile('icon_path')) {
                 // Remove existing file.
                 propellaRemoveImage($groupCoordinate->icon_path);
 
                 // Upload new file.
                 $newIconPath = propellaUploadImage($this->request->icon_path, $this->folderName);
                 $groupCoordinate->icon_path = $newIconPath;
-            }else{
+            } else {
                 // don't have icon_path so need to add previous icon_path.
                 $iconPath = $group->coordinate()->first()->icon_path;
                 $groupCoordinate->icon_path = $iconPath;
