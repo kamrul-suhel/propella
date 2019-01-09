@@ -21,8 +21,8 @@ class GroupCoordinate extends Model
     protected $fillable = [
         'icon_size',
         'icon_path',
-        'position_X',
-        'position_Y',
+        'positionX',
+        'positionY',
         'project_id'
     ];
 

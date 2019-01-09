@@ -21,8 +21,8 @@ class PeopleCoordinate extends Model
     protected $fillable = [
         'icon_path',
         'icon_size',
-        'position_X',
-        'position_Y',
+        'positionX',
+        'positionY',
         'trajectory'
     ];
 

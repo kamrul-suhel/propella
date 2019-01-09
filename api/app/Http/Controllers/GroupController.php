@@ -75,8 +75,17 @@ class GroupController extends PropellaBaseController
      */
     public function single($id)
     {
-        $group = Group::with(['coordinates','project', 'organisations'])
+        $group = Group::with(['coordinate','project', 'organisations.people'])
             ->findOrFail($id);
+
+//         set coordinate data.
+        $group->positionX = $group->coordinate[0]->positionX;
+        $group->positionY = $group->coordinate[0]->positionY;
+        $group->icon_size = $group->coordinate[0]->icon_size;
+        $group->icon_path = $group->coordinate[0]->icon_path;
+
+        // Unset coordinate for result.
+        unset($group->coordinate);
 
         return response()->json($group);
     }
@@ -104,26 +113,21 @@ class GroupController extends PropellaBaseController
     private function validateData($create = true)
     {
         $this->validate($this->request, [
-            'title' => 'required|string|min:1',
-            'description' => 'required|string|min:1',
-            'abbreviation' => 'required|string',
-            'coordinate' => 'required|array',
-            'coordinate.*.position_X' => 'required|integer|min:1',
-            'coordinate.*.position_Y' => 'required|integer|min:1',
-            'coordinate.*.icon_size' => 'required|in:s,m,l',
-            'project_id' => 'required|exists:projects,id',
-            'created_by' => 'required|integer|min:1',
-            'status' => 'required|integer|between:0,2',
-            'competitors' => 'required|array',
-            'competitors.*.title' => 'required|string|min:1',
-            'competitors.*.description' => 'required|string|min:1',
-            'competitors.*.status' => 'required|integer|between:0,2',
-            'competitors.*.id' => 'exists|competitors.id'
+            'coordinate_id' => 'sometimes|exists:group_coordinates,id',
+            'positionX' => 'required|integer|min:1',
+            'positionY' => 'required|integer|min:1',
+            'icon_size' => 'required|in:s,m,l',
+            'project_id' => 'required|exists:projects,id'
         ]);
 
         if ($create) {
             $this->validate($this->request, [
-                'coordinate.*.icon_path' => 'required|file|mimes:jpeg,jpg,png,svg'
+                'created_by' => 'integer|min:1',
+                'status' => 'integer|between:0,2',
+                'title' => 'required|string|min:1',
+                'description' => 'required|string|min:1',
+                'abbreviation' => 'required|string',
+                'icon_path' => 'file|mimes:jpeg,jpg,png,svg,gif'
             ]);
         } else {
             $this->validate($this->request, [
@@ -152,55 +156,55 @@ class GroupController extends PropellaBaseController
         $group->abbreviation = $this->request->abbreviation;
 
         // Set project id
-        $group->project_id = $this->request->project_id;
+        $group->project_id = (int) $this->request->project_id;
 
         // Set status
-        $group->status = $this->request->status;
+        $group->status = $this->request->has('status') ? $this->request->status : 1;
 
         // Set created by
-        $group->created_by = $this->request->created_by;
+        $group->created_by = $this->request->has('created_by') ? $this->request->created_by : 0 ;
 
         // Save group.
         $group->save();
 
-        // Create coordinate record.
-        if ($this->request->has('coordinate')) {
+        // Create group coordinate record.
+        $groupCoordinate = $this->request->has('coordinate_id') ? GroupCoordinate::find($this->request->coordinate_id) : new GroupCoordinate();
 
-            foreach ($this->request->coordinate as $coordinate) {
-                $newCoordinate = isset($coordinate['id']) ? GroupCoordinate::find($coordinate['id']) : new GroupCoordinate();
+        $this->request->has('positionX') ? $groupCoordinate->positionX = $this->request->positionX : '';
 
-                $newCoordinate->position_x = $coordinate['position_X'];
-                $newCoordinate->position_Y = $coordinate['position_Y'];
-                $newCoordinate->icon_size = $coordinate['icon_size'];
-                $newCoordinate->group_id = $group->id;
+        $this->request->has('positionY') ? $groupCoordinate->positionY = $this->request->positionY : '';
 
-                // Upload file, if file exists & it is update.
-                if ($create) {
-                    // Upload file
-                    $iconPath = propellaUploadImage($coordinate['icon_path'], $this->folderName);
+        $this->request->has('icon_size') ? $groupCoordinate->icon_size = $this->request->icon_size : '';
 
-                    // Set image path into database
-                    $newCoordinate->icon_path = $iconPath;
-                } else {
-                    // First check is has file.
-                    if(isset($coordinate['icon_path']) && is_file($coordinate['icon_path'])){
-                        // Remove existing file.
-                        propellaRemoveImage($newCoordinate->icon_path);
+        $groupCoordinate->group_id = $group->id;
 
-                        // Upload new file.
-                        $newIconPath = propellaUploadImage($coordinate['icon_path'], $this->folderName);
-                        $newCoordinate->icon_path = $newIconPath;
-                    }else{
-                        // don't have icon_path so need to add previous icon_path.
-                        $iconPath = $group->coordinate()->first()->icon_path;
-                        $newCoordinate->icon_path = $iconPath;
-                    }
-                }
+        // Upload file, if file exists & it is update.
+        if ($create) {
+            // Upload file
+            if($this->request->has('icon_path') && $this->request->hasFile('icon_path')){
+                $iconPath = propellaUploadImage($this->request->icon_path, $this->folderName);
 
-                // Save coordinate.
-                $newCoordinate->save();
+                // Set image path into database
+                $groupCoordinate->icon_path = $iconPath;
+            }
+        } else {
+            // First check is has file.
+            if($this->request->has('icon_path') && $this->request->hasFile('icon_path')){
+                // Remove existing file.
+                propellaRemoveImage($groupCoordinate->icon_path);
+
+                // Upload new file.
+                $newIconPath = propellaUploadImage($this->request->icon_path, $this->folderName);
+                $groupCoordinate->icon_path = $newIconPath;
+            }else{
+                // don't have icon_path so need to add previous icon_path.
+                $iconPath = $group->coordinate()->first()->icon_path;
+                $groupCoordinate->icon_path = $iconPath;
             }
         }
+
+        // Save coordinate.
+        $groupCoordinate->save();
 
         // Create competitors
         if ($this->request->has('competitors')) {
@@ -215,8 +219,12 @@ class GroupController extends PropellaBaseController
                 // Save competitor.
                 $newCompetitor->save();
             }
-
         }
+
+        $group->positionX = $groupCoordinate->positionX;
+        $group->positionY = $groupCoordinate->positionY;
+        $group->icon_size = $groupCoordinate->icon_size;
+        $group->icon_path = $groupCoordinate->icon_path;
 
         return $group;
     }

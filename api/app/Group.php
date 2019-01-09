@@ -82,9 +82,33 @@ class Group extends Model
             'groups.title',
             'groups.description',
             'groups.status',
-            'project.title as project_title',
-            'project.description as project_description'
+            'projects.id as project_id',
+            'projects.title as project_title',
+            'projects.description as project_description'
         ])
-            ->leftJoin('project', 'groups.project_id', '=', 'project.id');
+            ->leftJoin('projects', 'groups.project_id', '=', 'projects.id');
+    }
+
+    /**
+     * @return mixed
+     */
+    public static function getDefaultFieldWithSingleCoordinate($id){
+        return self::select([
+            'groups.id',
+            'groups.title',
+            'groups.description',
+            'groups.status',
+            'groups.project_id',
+            'group_coordinates.position_X',
+            'group_coordinates.position_Y',
+            'group_coordinates.icon_size',
+            'group_coordinates.icon_path',
+            'group_coordinates.created_at',
+        ])
+            ->with(['project', 'organisations.people'])
+            ->leftJoin('group_coordinates', 'groups.id', '=', 'group_coordinates.group_id')
+            ->orderBy('group_coordinates.created_at', 'DESC')
+            ->where('groups.id', $id)
+            ->first();
     }
 }

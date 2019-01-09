@@ -36,25 +36,49 @@ class Organisation extends Model
     ];
 
 
+    /**
+     * @return mixed
+     */
     public function coordinates(){
         return $this->hasMany('App\OrganisationCoordinate', 'organisation_id')
             ->orderBy('created_at', 'DESC');
     }
 
-    public function type(){
-        return $this->belongTo();
+    /**
+     * @return mixed
+     */
+    public function coordinate(){
+        return $this->hasMany('App\OrganisationCoordinate', 'organisation_id')
+            ->orderBy('created_at', 'DESC')
+            ->take(1);
     }
 
+    /**
+     * @return mixed
+     */
+    public function people(){
+        return $this->hasMany('App\People', 'organisation_id');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function type(){
+        return $this->belongTo('App\OrganisationType', 'type_id');
+    }
+
+    /**
+     * @return mixed
+     */
     public static function getDefaultField(){
         return self::select([
             'organisations.id',
             'organisations.title',
             'organisations.description',
             'organisations.abbreviation',
-            'organisation_types.title as organisation_type_title',
-            'organisation_types.title as organisation_type_description'
+            'organisation_types.title as organisation_type',
+            'organisation_types.title as organisation_description'
         ])
             ->leftJoin('organisation_types', 'organisation_types.id', '=', 'organisations.type_id');
-
     }
 }

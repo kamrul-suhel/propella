@@ -15,10 +15,10 @@ class CreateOrganisationCoordinatesTable extends Migration
     {
         Schema::create('organisation_coordinates', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->double('position_X')->index();
-            $table->double('position_Y')->index();
+            $table->double('positionX')->index();
+            $table->double('positionY')->index();
             $table->enum('icon_size', ['s','m','l']);
-            $table->text('icon_path');
+            $table->text('icon_path')->nullable();
             $table->tinyInteger('trajectory')->default('1');
             $table->bigInteger('organisation_id')->unsigned()->index();
             $table->timestamps();

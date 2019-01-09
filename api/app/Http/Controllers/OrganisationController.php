@@ -77,8 +77,28 @@ class OrganisationController extends PropellaBaseController
     public function single($id)
     {
         $organisation = Organisation::getDefaultField()
-            ->with(['coordinates'])
+            ->with(['coordinate','people.coordinates'])
             ->findOrFail($id);
+
+        // Take out
+        $organisation->positionX = $organisation->coordinate[0]->positionX;
+        $organisation->positionY = $organisation->coordinate[0]->positionY;
+        $organisation->icon_size = $organisation->coordinate[0]->icon_size;
+        $organisation->icon_path = $organisation->coordinate[0]->icon_path;
+        $organisation->trajectory = $organisation->coordinate[0]->trajectory;
+
+        unset($organisation->coordinate);
+
+         $organisation->people->map(function($people){
+            if($people->has('coordinates')){
+                $people->positionX = $people->coordinates[0]->positionX;
+                $people->positionY = $people->coordinates[0]->positionY;
+                $people->icon_path = $people->coordinates[0]->icon_path;
+                $people->icon_size = $people->coordinates[0]->icon_size;
+                $people->trajectory = $people->coordinates[0]->trajectory;
+            }
+            unset($people->coordinates);
+        });
 
         return response()->json($organisation);
     }
@@ -110,18 +130,18 @@ class OrganisationController extends PropellaBaseController
             'title' => 'required|string|min:1',
             'description' => 'required|string|min:1',
             'abbreviation' => 'required|string|min:1',
-            'coordinate' => 'required|array',
-            'coordinate.*.position_X' => 'required|integer|min:1',
-            'coordinate.*.position_Y' => 'required|integer|min:1',
-            'coordinate.*.icon_size' => 'required|in:s,m,l',
-            'created_by' => 'required|integer|min:1',
-            'status' => 'required|integer|between:0,2',
-            'organisation_type_title' => 'required|string|min:1'
+            'positionX' => 'integer|min:1',
+            'trajectory' => 'integer|min:1',
+            'positionY' => 'integer|min:1',
+            'icon_size' => 'in:s,m,l',
+            'created_by' => 'integer|min:1',
+            'status' => 'integer|between:0,2',
+            'organisation_type' => 'required|string|min:1'
         ]);
 
         if ($create) {
             $this->validate($this->request, [
-                'coordinate.*.icon_path' => 'required|file|mimes:jpeg,jpg,png,svg'
+                'icon_path' => 'file|mimes:jpeg,jpg,png,svg,gif'
             ]);
         } else {
             $this->validate($this->request, [
@@ -149,57 +169,66 @@ class OrganisationController extends PropellaBaseController
         $organisation->abbreviation = $this->request->abbreviation;
 
         // Set project id
-        $organisation->group_id = $this->request->group_id;
+        $organisation->group_id = (int) $this->request->group_id;
 
         // Set status
-        $organisation->status = $this->request->status;
+        $organisation->status = $this->request->has('status') ? $this->request->status : 1;
 
         // set type_id
-        $organisation->type_id = OrganisationType::getOrganisationTypeByTitle($this->request->organisation_type_title);
+        $organisation->type_id = OrganisationType::getOrganisationTypeByTitle($this->request->organisation_type);
 
         // Set created by
-        $organisation->created_by = $this->request->created_by;
+        $organisation->created_by = $this->request->has('created_by') ? $this->request->created_by : 0;
 
         // Save group.
         $organisation->save();
 
-        // Create coordinate record.
-        if ($this->request->has('coordinate')) {
+        // Create organisation coordinate record.
+        $organisationCoordinate = $this->request->has('coordinate_id') ? OrganisationCoordinate::find($this->request->coordinate_id) : new OrganisationCoordinate();
 
-            foreach ($this->request->coordinate as $coordinate) {
-                $newCoordinate = isset($coordinate['id']) ? OrganisationCoordinate::find($coordinate['id']) : new OrganisationCoordinate();
-                $newCoordinate->position_X = $coordinate['position_X'];
-                $newCoordinate->position_Y = $coordinate['position_Y'];
-                $newCoordinate->icon_size = $coordinate['icon_size'];
-                $newCoordinate->organisation_id = $organisation->id;
+        $organisationCoordinate->positionX = $this->request->has('positionX') ? $this->request->positionX : 0;
 
-                // Upload file if file exists & it is update.
-                if ($create) {
-                    // Upload file
-                    $iconPath = propellaUploadImage($coordinate['icon_path'], $this->folderName);
+        $organisationCoordinate->positionY = $this->request->has('positionY') ? $this->request->positionY : 0;
 
-                    // Set image path into database
-                    $newCoordinate->icon_path = $iconPath;
-                } else {
-                    // First check is has file.
-                    if(isset($coordinate['icon_path']) && is_file($coordinate['icon_path'])){
-                        // Remove existing file.
-                        propellaRemoveImage($newCoordinate->icon_path);
+        $organisationCoordinate->trajectory = $this->request->has('trajectory') ? $this->request->trajectory : 0;
 
-                        // Upload new file.
-                        $newIconPath = propellaUploadImage($coordinate['icon_path'], $this->folderName);
-                        $newCoordinate->icon_path = $newIconPath;
-                    }else{
-                        // don't have icon_path so need to add previous icon_path.
-                        $iconPath = $organisation->coordinate()->first()->icon_path;
-                        $newCoordinate->icon_path = $iconPath;
-                    }
-                }
+        $this->request->has('icon_size') ? $organisationCoordinate->icon_size = $this->request->icon_size : '';
 
-                // Save coordinate.
-                $newCoordinate->save();
+        $organisationCoordinate->organisation_id = $organisation->id;
+
+        // Upload file, if file exists & it is update.
+        if ($create) {
+            // Upload file
+            if($this->request->has('icon_path') && $this->request->hasFile('icon_path')){
+                $iconPath = propellaUploadImage($this->request->icon_path, $this->folderName);
+
+                // Set image path into database
+                $organisationCoordinate->icon_path = $iconPath;
+            }
+        } else {
+            // First check is has file.
+            if($this->request->has('icon_path') && $this->request->hasFile('icon_path')){
+                // Remove existing file.
+                propellaRemoveImage($organisationCoordinate->icon_path);
+
+                // Upload new file.
+                $newIconPath = propellaUploadImage($this->request->icon_path, $this->folderName);
+                $organisationCoordinate->icon_path = $newIconPath;
+            }else{
+                // don't have icon_path so need to add previous icon_path.
+                $iconPath = $organisation->coordinate()->first()->icon_path;
+                $organisationCoordinate->icon_path = $iconPath;
             }
         }
+
+        // Save organisation coordinate.
+        $organisationCoordinate->save();
+
+        $organisation->icon_size = $organisationCoordinate->icon_size;
+        $organisation->icon_path = $organisationCoordinate->icon_path;
+        $organisation->positionX = $organisationCoordinate->positionX;
+        $organisation->positionY = $organisationCoordinate->positonY;
+        $organisation->trajectory = $organisationCoordinate->trajectory;
 
         return $organisation;
     }

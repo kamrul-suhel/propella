@@ -73,10 +73,21 @@ class PeopleController extends PropellaBaseController
      */
     public function single($id)
     {
-        $organisation = People::with(['organisation', 'coordinates'])
+        $people = People::with(['organisation', 'coordinate'])
             ->findOrFail($id);
 
-        return response()->json($organisation);
+        //set coordinate data.
+        $people->positionX = $people->coordinate[0]->positionX;
+        $people->positionY = $people->coordinate[0]->positionY;
+        $people->icon_size = $people->coordinate[0]->icon_size;
+        $people->icon_path = $people->coordinate[0]->icon_path;
+        $people->trajectory = $people->coordinate[0]->trajectory;
+        $people->character_id = $people->coordinate[0]->character_id;
+
+        // Unset coordinate for result.
+        unset($people->coordinate);
+
+        return response()->json($people);
     }
 
     /**
@@ -105,19 +116,19 @@ class PeopleController extends PropellaBaseController
             'organisation_id' => 'required|exists:groups,id',
             'title' => 'required|string|min:1',
             'description' => 'required|string|min:1',
-            'coordinate' => 'required|array',
-            'coordinate.*.position_X' => 'required|integer|min:1',
-            'coordinate.*.position_Y' => 'required|integer|min:1',
-            'coordinate.*.icon_size' => 'required|in:s,m,l',
-            'coordinate.*.character_id' => 'required|integer|min:1',
-            'created_by' => 'required|integer|min:1',
-            'status' => 'required|integer|between:0,2',
+            'positionX' => 'required|integer|min:1',
+            'positionY' => 'required|integer|min:1',
+            'trajectory' => 'required|integer|min:1',
+            'icon_size' => 'required|in:s,m,l',
+            'character_id' => 'required|integer|min:1',
+            'created_by' => 'integer|min:1',
+            'status' => 'integer|between:0,2',
             'people_type' => 'required|string|min:1'
         ]);
 
         if ($create) {
             $this->validate($this->request, [
-                'coordinate.*.icon_path' => 'required|file|mimes:jpeg,jpg,png,svg,gif'
+                'icon_path' => 'file|mimes:jpeg,jpg,png,svg,gif'
             ]);
         } else {
             // Updating record, must need to know id.
@@ -146,56 +157,68 @@ class PeopleController extends PropellaBaseController
         $people->status = $this->request->status;
 
         // set type_id
-        $people->type_id = $this->request->people_type;
+        $people->type_id = (int) $this->request->people_type;
 
         // Set created by
         $people->created_by = $this->request->created_by;
 
         // Set organisation_id
-        $people->organisation_id = $this->request->organisation_id;
+        $people->organisation_id = (int) $this->request->organisation_id;
 
         // Save group.
         $people->save();
 
-        // Create coordinate record.
-        if ($this->request->coordinate) {
+        // Create organisation coordinate record.
+        $peopleCoordinate = $this->request->has('coordinate_id') ? OrganisationCoordinate::find($this->request->coordinate_id) : new OrganisationCoordinate();
 
-            foreach ($this->request->coordinate as $coordinate) {
-                $newCoordinate = isset($coordinate['id']) ? PeopleCoordinate::find($coordinate['id']) : new PeopleCoordinate();
-                $newCoordinate->position_X = $coordinate['position_X'];
-                $newCoordinate->position_Y = $coordinate['position_Y'];
-                $newCoordinate->icon_size = $coordinate['icon_size'];
-                $newCoordinate->character_id = $coordinate['character_id'];
-                $newCoordinate->trajectory = $coordinate['trajectory'];
-                $newCoordinate->people_id = $people->id;
+        $peopleCoordinate->positionX = $this->request->has('positionX') ? $this->request->positionX : 0;
 
-                // Upload file if file exists & it is update.
-                if ($create) {
-                    // Upload file
-                    $iconPath = propellaUploadImage($coordinate['icon_path'], $this->folderName);
+        $peopleCoordinate->positionY = $this->request->has('positionY') ? $this->request->positionY : 0;
 
-                    // Set image path into database
-                    $newCoordinate->icon_path = $iconPath;
-                } else {
-                    // First check is has file.
-                    if (isset($coordinate['icon_path']) && is_file($coordinate['icon_path'])) {
-                        // Remove existing file.
-                        propellaRemoveImage($newCoordinate->icon_path);
+        $peopleCoordinate->trajectory = $this->request->has('trajectory') ? $this->request->trajectory : 0;
 
-                        // Upload new file.
-                        $newIconPath = propellaUploadImage($coordinate['icon_path'], $this->folderName);
-                        $newCoordinate->icon_path = $newIconPath;
-                    } else {
-                        // don't have icon_path so need to add previous icon_path.
-                        $iconPath = $people->coordinate()->first()->icon_path;
-                        $newCoordinate->icon_path = $iconPath;
-                    }
-                }
+        $peopleCoordinate->character_id = $this->request->has('character_id') ? $this->request->character_id : 0;
 
-                // Save coordinate.
-                $newCoordinate->save();
+        $this->request->has('icon_size') ? $peopleCoordinate->icon_size = $this->request->icon_size : '';
+
+        $peopleCoordinate->people_id = $people->id;
+
+        // Upload file, if file exists & it is update.
+        if ($create) {
+            // Upload file
+            if ($this->request->has('icon_path') && $this->request->hasFile('icon_path')) {
+                $iconPath = propellaUploadImage($this->request->icon_path, $this->folderName);
+
+                // Set image path into database
+                $peopleCoordinate->icon_path = $iconPath;
+            }
+        } else {
+            // First check is has file.
+            if ($this->request->has('icon_path') && $this->request->hasFile('icon_path')) {
+                // Remove existing file.
+                propellaRemoveImage($peopleCoordinate->icon_path);
+
+                // Upload new file.
+                $newIconPath = propellaUploadImage($this->request->icon_path, $this->folderName);
+                $peopleCoordinate->icon_path = $newIconPath;
+            } else {
+                // don't have icon_path so need to add previous icon_path.
+                $iconPath = $people->coordinate()->first()->icon_path;
+                $peopleCoordinate->icon_path = $iconPath;
             }
         }
+
+        // Save people coordinate.
+        $peopleCoordinate->save();
+
+        $people->positionX = $peopleCoordinate->positionX;
+        $people->positionY = $peopleCoordinate->positionY;
+        $people->icon_size = $peopleCoordinate->icon_size;
+        $people->icon_path = $peopleCoordinate->icon_path;
+        $people->trajectory = $peopleCoordinate->trajectory;
+        $people->character_id = $peopleCoordinate->character_id;
+
+
         return $people;
     }
 }

@@ -47,6 +47,15 @@ class People extends Model
     /**
      * @return mixed
      */
+    public function coordinate(){
+        return $this->hasMany('App\PeopleCoordinate', 'people_id')
+            ->orderBy('created_at', 'DESC')
+            ->take(1);
+    }
+
+    /**
+     * @return mixed
+     */
     public static function getDefaultField(){
         return self::select([
             'people.id',

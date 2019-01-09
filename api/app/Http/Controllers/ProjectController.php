@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Group;
 use App\Project;
 use Illuminate\Http\Request;
 
@@ -21,7 +22,8 @@ class ProjectController extends PropellaBaseController
     /**
      * @return mixed
      */
-    public function create(){
+    public function create()
+    {
         // validate data.
         $this->validateData();
 
@@ -34,9 +36,9 @@ class ProjectController extends PropellaBaseController
         // Save project.
         $project->save();
 
-        if($this->request->has('people')){
+        if ($this->request->has('people')) {
             $peoples = [];
-            foreach($this->request->peoples as $people){
+            foreach ($this->request->peoples as $people) {
                 $newPeople['title'] = $people['title'];
                 $newPeople['status'] = $people['status'];
                 $peoples[] = $newPeople;
@@ -53,7 +55,8 @@ class ProjectController extends PropellaBaseController
      * @param $id
      * @return mixed
      */
-    public function update($id){
+    public function update($id)
+    {
 
         // Validate data
         $this->validateData(false);
@@ -75,11 +78,12 @@ class ProjectController extends PropellaBaseController
     /**
      * @return mixed
      */
-    public function list(){
+    public function list()
+    {
         $projects = new Project();
 
         // project status, default it will give your 1, active records.
-        $this->status != null ? $projects  = $projects->where('status', $this->status) : '';
+        $this->status != null ? $projects = $projects->where('status', $this->status) : '';
 
         // return all data without pagination.
         $projects = $this->allData ? $projects->get() : $projects->paginate($this->perPage);
@@ -91,10 +95,20 @@ class ProjectController extends PropellaBaseController
      * @param $id
      * @return mixed
      */
-    public function single($id){
-        $project = Project::with(['groups.coordinates', 'people'])
+    public function single($id)
+    {
+        $project = Project::with(['people'])
             ->findOrFail($id);
-        
+
+        $project->groups->map(function ($group) {
+            $group->positionX = isset($group->coordinates[0]) ? $group->coordinates[0]->positionX : '';
+            $group->positionY = isset($group->coordinates[0]) ? $group->coordinates[0]->positionY : '';
+            $group->icon_size = isset($group->coordinates[0]) ? $group->coordinates[0]->icon_size : '';
+            $group->icon_path = isset($group->coordinates[0]) ? $group->coordinates[0]->icon_path : '';
+
+            unset($group->coordinates);
+        });
+
         return response()->json($project);
     }
 
@@ -102,7 +116,8 @@ class ProjectController extends PropellaBaseController
      * @param $id
      * @return mixed
      */
-    public function delete($id){
+    public function delete($id)
+    {
         $project = Project::findOrFail($id);
 
         $project->delete();
@@ -113,7 +128,8 @@ class ProjectController extends PropellaBaseController
     /**
      * @param bool $create
      */
-    private function validateData($create = true){
+    private function validateData($create = true)
+    {
         $this->validate($this->request, [
             'title' => 'required|string|min:1',
             'description' => 'required|string|min:1',
@@ -123,7 +139,7 @@ class ProjectController extends PropellaBaseController
             'people.*.status' => 'required|integer|min:0'
         ]);
 
-        if(!$create){
+        if (!$create) {
             $this->validate($this->request, [
                 'id' => 'required|exists:projects,id',
             ]);

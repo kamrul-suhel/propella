@@ -15,7 +15,7 @@
 $factory->define(App\People::class, function (Faker\Generator $faker) {
 
     // get the organisation type id
-    $organasitionTypeId = \App\OrganisationType::all()->random()->id;
+    $organasitionId = \App\Organisation::all()->random()->id;
 
     // Get people type id.
     $peopleTypeId = \App\PeopleType::all()->random()->id;
@@ -24,7 +24,7 @@ $factory->define(App\People::class, function (Faker\Generator $faker) {
         'title' => $faker->company('company'),
         'description' => $faker->sentence(3),
         'type_id' => $peopleTypeId,
-        'organisation_id' => $organasitionTypeId,
+        'organisation_id' => $organasitionId,
         'created_by' => $faker->numberBetween(1, 10),
         'status' => $faker->randomElement([0,1, 2]) // 0 disabled, 1 active, 2 deleted
     ];

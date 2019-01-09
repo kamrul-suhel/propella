@@ -11,6 +11,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $carbon = Carbon::now();
+        dd(Carbon::now());
         // $this->call('UsersTableSeeder');
         factory(\App\Project::class, 50)->create();
 
@@ -36,8 +38,8 @@ class DatabaseSeeder extends Seeder
                 $coordinates[] = [
                     'icon_size' => $faker->randomElement(['s','m','l']),
                     'icon_path' => $faker->imageUrl(50, 50, 'cats', true, 'Faker'),
-                    'position_X' => $positionX,
-                    'position_Y' => $positionY,
+                    'positionX' => $positionX,
+                    'positionY' => $positionY,
                 ];
 
                 $prevPositionX = $positionX;
@@ -76,8 +78,8 @@ class DatabaseSeeder extends Seeder
                 $coordinates[] = [
                     'icon_size' => $faker->randomElement(['s','m','l']),
                     'icon_path' => $faker->imageUrl(50, 50, 'cats', true, 'Faker'),
-                    'position_X' => $positionX,
-                    'position_Y' => $positionY,
+                    'positionX' => $positionX,
+                    'positionY' => $positionY,
                 ];
 
                 $prevPositionX = $positionX;
@@ -87,7 +89,7 @@ class DatabaseSeeder extends Seeder
         });
 
         //Seed people table.
-        factory(\App\People::class, 400)->create()->each(function($people){
+        factory(\App\People::class, 800)->create()->each(function($people){
             $faker = \Faker\Factory::create();
             $coordinatesItems = $faker->numberBetween(1, 4);
 
@@ -102,8 +104,8 @@ class DatabaseSeeder extends Seeder
                 $coordinates[] = [
                     'icon_size' => $faker->randomElement(['s','m','l']),
                     'icon_path' => $faker->imageUrl(50, 50, 'cats', true, 'Faker'),
-                    'position_X' => $positionX,
-                    'position_Y' => $positionY,
+                    'positionX' => $positionX,
+                    'positionY' => $positionY,
                     'trajectory' => $faker->randomElement([0,1]),
                     'character_id' => $faker->numberBetween(1, 20),
                 ];

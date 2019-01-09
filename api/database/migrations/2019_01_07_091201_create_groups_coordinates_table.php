@@ -16,9 +16,9 @@ class CreateGroupsCoordinatesTable extends Migration
         Schema::create('group_coordinates', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->enum('icon_size', ['s','m','l']);
-            $table->text('icon_path');
-            $table->double('position_X');
-            $table->double('position_Y');
+            $table->text('icon_path')->nullable();
+            $table->double('positionX');
+            $table->double('positionY');
             $table->bigInteger('group_id')->unsigned()->index();
             $table->timestamps();
         });

@@ -15,10 +15,10 @@ class CreatePeopleCoordinatesTable extends Migration
     {
         Schema::create('people_coordinates', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->text('icon_path');
+            $table->text('icon_path')->nullable();
             $table->enum('icon_size', ['s','m','l']);
-            $table->double('position_X');
-            $table->double('position_Y');
+            $table->double('positionX');
+            $table->double('positionY');
             $table->tinyInteger('trajectory')->default(1);
             $table->bigInteger('character_id')->unsigned()->index();
             $table->bigInteger('people_id')->unsigned()->index();
