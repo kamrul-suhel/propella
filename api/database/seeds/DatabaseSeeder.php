@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Carbon\Carbon;
 
 class DatabaseSeeder extends Seeder
 {
@@ -11,8 +12,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $carbon = Carbon::now();
-        dd(Carbon::now());
         // $this->call('UsersTableSeeder');
         factory(\App\Project::class, 50)->create();
 
@@ -32,6 +31,8 @@ class DatabaseSeeder extends Seeder
 
 
             for($i = 0; $i < $coordinatesItems; $i++){
+                $createdAt = Carbon::now()->addDay($faker->numberBetween(5, 50));
+
                 $positionX = $prevPositionX == 0 ? $faker->numberBetween(10, 50) : $prevPositionX + $faker->numberBetween(5, 15);
                 $positionY = $prevPositionY == 0 ? $faker->numberBetween(10, 50) : $prevPositionY + $faker->numberBetween(5, 15);
 
@@ -40,6 +41,8 @@ class DatabaseSeeder extends Seeder
                     'icon_path' => $faker->imageUrl(50, 50, 'cats', true, 'Faker'),
                     'positionX' => $positionX,
                     'positionY' => $positionY,
+                    'created_at' => $createdAt,
+                    'updated_at' => $createdAt
                 ];
 
                 $prevPositionX = $positionX;

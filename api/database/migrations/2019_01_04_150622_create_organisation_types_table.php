@@ -17,6 +17,7 @@ class CreateOrganisationTypesTable extends Migration
             $table->bigIncrements('id');
             $table->string('title');
             $table->text('description')->nullable();
+            $table->bigInteger('user_group_id')->unsigned()->index();
             $table->timestamps();
         });
     }

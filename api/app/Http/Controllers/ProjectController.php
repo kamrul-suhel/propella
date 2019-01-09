@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Group;
+use App\PeopleType;
 use App\Project;
 use Illuminate\Http\Request;
 
@@ -36,6 +37,7 @@ class ProjectController extends PropellaBaseController
         // Save project.
         $project->save();
 
+        // Create people type, if set.
         if ($this->request->has('people')) {
             $peoples = [];
             foreach ($this->request->peoples as $people) {
@@ -71,6 +73,18 @@ class ProjectController extends PropellaBaseController
         // Update project
         $project->save();
 
+        // Update or create people type, if set.
+        if ($this->request->has('people')) {
+            foreach ($this->request->peoples as $people) {
+                $newPeople = isset($people['id']) ? PeopleType::find($people['id']) : new PeopleType();
+
+                $newPeople->title = $people['title'];
+                $newPeople->status = isset($people['status']) ? $people['status'] : 1;
+
+                $project->people()->saveMany($newPeople);
+            }
+        }
+
         return response()->json($project);
 
     }
@@ -89,6 +103,21 @@ class ProjectController extends PropellaBaseController
         $projects = $this->allData ? $projects->get() : $projects->paginate($this->perPage);
 
         return response()->json($projects);
+    }
+
+    /**
+     * @param $id
+     * It will return all the related people type in project.
+     * @return mixed
+     */
+    public function getPeopleType($id){
+        $peopleType = PeopleType::select([
+            'id',
+            'title'
+        ])
+            ->where('', $id)
+            ->get();
+        return response()->json($peopleType);
     }
 
     /**
@@ -135,8 +164,8 @@ class ProjectController extends PropellaBaseController
             'description' => 'required|string|min:1',
             'status' => 'required|integer|between:1,3',
             'people' => 'array',
-            'people.*.title' => 'required|string|min:1',
-            'people.*.status' => 'required|integer|min:0'
+            'people.*.title' => 'string|min:1',
+            'people.*.status' => 'integer|min:0'
         ]);
 
         if (!$create) {

@@ -33,13 +33,9 @@ class CreateForeiginKeyRelations extends Migration
             $table->foreign('group_id')->references('id')->on('groups');
         });
 
-        Schema::table('people_types', function(Blueprint $table){
-           $table->foreign('project_id')->references('id')->on('projects');
-        });
-
         // Group_coordinate
         Schema::table('group_coordinates', function(Blueprint $table){
-            $table->foreign('group_id')->references('id')->on('groups');
+            $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');
         });
 
         // Organisations foreign

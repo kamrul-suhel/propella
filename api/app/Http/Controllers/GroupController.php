@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Competitor;
 use App\Group;
 use App\GroupCoordinate;
+use App\People;
 use Illuminate\Http\Request;
 
 class GroupController extends PropellaBaseController
@@ -75,7 +76,7 @@ class GroupController extends PropellaBaseController
      */
     public function single($id)
     {
-        $group = Group::with(['coordinate','project', 'organisations.people'])
+        $group = Group::with(['coordinate','project', 'organisations.coordinates','organisations.people'])
             ->findOrFail($id);
 
 //         set coordinate data.
@@ -84,10 +85,46 @@ class GroupController extends PropellaBaseController
         $group->icon_size = $group->coordinate[0]->icon_size;
         $group->icon_path = $group->coordinate[0]->icon_path;
 
-        // Unset coordinate for result.
+        // get the organisation latest coordinate.
+        $group->organisations->map(function($organisation){
+           if($organisation->has('coordinates')){
+               $organisation->positionX = $organisation->coordinates[0]->positionX;
+               $organisation->positionY = $organisation->coordinates[0]->positionY;
+               $organisation->icon_path = $organisation->coordinates[0]->icon_path;
+               $organisation->icon_size = $organisation->coordinates[0]->icon_size;
+               $organisation->trajectory = $organisation->coordinates[0]->trajectory;
+
+               // Unset coordinates array
+               unset($organisation->coordinates);
+           }
+        });
+
+//         Unset coordinate for result.
         unset($group->coordinate);
 
         return response()->json($group);
+    }
+
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function getPeople($id){
+        // Get the people
+        $people = People::select([
+            'people.title',
+            'people.description',
+            'organisations.id as organisation_id',
+            'organisations.title as organisation',
+            'groups.title as group'
+        ])
+            ->leftJoin('organisations', 'organisations.id', '=', 'people.organisation_id')
+            ->leftJoin('groups', 'groups.id', '=', 'organisations.group_id')
+            ->where('groups.id', $id)
+        ->get();
+        
+        return response()->json($people);
     }
 
     /**
@@ -96,15 +133,12 @@ class GroupController extends PropellaBaseController
      */
     public function delete($id)
     {
-        $project = Group::findOrFail($id);
-
-        // If has file then delete file.
-        propellaRemoveImage($project->icon_path);
+        $group = Group::findOrFail($id);
 
         // Remove record.
-        $project->delete();
+        $group->delete();
 
-        return response()->json($project);
+        return response()->json($group);
     }
 
     /**
