@@ -79,7 +79,8 @@ class GroupController extends PropellaBaseController
             'coordinate',
             'project',
             'organisations.coordinates',
-            'organisations.people'
+            'organisations.people',
+            'competitors'
         ])
             ->findOrFail($id);
 

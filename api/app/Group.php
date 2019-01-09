@@ -53,7 +53,8 @@ class Group extends Model
      * @return mixed
      */
     public function competitors(){
-        return $this->hasMany('App\Competitor', 'group_id');
+        return $this->hasMany('App\Competitor', 'group_id')
+            ->whereIn('status', [0,1]);
     }
 
     /**
