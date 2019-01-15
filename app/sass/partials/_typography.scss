@@ -1,0 +1,96 @@
+h1,h2,h3,h4,h5,h6 {
+	color: $background-color-headings;
+	font-family:$font-family-headings;
+	font-weight: $font-weight-headings;
+	line-height: $line-height-headings;
+	font-size: $font-size-base;
+	padding: 0;
+
+	a {
+		color: inherit;
+	}
+}
+
+h1,.h1 {
+	font-size: 40px;
+	margin: 0;
+}
+
+h2,.h2 {
+	font-size: 28px;
+	margin: 0 0 10px 0;
+}
+
+h3,.h3 {
+	margin: 0 0 10px 0;
+}
+
+h4,.h4 {
+	margin: 0 0 5px 0;
+}
+
+h5,.h5 {
+	margin: 0 0 5px 0;
+}
+
+h6,.h6 {
+	margin: 0 0 5px 0;
+}
+
+a {
+	color: inherit;
+}
+
+p {
+	margin: 0 0 1em;
+
+}
+
+b, strong {
+	font-weight: 700;
+}
+
+.react-link {
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+.title {
+	text-align: center;
+	font-size: 42px;
+	font-weight: 200;
+	margin-bottom: 50px;
+}
+
+.subtitle {
+	font-weight: 200;
+	padding-left: 50px;
+	margin-bottom: 24px;
+}
+
+.sub-heading {
+	font-size: 24px;
+	font-weight: 200;
+	padding-left: 90px;
+}
+
+.colour-success {
+	color: $text-color-success;
+}
+
+.colour-warning {
+	color: $text-color-warning;
+}
+
+.colour-error {
+	color: $text-color-error;
+}
+
+.clickable {
+	cursor: pointer;
+	text-decoration: underline;
+
+	&:hover {
+		color: black;
+	}
+}

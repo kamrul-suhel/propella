@@ -1,0 +1,40 @@
+.form-type-timepicker {
+
+	.rc-time-picker {
+		display: block;
+	}
+}
+
+.rc-time-picker-panel {
+
+	.rc-time-picker-panel-combobox {
+		display: flex;
+		justify-content: stretch;
+		border: 1px solid #CCC;
+
+		.rc-time-picker-panel-select {
+			width: auto;
+			flex: 1;
+			overflow-x: hidden;
+			font-size: 14px;
+			font-family: 'Helvetica', sans-serif;
+		}
+	}
+
+	.rc-time-picker-panel-input-wrap {
+		padding: 0;
+		border-bottom: 0;
+
+		.rc-time-picker-panel-input {
+			border: 0;
+			line-height: 22px;
+			min-height: 0;
+		}
+	}
+
+	.rc-time-picker-panel-inner {
+		top: 3px;
+		box-shadow: none;
+		border-color: transparent;
+	}
+}

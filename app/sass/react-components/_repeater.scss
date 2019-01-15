@@ -1,0 +1,44 @@
+.form-repeater {
+	width: 100%;
+	margin: 8px 0;
+
+	.repeatable-label {
+		font-size: 32px;
+	}
+
+	.repeatable-row {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+
+		.form-group {
+			margin-right: 20px;
+
+			&:last-child {
+				margin-right: 0;
+			}
+		}
+	}
+
+	.repeatable-row-add {
+		display: inline-block;
+		cursor: pointer;
+		font-size: 22px;
+		margin-top: 5px;
+		text-align: center;
+
+		&:hover {
+			color: orange;
+		}
+	}
+
+	.repeatable-row-remove {
+		cursor: pointer;
+		line-height: 1;
+		margin-top: 35px;
+
+		i {
+			font-size: 32px;
+		}
+	}
+}
