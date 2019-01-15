@@ -21,7 +21,6 @@ class PeopleType extends Model
     protected $fillable = [
         'title',
         'user_group_id',
-        'status'
     ];
 
     /**

@@ -27,8 +27,11 @@ class OrganisationTypeController extends PropellaBaseController
      */
     public function create()
     {
-        // validate data.
-        $this->validateData();
+        $this->validate($this->request, [
+            'types' => 'required|array',
+            'types.*.id' => 'required|integer|min:1',
+            'types.*.title' => 'required|string|min:1'
+        ]);
 
         // Create people type, if set.
         $people = $this->saveData();
@@ -43,22 +46,14 @@ class OrganisationTypeController extends PropellaBaseController
      */
     public function update($id)
     {
-
-        // Validate data
-        $this->validateData(false);
-
         $organisationType = OrganisationType::findOrFail($id);
 
-        // Update title.
         $this->request->has('title') ? $organisationType->title = $this->request->title: '';
 
-        // update User group_id
         $this->request->has('user_group_id') ? $organisationType->user_group_id = $this->request->user_group_id : '';
 
-        // Update status.
         $this->request->has('status') ? $organisationType->status = $this->request->status : '';
 
-        // Save record.
         $organisationType->save();
 
         return response()->json($organisationType);
@@ -73,7 +68,7 @@ class OrganisationTypeController extends PropellaBaseController
         if ($this->request->has('types')) {
             foreach ($this->request->types as $type) {
 
-                $organisationType = $this->getOrganisationTypeModel($type['user_group_id'], $type['title']);
+                $organisationType = $this->getOrganisationTypeModel($type['id'], $type['title']);
                 $organisationType->title = $type['title'];
                 $organisationType->user_group_id = (int) $type['id'];
                 $organisationType->status = isset($type['status']) ? $type['status'] : 1;
@@ -147,26 +142,6 @@ class OrganisationTypeController extends PropellaBaseController
         $organisationType->delete();
 
         return response()->json($organisationType);
-    }
-
-    /**
-     * @param bool $create
-     */
-    private function validateData($create = true)
-    {
-        $this->validate($this->request, [
-            'users' => 'required|array',
-            'users.*.id' => 'required|integer|min:1',
-            'users.*.title' => 'required|string|min:1'
-        ]);
-
-        if ($create) {
-
-        }else{
-            $this->validate($this->request, [
-                'id' => 'required|exists:people_types,id',
-            ]);
-        }
     }
 
     /**

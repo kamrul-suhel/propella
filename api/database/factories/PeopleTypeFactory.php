@@ -14,7 +14,6 @@
 $factory->define(App\PeopleType::class, function (Faker\Generator $faker) {
     return [
         'title' => $faker->company('jobTitle'),
-        'user_group_id' => $faker->numberBetween(1,10),
-        'status' => $faker->randomElement([0,1])
+        'user_group_id' => $faker->numberBetween(1,10)
     ];
 });

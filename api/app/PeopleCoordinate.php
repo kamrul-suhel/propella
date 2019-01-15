@@ -23,7 +23,8 @@ class PeopleCoordinate extends Model
         'icon_size',
         'positionX',
         'positionY',
-        'trajectory'
+        'trajectory',
+        'status'
     ];
 
     /**

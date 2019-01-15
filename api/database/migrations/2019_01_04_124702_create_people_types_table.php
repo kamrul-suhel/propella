@@ -17,7 +17,6 @@ class CreatePeopleTypesTable extends Migration
             $table->bigIncrements('id');
             $table->string('title')->index();
             $table->bigInteger('user_group_id')->unsigned()->index();
-            $table->tinyInteger('status');
             $table->timestamps();
         });
     }

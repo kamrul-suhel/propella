@@ -24,7 +24,12 @@ class Organisation extends Model
         'abbreviation',
         'group_id',
         'type_id',
-        'status'
+        'status',
+        'icon_size',
+        'icon_path',
+        'positionX',
+        'positionY',
+        'archive'
     ];
 
     /**
@@ -33,31 +38,17 @@ class Organisation extends Model
      * @var array
      */
     protected $hidden = [
+//        'archive'
     ];
 
 
     /**
      * @return mixed
      */
-    public function coordinates(){
-        return $this->hasMany('App\OrganisationCoordinate', 'organisation_id')
-            ->orderBy('created_at', 'DESC');
-    }
-
-    /**
-     * @return mixed
-     */
-    public function coordinate(){
-        return $this->hasMany('App\OrganisationCoordinate', 'organisation_id')
-            ->orderBy('created_at', 'DESC')
-            ->take(1);
-    }
-
-    /**
-     * @return mixed
-     */
     public function people(){
-        return $this->hasMany('App\People', 'organisation_id');
+        return $this->hasMany('App\People', 'organisation_id')
+            ->whereIn('status', [0,1])
+            ->where('archive', 0);
     }
 
     /**
@@ -76,7 +67,16 @@ class Organisation extends Model
             'organisations.title',
             'organisations.description',
             'organisations.abbreviation',
-            'organisation_types.title as organisation_type',
+            'organisations.positionX',
+            'organisations.positionY',
+            'organisations.trajectory',
+            'organisations.icon_size',
+            'organisations.created_by',
+            'organisations.parent_id',
+            'organisations.icon_path',
+            'organisations.status',
+            'organisation_types.id as type_id',
+            'organisation_types.title as organisation_title',
             'organisation_types.title as organisation_description'
         ])
             ->leftJoin('organisation_types', 'organisation_types.id', '=', 'organisations.type_id');

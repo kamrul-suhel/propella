@@ -25,7 +25,13 @@ class People extends Model
         'organisation_id',
         'character_id',
         'parent_id',
-        'status'
+        'status',
+        'icon_path',
+        'icon_size',
+        'positionX',
+        'positionY',
+        'trajectory',
+        'archive'
     ];
 
     /**
@@ -34,6 +40,7 @@ class People extends Model
      * @var array
      */
     protected $hidden = [
+        'archive'
     ];
 
     /**
@@ -41,6 +48,7 @@ class People extends Model
      */
     public function coordinates(){
         return $this->hasMany('App\PeopleCoordinate', 'people_id')
+            ->whereIn('status', [0,1])
             ->orderBy('created_at', 'DESC');
     }
 
@@ -49,6 +57,7 @@ class People extends Model
      */
     public function coordinate(){
         return $this->hasMany('App\PeopleCoordinate', 'people_id')
+            ->whereIn('status', [0,1])
             ->orderBy('created_at', 'DESC')
             ->take(1);
     }

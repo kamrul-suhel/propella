@@ -23,7 +23,8 @@ class GroupCoordinate extends Model
         'icon_path',
         'positionX',
         'positionY',
-        'project_id'
+        'project_id',
+        'status'
     ];
 
     /**

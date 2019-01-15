@@ -23,7 +23,8 @@ class OrganisationCoordinate extends Model
         'positionY',
         'icon_size',
         'icon_path',
-        'trajectory'
+        'trajectory',
+        'status'
     ];
 
     /**

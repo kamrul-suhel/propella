@@ -75,7 +75,6 @@ class PeopleTypeController extends PropellaBaseController
                 $peopleType = $this->getPeopleTypeModel($type['user_group_id'], $type['title']);
                 $peopleType->title = $type['title'];
                 $peopleType->user_group_id = (int) $type['user_group_id'];
-                $peopleType->status = isset($user['status']) ? $type['status'] : 1;
 
                 // Save people type.
                 $peopleType->save();
@@ -134,17 +133,10 @@ class PeopleTypeController extends PropellaBaseController
     public function delete($id)
     {
         $peopleType = PeopleType::findOrFail($id);
-        
-        // Check is has any people, if yes then you can not remove this record.
-        $people = People::where('type_id', $peopleType->id)
-            ->first();
-        
-        if($people){
-            return response()->json(['data' => 'You can not delete this record, it has people.']);
-        }
 
-        // Removing record.
-        $peopleType->delete();
+        $peopleType->status = 2;
+
+        $peopleType->save();
 
         return response()->json($peopleType);
     }
