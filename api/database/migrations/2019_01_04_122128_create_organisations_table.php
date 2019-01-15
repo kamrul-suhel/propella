@@ -21,7 +21,14 @@ class CreateOrganisationsTable extends Migration
             $table->bigInteger('group_id')->unsigned()->index();
             $table->bigInteger('created_by')->unsigned()->index();
             $table->bigInteger('type_id')->unsigned()->index();
+            $table->double('positionX')->index();
+            $table->double('positionY')->index();
+            $table->enum('icon_size', ['s','m','l']);
+            $table->text('icon_path')->nullable();
+            $table->tinyInteger('trajectory')->default('1');
             $table->tinyInteger('status');
+            $table->bigInteger('parent_id')->index()->unsigned()->default(0);
+            $table->tinyinteger('archive')->index()->unsigned()->default(0);
             $table->timestamps();
         });
     }

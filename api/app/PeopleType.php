@@ -20,8 +20,7 @@ class PeopleType extends Model
      */
     protected $fillable = [
         'title',
-        'project_id',
-        'status'
+        'user_group_id',
     ];
 
     /**
@@ -30,7 +29,6 @@ class PeopleType extends Model
      * @var array
      */
     protected $hidden = [
-        'project_id'
     ];
 
     public static function getPeopleTypeByTitle($title){

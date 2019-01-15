@@ -15,6 +15,6 @@ $factory->define(App\Project::class, function (Faker\Generator $faker) {
     return [
         'title' => 'Project '. $faker->company('catchPhrase'),
         'description' => $faker->sentence(3),
-        'status' => $faker->randomElement([0,1])
+        'status' => $faker->numberBetween(0,1)
     ];
 });

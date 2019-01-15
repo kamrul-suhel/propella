@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Competitor;
 use App\Group;
-use App\GroupCoordinate;
+use App\People;
 use Illuminate\Http\Request;
 
 class GroupController extends PropellaBaseController
@@ -18,7 +18,6 @@ class GroupController extends PropellaBaseController
      */
     public function __construct(Request $request)
     {
-        //
         parent::__construct($request);
     }
 
@@ -27,14 +26,22 @@ class GroupController extends PropellaBaseController
      */
     public function create()
     {
-        // validate data.
-        $this->validateData();
+        // validate data
+        $this->validate($this->request, [
+            'positionX' => 'required|integer|min:1',
+            'created_by' => 'integer|min:1',
+            'status' => 'integer|between:0,2',
+            'title' => 'required|string|min:1',
+            'description' => 'required|string|min:1',
+            'abbreviation' => 'string|min:1',
+            'icon_path' => 'file|mimes:jpeg,jpg,png,svg,gif',
+            'positionY' => 'required|integer|min:1',
+            'icon_size' => 'required|in:s,m,l',
+        ]);
 
-        // generate & save group.
         $group = $this->saveGroup();
 
         return response()->json($group);
-
     }
 
     /**
@@ -43,11 +50,7 @@ class GroupController extends PropellaBaseController
      */
     public function update($id)
     {
-        // Validate data
-        $this->validateData(false);
-
-        // Update existing group.
-        $group = $this->saveGroup(false);
+        $group = $this->saveGroup(false, $id);
 
         return response()->json($group);
     }
@@ -59,9 +62,10 @@ class GroupController extends PropellaBaseController
     {
         $groups = Group::with('project');
 
-        // project status, default it will give your 1, active records.
-        $status = $this->status == null ? [0,1] : $this->status;
+        // project status, default it will give your 0,1, active records.
+        $status = $this->status == null ? [0,1] : [$this->status];
         $groups = $groups->whereIn('status', $status);
+        $groups = $groups->where('archive', 0);
 
         // return all data without pagination.
         $groups = $this->allData ? $groups->get() : $groups->paginate($this->perPage);
@@ -75,19 +79,105 @@ class GroupController extends PropellaBaseController
      */
     public function single($id)
     {
-        $group = Group::with(['coordinate','project', 'organisations.people'])
+        // Get all group
+        $group = Group::with([
+            'organisations',
+            'competitors'
+        ])
             ->findOrFail($id);
 
-//         set coordinate data.
-        $group->positionX = $group->coordinate[0]->positionX;
-        $group->positionY = $group->coordinate[0]->positionY;
-        $group->icon_size = $group->coordinate[0]->icon_size;
-        $group->icon_path = $group->coordinate[0]->icon_path;
+        // Get the coordinates
+        $groupIds = Group::getAllId($group->parent_id);
+        $coordinates = Group::select([
+            'id',
+            'positionX',
+            'positionY',
+            'icon_path',
+            'icon_size'
+        ])
+            ->whereIn('id', $groupIds)
+            ->get();
+        $group->coordinates = $coordinates;
 
-        // Unset coordinate for result.
-        unset($group->coordinate);
+        // Get people by group
+        $people = People::select([
+            'people.id',
+            'people.title',
+            'people.description',
+            'people.positionX',
+            'people.positionY',
+            'people.icon_path',
+            'people.icon_size',
+            'people.trajectory',
+            'people.parent_id',
+            'people.character_id',
+            'people.status',
+            'people.created_at',
+            'people.updated_at',
+            'organisations.id as organisation_id',
+            'organisations.title as organisation_title',
+            'groups.title as group'
+        ])
+            ->leftJoin('organisations', 'organisations.id', '=', 'people.organisation_id')
+            ->leftJoin('groups', 'groups.id', '=', 'organisations.group_id')
+            ->where('groups.id', $id)
+            ->whereIn('people.status', [0,1])
+            ->get();
+
+        $group->people = $people;
 
         return response()->json($group);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAllProject(){
+        $projects = Group::with(['project' => function($query){
+            $query->whereIn('status', [0,1]);
+        }])
+            ->where('status', [0,1])
+            ->get()
+            ->pluck('project')
+            ->unique('id')
+            ->values()
+            ->all();
+
+        return response()->json($projects);
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function getPeopleByGroupId($id)
+    {
+        // Get the people
+        $people = People::select([
+            'people.id',
+            'people.title',
+            'people.description',
+            'people.status',
+            'people.positionX',
+            'people.positionY',
+            'people.icon_path',
+            'people.icon_size',
+            'people.trajectory',
+            'people.character_id',
+            'people.parent_id',
+            'people.created_at',
+            'people.updated_at',
+            'organisations.id as organisation_id',
+            'organisations.title as organisation_title',
+            'groups.title as group'
+        ])
+            ->leftJoin('organisations', 'organisations.id', '=', 'people.organisation_id')
+            ->leftJoin('groups', 'groups.id', '=', 'organisations.group_id')
+            ->where('groups.id', $id)
+            ->whereIn('people.status', [0,1])
+            ->get();
+
+        return response()->json($people);
     }
 
     /**
@@ -96,115 +186,57 @@ class GroupController extends PropellaBaseController
      */
     public function delete($id)
     {
-        $project = Group::findOrFail($id);
+        $group = Group::findOrFail($id);
 
-        // If has file then delete file.
-        propellaRemoveImage($project->icon_path);
-
-        // Remove record.
-        $project->delete();
-
-        return response()->json($project);
+        $group->status = 2;
+        $group->save();
+        return response()->json($group);
     }
-
-    /**
-     * @param bool $create
-     */
-    private function validateData($create = true)
-    {
-        $this->validate($this->request, [
-            'coordinate_id' => 'sometimes|exists:group_coordinates,id',
-            'positionX' => 'required|integer|min:1',
-            'positionY' => 'required|integer|min:1',
-            'icon_size' => 'required|in:s,m,l',
-            'project_id' => 'required|exists:projects,id'
-        ]);
-
-        if ($create) {
-            $this->validate($this->request, [
-                'created_by' => 'integer|min:1',
-                'status' => 'integer|between:0,2',
-                'title' => 'required|string|min:1',
-                'description' => 'required|string|min:1',
-                'abbreviation' => 'required|string',
-                'icon_path' => 'file|mimes:jpeg,jpg,png,svg,gif'
-            ]);
-        } else {
-            $this->validate($this->request, [
-                'id' => 'required|exists:groups,id',
-            ]);
-        }
-    }
-
 
     /**
      * @param bool $create
      * @return Group
      */
-    private function saveGroup($create = true)
+    private function saveGroup($create = true, $id=0)
     {
-        // Create new Group.
-        $group = $create ? new Group() : Group::find($this->request->id);
+        // Create new Group
+        $group = $create ? new Group() : Group::findOrFail($id);
+        $group->title = $this->request->has('title') ? $this->request->title : '';
+        $this->request->has('description') ? $group->description = $this->request->description : '';
+        $this->request->has('abbreviation') ? $group->abbreviation = $this->request->abbreviation : '';
+        $this->request->has('project_id') ? $group->project_id = $group->project_id = (int)$this->request->project_id : '';
+        $this->request->has('status') ? $group->status = $this->request->status : '';
+        $this->request->has('created_by') ? $group->created_by = $this->request->created_by : '';
 
-        // Set title
-        $group->title = $this->request->title;
+        if($create){
+            $group->status = 1;
+            $this->request->has('created_by') ? $group->created_by = $this->request->created_by : 0;
+        }
 
-        // Set description
-        $group->description = $this->request->description;
+        $this->request->has('positionX') ? $group->positionX = $this->request->positionX : '';
+        $this->request->has('positionY') ? $group->positionY = $this->request->positionY : '';
+        $this->request->has('icon_size') ? $group->icon_size = $this->request->icon_size : '';
 
-        // Set abbreviation
-        $group->abbreviation = $this->request->abbreviation;
-
-        // Set project id
-        $group->project_id = (int) $this->request->project_id;
-
-        // Set status
-        $group->status = $this->request->has('status') ? $this->request->status : 1;
-
-        // Set created by
-        $group->created_by = $this->request->has('created_by') ? $this->request->created_by : 0 ;
-
-        // Save group.
-        $group->save();
-
-        // Create group coordinate record.
-        $groupCoordinate = $this->request->has('coordinate_id') ? GroupCoordinate::find($this->request->coordinate_id) : new GroupCoordinate();
-
-        $this->request->has('positionX') ? $groupCoordinate->positionX = $this->request->positionX : '';
-
-        $this->request->has('positionY') ? $groupCoordinate->positionY = $this->request->positionY : '';
-
-        $this->request->has('icon_size') ? $groupCoordinate->icon_size = $this->request->icon_size : '';
-
-        $groupCoordinate->group_id = $group->id;
-
-        // Upload file, if file exists & it is update.
+        // Upload file, if file exists & it is update
         if ($create) {
             // Upload file
-            if($this->request->has('icon_path') && $this->request->hasFile('icon_path')){
+            if ($this->request->has('icon_path') && $this->request->hasFile('icon_path')) {
                 $iconPath = propellaUploadImage($this->request->icon_path, $this->folderName);
-
-                // Set image path into database
-                $groupCoordinate->icon_path = $iconPath;
+                $group->icon_path = $iconPath;
             }
         } else {
-            // First check is has file.
-            if($this->request->has('icon_path') && $this->request->hasFile('icon_path')){
-                // Remove existing file.
-                propellaRemoveImage($groupCoordinate->icon_path);
+            // First check it has file
+            if ($this->request->has('icon_path') && $this->request->hasFile('icon_path')) {
+                // Remove existing file
+                propellaRemoveImage($group->icon_path);
 
-                // Upload new file.
+                // Upload file
                 $newIconPath = propellaUploadImage($this->request->icon_path, $this->folderName);
-                $groupCoordinate->icon_path = $newIconPath;
-            }else{
-                // don't have icon_path so need to add previous icon_path.
-                $iconPath = $group->coordinate()->first()->icon_path;
-                $groupCoordinate->icon_path = $iconPath;
+                $group->icon_path = $newIconPath;
             }
         }
 
-        // Save coordinate.
-        $groupCoordinate->save();
+        $group->save();
 
         // Create competitors
         if ($this->request->has('competitors')) {
@@ -221,13 +253,6 @@ class GroupController extends PropellaBaseController
             }
         }
 
-        $group->positionX = $groupCoordinate->positionX;
-        $group->positionY = $groupCoordinate->positionY;
-        $group->icon_size = $groupCoordinate->icon_size;
-        $group->icon_path = $groupCoordinate->icon_path;
-
         return $group;
     }
-
-
 }

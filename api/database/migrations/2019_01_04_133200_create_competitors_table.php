@@ -16,9 +16,11 @@ class CreateCompetitorsTable extends Migration
         Schema::create('competitors', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('title');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->bigInteger('group_id')->index()->unsigned();
             $table->tinyInteger('status')->index();
+            $table->bigInteger('parent_id')->index()->unsigned()->default(0);
+            $table->tinyinteger('archive')->index()->unsigned()->default(0);
             $table->timestamps();
         });
     }

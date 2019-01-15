@@ -15,6 +15,7 @@
 $factory->define(App\OrganisationType::class, function (Faker\Generator $faker) {
     return [
         'title' => $faker->company('company'),
+        'user_group_id' => $faker->numberBetween(1,10),
         'description' => $faker->sentence(3),
     ];
 });
