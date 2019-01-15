@@ -19,9 +19,10 @@ $router->get('/', function () use ($router) {
 $router->group(['prefix' => 'v1/projects'] , function () use ($router) {
     $router->get('archives','ProjectController@projectWithArchive');
     $router->post('/', 'ProjectController@create');
+    $router->get('/', 'ProjectController@list');
+    $router->get('{id}/archives','ProjectController@archiveProject');
     $router->patch('/{id}', 'ProjectController@update');
     $router->put('/{id}', 'ProjectController@update');
-    $router->get('/', 'ProjectController@list');
     $router->get('/{id}', 'ProjectController@single');
     $router->get('/{id}/activate', 'ProjectController@activateProjectById');
     $router->delete('/{id}', 'ProjectController@delete');
