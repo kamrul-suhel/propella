@@ -54,24 +54,26 @@ class DatabaseSeeder extends Seeder
         $count = $faker->numberBetween(3,7);
 
 
-        // Archive projects.
-        for($i = 0; $i <= $count; $i++){
-            $projectArchive = $faker->numberBetween(3,7);
-            for($j = 0; $j <= $projectArchive; $j++){
-                var_dump('Archiving all project '.$i);
-                $projects = Project::where('archive', 0)
-                    ->get();
+        // Archive projects
+        $projects = Project::where('archive', 0)
+            ->get();
 
-                $this->archiveAll($projects);
+        $projects->map(function($project) use ($faker) {
+            $totalArchive = $faker->numberBetween(2, 7);
+            for($count = 0; $count < $totalArchive; $count++){
+                var_dump('Archiving all project '.$count);
+                $this->archiveProject($project);
             }
-        }
+        });
 
     }
 
-    private function archiveAll($projects){
-        $projects->map(function($project){
+    /**
+     * @param $project
+     */
+    private function archiveProject($project){
 
-            $project->archive = 1;
+        $project->archive = 1;
             $project->save();
 
             $newProject = $project->replicate();
@@ -168,6 +170,5 @@ class DatabaseSeeder extends Seeder
                     });
                 });
             });
-        });
     }
 }

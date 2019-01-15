@@ -26,10 +26,19 @@ class GroupController extends PropellaBaseController
      */
     public function create()
     {
-        // validate data.
-        $this->validateData();
+        // validate data
+        $this->validate($this->request, [
+            'positionX' => 'required|integer|min:1',
+            'created_by' => 'integer|min:1',
+            'status' => 'integer|between:0,2',
+            'title' => 'required|string|min:1',
+            'description' => 'required|string|min:1',
+            'abbreviation' => 'string|min:1',
+            'icon_path' => 'file|mimes:jpeg,jpg,png,svg,gif',
+            'positionY' => 'required|integer|min:1',
+            'icon_size' => 'required|in:s,m,l',
+        ]);
 
-        // generate & save group.
         $group = $this->saveGroup();
 
         return response()->json($group);
@@ -41,8 +50,8 @@ class GroupController extends PropellaBaseController
      */
     public function update($id)
     {
-        // Update existing group.
         $group = $this->saveGroup(false, $id);
+
         return response()->json($group);
     }
 
@@ -53,8 +62,8 @@ class GroupController extends PropellaBaseController
     {
         $groups = Group::with('project');
 
-        // project status, default it will give your 1, active records.
-        $status = $this->status == null ? [0,1] : $this->status;
+        // project status, default it will give your 0,1, active records.
+        $status = $this->status == null ? [0,1] : [$this->status];
         $groups = $groups->whereIn('status', $status);
         $groups = $groups->where('archive', 0);
 
@@ -186,41 +195,16 @@ class GroupController extends PropellaBaseController
 
     /**
      * @param bool $create
-     */
-    private function validateData($create = true)
-    {
-        if ($create) {
-            $this->validate($this->request, [
-                'positionX' => 'required|integer|min:1',
-                'created_by' => 'integer|min:1',
-                'status' => 'integer|between:0,2',
-                'title' => 'required|string|min:1',
-                'description' => 'required|string|min:1',
-                'abbreviation' => 'string|min:1',
-                'icon_path' => 'file|mimes:jpeg,jpg,png,svg,gif',
-                'positionY' => 'required|integer|min:1',
-                'icon_size' => 'required|in:s,m,l',
-            ]);
-        }
-    }
-
-    /**
-     * @param bool $create
      * @return Group
      */
     private function saveGroup($create = true, $id=0)
     {
         // Create new Group
         $group = $create ? new Group() : Group::findOrFail($id);
-
         $group->title = $this->request->has('title') ? $this->request->title : '';
-
-         $this->request->has('description') ? $group->description = $this->request->description : '';
-
+        $this->request->has('description') ? $group->description = $this->request->description : '';
         $this->request->has('abbreviation') ? $group->abbreviation = $this->request->abbreviation : '';
-
         $this->request->has('project_id') ? $group->project_id = $group->project_id = (int)$this->request->project_id : '';
-
         $this->request->has('status') ? $group->status = $this->request->status : '';
         $this->request->has('created_by') ? $group->created_by = $this->request->created_by : '';
 
@@ -230,9 +214,7 @@ class GroupController extends PropellaBaseController
         }
 
         $this->request->has('positionX') ? $group->positionX = $this->request->positionX : '';
-
         $this->request->has('positionY') ? $group->positionY = $this->request->positionY : '';
-
         $this->request->has('icon_size') ? $group->icon_size = $this->request->icon_size : '';
 
         // Upload file, if file exists & it is update
@@ -240,12 +222,10 @@ class GroupController extends PropellaBaseController
             // Upload file
             if ($this->request->has('icon_path') && $this->request->hasFile('icon_path')) {
                 $iconPath = propellaUploadImage($this->request->icon_path, $this->folderName);
-
-                // Set image path into database
                 $group->icon_path = $iconPath;
             }
         } else {
-            // First check is has file
+            // First check it has file
             if ($this->request->has('icon_path') && $this->request->hasFile('icon_path')) {
                 // Remove existing file
                 propellaRemoveImage($group->icon_path);
@@ -256,7 +236,6 @@ class GroupController extends PropellaBaseController
             }
         }
 
-        // Save Group
         $group->save();
 
         // Create competitors
