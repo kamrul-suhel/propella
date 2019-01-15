@@ -8,3 +8,5 @@ api/database/.DS_Store
 api/public/images/
 api/.DS_Store
 api/public/.DS_Store
+app/node_modules
+app/yarn.lock
