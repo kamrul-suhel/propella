@@ -23,16 +23,16 @@ class DatabaseSeeder extends Seeder
         factory(\App\PeopleType::class, 100)->create();
 
         // Seeding group table.
-        factory(\App\Group::class, 100)->create()->each(function($group){
+        factory(\App\Group::class, 100)->create()->each(function ($group) {
             $faker = \Faker\Factory::create();
             $coordinatesItems = $faker->numberBetween(1, 4);
             $competitors = [];
 
-            for($i = 0; $i < $coordinatesItems; $i++){
+            for ($i = 0; $i < $coordinatesItems; $i++) {
                 $competitors[] = [
                     'title' => $faker->company('catchPhrase'),
                     'description' => $faker->sentence(3),
-                    'status' => $faker->randomElement([0,1, 2]) // 0 disabled, 1 active, 2 deleted
+                    'status' => $faker->randomElement([0, 1, 2]) // 0 disabled, 1 active, 2 deleted
                 ];
             }
 
@@ -51,29 +51,30 @@ class DatabaseSeeder extends Seeder
         factory(\App\People::class, 400)->create();
 
         $faker = \Faker\Factory::create();
-        $count = $faker->numberBetween(3,7);
-
+        $count = $faker->numberBetween(1, 2);
 
         // Archive projects
-        $projects = Project::where('archive', 0)
-            ->get();
+        for ($i = 0; $i <= $count; $i++) {
+            $newCount = $faker->numberBetween(2, 3);
 
-        $projects->map(function($project) use ($faker) {
-            $totalArchive = $faker->numberBetween(2, 7);
-            for($count = 0; $count < $totalArchive; $count++){
-                var_dump('Archiving all project '.$count);
-                $this->archiveProject($project);
+            for($j = 0; $j < $newCount; $j++){
+                var_dump('Archiving all project ' . $i);
+                $projects = Project::where('archive', 0)
+                    ->get();
+
+                $this->archiveAll($projects);
             }
-        });
-
+        }
     }
 
     /**
-     * @param $project
+     * @param $projects
      */
-    private function archiveProject($project){
+    private function archiveAll($projects)
+    {
+        $projects->map(function ($project) {
 
-        $project->archive = 1;
+            $project->archive = 1;
             $project->save();
 
             $newProject = $project->replicate();
@@ -87,7 +88,7 @@ class DatabaseSeeder extends Seeder
                 ->get();
 
             // Loop groups coordinate, insert last record & update previous record status.
-            $groups->map(function ($group) use($newProject) {
+            $groups->map(function ($group) use ($newProject) {
                 // Check if it has status 1
 
                 $group->archive = 1;
@@ -106,7 +107,7 @@ class DatabaseSeeder extends Seeder
                 $competitors = \App\Competitor::where('group_id', $group->id)
                     ->get();
 
-                $competitors->map(function($competitor) use ($newGroup){
+                $competitors->map(function ($competitor) use ($newGroup) {
                     $competitor->archive = 1;
                     $competitor->save();
 
@@ -124,7 +125,7 @@ class DatabaseSeeder extends Seeder
                 $organisations = Organisation::where('group_id', $group->id)
                     ->get();
 
-                $organisations->map(function ($organisation) use($newGroup) {
+                $organisations->map(function ($organisation) use ($newGroup) {
 
                     $organisation->archive = 1;
                     $organisation->save();
@@ -140,7 +141,7 @@ class DatabaseSeeder extends Seeder
                     $people = People::where('organisation_id', $organisation->id)
                         ->get();
 
-                    $people->map(function ($people) use($newOrganisation) {
+                    $people->map(function ($people) use ($newOrganisation) {
 
                         $people->archive = 1;
                         $people->save();
@@ -170,5 +171,6 @@ class DatabaseSeeder extends Seeder
                     });
                 });
             });
+        });
     }
 }

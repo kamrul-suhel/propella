@@ -41,7 +41,7 @@ class PeopleController extends PropellaBaseController
             'type_id' => 'required|exists:people_types,id',
             'icon_path' => 'file|mimes:jpeg,jpg,png,svg,gif'
         ]);
-        // generate & save group.
+
         $people = $this->savePeople();
 
         return response()->json($people);
@@ -53,10 +53,9 @@ class PeopleController extends PropellaBaseController
      */
     public function update($id)
     {
-        // Update existing group.
-        $organisation = $this->savePeople(false, $id);
+        $people = $this->savePeople(false, $id);
 
-        return response()->json($organisation);
+        return response()->json($people);
     }
 
     /**
@@ -92,9 +91,7 @@ class PeopleController extends PropellaBaseController
     {
         $people = People::findOrFail($id);
 
-        // If has file then delete file.
         $people->status = 2;
-
         $people->save();
 
         return response()->json($people);

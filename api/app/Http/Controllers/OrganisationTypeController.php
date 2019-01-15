@@ -47,17 +47,13 @@ class OrganisationTypeController extends PropellaBaseController
     public function update($id)
     {
         $organisationType = OrganisationType::findOrFail($id);
-
         $this->request->has('title') ? $organisationType->title = $this->request->title: '';
-
         $this->request->has('user_group_id') ? $organisationType->user_group_id = $this->request->user_group_id : '';
-
         $this->request->has('status') ? $organisationType->status = $this->request->status : '';
 
         $organisationType->save();
 
         return response()->json($organisationType);
-
     }
 
     /**
@@ -72,11 +68,8 @@ class OrganisationTypeController extends PropellaBaseController
                 $organisationType->title = $type['title'];
                 $organisationType->user_group_id = (int) $type['id'];
                 $organisationType->status = isset($type['status']) ? $type['status'] : 1;
-
-                // Save organisation type.
                 $organisationType->save();
 
-                // assign to response.
                 $organisationTypes[] = $organisationType;
             }
         }
@@ -131,15 +124,8 @@ class OrganisationTypeController extends PropellaBaseController
     {
         $organisationType = OrganisationType::findOrFail($id);
 
-        // Check is has any relation with organisation, if yes then you can not delete this record.
-        $organisation = Organisation::where('type_id', $organisationType->id)
-            ->first();
-        if($organisation){
-            return response()->json('You can not delete this record, it has organisation.');
-        }
-
-        // Removing record.
-        $organisationType->delete();
+        $organisationType->status = 2;
+        $organisationType->save();
 
         return response()->json($organisationType);
     }

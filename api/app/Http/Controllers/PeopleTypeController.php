@@ -26,14 +26,15 @@ class PeopleTypeController extends PropellaBaseController
      */
     public function create()
     {
-        // validate data.
-        $this->validateData();
+        $this->validate($this->request, [
+            'types' => 'required|array',
+            'types.*.user_group_id' => 'required|integer|min:1',
+            'types.*.title' => 'required|string|min:1'
+        ]);
 
-        // Create people type, if set.
         $people = $this->saveData();
 
         return response()->json($people);
-
     }
 
     /**
@@ -42,26 +43,14 @@ class PeopleTypeController extends PropellaBaseController
      */
     public function update($id)
     {
-
-        // Validate data
-        $this->validateData(false);
-
         $peopleType = PeopleType::findOrFail($id);
-
-        // Update title.
         $this->request->has('title') ? $peopleType->title = $this->request->title: '';
-
-        // update User group_id
         $this->request->has('user_group_id') ? $peopleType->user_group_id = $this->request->user_group_id : '';
-
-        // Update status.
         $this->request->has('status') ? $peopleType->status = $this->request->status : '';
 
-        // Save record.
         $peopleType->save();
 
         return response()->json($peopleType);
-
     }
 
     /**
@@ -76,10 +65,7 @@ class PeopleTypeController extends PropellaBaseController
                 $peopleType->title = $type['title'];
                 $peopleType->user_group_id = (int) $type['user_group_id'];
 
-                // Save people type.
                 $peopleType->save();
-
-                // assign to response.
                 $people[] = $peopleType;
             }
         }
@@ -133,32 +119,10 @@ class PeopleTypeController extends PropellaBaseController
     public function delete($id)
     {
         $peopleType = PeopleType::findOrFail($id);
-
         $peopleType->status = 2;
-
         $peopleType->save();
 
         return response()->json($peopleType);
-    }
-
-    /**
-     * @param bool $create
-     */
-    private function validateData($create = true)
-    {
-        $this->validate($this->request, [
-            'types' => 'required|array',
-            'types.*.user_group_id' => 'required|integer|min:1',
-            'types.*.title' => 'required|string|min:1'
-        ]);
-
-        if ($create) {
-
-        }else{
-            $this->validate($this->request, [
-                'id' => 'required|exists:people_types,id',
-            ]);
-        }
     }
 
     /**
@@ -174,6 +138,4 @@ class PeopleTypeController extends PropellaBaseController
 
         return $peopleType ? $peopleType : new PeopleType();
     }
-
-
 }
