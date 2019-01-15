@@ -69,6 +69,4 @@ api/.env
 api/database/.DS_Store
 api/public/images/
 
-Kamrul.md
-==========
 api/database/mysql-diagram.mwb.bak

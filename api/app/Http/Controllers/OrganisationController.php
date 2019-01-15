@@ -41,7 +41,6 @@ class OrganisationController extends PropellaBaseController
             'icon_path' => 'file|mimes:jpeg,jpg,png,svg,gif'
         ]);
 
-        // save group
         $organisation = $this->saveOrganisation();
 
         return response()->json($organisation);
@@ -53,7 +52,6 @@ class OrganisationController extends PropellaBaseController
      */
     public function update($id)
     {
-        // Update existing group
         $organisation = $this->saveOrganisation(false, $id);
 
         return response()->json($organisation);

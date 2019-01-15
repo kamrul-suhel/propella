@@ -67,7 +67,8 @@ class Group extends Model
     public function competitors()
     {
         return $this->hasMany('App\Competitor', 'group_id')
-            ->whereIn('status', [0, 1]);
+            ->whereIn('status', [0, 1])
+            ->where('archive', 0);
     }
 
 
@@ -137,5 +138,4 @@ class Group extends Model
         $ids[] = $parent_id;
         return implode($ids,',');
     }
-
 }

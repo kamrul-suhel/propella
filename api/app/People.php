@@ -42,25 +42,7 @@ class People extends Model
     protected $hidden = [
         'archive'
     ];
-
-    /**
-     * @return mixed
-     */
-    public function coordinates(){
-        return $this->hasMany('App\PeopleCoordinate', 'people_id')
-            ->whereIn('status', [0,1])
-            ->orderBy('created_at', 'DESC');
-    }
-
-    /**
-     * @return mixed
-     */
-    public function coordinate(){
-        return $this->hasMany('App\PeopleCoordinate', 'people_id')
-            ->whereIn('status', [0,1])
-            ->orderBy('created_at', 'DESC')
-            ->take(1);
-    }
+    
 
     /**
      * @return mixed
