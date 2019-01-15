@@ -38,7 +38,7 @@ class Organisation extends Model
      * @var array
      */
     protected $hidden = [
-//        'archive'
+        'archive'
     ];
 
 

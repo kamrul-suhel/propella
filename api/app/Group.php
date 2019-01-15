@@ -39,7 +39,7 @@ class Group extends Model
      * @var array
      */
     protected $hidden = [
-//        'archive'
+        'archive'
     ];
 
 

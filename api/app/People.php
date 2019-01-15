@@ -40,7 +40,7 @@ class People extends Model
      * @var array
      */
     protected $hidden = [
-//        'archive'
+        'archive'
     ];
 
     /**

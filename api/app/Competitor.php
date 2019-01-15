@@ -22,7 +22,8 @@ class Competitor extends Model
         'title',
         'description',
         'group_id',
-        'status'
+        'status',
+        'archive'
     ];
 
     /**
@@ -31,5 +32,6 @@ class Competitor extends Model
      * @var array
      */
     protected $hidden = [
+        'archive'
     ];
 }
