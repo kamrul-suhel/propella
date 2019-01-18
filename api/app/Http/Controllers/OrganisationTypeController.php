@@ -18,7 +18,6 @@ class OrganisationTypeController extends PropellaBaseController
      */
     public function __construct(Request $request)
     {
-        //
         parent::__construct($request);
     }
 
@@ -63,7 +62,6 @@ class OrganisationTypeController extends PropellaBaseController
         $organisationTypes = [];
         if ($this->request->has('types')) {
             foreach ($this->request->types as $type) {
-
                 $organisationType = $this->getOrganisationTypeModel($type['id'], $type['title']);
                 $organisationType->title = $type['title'];
                 $organisationType->user_group_id = (int) $type['id'];

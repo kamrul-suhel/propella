@@ -42,12 +42,12 @@ class People extends Model
     protected $hidden = [
         'archive'
     ];
-    
 
     /**
      * @return mixed
      */
-    public static function getDefaultField(){
+    public static function getDefaultField()
+    {
         return self::select([
             'people.id',
             'people.title',
@@ -62,7 +62,8 @@ class People extends Model
     /**
      * @return mixed
      */
-    public function organisation(){
+    public function organisation()
+    {
         return $this->belongsTo('App\Organisation', 'organisation_id');
     }
 }

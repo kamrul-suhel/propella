@@ -60,6 +60,52 @@ class OrganisationController extends PropellaBaseController
     /**
      * @return mixed
      */
+    public function updateMultiple(){
+
+        $this->validate($this->request, [
+            'organisations' => 'required|array',
+            'organisations.*.id' => 'required|exists:organisations,id',
+        ]);
+
+        $organisations = $this->request->organisations;
+        $result = [];
+
+        foreach($organisations as $updateOrganisation){
+            if(isset($updateOrganisation['id'])){
+                // Create new Group.
+                $organisation = Organisation::findOrFail($updateOrganisation['id']);
+                isset($updateOrganisation['title']) ? $organisation->title = $updateOrganisation['title'] : '';
+                isset($updateOrganisation['description']) ? $organisation->description = $updateOrganisation['description'] : '';
+                isset($updateOrganisation['abbreviation']) ? $organisation->abbreviation = $updateOrganisation['abbreviation'] : '';
+                isset($updateOrganisation['group_id']) ? $organisation->group_id = (int) $updateOrganisation['group_id'] : '';
+                isset($updateOrganisation['status']) ? $organisation->status =  $updateOrganisation['status'] : '';
+                isset($updateOrganisation['type_id']) ? $organisation->type_id = $updateOrganisation['type_id'] : '';
+                isset($updateOrganisation['created_by']) ? $organisation->created_by = $updateOrganisation['created_by'] : 0;
+                isset($updateOrganisation['positionX']) ? $organisation->positionX = $updateOrganisation['positionX'] : '';
+                isset($updateOrganisation['positionY']) ? $organisation->positionY = $updateOrganisation['positionY'] : '';
+                isset($updateOrganisation['trajectory']) ? $organisation->trajectory =  $updateOrganisation['trajectory'] : '';
+                isset($updateOrganisation['icon_size']) ? $organisation->icon_size = $updateOrganisation['icon_size'] : '';
+
+                // First check it has file
+                if(isset($updateOrganisation['icon_path']) && is_file($updateOrganisation['icon_path'])){
+                    propellaRemoveImage($organisation->icon_path);
+
+                    $newIconPath = propellaUploadImage($updateOrganisation['icon_path'], $this->folderName);
+                    $organisation->icon_path = $newIconPath;
+                }
+
+                $organisation->save();
+
+                $result[] = $organisations;
+            }
+        }
+
+        return response()->json($organisations);
+    }
+
+    /**
+     * @return mixed
+     */
     public function list()
     {
         $organisations = Organisation::getDefaultField();
@@ -120,15 +166,12 @@ class OrganisationController extends PropellaBaseController
         if($create){
             $organisation->status = 1;
             $organisation->created_by = $this->request->has('created_by') ?  $this->request->created_by : 0;
-        }
 
-        // Upload file, if file exists & if it is update.
-        if ($create) {
             if($this->request->has('icon_path') && $this->request->hasFile('icon_path')){
                 $iconPath = propellaUploadImage($this->request->icon_path, $this->folderName);
                 $organisation->icon_path = $iconPath;
             }
-        } else {
+        }else {
             // First check it has file
             if($this->request->has('icon_path') && $this->request->hasFile('icon_path')){
                 propellaRemoveImage($organisation->icon_path);

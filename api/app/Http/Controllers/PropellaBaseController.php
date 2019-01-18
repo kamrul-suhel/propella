@@ -24,7 +24,7 @@ class PropellaBaseController extends BaseController
 
         $this->perPage = $this->request->has('per_page') ? $this->request->per_page : 20;
 
-        // If we are searching, then you need all the data without paginate
+        // If searching, then you need all the data without paginate
         $this->allData = $this->request->has('all') ? true : false;
 
         // Set status active or inactive one you need to search

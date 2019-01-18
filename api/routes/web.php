@@ -18,8 +18,8 @@ $router->get('/', function () use ($router) {
 // Project route.
 $router->group(['prefix' => 'v1/projects'] , function () use ($router) {
     $router->get('archives','ProjectController@projectWithArchive');
-    $router->post('/', 'ProjectController@create');
-    $router->get('/', 'ProjectController@list');
+    $router->post('', 'ProjectController@create');
+    $router->get('', 'ProjectController@list');
     $router->get('{id}/archives','ProjectController@archiveProject');
     $router->patch('/{id}', 'ProjectController@update');
     $router->put('/{id}', 'ProjectController@update');
@@ -30,10 +30,11 @@ $router->group(['prefix' => 'v1/projects'] , function () use ($router) {
 
 // Group route.
 $router->group(['prefix' => 'v1/groups'] , function () use ($router) {
-    $router->post('/', 'GroupController@create');
+    $router->post('', 'GroupController@create');
+    $router->put('', 'GroupController@updateMultiple');
     $router->patch('/{id}', 'GroupController@update');
     $router->put('/{id}', 'GroupController@update');
-    $router->get('/', 'GroupController@list');
+    $router->get('', 'GroupController@list');
     $router->get('/{id}', 'GroupController@single');
     $router->get('/{id}/people', 'GroupController@getPeopleByGroupId');
     $router->delete('/{id}', 'GroupController@delete');
@@ -42,8 +43,9 @@ $router->group(['prefix' => 'v1/groups'] , function () use ($router) {
 
 // Organisation route.
 $router->group(['prefix' => 'v1/organisations'] , function () use ($router) {
-    $router->post('/', 'OrganisationController@create');
-    $router->get('/', 'OrganisationController@list');
+    $router->post('', 'OrganisationController@create');
+    $router->put('', 'OrganisationController@updateMultiple');
+    $router->get('', 'OrganisationController@list');
     $router->get('/{id}', 'OrganisationController@single');
     $router->put('/{id}', 'OrganisationController@update');
     $router->delete('/{id}', 'OrganisationController@delete');
@@ -51,43 +53,44 @@ $router->group(['prefix' => 'v1/organisations'] , function () use ($router) {
 
 // OrganisationType route
 $router->group(['prefix' => 'v1/organisation_types'] , function () use ($router) {
-    $router->post('/', 'OrganisationTypeController@create');
-    $router->get('/', 'OrganisationTypeController@list');
-    $router->get('/{id}', 'OrganisationTypeController@single');
-    $router->put('/{id}', 'OrganisationTypeController@update');
-    $router->delete('/', 'OrganisationTypeController@delete');
+    $router->post('', 'OrganisationTypeController@create');
+    $router->get('', 'OrganisationTypeController@list');
+    $router->get('{id}', 'OrganisationTypeController@single');
+    $router->put('{id}', 'OrganisationTypeController@update');
+    $router->delete('{id}', 'OrganisationTypeController@delete');
 });
 
 // People route.
 $router->group(['prefix' => 'v1/people'] , function () use ($router) {
-    $router->post('/', 'PeopleController@create');
-    $router->patch('/{id}', 'PeopleController@update');
-    $router->put('/{id}', 'PeopleController@update');
-    $router->get('/', 'PeopleController@list');
-    $router->get('/{id}', 'PeopleController@single');
+    $router->post('', 'PeopleController@create');
+    $router->put('', 'PeopleController@updateMultiple');
+    $router->get('', 'PeopleController@list');
+    $router->patch('{id}', 'PeopleController@update');
+    $router->put('{id}', 'PeopleController@update');
+    $router->get('{id}', 'PeopleController@single');
     $router->delete('/{id}', 'PeopleController@delete');
 });
 
 // PeopleType route
 $router->group(['prefix' => 'v1/people_types'] , function () use ($router) {
     $router->get('{id}', 'PeopleTypeController@getPeopleTypeByUserGroupId');
-    $router->post('/', 'PeopleTypeController@create');
-    $router->patch('/{id}', 'PeopleTypeController@update');
-    $router->put('/{id}', 'PeopleTypeController@update');
-    $router->get('/', 'PeopleTypeController@list');
+    $router->post('', 'PeopleTypeController@create');
+    $router->get('', 'PeopleTypeController@list');
+    $router->patch('{id}', 'PeopleTypeController@update');
+    $router->put('{id}', 'PeopleTypeController@update');
 //    $router->get('/{id}', 'PeopleTypeController@single');
-    $router->delete('/{id}', 'PeopleTypeController@delete');
+    $router->delete('{id}', 'PeopleTypeController@delete');
 });
 
 // Competitors route
 $router->group(['prefix' => 'v1/competitors'] , function () use ($router) {
-    $router->post('/', 'CompetitorsController@create');
-    $router->put('/{id}', 'CompetitorsController@update');
-    $router->get('/', 'CompetitorsController@list');
-    $router->get('/{id}', 'CompetitorsController@single');
-    $router->delete('/{id}', 'CompetitorsController@delete');
+    $router->post('', 'CompetitorsController@create');
+    $router->put('{id}', 'CompetitorsController@update');
+    $router->get('', 'CompetitorsController@list');
+    $router->get('{id}', 'CompetitorsController@single');
+    $router->delete('{id}', 'CompetitorsController@delete');
 });
 
 $router->group(['prefix' => 'v1/user_types'], function() use ($router){
-    $router->get('/{id}', 'OrganisationTypeController@getOrganisationTypeByUserGroupId');
+    $router->get('{id}', 'OrganisationTypeController@getOrganisationTypeByUserGroupId');
 });

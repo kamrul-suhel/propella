@@ -58,6 +58,54 @@ class PeopleController extends PropellaBaseController
         return response()->json($people);
     }
 
+    public function updateMultiple()
+    {
+        $this->validate($this->request, [
+            'people' => 'required|array',
+            'people.*.id' => 'required|exists:people,id',
+        ]);
+
+        $people = $this->request->people;
+
+        $result = [];
+
+        foreach($people as $singlePeople){
+            if(isset($singlePeople['id'])){
+                $people =  People::findOrFail($singlePeople['id']);
+                isset($singlePeople['title']) ? $people->title = $singlePeople['title'] : '';
+                isset($singlePeople['description']) ? $people->description = $singlePeople['description'] : '';
+                isset($singlePeople['status']) ? $people->status = $singlePeople['status'] : '';
+                isset($singlePeople['type_id']) ? $people->type_id = (int)$singlePeople['type_id'] : '';
+                isset($singlePeople['created_by']) ? $people->created_by = $singlePeople['created_by'] : '';
+                isset($singlePeople['organisation_id']) ? $people->organisation_id = (int) $singlePeople['organisation_id'] : '';
+                isset($singlePeople['positionX']) ? $people->positionX = $singlePeople['positionX'] : '';
+                isset($singlePeople['positionY']) ? $people->positionY = $singlePeople['positionY'] : '';
+                isset($singlePeople['trajectory']) ? $people->trajectory = $singlePeople['trajectory'] : '';
+                isset($singlePeople['character_id']) ? $people->character_id = $singlePeople['character_id'] : '';
+                isset($singlePeople['icon_size']) ? $people->icon_size = $singlePeople['icon_size'] : '';
+
+                // First check is has file.
+                if (isset($singlePeople['icon_path']) && is_file('icon_path')) {
+                    // Remove existing file.
+                    propellaRemoveImage($people->icon_path);
+
+                    $newIconPath = propellaUploadImage($singlePeople['icon_path'], $this->folderName);
+                    $people->icon_path = $newIconPath;
+                }
+
+                $people->save();
+
+                $organisation = Organisation::findOrFail($people->organisation_id);
+                $people->organisation_id = $organisation->id;
+                $people->organisation_title = $organisation->title;
+
+                $result[] = $people;
+            }
+        }
+
+        return response()->json($result);
+    }
+
     /**
      * @return mixed
      */
@@ -103,7 +151,6 @@ class PeopleController extends PropellaBaseController
      */
     private function savePeople($create = true, $id = 0)
     {
-        // Create new Group
         $people = $create ? new People() : People::findOrFail($id);
         $this->request->has('title') ? $people->title = $this->request->title : '';
         $this->request->has('description') ? $people->description = $this->request->description : '';

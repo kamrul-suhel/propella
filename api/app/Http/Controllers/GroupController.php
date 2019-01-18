@@ -55,6 +55,46 @@ class GroupController extends PropellaBaseController
         return response()->json($group);
     }
 
+
+    /**
+     * @return mixed
+     */
+    public function updateMultiple(){
+
+        $this->validate($this->request, [
+            'groups' => 'required|array',
+            'groups.*.id' => 'required|exists:groups,id',
+        ]);
+
+        $result = [];
+        $groups = $this->request->groups;
+        foreach($groups as $group){
+            if(isset($group['id'])){
+                $updateGroup = Group::findOrFail($group['id']);
+                isset($group['title']) ? $updateGroup->title = $group['title'] : '';
+                isset($group['description']) ? $updateGroup->description = $group['description'] : '';
+                isset($group['abbreviation']) ? $updateGroup->abbreviation = $group['abbreviation'] : '';
+                isset($group['project_id']) ? $updateGroup->project_id =  (int)$group['project_id'] : '';
+                isset($group['status']) ? $updateGroup->status = $group['status'] : '';
+                isset($group['created_by']) ? $updateGroup->created_by = $group['created_by'] : '';
+                isset($group['positionX']) ? $updateGroup->positionX = $group['positionX'] : '';
+                isset($group['positionY']) ? $updateGroup->positionY = $group['positionY'] : '';
+                isset($group['icon_size']) ? $updateGroup->icon_size = $group['icon_size'] : '';
+
+                // Upload file, if file exists & it is update
+                if (isset($group['icon_path']) && is_file($group['icon_path'])) {
+                    $iconPath = propellaUploadImage($group['icon_path'], $this->folderName);
+                    $updateGroup->icon_path = $iconPath;
+                }
+
+                $updateGroup->save();
+
+                $result[] = $updateGroup;
+            }
+        }
+        return response()->json($result);
+    }
+
     /**
      * @return mixed
      */
@@ -201,7 +241,7 @@ class GroupController extends PropellaBaseController
     {
         // Create new Group
         $group = $create ? new Group() : Group::findOrFail($id);
-        $group->title = $this->request->has('title') ? $this->request->title : '';
+        $this->request->has('title') ? $group->title = $this->request->title : '';
         $this->request->has('description') ? $group->description = $this->request->description : '';
         $this->request->has('abbreviation') ? $group->abbreviation = $this->request->abbreviation : '';
         $this->request->has('project_id') ? $group->project_id = $group->project_id = (int)$this->request->project_id : '';
@@ -210,7 +250,7 @@ class GroupController extends PropellaBaseController
 
         if($create){
             $group->status = 1;
-            $this->request->has('created_by') ? $group->created_by = $this->request->created_by : 0;
+            $group->created_by = $this->request->has('created_by') ?  $this->request->created_by : 0;
         }
 
         $this->request->has('positionX') ? $group->positionX = $this->request->positionX : '';
