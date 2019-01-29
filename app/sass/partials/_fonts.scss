@@ -1,200 +1,60 @@
-@font-face {
-	font-family: 'Overpass';
-	src: url('../fonts/overpass-light.eot');
-	src: url('../fonts/overpass-light.eot?#iefix') format('embedded-opentype'),
-		 url('../fonts/overpass-light.woff2') format('woff2'),
-		 url('../fonts/overpass-light.woff') format('woff'),
-		 url('../fonts/overpass-light.ttf') format('truetype'),
-		 url('../fonts/overpass-light.svg#overpasslight') format('svg');
-	font-weight: 300;
-	font-style: normal;
-}
+@import url('https://fonts.googleapis.com/css?family=Work+Sans:400,500');
 
 @font-face {
-	font-family: 'Overpass';
-	src: url('../fonts/overpass-regular.eot');
-	src: url('../fonts/overpass-regular.eot?#iefix') format('embedded-opentype'),
-		 url('../fonts/overpass-regular.woff2') format('woff2'),
-		 url('../fonts/overpass-regular.woff') format('woff'),
-		 url('../fonts/overpass-regular.ttf') format('truetype'),
-		 url('../fonts/overpass-regular.svg#overpassregular') format('svg');
-	font-weight: 400;
-	font-style: normal;
-}
-
-@font-face {
-	font-family: 'Overpass';
-	src: url('../fonts/overpass-semibold.eot');
-	src: url('../fonts/overpass-semibold.eot?#iefix') format('embedded-opentype'),
-		 url('../fonts/overpass-semibold.woff2') format('woff2'),
-		 url('../fonts/overpass-semibold.woff') format('woff'),
-		 url('../fonts/overpass-semibold.ttf') format('truetype'),
-		 url('../fonts/overpass-semibold.svg#overpasssemibold') format('svg');
-	font-weight: 600;
-	font-style: normal;
-}
-
-@font-face {
-	font-family: 'Overpass';
-	src: url('../fonts/overpass-bold.eot');
-	src: url('../fonts/overpass-bold.eot?#iefix') format('embedded-opentype'),
-		 url('../fonts/overpass-bold.woff2') format('woff2'),
-		 url('../fonts/overpass-bold.woff') format('woff'),
-		 url('../fonts/overpass-bold.ttf') format('truetype'),
-		 url('../fonts/overpass-bold.svg#overpassbold') format('svg');
-	font-weight: 700;
-	font-style: normal;
-}
-
-@font-face {
-	font-family: 'Overpass';
-	src: url('../fonts/overpass-extrabold.eot');
-	src: url('../fonts/overpass-extrabold.eot?#iefix') format('embedded-opentype'),
-		 url('../fonts/overpass-extrabold.woff2') format('woff2'),
-		 url('../fonts/overpass-extrabold.woff') format('woff'),
-		 url('../fonts/overpass-extrabold.ttf') format('truetype'),
-		 url('../fonts/overpass-extrabold.svg#overpassextrabold') format('svg');
-	font-weight: 800;
-	font-style: normal;
-}
-
-@font-face {
-	font-family: "alchemy";
-	src: url("../fonts/alchemy.eot");
-	src: url("../fonts/alchemy.eot?#iefix") format("embedded-opentype"),
-		 url("../fonts/alchemy.woff") format("woff"),
-		 url("../fonts/alchemy.ttf") format("truetype"),
-		 url("../fonts/alchemy.svg#alchemy") format("svg");
-	font-weight: normal;
-	font-style: normal;
-
-}
-
-[data-icon]:before {
-	font-family: "alchemy" !important;
-	content: attr(data-icon);
-	font-style: normal !important;
-	font-weight: normal !important;
-	font-variant: normal !important;
-	text-transform: none !important;
-	speak: none;
-	line-height: 1;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+  font-family: "propella";
+  src:url("../fonts/propella.eot");
+  src:url("../fonts/propella.eot?#iefix") format("embedded-opentype"),
+    url("../fonts/propella.woff") format("woff"),
+    url("../fonts/propella.ttf") format("truetype"),
+    url("../fonts/propella.svg#propella") format("svg");
+  font-weight: normal;
+  font-style: normal;
 }
 
 [class^="icon-"]:before,
 [class*=" icon-"]:before {
-	font-family: "alchemy" !important;
-	font-style: normal !important;
-	font-weight: normal !important;
-	font-variant: normal !important;
-	text-transform: none !important;
-	speak: none;
-	line-height: 1;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+  font-family: "propella" !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  vertical-align: middle;
 }
 
-.icon-acceptgrey:before {
+.icon-arrow-down:before {
   content: "\61";
 }
-.icon-arrowdown:before {
+.icon-arrow-up:before {
   content: "\62";
 }
-.icon-arrowright:before {
+.icon-bin:before {
   content: "\63";
 }
-.icon-attach:before {
+.icon-eye:before {
   content: "\64";
 }
-.icon-bell:before {
-  content: "\65";
-}
-.icon-bingrey:before {
+.icon-plus:before {
   content: "\66";
 }
-.icon-calendar:before {
+.icon-three-dots:before {
   content: "\67";
 }
-.icon-cancelgrey:before {
+.icon-x:before {
   content: "\68";
 }
-.icon-document:before {
+.icon-minus:before {
   content: "\69";
 }
-.icon-documentblack:before {
+.icon-edit:before {
+  content: "\65";
+}
+.icon-stack:before {
   content: "\6a";
 }
-.icon-download:before {
+.icon-progress:before {
   content: "\6b";
-}
-.icon-email-white:before {
-  content: "\6c";
-}
-.icon-pencilgrey:before {
-  content: "\6e";
-}
-.icon-plusgrey:before {
-  content: "\6f";
-}
-.icon-redflag:before {
-  content: "\70";
-}
-.icon-reply-white:before {
-  content: "\71";
-}
-.icon-upload-gold:before {
-  content: "\72";
-}
-.icon-eye:before {
-  content: "\73";
-}
-.icon-trolley:before {
-  content: "\74";
-}
-.icon-bell-1:before {
-  content: "\75";
-}
-.icon-logo:before {
-  content: "\76";
-}
-.icon-product-catalogue:before {
-  content: "\78";
-}
-.icon-order:before {
-  content: "\79";
-}
-.icon-minusgrey:before {
-  content: "\6d";
-}
-.icon-auctions:before {
-  content: "\7a";
-}
-.icon-inbox:before {
-  content: "\41";
-}
-.icon-help-and-support:before {
-  content: "\42";
-}
-.icon-stock:before {
-  content: "\43";
-}
-.icon-shipping:before {
-  content: "\44";
-}
-.icon-return:before {
-  content: "\45";
-}
-.icon-account:before {
-  content: "\46";
-}
-.icon-dashboard:before {
-  content: "\77";
-}
-.icon-warningbrown-nobcg:before {
-  content: "\47";
-}
-.icon-tick:before {
-  content: "\48";
 }

@@ -1,5 +1,21 @@
-$icon-family-base:		"Ionicons";
+$icon-family-base: 'Propella';
+$family-base:		   'Work Sans', Arial;
+$font-weight-headings: 500;
+$line-height-headings: 1.5;
 
 $brand-color: 			#5487c6;
-$brand-color-alt: 		orange;
-$text-color: 			#222222;
+$brand-color-dark: 	#1C1C1C;
+$brand-color-light: #F1F1F1;
+$brand-color-alt: 	orange;
+$text-color: 			  #222222;
+
+$font-size-base:    14px;
+
+$mobile: 				480px;
+$small-tablet: 			768px;
+$tablet:				1024px;
+$small-desktop:			1280px;
+$desktop: 				1480px;
+
+$grid-columns: 12;
+$grid-gutter: 20px;

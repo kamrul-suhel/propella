@@ -193,8 +193,6 @@ export default {
 
 		this.getErrors(errors, response.data);
 
-		console.log(errors)
-
 		fn.showAlert(errors[0], 'error');
 		return true;
 	},

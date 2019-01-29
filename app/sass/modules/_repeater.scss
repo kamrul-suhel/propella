@@ -1,0 +1,17 @@
+.repeatable-wrapper {
+  .repeatable-row {
+    border-top: 1px solid #1C1C1C;
+
+    .accordion-item {
+      .accordion-header {
+        background-color: transparent;
+        color: inherit;
+      }
+
+      .accordion-body {
+          border: 0px none;
+          padding: 0px;
+      }
+    }
+  }
+}

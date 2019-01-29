@@ -1,286 +1,115 @@
-//setting style for invalid fields globally
-.form-group-invalid {
-    textarea, input, .file-upload {
-        background-color: lighten($background-color-error, 10%)  !important;
-        color: $text-color-error;
-        border-color: $border-color-error !important;
+.form {
+  display: block;
+
+  .form-label {
+    text-transform: uppercase;
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+
+  .form-group {
+    margin: 0 0 18px;
+
+    &:last-child {
+      margin-bottom: 0;
     }
+  }
 
-    .Select-control {
-        background-color: lighten($background-color-error, 10%)  !important;
-        color: $text-color-error;
-        border-color: $border-color-error !important;
-
-        .Select-value-label {
-            color: $text-color-error !important;
-        }
-    }
-}
-
-.form-field-error-wrapper {
-    display: none;
-}
-
-.form-wrapper{
-    .row-wrapper {
-        padding-top: 50px;
-        padding-bottom: 130px;
-        position: relative;
-
-        &:after {
-            content: '';
-            height: 90%;
-            width: 2px;
-            position: absolute;
-            background-color: $border-color;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-    }
-
-    .form-repeater {
-        .repeatable-wrapper {
-            padding-bottom: 130px;
-            position: relative;
-
-            .repeatable-row {
-                position: relative;
-                margin: 0;
-                &:after {
-                    content: '';
-                    height: 100%;
-                    width: 2px;
-                    top: 0;
-                    position: absolute;
-                    background-color: $border-color;
-                    right: 0;
-                }
-
-                &:nth-of-type(2n) {
-                    &:after {
-                        display: none;
-                    }
-                }
-
-                @include until($tablet) {
-                    width: 100;
-                    &:after {
-                        display: none;
-                    }
-                }
-            }
-        }
-    }
-
-    .form-group{
-        // margin: auto;
-        font-size: 14px;
-        max-width: none;
-
-        &.small {
-            max-width: 100px !important;
-        }
-
-        input[type="checkbox"]{
-            width: auto;
-            margin-left: 20px;
-        }
-    }
-
-    .column-heading {
-        margin:auto;
-        max-width: 400px;
-        font-size: 24px;
-        font-weight: 200;
-    }
-
-    .column {
-        &.grow {
-            max-width: 400px;
-            margin: auto;
-        }
-    }
-}
-
-.Select-control {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.file-upload {
-    display: flex;
-}
-
-.form-type-upload,
-.inner-prepend {
-
-    &.form-type-datepicker {
-
-        .form-field-append {
-            font-size: 22px;
-            color: $text-color-disabled;
-
-            i {
-                display: flex;
-            }
-        }
-    }
-
-    .form-field-append {
-        cursor: pointer;
-        position: absolute;
-        right: 20px;
-        top: 50%;
-        transform: translateY(-50%);
-        margin: 0;
-    }
-
-    .Select-arrow-zone {
-        display: none;
-    }
-}
-
-.form-field-reset {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    right: 8px;
-    padding: 4px;
-    cursor: pointer;
-    z-index: 100;
-}
-
-.Select-value {
-    display: flex;
-    // padding-left: 10px !important;
-}
-
-
-//registration form specific css
-
-.complete-summary-wrapper {
-    max-width: 1000px;
-    margin: auto;
-
-    .section-title {
-        font-weight: 600;
-        margin: 10px 20px;
-        min-width: 250px;
-    }
-
-    .complete-section {
-        display: flex;
-        margin: 30px auto;
-
-        .section-info {
-            display: flex;
-            width: 100%;
-            margin: 10px 0;
-            flex-direction: column;
-
-            ol {
-                margin: 0;
-                padding: 0;
-                padding-left: 12px;
-                list-style: none;
-
-                li {
-                    margin: 0;
-                    padding: 0;
-                }
-            }
-
-            &.block-wrapper {
-                ol {
-                    display: flex;
-                    flex-direction: row;
-
-                    li {
-                        width: 50%;
-                    }
-                }
-            }
-        }
-    }
-
-    .repeatable-row-remove {
-        position: absolute;
-        top: 10px;
-        right: 20px;
-        background-color: #9B9B9B;
-        border-radius: 50%;
-        padding: 0 5px;
-        .icon-minusgrey {
-                color: white;
-                font-size: 10px;
-        }
-    }
-}
-
-.complete-reg-wrapper {
-    .repeatable-row {
-        width: 50%;
-        padding: 40px 90px 100px 90px;
-    }
-
-    .column-heading {
-        margin-bottom: 20px;
-    }
-
-    .repeatable-row-remove {
-        position: absolute;
-        top: 10px;
-        right: 20px;
-
-        .icon-minusgrey {
-                color: white;
-                font-size: 10px;
-
-        }
-    }
-
-    .input-with-subtext {
-        input {
-            margin-bottom: 10px;
-        }
-
-        .subtext {
-            padding-left: 20px;
-        }
-    }
-    .button {
-        margin: auto;
-    }
-
-    .form-wrapper {
-
-        .form-repeater {
-
-            .repeatable-wrapper {
-                padding-bottom: 80px
-            }
-        }
-    }
-}
-
-.add-new-address {
-    cursor: pointer;
+  input,
+  textarea {
+    font-family: $family-base;
+    width: 100%;
+    background: #FCFCFC;
+    border-radius: 0;
+    box-shadow: inset 0 0 3px 0 rgba(0,0,0,0.50);
+    font-size: 24px;
     text-align: center;
-    padding: 15px 0;
-    display: flex;
-    justify-content: center;
-    line-height: 24px;
+    -webkit-appearance: none;
+    border: 1px solid #FCFCFC;
+    padding: 6px 0;
+  }
 
-    .button {
-        margin: 0 0 0 15px;
-    }
-}
+  textarea,
+  .form-group textarea {
+    font-size: 14px;
+    text-align: left;
+    min-height: 120px;
+  }
 
-.short-percentage {
-    input {
-        padding-left: 25px !important;
+
+    .form-type-upload .file-upload {
+      display: block;
+      height: 76px;
+      width: 76px;
+      background-color: white;
+      border: 0px none;
+      padding: 0;
+      font-size: inherit;
+      line-height: 1;
+      cursor: pointer;
+      position: relative;
+      z-index: 1;
+      background-color: $brand-color-light;
+      border-radius: 38px;
+
+      .file-name {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      img {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
     }
+
+  .form-type-upload.has-no-file .file-upload {
+    .file-name {
+      visibility: hidden;
+
+      &:before {
+        @include font-icon;
+        content: 'f';
+        color: #d0d0d0;
+        font-size: 25px;
+        visibility: visible;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+  }
+
+  .form-type-radio.form-styled .form-options {
+    .form-option-radio {
+      margin-left: 14px;
+
+      &:first-child {
+        margin-left: 0;
+      }
+
+      .form-option-inner {
+        display: block;
+        line-height: 42px;
+        min-width: 42px;
+        width: 42px;
+        text-align: center;
+        padding: 0;
+        color: inherit;
+        cursor: pointer;
+        border: 0px none;
+        background-color: $brand-color-light;
+        border-radius: 21px;
+      }
+
+      &.is-selected {
+        .form-option-inner {
+          background-color: $brand-color-dark;
+          color: white;
+        }
+      }
+    }
+  }
 }

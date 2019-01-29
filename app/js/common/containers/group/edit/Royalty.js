@@ -1,33 +1,38 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { Slider } from '@xanda/react-components';
+import { Form, Slider } from '@xanda/react-components';
 
 export default class Royalty extends React.PureComponent {
 
 	render() {
-		const { handleInputChange } = this.props
+		const {
+      handleInputChange,
+      handleSubmit,
+      setFormRef,
+      positionY
+    } = this.props
 
 		return (
-			<React.Fragment>
-				<p>Okay now lets see where they sit on the board</p>
+			<Form onSubmit={handleSubmit} ref={setFormRef}>
+				<p className="form-label">Okay now lets see where they sit on the board</p>
 
-				<p>Royalty</p>
+				<p className="h2">Royalty</p>
 
-				<p>Value, influence and power. Top drawer or bottom?</p>
-
-				<p>Lorem ipsum dolor sit amet, sed do eiusmod.</p>
+				<p><strong>Value, influence and power. Top drawer or bottom?</strong><br/>
+				Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
 
 				<Slider
-					name="position_y"
+					name="positionY"
 					label="Set your Royalty score:"
 					min={0}
 					max={100}
-					value={50}
+					value={positionY}
 					onChange={handleInputChange}
+          validation="required"
 					wide
 				/>
-				<span>{this.props.positionY}</span>
-			</React.Fragment>
+				<span>{_.round(positionY, 0)}</span>
+			</Form>
 		);
 	}
 }

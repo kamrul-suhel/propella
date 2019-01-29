@@ -1,0 +1,60 @@
+.fancylist {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+
+  .fancylist-item {
+    display: flex;
+    flex-direction: row;
+    font-size: 16px;
+    align-items: center;
+    border-radius: 4px;
+    margin-top: 8px;
+    color: $brand-color-dark;
+    padding: 0 10px;
+    line-height: 30px;
+
+    &.is-inactive {
+        color: #E7E7E7;
+    }
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    .fancylist-item-title {
+      flex: 1;
+      text-align: left;
+      font-weight: 500;
+    }
+    .fancylist-item-actions {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      font-size: 18px;
+      color: #1C1C1C;
+
+      > * {
+        margin-left: 14px;
+        line-height: 18px;
+
+          &:first-child {
+              margin-left: 0;
+          }
+
+          &[class*="icon-"]:before, {
+            vertical-align: top;
+          }
+      }
+
+      .form-group {
+          margin: 0;
+          display: block;
+
+          label {
+              min-width: 0;
+          }
+      }
+    }
+  }
+}

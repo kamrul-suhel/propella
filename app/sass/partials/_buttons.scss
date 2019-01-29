@@ -1,9 +1,6 @@
 %button {
-	background-color: $brand-color;
-	border: 1px solid $brand-color;
-	color: #FFFFFF;
+  font-family: $family-base;
 	cursor: pointer;
-	display: flex;
 	align-items: center;
 	justify-content: center;
 	font-size: 14px;
@@ -12,9 +9,7 @@
 	padding: 6px 24px;
 	text-align: center;
 	text-decoration: none;
-	transition: all 300ms ease;
-	height: 45px;
-	border-radius: 23px;
+  font-weight: 500;
 
 	&:before {
 		margin-right: 6px;
@@ -29,209 +24,34 @@
 		background-color: darken($brand-color, 8%);
 		border-color: darken($brand-color, 8%);
 	}
-
-	&.small {
-		font-size: 14px;
-		line-height: 16px;
-		padding: 6px 14px;
-		height: 30px;
-		border-radius: 15px;
-	}
-
-	&.large {
-		height: 50px;
-		padding: 10px 60px;
-		border-radius: 50px;
-
-		&.fixed {
-			width: 120px;
-		}
-	}
-
-	&.fat {
-		height: 50px;
-		padding: 10px 60px;
-		border-radius: 50px;
-	}
-
-	&.thin {
-		height: 35px;
-	}
-
-	&.wide {
-		width: 120px;
-	}
-
-	// Primarily for buttons that are in a table and need to fill the width of a cell
-	&.responsive {
-		width: 100%;
-	}
-
-	&.alt {
-		background-color: #000000;
-		border-color: #000000;
-		color: #FFFFFF;
-
-		&:hover {
-			background-color: lighten(#000000, 20%);
-			border-color: lighten(#000000, 20%);
-		}
-	}
-
-	&.light {
-		background-color: white;
-		border-color: white;
-		color: $brand-color;
-
-		&:hover {
-			background-color: darken(white, 8%);
-			border-color: darken(white, 8%);
-		}
-	}
-
-	&.positive {
-		border: 1px solid $text-color-success;
-		color: $text-color-success;
-		background-color: transparent;
-
-		&.fill {
-			background-color: $text-color-success;
-			color: white;
-		}
-
-		&:hover {
-			box-shadow: 0px 0px 7px 0px $text-color-success
-		}
-	}
-
-	&.amber {
-		border: 1px solid $text-color-warning;
-		color: $text-color-warning;
-		background-color: transparent;
-
-		&:hover {
-			box-shadow: 0px 0px 7px 0px $text-color-warning
-		}
-	}
-
-	&.negative {
-		border: 1px solid $text-color-error;
-		color: $text-color-error;
-		background-color: transparent;
-
-		&:hover {
-			box-shadow: 0px 0px 7px 0px $text-color-error
-		}
-	}
-
-	&.ghost {
-		color: $brand-color;
-		border-color: $brand-color;
-		background-color: transparent;
-
-		&:hover {
-			opacity: 0.6;
-			background-color: transparent;
-		}
-
-		&.alt {
-			border-color: #ffffff;
-			color: #ffffff;
-		}
-
-		&.dark {
-			border: 1px solid $text-color;
-			color: $text-color;
-		}
-	}
-
-	&.round {
-		border-radius: 12px;
-		background-color: $brand-color-alt;
-		border: 0px none;
-		width: 24px;
-		height: 24px;
-		padding: 0;
-		line-height: 24px;
-		font-size: 24px;
-		font-family: Arial;
-		display: inline-block;
-    	vertical-align: bottom;
-	}
-
-	&.match-input {
-		height: 45px;
-	}
-
-	&.vertical-space {
-		margin-top: 20px;
-		margin-bottom: 20px;
-	}
-
-	i {
-		margin-right: 10px;
-		font-size: 18px;
-
-		&:before {
-			vertical-align: middle;
-		}
-	}
 }
 
 .button {
 	@extend %button;
 }
 
-.buttonset {
-	display: flex;
-	flex-direction: row;
-	margin-top: 20px;
+.button-round {
+  text-align: center;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  font-weight: 400;
 
-	&.right {
-		justify-content: flex-end;
-	}
+  .button-round-inside {
+    background: white;
+    height: 40px;
+    width: 40px;
+    border-radius: 20px;
+    text-align: center;
+    line-height: 40px;
+    margin-bottom: 6px;
+    display: block;
+    color: $brand-color-dark;
+    font-size: 18px;
 
-	.button {
-		margin-right: 10px;
-	}
-}
-
-.complete-summary-wrapper {
-	.button {
-		margin: auto;
-		min-width: 25%;
-	}
-}
-
-.radio-button-wrapper {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-
-}
-
-.radio-button {
-	width: 20px;
-	height: 20px;
-	border-radius: 999px;
-	border: 1px solid $text-color-disabled;
-	cursor: pointer;
-
-	&:hover:not(.is-selected) {
-		background-color: lighten($brand-color-alt, 10%);
-	}
-
-	&.is-selected {
-		border: 5px solid $brand-color-alt;
-	}
-
-	&.small {
-		width: 13px;
-		height: 13px;
-
-		&.is-selected {
-			border-width: 3px;
-		}
-	}
-
+    &.icon-progress {
+      font-size: 24px;
+    }
+  }
 }

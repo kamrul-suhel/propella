@@ -1,3 +1,21 @@
+@mixin at-least($device-width) {
+	@media screen and (min-width: $device-width) {
+		@content
+	}
+}
+
+@mixin until($device-width) {
+	@media screen and (max-width: $device-width - 1) {
+		@content
+	}
+}
+
+@mixin between($device-width-1, $device-width-2) {
+	@media screen and (min-width: $device-width-1) and (max-width: $device-width-2 - 1) {
+		@content
+	}
+}
+
 @mixin font-icon {
 	line-height:1;
 	font-style: normal !important;
@@ -7,4 +25,19 @@
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	font-family: $icon-family-base;
+}
+
+@mixin placeholder {
+	::-webkit-input-placeholder {@content}
+	:-moz-placeholder           {@content}
+	::-moz-placeholder          {@content}
+	:-ms-input-placeholder      {@content}
+}
+
+%clearfix {
+	&:after {
+		content: "";
+		display: table;
+		clear: both;
+	}
 }

@@ -2,11 +2,21 @@ import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 
 // reducers
+import alert from './alert'
+import popup from './popup'
 import project from 'app/containers/project/reducer'
 import group from 'app/containers/group/reducer'
+import { organisation, organisationType } from 'app/containers/organisation/reducer'
+import { people, peopleType } from 'app/containers/people/reducer'
 
 const appReducer = combineReducers({
+	alert: alert,
+	popup: popup,
 	project: project,
+	organisation: organisation,
+	organisationType: organisationType,
+  people: people,
+	peopleType: peopleType,
 	group: group,
 	routing: routerReducer,
 });

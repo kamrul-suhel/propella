@@ -1,0 +1,45 @@
+.form-group.switch {
+    width: 35px;
+
+    .form-option-inner {
+        background-color: transparent !important;
+        border: 0px none;
+        padding: 0;
+    }
+
+    .option-input + .option-label {
+        background: #D0D0D0;
+    }
+
+    .option-label {
+        cursor: pointer;
+        text-indent: -9999px;
+        width: 35px;
+        height: 18px;
+        display: block;
+        border-radius: 10px;
+        position: relative;
+
+        &:after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 14px;
+            height: 14px;
+            background: #fff;
+            border-radius: 7px;
+            transition: 0.3s;
+        }
+    }
+    .is-selected {
+        .option-input + .option-label:after {
+            left: calc(100% - 2px);
+            transform: translateX(-100%);
+        }
+
+        .option-input + .option-label {
+            background: #48B9B9;
+        }
+    }
+}

@@ -5,62 +5,92 @@ import { Form, TextInput, Radio, FileUpload } from '@xanda/react-components';
 export default class Description extends React.PureComponent {
 
 	render() {
-		const { handleInputChange } = this.props
+		const {
+      title,
+      description,
+      abbreviation,
+      icon,
+      icon_size,
+      handleInputChange,
+      handleSubmit,
+      setFormRef
+    } = this.props
+
+    const fileUploadClass = (icon) ? 'has-file' : 'has-no-file'
 
 		return (
-			<React.Fragment>
-				<TextInput 
-					name="title" 
-					label="Name Your Group" 
+			<Form onSubmit={handleSubmit} ref={setFormRef}>
+				<TextInput
+					name="title"
+					label="Name Your Group"
 					validation="required"
 					onChange={handleInputChange}
+          value={title}
 					wide
 				/>
 
-				<div className="form-group form-type-input form-group-validation-required">
-					<span className="form-label">Choose Icon or Set Abbreviation</span>
-					<FileUpload
-						name="icon"
-						onChange={handleInputChange}
-					/>
-					<TextInput 
-						name="abbreviation"
-						onChange={handleInputChange}
-					/>
-				</div>
+        <div className="grid">
+          <div className="grid-xs-7">
+    				<div className="form-group form-group-wide">
+    					<span className="form-label">Choose Icon or Set Abbreviation</span>
+    					<FileUpload
+    						name="icon"
+    						onChange={handleInputChange}
+                value={icon}
+                className={fileUploadClass}
+                placeholder=""
+    					>
+              {icon &&
+                <img src={icon.preview} />
+              }
+              </FileUpload>
+    					<TextInput
+    						name="abbreviation"
+                value={abbreviation}
+    						onChange={handleInputChange}
+    					/>
+    				</div>
+  				</div>
 
-				<Radio
-					name="icon_size"
-					label="Choose Size of Icon"
-					options={
-						[
-							{
-								id: 's',
-								title: "S"
-							},
-							{
-								id: 'm',
-								title: "M"
-							},
-							{
-								id: 'l',
-								title: "L"
-							},
-						]
-					}
-					styled
-					wide
-					onChange={handleInputChange}
-				/>
+          <div className="grid-xs-5">
+    				<Radio
+    					name="icon_size"
+    					label="Choose Size of Icon"
+    					options={
+    						[
+    							{
+    								id: 's',
+    								title: "S"
+    							},
+    							{
+    								id: 'm',
+    								title: "M"
+    							},
+    							{
+    								id: 'l',
+    								title: "L"
+    							},
+    						]
+    					}
+    					styled
+    					wide
+              value={icon_size}
+              validation="required"
+    					onChange={handleInputChange}
+    				/>
+          </div>
+        </div>
 
-				<TextInput 
-					name="description" 
-					label="What is this Group About?" 
+				<TextInput
+					name="description"
+					label="What is this Group About?"
 					textarea
+          value={description}
 					onChange={handleInputChange}
+          validation="required"
 					wide
 				/>
-			</React.Fragment>
+			</Form>
 		);
 	}
 }

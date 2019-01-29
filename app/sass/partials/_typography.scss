@@ -1,6 +1,5 @@
 h1,h2,h3,h4,h5,h6 {
-	color: $background-color-headings;
-	font-family:$font-family-headings;
+	font-family: $family-base;
 	font-weight: $font-weight-headings;
 	line-height: $line-height-headings;
 	font-size: $font-size-base;
@@ -47,50 +46,5 @@ p {
 }
 
 b, strong {
-	font-weight: 700;
-}
-
-.react-link {
-	cursor: pointer;
-	text-decoration: underline;
-}
-
-.title {
-	text-align: center;
-	font-size: 42px;
-	font-weight: 200;
-	margin-bottom: 50px;
-}
-
-.subtitle {
-	font-weight: 200;
-	padding-left: 50px;
-	margin-bottom: 24px;
-}
-
-.sub-heading {
-	font-size: 24px;
-	font-weight: 200;
-	padding-left: 90px;
-}
-
-.colour-success {
-	color: $text-color-success;
-}
-
-.colour-warning {
-	color: $text-color-warning;
-}
-
-.colour-error {
-	color: $text-color-error;
-}
-
-.clickable {
-	cursor: pointer;
-	text-decoration: underline;
-
-	&:hover {
-		color: black;
-	}
+	font-weight: 500;
 }

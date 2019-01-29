@@ -32,6 +32,19 @@ export default function project(state = defaultState, action) {
 				...normalizedData,
 			};
 		}
+    case 'GROUP_DELETED': {
+			return {
+				...state,
+				isLoading: false,
+        collection: {
+          ...state.collection,
+          [action.payload.project_id]: {
+            ...state.collection[action.payload.project_id],
+            groups: _.pickBy(state.collection[action.payload.project_id].groups, (o) => o.id !== action.payload.id)
+          }
+        }
+			};
+		}
 		default: {
 			return state;
 		}

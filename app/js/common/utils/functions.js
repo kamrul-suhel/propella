@@ -22,9 +22,6 @@ export default {
 	showAlert(alerts, type) {
 		alerts = typeof alerts === 'string' ? [alerts] : alerts;
 		Store.dispatch(showAlert({ alerts, type }));
-
-		document.body.scrollTop = 0;
-		document.documentElement.scrollTop = 0;
 	},
 
 	/**
@@ -438,7 +435,7 @@ export default {
 			default:
 				progressIndex = 2;
 		}
-		
+
 		return progressIndex;
 	},
 

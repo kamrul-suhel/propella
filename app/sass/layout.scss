@@ -1,7 +1,11 @@
+@import 'vendor/normalize';
+
 @import 'partials/variables';
 @import 'partials/mixins';
+@import 'partials/fonts';
+@import 'partials/typography';
 
-@import 'vendor/ionicons';
+// @import 'vendor/ionicons';
 @import 'vendor/react-datepicker';
 @import 'vendor/react-draft-wysiwyg';
 @import 'vendor/react-select';
@@ -26,10 +30,27 @@
 @import 'react-components/timepicker';
 @import 'react-components/tooltip';
 
+@import 'partials/forms';
+@import 'partials/buttons';
+@import 'partials/grid';
+@import 'partials/icons';
 
 @import 'modules/gridwrapper';
 @import 'modules/popup';
+@import 'modules/errors';
+@import 'modules/fancylist';
+@import 'modules/switch';
+@import 'modules/repeater';
+@import 'modules/nav';
+
+body {
+  font-family: $family-base;
+}
 
 #app {
 	height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
 }
