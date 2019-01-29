@@ -35,10 +35,11 @@ export default class Popup extends React.PureComponent {
 		return (
       <div className="nav">
         {params.groupId ? (
-          <Select
-            name="group"
-            value={params.groupId}
-          />
+          // <Select
+          //   name="group"
+          //   value={params.groupId}
+          // />
+          <span />
         ) : (
           <Link to={this.nextLink} className="icon-stack" />
         )}
