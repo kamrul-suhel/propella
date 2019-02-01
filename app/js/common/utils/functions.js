@@ -484,6 +484,11 @@ export default {
 		}
 
 		return false;
-	}
+	},
+        
+        getImage(filename) {
+            const imageDir = '../../../images';
+            return `${imageDir}/${filename}`;
+        }
 
 };

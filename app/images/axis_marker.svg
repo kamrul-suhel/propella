@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="67px" height="67px" viewBox="0 0 67 67" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>axis_marker</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <radialGradient cx="50%" cy="33.2210619%" fx="50%" fy="33.2210619%" r="66.7789381%" id="radialGradient-1">
+            <stop stop-color="#B5E7F8" offset="0%"></stop>
+            <stop stop-color="#53C8D9" offset="100%"></stop>
+        </radialGradient>
+    </defs>
+    <g id="axis_marker" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M33.6601563,66.4207295 C51.7833415,66.4207295 66.475086,51.728985 66.475086,33.6057997 C66.475086,15.4826144 51.7833415,0.790869956 33.6601563,0.790869956 C15.536971,0.790869956 0.845226499,15.4826144 0.845226499,33.6057997 C0.845226499,51.728985 15.536971,66.4207295 33.6601563,66.4207295 Z" id="Oval" stroke="#48B9B9" stroke-width="0.663255" fill-opacity="0.15" fill="#48B9B9" fill-rule="nonzero" stroke-dasharray="3.979530310630798,3.979530310630798"></path>
+        <circle id="Oval-2" fill="url(#radialGradient-1)" cx="33.6407166" cy="33.3944295" r="24.1035596"></circle>
+    </g>
+</svg>

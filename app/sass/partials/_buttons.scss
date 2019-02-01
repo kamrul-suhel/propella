@@ -36,7 +36,8 @@
   display: flex;
   align-items: center;
   flex-direction: column;
-  font-weight: 400;
+  font-weight: 400;  
+  position:absolute;
 
   .button-round-inside {
     background: white;
@@ -53,5 +54,21 @@
     &.icon-progress {
       font-size: 24px;
     }
+  }
+  &.first{
+      top:-40px;
+      left:-50px;
+  }
+  &.second{
+      top:-120px;
+      left:-15px;
+  }
+  &.third{
+      top:-120px;
+      left:53px;
+  }
+  &.fourth{
+      top: -40px;
+      left: 100px;
   }
 }
