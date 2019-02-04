@@ -60,6 +60,14 @@
 
 	&.form-group-wide {
 		width: 100%;
+                display: flex;
+                flex-wrap: wrap;
+                margin-bottom:20px!important;
+                .form-type-input{
+                    display: flex;
+                    text-align:center;
+                    align-items:center;
+                }
 	}
 
 	&.has-multiple-options {
@@ -67,6 +75,9 @@
 		.form-options {
 			display: flex;
 			flex-flow: row wrap;
+                        &.form-options-layout-horizontal{
+                            margin:16px auto 0px;
+                        }
 		}
 
 		.form-option {
@@ -237,6 +248,9 @@
 		min-width: 38px;
 		font-size: 20px;
 	}
+        &.form-type-upload{
+                margin:0px!important;            
+        }
 }
 
 .form-label {

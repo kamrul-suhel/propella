@@ -54,21 +54,13 @@
     &.icon-progress {
       font-size: 24px;
     }
-  }
-  &.first{
-      top:-40px;
-      left:-50px;
-  }
-  &.second{
-      top:-120px;
-      left:-15px;
-  }
-  &.third{
-      top:-120px;
-      left:53px;
-  }
-  &.fourth{
-      top: -40px;
-      left: 100px;
-  }
+    &.icon-edit{
+        &:before{
+            color:blue;
+            display:block;
+            margin-top:11px;
+            color:$brand-color-2;
+        }
+    }
+  }  
 }

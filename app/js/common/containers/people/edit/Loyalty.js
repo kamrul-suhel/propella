@@ -32,7 +32,7 @@ export default class Loyalty extends React.PureComponent {
           validation="required"
 					wide
 				/>
-				<span>{positionX}</span>
+				<span class="counter">{positionX}</span>
 			</Form>
 		);
 	}

@@ -7,11 +7,13 @@
 	transform: translateX(-50%);
 	border-radius: 3px;
 	overflow: hidden;
-  text-align: center;
+        text-align: center;
+        top:7px;
 
   a {
     text-decoration: none;
     color: #1C1C1C;
+    font-weight:600;
   }
 
   .grid {
@@ -34,9 +36,11 @@
 		margin-top: 14px;
 		position: relative;
 		text-align: center;
-    color: white;
-    display: flex;
-
+                color: white;
+                display: flex;
+                box-shadow: 2px -1px 2px 0 rgba(0,0,0,0.50);
+                border-radius: 4px 4px 0 0;
+                background-color: #1C1C1C;
 		&:before {
 			width: 0;
 			height: 0;
@@ -45,23 +49,21 @@
 			border-bottom: 14px solid #1C1C1C;
 			content: '';
 			position: absolute;
-			top: 0;
+			top: 1px;
 			left: 50%;
 			transform: translate(-50%, -100%);
 		}
 		.popup-header-title {
 			margin: 0;
 			font-size: 14px;
-      flex: 1;
-      padding: 9px 0;
-      background-color: #1C1C1C;
+                        flex: 1;
+                        padding: 15px 0px 9px;
 		}
 
     .popup-header-tab {
       background: white;
       flex: 1;
       background-color: #F1F1F1;
-
       a {
         display: block;
         color: #D0D0D0;
@@ -72,27 +74,64 @@
 
 		.popup-header-close {
 			position: absolute;
-      right: 12px;
-      top: 7px;
-			color: white;
-
-      &:before {
-        @include font-icon;
-        content: 'h';
-        font-size: 10px;
-      }
+                        right: 15px;
+                        top: 9px;
+                        color: white;
+                        &:before {
+                          @include font-icon;
+                          content: '\6f';
+                          font-size: 12px;
+                        }
 		}
 	}
 
 	.popup-inner {
 		background: white;
 		text-align: center;
-		padding: 20px 16px;
-    border: 0px none;
-
+		padding: 25px;
+                border: 0px none;
+                box-shadow: 1px 2px 4px 0 rgba(0,0,0,0.50);
 		form {
 			flex-direction: column;
 		}
+                .success-add-group{
+                    display:flex;
+                    flex-wrap:wrap;
+                    .success-message{
+                        width:100%;
+                        p{
+                            text-transform:uppercase;
+                        }
+                    }
+                    .royalty-wrapper{
+                        width:50%;                        
+                        span{
+                            background-image:url('../images/green-circle.svg');                            
+                        }
+                    }
+                    .loyalty-wrapper{
+                        width:50%;      
+                        span{
+                            background-image:url('../images/red-circle.svg');                            
+                        }
+                    }
+                    .loyalty-wrapper, .royalty-wrapper{
+                        p{
+                            
+                        }
+                        span{
+                            background-size: 76px 74px;    
+                            margin: auto;
+                            width: 75px;
+                            height: 75px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            color:white;
+                            font-size:24px;
+                        }
+                    }
+                }
 
 	}
   .popup-inner-buttons {
@@ -101,7 +140,8 @@
     width: 100%;
     border-top: 1px solid #1C1C1C;
     background: white;
-
+    box-shadow: 1px 2px 4px 0 rgba(0,0,0,0.50);
+    border-radius: 0 0 4px 4px;
     .button {
       flex: 1;
       margin: 0;

@@ -116,7 +116,7 @@ export default class Wrapper extends React.PureComponent {
                       Edit
                     </Link>
                     <span className="button-round second">
-                      <span className="button-round-inside icon-progress" />
+                      <span className="button-round-inside icon-chain" />
                       Progress
                     </span>
                     <Link className="button-round third" to={`/${url.projects}/${params.id}/groups/${group.id}/`}>

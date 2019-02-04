@@ -14,18 +14,14 @@ export default class GridWrapper extends React.PureComponent {
   			<div className="gridwrapper">  				
                                 <div class="gridwrapper-y">                
                                     <span class="axis-image" ></span>
-                                    <div class="top-icon">
-                                    <p>
-                                        <span class="icon-slide-icon-crown"></span>
-                                    </p>
-                                    <p>100</p><p>
-                                    </p></div>
+                                    <div class="top-icon">                                    
+                                        <span class="icon-slide-icon-crown"></span>                                    
+                                    <p>100</p>
+                                    </div>
                                     <div class="bottom-icon">
-                                        <p>0</p>
-                                        <p>
-                                        <span class="icon-slide-icon-jester"></span>                    
-                                        </p>
-                                    </div>                                    
+                                        <p>0</p>                                        
+                                        <span class="icon-slide-icon-jester"></span>
+                                    </div>
                                     <p class="axis-label">Royalty</p>
                                 </div>
   				<div id="gridwrapper-inner" className="gridwrapper-inner">

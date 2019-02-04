@@ -3,14 +3,14 @@
 		width: 100%;
 		height: 30px;
 		padding: 0px;
-                width:calc(100% - 30px);
+                width:calc(100% - 50px);
                 margin:auto;
                 position:relative;
                 &:before{
                     font-family: "Propella";
                     content: '\75';
                     color:$brand-color-3;
-                    left: -19px;
+                    left: -27px;
                     top: 3px;
                     position:absolute;
                 }
@@ -18,7 +18,7 @@
                     font-family: "Propella";
                     content: '\61';
                     color:$brand-color-2;
-                    right: -19px;
+                    right: -27px;
                     top: 3px;
                     position:absolute;
                 }
