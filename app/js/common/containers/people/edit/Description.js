@@ -21,7 +21,7 @@ export default class Description extends React.PureComponent {
     } = this.props
 
 		return (
-			<Form onSubmit={handleSubmit} ref={setFormRef}>
+			<Form onSubmit={handleSubmit} ref={setFormRef} className="new-person">
 				<TextInput
 					name="title"
 					label="Person's Name"

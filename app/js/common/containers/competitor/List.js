@@ -64,7 +64,7 @@ export default class List extends React.PureComponent {
 
 		return (
 			<Popup
-        title="competitors"
+        title="Competitors"
 				closePath={`/${url.projects}/${this.props.params.id}/${url.groups}/${params.groupId}`}
         buttons={[
           <Link className="button" to={`/${url.projects}/${this.props.params.id}/${url.groups}/${params.groupId}`}>Cancel</Link>,
@@ -75,7 +75,7 @@ export default class List extends React.PureComponent {
           data={groups.collection}
           isLoading={groups.isLoading}
         >
-  				<Form onSubmit={this.handleSubmit}>
+  				<Form onSubmit={this.handleSubmit} className="competitors-form">
             <p className="form-label">Competitors List</p>
             <Repeater
               min="1"

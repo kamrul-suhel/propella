@@ -50,17 +50,41 @@
     display: block;
     color: $brand-color-dark;
     font-size: 18px;
-
+    position:relative;
     &.icon-progress {
       font-size: 24px;
     }
     &.icon-edit{
-        &:before{
-            color:blue;
+        &:before{            
             display:block;
             margin-top:11px;
             color:$brand-color-2;
         }
     }
+    &.icon-chain{
+        &:before{            
+            display:block;
+            margin-top:7px;
+            color:$brand-color-2;
+            font-size:24px;
+            margin-right:3px;
+        }
+    }
   }  
+  &.fourth{
+      
+      .button-round-inside{
+          &:after{
+              background-image:url(../images/pirate.svg);
+              content: "";
+              height: 26px;
+              width: 27px;
+              display: block;
+              position: absolute;
+              top: 6px;
+              left: 8px;
+              background-size: 100%;
+          }
+      }
+  }
 }

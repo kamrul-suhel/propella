@@ -8,17 +8,21 @@ export default class Overview extends React.PureComponent {
     const { positionX, positionY } = this.props
 
 		return (
-			<div>
-				<p>Great, you've added an organisation!</p>
+                        <div class="success-add-group">
+                            <div class="success-message">
+                                <p>Great, you've added an organisation!</p>
+                            </div>  
 
-				<p></p>
+                            <div class="royalty-wrapper">
+                                <p>Royalty</p>
+                                <span>{positionY}</span>
+                            </div>
 
-				<p>Royalty</p>
-				<p>{positionY}</p>
-
-				<p>Loyalty</p>
-        <p>{positionX}</p>
-			</div>
+                            <div class="loyalty-wrapper">
+                                <p>Loyalty</p>
+                                <span>{positionX}</span>
+                            </div>
+                        </div>
 		);
 	}
 }

@@ -19,6 +19,8 @@ export default class Overview extends React.PureComponent {
 				<p>Loyalty</p>
         <p>{positionX}</p>
 			</div>
+                        
+                        
 		);
 	}
 }

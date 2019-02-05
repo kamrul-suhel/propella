@@ -14,7 +14,7 @@ export default class Royalty extends React.PureComponent {
 
 		return (
 			<Form onSubmit={handleSubmit} ref={setFormRef}>
-				<p className="form-label">Okay now lets see where they sit on the board</p>
+				<p className="form-label form-label-title">Okay now lets see where they sit on the board</p>
 
 				<p className="h2">Royalty</p>
 

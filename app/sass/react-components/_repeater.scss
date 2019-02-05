@@ -10,7 +10,7 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: flex-start;
-
+                position:relative;
 		.form-group {
 			margin-right: 20px;
 
@@ -34,9 +34,10 @@
 
 	.repeatable-row-remove {
 		cursor: pointer;
-		line-height: 1;
-		margin-top: 35px;
-
+		line-height: 1;		
+                position:absolute;
+                right:0px;
+                top:49px;
 		i {
 			font-size: 32px;
 		}

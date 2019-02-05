@@ -1,10 +1,12 @@
 .accordion-item {
-	margin-bottom: 20px;
-
+        width:100%;
+        position:relative;
+        padding:12px 0px;
 	&.is-active {
 		.accordion-header:after {
-			content: "\f3d8";
-		}
+			content: "-";
+                        color:black;
+		} 
 
 		.accordion-body {
 			display: block;
@@ -20,18 +22,19 @@
 		color: white;
 		display: flex;
 		align-items: center;
+                font-weight:500;
 
-		&:after {
-			@include font-icon;
-			content: "\f3d0";
-			font-size: 18px;
+		&:after {			
+			content: "+";
+			font-size: 35px;
 			position: absolute;
-			right: 20px;
+			right: 0px;
 			top: 50%;
 			transform: translateY(-50%);
 			text-align: center;
 			line-height: 40px;
-			color: white;
+			color: black;
+                        font-weight:400;
 		}
 	}
 
@@ -43,3 +46,4 @@
 		margin-top: -1px;
 	}
 }
+

@@ -1,14 +1,14 @@
 .popup {
 	min-width: 300px;
 	width: 100%;
-	max-width: 500px;
+	max-width: 550px;
 	position: relative;
 	left: 50%;
 	transform: translateX(-50%);
 	border-radius: 3px;
 	overflow: hidden;
         text-align: center;
-        top:7px;
+        top:7px; 
 
   a {
     text-decoration: none;
@@ -41,6 +41,7 @@
                 box-shadow: 2px -1px 2px 0 rgba(0,0,0,0.50);
                 border-radius: 4px 4px 0 0;
                 background-color: #1C1C1C;
+                z-index:1;
 		&:before {
 			width: 0;
 			height: 0;
@@ -57,18 +58,23 @@
 			margin: 0;
 			font-size: 14px;
                         flex: 1;
-                        padding: 15px 0px 9px;
+                        padding: 17px 0px;
+                        box-shadow: 1px 2px 4px 0 rgba(0,0,0,0.50);
+                        border-radius: 4px 0 0 0;
 		}
 
     .popup-header-tab {
       background: white;
       flex: 1;
       background-color: #F1F1F1;
+      box-shadow: 1px 2px 4px 0 rgba(0,0,0,0.50);
+      border-radius: 4px 0 0 0;
+      
       a {
         display: block;
         color: #D0D0D0;
         text-decoration: none;
-        padding: 9px 0;
+        padding: 17px 0;
       }
     }
 
@@ -91,12 +97,16 @@
 		padding: 25px;
                 border: 0px none;
                 box-shadow: 1px 2px 4px 0 rgba(0,0,0,0.50);
+                border-radius: 0 0 4px 4px;
+                position:relative;
+                z-index:2;
 		form {
 			flex-direction: column;
 		}
                 .success-add-group{
                     display:flex;
                     flex-wrap:wrap;
+                    justify-content:center;
                     .success-message{
                         width:100%;
                         p{
@@ -104,25 +114,23 @@
                         }
                     }
                     .royalty-wrapper{
-                        width:50%;                        
+                        width:30%;                        
                         span{
                             background-image:url('../images/green-circle.svg');                            
                         }
                     }
                     .loyalty-wrapper{
-                        width:50%;      
+                        width:30%;     
                         span{
                             background-image:url('../images/red-circle.svg');                            
                         }
                     }
-                    .loyalty-wrapper, .royalty-wrapper{
-                        p{
-                            
-                        }
+                    .loyalty-wrapper, .royalty-wrapper{                        
                         span{
-                            background-size: 76px 74px;    
+                            background-size:100%;
+                            background-repeat:no-repeat;
                             margin: auto;
-                            width: 75px;
+                            width: 73px;
                             height: 75px;
                             display: flex;
                             align-items: center;
