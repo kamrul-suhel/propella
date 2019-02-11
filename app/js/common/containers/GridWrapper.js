@@ -12,17 +12,17 @@ export default class GridWrapper extends React.PureComponent {
       <React.Fragment>
         <Nav {...this.props} />
   			<div className="gridwrapper">  				
-                                <div class="gridwrapper-y">                
-                                    <span class="axis-image" ></span>
-                                    <div class="top-icon">                                    
-                                        <span class="icon-slide-icon-crown"></span>                                    
+                                <div className="gridwrapper-y">                
+                                    <span className="axis-image" ></span>
+                                    <div className="top-icon">                                    
+                                        <span className="icon-slide-icon-crown"></span>                                    
                                     <p>100</p>
                                     </div>
-                                    <div class="bottom-icon">
+                                    <div className="bottom-icon">
                                         <p>0</p>                                        
-                                        <span class="icon-slide-icon-jester"></span>
+                                        <span className="icon-slide-icon-jester"></span>
                                     </div>
-                                    <p class="axis-label">Royalty</p>
+                                    <p className="axis-label">Royalty</p>
                                 </div>
   				<div id="gridwrapper-inner" className="gridwrapper-inner">
   					<div className="gridwrapper-inner-section-wrapper">
@@ -34,17 +34,17 @@ export default class GridWrapper extends React.PureComponent {
   					{childrenWithProps}
   				</div>
   				<div className="gridwrapper-x">
-                                    <span class="horizontal-axis vs-class"></span>
-                                    <span class="axis-image"> </span>                                       
-                                        <div class="left-icon">                                        
-                                            <span class="icon-slide-icon-hate"></span>                                         
+                                    <span className="horizontal-axis vs-class"></span>
+                                    <span className="axis-image"> </span>                                       
+                                        <div className="left-icon">                                        
+                                            <span className="icon-slide-icon-hate"></span>                                         
                                             <p>0</p>
                                         </div>
-                                        <div class="right-icon">
+                                        <div className="right-icon">
                                             <p>100</p>
-                                            <span class="icon-slide-icon-love"></span>                 
+                                            <span className="icon-slide-icon-love"></span>                 
                                         </div>
-                                        <p class="axis-label">Loyalty</p>                                    
+                                        <p className="axis-label">Loyalty</p>                                    
   				</div>
   			</div>
       </React.Fragment>
