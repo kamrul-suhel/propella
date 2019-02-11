@@ -278,19 +278,36 @@ class GroupController extends PropellaBaseController
 
         $group->save();
 
-        // Create competitors
+        // Create, update or delete competitors
         if ($this->request->has('competitors')) {
+            $createdCompetitors = [];
+            $deletedCompetitors = [];
+
+            if($this->request->has('competitors.deleted')){
+                foreach($this->request->competitors['deleted'] as $id){
+                    $competitor = Competitor::findOrFail($id);
+                    $competitor->status = 0;
+                    $competitor->update();
+                    $deletedCompetitors[] = $competitor;
+                }
+
+                return $deletedCompetitors;
+            }
 
             foreach ($this->request->competitors as $competitor) {
-                $newCompetitor = isset($competitor['id']) ? Competitor::find($competitor['id']) : new Competitor();
-                $newCompetitor->title = $competitor['title'];
-                $newCompetitor->description = $competitor['description'];
-                $newCompetitor->group_id = $group->id;
-                $newCompetitor->status = $competitor['status'];
 
-                // Save competitor.
-                $newCompetitor->save();
+                // Check if has delete flag.
+                    $newCompetitor = isset($competitor['id']) ? Competitor::findOrFail($competitor['id']) : new Competitor();
+                    $newCompetitor->title = $competitor['title'];
+                    $newCompetitor->description = $competitor['description'];
+                    $newCompetitor->group_id = $group->id;
+                    $newCompetitor->status = isset($competitor['status']) ? $competitor['status'] : 1;
+
+                    // Save competitor
+                    $newCompetitor->save();
+                    $createdCompetitors[] = $newCompetitor;
             }
+            return $createdCompetitors;
         }
 
         return $group;

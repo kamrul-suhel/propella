@@ -67,7 +67,7 @@ class Group extends Model
     public function competitors()
     {
         return $this->hasMany('App\Competitor', 'group_id')
-            ->whereIn('status', [0, 1])
+            ->where('status', 1)
             ->where('archive', 0);
     }
 
