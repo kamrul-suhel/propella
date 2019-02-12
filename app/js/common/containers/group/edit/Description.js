@@ -10,11 +10,14 @@ export default class Description extends React.PureComponent {
             description,
             abbreviation,
             icon,
+            icon_path,
             icon_size,
             handleInputChange,
             handleSubmit,
             setFormRef
         } = this.props
+
+        console.log('ALl props', this.props)
 
         const fileUploadClass = (icon) ? 'has-file' : 'has-no-file'
 
@@ -40,9 +43,7 @@ export default class Description extends React.PureComponent {
                                 className={fileUploadClass}
                                 placeholder=""
                             >
-                                {icon &&
-                                <img src={icon.preview}/>
-                                }
+                                {<img src={icon ? icon.preview : icon_path}/>}
                             </FileUpload>
                             <TextInput
                                 name="abbreviation"

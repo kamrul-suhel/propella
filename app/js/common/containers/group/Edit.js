@@ -46,7 +46,6 @@ export default class Edit extends React.PureComponent {
     }
 
     handleInputChange = (name, value) => {
-        console.log('method called');
         this.setState({
             [name] : value
         });

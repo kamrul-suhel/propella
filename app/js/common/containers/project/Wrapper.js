@@ -126,8 +126,8 @@ export default class Wrapper extends React.PureComponent {
                             <div handleid={group.id}
                                  className={`size-${group.icon_size}`}
                                  onClick={(e) => this.handleClickInside(e, group.id)}>
-                                {group.icon_path ? <div className="icon-path" style={{backgroundImage: `url(${group.icon_path})`}}></div> : ''
-                                }
+
+                                {group.icon_path ? <div className="icon-path" style={{backgroundImage: `url(${group.icon_path})`}}></div> : ''}
 
                                 {selectedDraggable === group.id && this.state.clickOutSide &&
                                 <div className="react-draggable-actions">
