@@ -107,6 +107,7 @@ export default class Wrapper extends React.PureComponent {
                     if (group.status < 1) {
                         return
                     }
+
                     return (
                         <Draggable
                             key={group.id}
@@ -124,6 +125,7 @@ export default class Wrapper extends React.PureComponent {
                         >
                             <div handleid={group.id}
                                  className={`size-${group.icon_size}`}
+                                 style={{backgroundImage: `url(${group.icon_path})`}}
                                  onClick={(e) => this.handleClickInside(e, group.id)}>
                                 {selectedDraggable === group.id && this.state.clickOutSide &&
                                 <div className="react-draggable-actions">
