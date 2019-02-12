@@ -22,7 +22,8 @@ export default class Wrapper extends React.PureComponent {
         this.state = {
             updatedCoordinates: {},
             selectedDraggable: 0,
-            clickOutSide: false
+            clickOutSide: false,
+            selectedGroupCoordinate:{}
         }
     }
 
@@ -79,7 +80,19 @@ export default class Wrapper extends React.PureComponent {
                 clickOutSide : click
             })
         }
-    };
+    }
+
+    getGroupCoordinate = (event, groupId) => {
+        const {project} = this.props;
+
+        // Stop other event
+        event.stopPropagation();
+        const selectedGroup = _.find(project.groups, (group) => group.id === groupId)
+
+        this.setState({
+            selectedGroupCoordinate: selectedGroup
+        })
+    }
 
     handleResetChanges = () => {
         this.setState({updatedCoordinates: []}, this.fetchData())
@@ -87,7 +100,7 @@ export default class Wrapper extends React.PureComponent {
 
     render() {
         const {project, params} = this.props
-        const {updatedCoordinates, selectedDraggable} = this.state
+        const {updatedCoordinates, selectedDraggable, selectedGroupCoordinate} = this.state
 
         const childrenWithProps = React.Children.map(this.props.children, child => React.cloneElement(child, ...this.props));
 
@@ -136,8 +149,11 @@ export default class Wrapper extends React.PureComponent {
                                         <span className="button-round-inside icon-edit"/>
                                         Edit
                                     </Link>
-                                    <span className="button-round second">
-                                        <span className="button-round-inside icon-chain"/>Progress</span>
+
+                                    <span className="button-round second"
+                                          onClick={(event) => this.getGroupCoordinate(event, group.id)}>
+                                        <span className="button-round-inside icon-chain"/>Progress
+                                    </span>
 
                                     <Link className="button-round third"
                                           to={`/${url.projects}/${params.id}/groups/${group.id}/`}>
@@ -160,6 +176,18 @@ export default class Wrapper extends React.PureComponent {
                 })
                 }
                 {childrenWithProps}
+
+                 {/*Selected group coordinate section*/}
+                { selectedGroupCoordinate && _.map(selectedGroupCoordinate.coordinates, (coordinate) => {
+                    return (
+                        <div className="selected-group-wrapper" key={coordinate.id}>
+                            <p>{coordinate.positionX}</p>
+                            <p>{coordinate.positionY}</p>
+                            <p><img src={coordinate.icon_path}/></p>
+                            <p>Icon size: {coordinate.icon_size}</p>
+                        </div>
+                    )
+                })}
             </React.Fragment>
         )
     }
