@@ -69,6 +69,7 @@ export default class Edit extends React.PureComponent {
     formData.append('abbreviation', popup.abbreviation)
     formData.append('description', popup.description)
     formData.append('icon_size', popup.icon_size)
+    formData.append('icon_path', popup.icon_path)
     formData.append('positionX', popup.positionX)
     formData.append('positionY', popup.positionY)
     formData.append('project_id', params.id)

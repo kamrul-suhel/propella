@@ -17,8 +17,8 @@ export default class View extends React.PureComponent {
 		return (
       <React.Fragment>
         {_.isEmpty(project.groups) &&
-          <div class="welcome-message">
-            <div class="welcome-message-inner">
+          <div className="welcome-message">
+            <div className="welcome-message-inner">
                 <h2>Welcome to your grid</h2>
                 <p>Click the menu above to start plotting your groups.</p>
             </div>
