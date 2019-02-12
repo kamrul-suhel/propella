@@ -45,7 +45,11 @@ export default class Edit extends React.PureComponent {
 		}));
 	}
 
-	handleInputChange = (name, value) => this.props.dispatch({type: 'POPUP_UPDATED', payload: {[name]: value}})
+	handleInputChange = (name, value) => {
+	    console.log('name : ', name);
+	    console.log('value : ', value);
+	    this.props.dispatch({type: 'POPUP_UPDATED', payload: {[name]: value}})
+	}
 
 	handleStepChange = (newStep) => this.setState({step: newStep})
 
