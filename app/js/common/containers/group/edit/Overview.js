@@ -8,8 +8,8 @@ export default class Overview extends React.PureComponent {
         const {positionX, positionY, icon, title, icon_path, icon_size} = this.props
 
         return (
-            <div className="success-add-group">
-                <div className="success-message">
+            <div className="overview">
+                <div className="ov-message">
                     <p>Great, you're ready to add group!</p>
                 </div>
 
@@ -31,7 +31,6 @@ export default class Overview extends React.PureComponent {
                     <p>Loyalty</p>
                     <span>{positionX}</span>
                 </div>
-
             </div>
         );
     }

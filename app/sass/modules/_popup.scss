@@ -103,11 +103,11 @@
 		form {
 			flex-direction: column;
 		}
-                .success-add-group{
+                .success-add-group, .overview{
                     display:flex;
                     flex-wrap:wrap;
                     justify-content:center;
-                    .success-message{
+                    .success-message, .ov-message{
                         width:100%;
                         p{
                             text-transform:uppercase;

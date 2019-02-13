@@ -74,7 +74,7 @@ export default class Edit extends React.PureComponent {
         formData.append('abbreviation', popup.abbreviation)
         formData.append('description', popup.description)
         formData.append('icon_size', popup.icon_size)
-        formData.append('icon_path', popup.icon)
+        popup.icon && formData.append('icon_path', popup.icon)
         formData.append('positionX', popup.positionX)
         formData.append('positionY', popup.positionY)
         formData.append('project_id', params.id)
@@ -97,8 +97,6 @@ export default class Edit extends React.PureComponent {
     popupActions = () => {
         const {step} = this.state
         const {group} = this.props
-        console.log('step : ', step);
-        console.log('groups : ', group);
 
         switch (step) {
             case 1:

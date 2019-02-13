@@ -95,6 +95,7 @@ export default class Edit extends React.PureComponent {
     formData.append('title', popup.title)
     formData.append('abbreviation', popup.abbreviation)
     formData.append('description', popup.description)
+    popup.icon && formData.append('icon_path', popup.icon)
     formData.append('icon_size', popup.icon_size)
     formData.append('positionX', popup.positionX)
     formData.append('positionY', popup.positionY)
@@ -178,9 +179,11 @@ export default class Edit extends React.PureComponent {
 
 	render() {
     const { person, popup, params } = this.props
+        const { step } = this.state;
 
 		return (
 			<Popup
+                additionalClass={`people step-${step}`}
 				title={popup.title ? `Person: ${popup.title}` : `New Person`}
 				closePath={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}`}
         buttons={this.popupActions()}
