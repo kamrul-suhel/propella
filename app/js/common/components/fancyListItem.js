@@ -3,12 +3,12 @@ import React from 'react';
 export default class FancyListItem extends React.PureComponent {
 
     render() {
-        const {children, key, className, actions, icon, iconPath} = this.props
+        const {children, keyId, className, actions, icon, iconPath} = this.props
 
         return (
             <li
                 className={`fancylist-item ${className}`}
-                key={key}
+                key={keyId}
             >
                 {icon && <span className="fancylist-item-icon-size">{icon}</span>}
 

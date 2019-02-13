@@ -6,10 +6,9 @@ export default class Overview extends React.PureComponent {
 
     render() {
         const {positionX, positionY, icon, title, icon_path, icon_size} = this.props
-        console.log('All props', this.props);
 
         return (
-            <div class="success-add-group">
+            <div className="success-add-group">
                 <div className="success-message">
                     <p>Great, you're ready to add group!</p>
                 </div>

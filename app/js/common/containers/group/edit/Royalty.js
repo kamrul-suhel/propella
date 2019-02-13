@@ -31,7 +31,7 @@ export default class Royalty extends React.PureComponent {
           validation="required"
 					wide
 				/>
-				<span class="counter">{_.round(positionY, 0)}</span>
+				<span className="counter">{_.round(positionY, 0)}</span>
 			</Form>
 		);
 	}

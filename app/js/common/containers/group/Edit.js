@@ -67,7 +67,6 @@ export default class Edit extends React.PureComponent {
             const newStep = step + 1
             return this.handleStepChange(newStep)
         }
-        console.log('State', this.state);
 
         const formData = new FormData()
 
@@ -98,6 +97,8 @@ export default class Edit extends React.PureComponent {
     popupActions = () => {
         const {step} = this.state
         const {group} = this.props
+        console.log('step : ', step);
+        console.log('groups : ', group);
 
         switch (step) {
             case 1:
@@ -127,7 +128,7 @@ export default class Edit extends React.PureComponent {
                     [
                         <button type="button" onClick={() => this.handleStepChange(1)} className="button">Edit</button>,
                         <button onClick={this.handleSubmit} type="button" className="button">
-                            {group.id ? 'Update' : 'Add to board'}
+                            {group && group.id ? 'Update' : 'Add to board'}
                         </button>
                     ]
                 );
@@ -157,8 +158,10 @@ export default class Edit extends React.PureComponent {
 
     render() {
         const {group, popup, params} = this.props
+        const {step} = this.state;
         return (
             <Popup
+                additionalClass={`groups step-${step}`}
                 title={popup.title ? `Group: ${popup.title}` : `New Group`}
                 closePath={`/${url.projects}/${params.id}`}
                 buttons={this.popupActions()}

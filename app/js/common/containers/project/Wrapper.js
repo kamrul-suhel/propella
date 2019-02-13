@@ -6,6 +6,7 @@ import Draggable from 'react-draggable';
 import {url} from 'app/constants';
 import {api} from 'app/utils';
 import {makeGetProject, makeGetProjects} from 'app/containers/project/selector';
+import Coordinate from 'app/components/coordinate'
 
 @connect((state, ownProps) => {
     const getProjects = makeGetProjects();
@@ -23,7 +24,7 @@ export default class Wrapper extends React.PureComponent {
             updatedCoordinates: {},
             selectedDraggable: 0,
             clickOutSide: false,
-            selectedGroupCoordinate:{}
+            selectedGroupCoordinates: {}
         }
     }
 
@@ -74,10 +75,13 @@ export default class Wrapper extends React.PureComponent {
 
     handleClickInside = (e, groupId) => {
         const click = !this.state.clickOutSide;
+        this.setState({
+            selectedGroupCoordinates: {}
+        });
 
-        if(groupId === this.state.selectedDraggable){
+        if (groupId === this.state.selectedDraggable) {
             this.setState({
-                clickOutSide : click
+                clickOutSide: click
             })
         }
     }
@@ -89,9 +93,11 @@ export default class Wrapper extends React.PureComponent {
         event.stopPropagation();
         const selectedGroup = _.find(project.groups, (group) => group.id === groupId)
 
-        this.setState({
-            selectedGroupCoordinate: selectedGroup
-        })
+        if (selectedGroup) {
+            this.setState({
+                selectedGroupCoordinates: selectedGroup
+            })
+        }
     }
 
     handleResetChanges = () => {
@@ -100,9 +106,10 @@ export default class Wrapper extends React.PureComponent {
 
     render() {
         const {project, params} = this.props
-        const {updatedCoordinates, selectedDraggable, selectedGroupCoordinate} = this.state
-
+        const {updatedCoordinates, selectedDraggable, selectedGroupCoordinates} = this.state
         const childrenWithProps = React.Children.map(this.props.children, child => React.cloneElement(child, ...this.props));
+
+        const coordinates = selectedGroupCoordinates.coordinates && selectedGroupCoordinates.coordinates;
 
         const container = document.getElementById('gridwrapper-inner')
         const containerHeight = (container || {}).offsetHeight || 0
@@ -140,7 +147,8 @@ export default class Wrapper extends React.PureComponent {
                                  className={`size-${group.icon_size}`}
                                  onClick={(e) => this.handleClickInside(e, group.id)}>
 
-                                {group.icon_path ? <div className="icon-path" style={{backgroundImage: `url(${group.icon_path})`}}></div> : ''}
+                                {group.icon_path ? <div className="icon-path"
+                                                        style={{backgroundImage: `url(${group.icon_path})`}}></div> : ''}
 
                                 {selectedDraggable === group.id && this.state.clickOutSide &&
                                 <div className="react-draggable-actions">
@@ -160,6 +168,7 @@ export default class Wrapper extends React.PureComponent {
                                         <span className="button-round-inside icon-add-organisation"/>
                                         Organisations
                                     </Link>
+
                                     <Link className="button-round fourth"
                                           to={`/${url.projects}/${params.id}/groups/${group.id}/competitors`}>
                                         <span className="button-round-inside"/>
@@ -177,17 +186,7 @@ export default class Wrapper extends React.PureComponent {
                 }
                 {childrenWithProps}
 
-                 {/*Selected group coordinate section*/}
-                { selectedGroupCoordinate && _.map(selectedGroupCoordinate.coordinates, (coordinate) => {
-                    return (
-                        <div className="selected-group-wrapper" key={coordinate.id}>
-                            <p>{coordinate.positionX}</p>
-                            <p>{coordinate.positionY}</p>
-                            <p><img src={coordinate.icon_path}/></p>
-                            <p>Icon size: {coordinate.icon_size}</p>
-                        </div>
-                    )
-                })}
+                {coordinates ? <Coordinate coordinates={coordinates}/> : ''}
             </React.Fragment>
         )
     }

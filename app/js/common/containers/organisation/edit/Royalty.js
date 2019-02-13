@@ -32,7 +32,7 @@ export default class Royalty extends React.PureComponent {
           validation="required"
 					wide
 				/>
-				<span class="counter">{positionY}</span>
+				<span className="counter">{positionY}</span>
 			</Form>
 		);
 	}

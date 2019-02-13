@@ -52,6 +52,7 @@ export default class List extends React.PureComponent {
         return (
             <FancyListItem
                 key={group.id}
+                keyId={group.id}
                 className={(group.status === 1) ? `is-active` : `is-inactive`}
                 icon={group.icon_size}
                 iconPath={group.icon_path}
@@ -87,6 +88,7 @@ export default class List extends React.PureComponent {
 
         return (
             <Popup
+                additionalClass="groups"
                 title="Groups"
                 closePath={`/${url.projects}/${this.props.params.id}`}
                 buttons={[
