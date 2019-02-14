@@ -37,9 +37,6 @@ export default class Coordinate extends React.PureComponent {
                     let b = coordinate.positionY - nextCoordinate.positionY;
 
                     c = Math.sqrt( a*a + b*b );
-
-                    console.log('angle in degrees : ', angleRadians);
-                    console.log('distance between : ', c);
                 }
 
                 return (
