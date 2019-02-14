@@ -7,17 +7,21 @@ export default class Coordinate extends React.PureComponent {
     getDegreeRotate(currentCoordinate, nextCoordinate) {
         let angleDeg = 0;
         let c = 0;
+        console.log("current coordinate : ", currentCoordinate);
+        console.log("next coordinate : ", nextCoordinate);
 
         if (nextCoordinate) {
             // angle in degrees
             angleDeg = Math.atan2(currentCoordinate.positionY - nextCoordinate.positionY, currentCoordinate.positionX - nextCoordinate.positionX) * 180 / Math.PI;
 
             // Change Positive Number to Negative Number
-            if (Math.sign(angleDeg) === 1) {
-                angleDeg = Math.abs(angleDeg) * -1;
-            } else {
-                angleDeg = Math.abs(angleDeg);
-            }
+            // if (Math.sign(angleDeg) === 1) {
+            //     angleDeg = Math.abs(angleDeg) * -1;
+            // } else {
+            //     angleDeg = Math.abs(angleDeg);
+            // }
+
+            console.log('Angle degree : ', angleDeg);
 
             // Distance between 2 points
             let a = currentCoordinate.positionX - nextCoordinate.positionX;
@@ -33,18 +37,25 @@ export default class Coordinate extends React.PureComponent {
     }
 
     renderRootCoordinate(group, position) {
+        const container = document.getElementById('gridwrapper-inner')
+        const containerHeight = (container || {}).offsetHeight || 0
+        const containerWidth = (container || {}).offsetWidth || 0
+
         return (
             <div className="selected-group-wrapper first-coordinate progress-button"
-                 style={{top: `${group.positionX}%`, left: `${group.positionY}%`}}>
+                 style={{transform: `translate(${containerWidth / 100 * group.positionX}px, ${containerHeight / 100 * group.positionY}px)`}}>
                 <div className="connector" style={{
-                    transform: `rotate(${position.degree ? position.degree : 0}deg)`,
-                    height: `${position.height ? position.height : 0}VH`
+                    transform: `rotate(${position.degree ? 360 - position.degree : 0}deg)`,
+                    width: `${position.height ? position.height : 0}VH`
                 }}></div>
             </div>
         )
     }
 
     renderCoordinate(group) {
+        const container = document.getElementById('gridwrapper-inner')
+        const containerHeight = (container || {}).offsetHeight || 0
+        const containerWidth = (container || {}).offsetWidth || 0
         return (
             group.coordinates && _.map(group.coordinates, (coordinate, index) => {
                 // Next coordinate
@@ -53,7 +64,7 @@ export default class Coordinate extends React.PureComponent {
                 return (
                     <div key={coordinate.id}
                          className="selected-group-wrapper progress-button"
-                         style={{top: `${coordinate.positionX}px`, left: `${coordinate.positionY}px`}}>
+                         style={{transform: `translate(${containerWidth / 100 * coordinate.positionX}px, ${containerHeight / 100 * coordinate.positionY}px)`}}>
                         <div className="connector" style={{
                             transform: `rotate(${position.degree ? position.degree : 0}deg)`,
                             height: `${position.height ? position.height : 0}VH`
