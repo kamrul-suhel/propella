@@ -17,9 +17,18 @@ class CreatePeopleTable extends Migration
             $table->bigIncrements('id');
             $table->string('title');
             $table->text('description');
-            $table->bigInteger('type_id')->index()->unsigned();
+            $table->bigInteger('type_id')->unsigned()->index();
             $table->bigInteger('organisation_id')->index()->unsigned();
+            $table->bigInteger('created_by')->unsigned()->index();
+            $table->text('icon_path')->nullable();
+            $table->enum('icon_size', ['s','m','l','f']);
+            $table->double('positionX');
+            $table->double('positionY');
+            $table->tinyInteger('trajectory')->default(1);
+            $table->bigInteger('character_id')->unsigned()->index();
             $table->tinyInteger('status');
+            $table->bigInteger('parent_id')->index()->unsigned()->default(0);
+            $table->tinyinteger('archive')->index()->unsigned()->default(0);
             $table->timestamps();
         });
     }

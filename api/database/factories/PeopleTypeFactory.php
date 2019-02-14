@@ -12,11 +12,8 @@
 */
 
 $factory->define(App\PeopleType::class, function (Faker\Generator $faker) {
-    $projectId = \App\Project::all()->random()->id;
-
     return [
         'title' => $faker->company('jobTitle'),
-        'project_id' => $projectId,
-        'status' => $faker->randomElement([0,1])
+        'user_group_id' => $faker->numberBetween(1,10)
     ];
 });

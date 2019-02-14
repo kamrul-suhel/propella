@@ -23,7 +23,14 @@ class Group extends Model
         'description',
         'abbreviation',
         'project_id',
-        'status'
+        'status',
+        'icon_size',
+        'icon_path',
+        'positionX',
+        'positionY',
+        'created_by',
+        'parent_id',
+        'archive'
     ];
 
     /**
@@ -32,47 +39,103 @@ class Group extends Model
      * @var array
      */
     protected $hidden = [
+        'archive'
     ];
 
 
     /**
      * @return mixed
      */
-    public function project(){
+    public function project()
+    {
         return $this->belongsTo('App\Project', 'project_id');
     }
 
-    public function organisations(){
-        return $this->hasMany('App\Organisation', 'group_id');
+    /**
+     * @return mixed
+     */
+    public function organisations()
+    {
+        return $this->hasMany('App\Organisation', 'group_id')
+            ->whereIn('status', [0, 1])
+            ->where('archive', 0);
     }
 
     /**
      * @return mixed
      */
-    public function competitors(){
-        return $this->hasMany('App\Competitor', 'group_id');
+    public function competitors()
+    {
+        return $this->hasMany('App\Competitor', 'group_id')
+            ->where('status', 1)
+            ->where('archive', 0);
     }
+
 
     /**
      * @return mixed
      */
-    public function coordinates(){
-        return $this->hasMany('App\GroupCoordinate', 'group_id')
-            ->orderBy('created_at', 'DESC');
-    }
-
-    /**
-     * @return mixed
-     */
-    public static function getDefaultField(){
+    public static function getDefaultField()
+    {
         return self::select([
             'groups.id',
             'groups.title',
             'groups.description',
             'groups.status',
-            'project.title as project_title',
-            'project.description as project_description'
+            'projects.id as project_id',
+            'projects.title as project_title',
+            'projects.description as project_description'
         ])
-            ->leftJoin('project', 'groups.project_id', '=', 'project.id');
+            ->leftJoin('projects', 'groups.project_id', '=', 'projects.id');
+    }
+
+    /**
+     * @return mixed
+     */
+    public static function getDefaultFieldWithSingleCoordinate($id)
+    {
+        return self::select([
+            'groups.id',
+            'groups.title',
+            'groups.description',
+            'groups.status',
+            'groups.project_id',
+            'position_X',
+            'position_Y',
+            'icon_size',
+            'icon_path',
+            'created_at',
+        ])
+            ->with(['project', 'organisations.people'])
+            ->where('groups.id', $id)
+            ->first();
+    }
+
+    /**
+     * @param $parent_id
+     * @return array
+     */
+    public static function getAllId($parent_id){
+        $ids = self::getAllIdAsString($parent_id);
+        return explode(',', $ids);
+    }
+
+    /**
+     * @param $parent_id
+     * @return string
+     */
+    public static function getAllIdAsString($parent_id, $count = 1)
+    {
+        $ids = [];
+        if ($parent_id > 0) {
+            if($count > 5){
+                return;
+            }
+            $count++;
+            $newGroup = self::findOrFail($parent_id);
+            $ids[] = self::getAllIdAsString($newGroup->parent_id, $count);
+        }
+        $ids[] = $parent_id;
+        return implode($ids,',');
     }
 }

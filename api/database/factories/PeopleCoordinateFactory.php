@@ -16,8 +16,8 @@ $factory->define(App\PeopleCoordinate::class, function (Faker\Generator $faker) 
     return [
         'icon_path' => $faker->imageUrl(50, 50, 'people', true, 'Faker'),
         'icon_size' => $faker->imageUrl(50, 50, 'people', true, 'Faker'),
-        'position_x' => $faker->numberBetween(10, 50),
-        'position_y' => $faker->numberBetween(10, 50),
+        'position_X' => $faker->numberBetween(10, 50),
+        'position_Y' => $faker->numberBetween(10, 50),
         'character_id' => $faker->numberBetween(1, 20),
     ];
 });

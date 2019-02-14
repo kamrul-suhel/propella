@@ -24,7 +24,8 @@ export default class Wrapper extends React.PureComponent {
             updatedCoordinates: {},
             selectedDraggable: 0,
             clickOutSide: false,
-            selectedGroupCoordinates: {}
+            selectedGroupCoordinates: {},
+            progressLabel: 'Progress'
         }
     }
 
@@ -81,7 +82,8 @@ export default class Wrapper extends React.PureComponent {
 
         if (groupId === this.state.selectedDraggable) {
             this.setState({
-                clickOutSide: click
+                clickOutSide: click,
+                progressLabel: 'Progress'
             })
         }
     }
@@ -95,7 +97,8 @@ export default class Wrapper extends React.PureComponent {
 
         if (selectedGroup) {
             this.setState({
-                selectedGroupCoordinates: selectedGroup
+                selectedGroupCoordinates: selectedGroup,
+                progressLabel:'Hi progress'
             })
         }
     }
@@ -106,7 +109,7 @@ export default class Wrapper extends React.PureComponent {
 
     render() {
         const {project, params} = this.props
-        const {updatedCoordinates, selectedDraggable, selectedGroupCoordinates} = this.state
+        const {updatedCoordinates, selectedDraggable, selectedGroupCoordinates, progressLabel, clickOutSide} = this.state
         const childrenWithProps = React.Children.map(this.props.children, child => React.cloneElement(child, ...this.props));
 
         const coordinates = selectedGroupCoordinates.coordinates && selectedGroupCoordinates.coordinates;
@@ -150,7 +153,7 @@ export default class Wrapper extends React.PureComponent {
                                 {group.icon_path ? <div className="icon-path"
                                                         style={{backgroundImage: `url(${group.icon_path})`}}></div> : ''}
 
-                                {selectedDraggable === group.id && this.state.clickOutSide &&
+                                {selectedDraggable === group.id && clickOutSide &&
                                 <div className="react-draggable-actions">
                                     <Link className="button-round first"
                                           to={`/${url.projects}/${params.id}/groups/${group.id}/edit`}>
@@ -160,7 +163,7 @@ export default class Wrapper extends React.PureComponent {
 
                                     <span className="button-round second"
                                           onClick={(event) => this.getGroupCoordinate(event, group.id)}>
-                                        <span className="button-round-inside icon-chain"/>Progress
+                                        <span className="button-round-inside icon-chain"/>{progressLabel}
                                     </span>
 
                                     <Link className="button-round third"

@@ -2,18 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Competitor;
 use App\Group;
-use App\GroupCoordinate;
 use App\Organisation;
-use App\OrganisationCoordinate;
-use App\OrganisationType;
 use App\People;
+use App\PeopleCoordinate;
 use Illuminate\Http\Request;
 
 class PeopleController extends PropellaBaseController
 {
-    private $folderName = 'organisation';
+    private $folderName = 'people';
 
     /**
      * Create a new controller instance.
@@ -22,7 +19,6 @@ class PeopleController extends PropellaBaseController
      */
     public function __construct(Request $request)
     {
-        //
         parent::__construct($request);
     }
 
@@ -31,13 +27,24 @@ class PeopleController extends PropellaBaseController
      */
     public function create()
     {
-        // validate data.
-        $this->validateData();
+        $this->validate($this->request, [
+            'organisation_id' => 'required|exists:organisations,id',
+            'title' => 'required|string|min:1',
+            'description' => 'required|string|min:1',
+            'positionX' => 'required|integer|min:1',
+            'positionY' => 'required|integer|min:1',
+            'trajectory' => 'integer|min:1',
+            'icon_size' => 'in:s,m,l',
+            'character_id' => 'integer|min:1',
+            'created_by' => 'integer|min:1',
+            'status' => 'integer|between:0,2',
+            'type_id' => 'required|exists:people_types,id',
+            'icon_path' => 'file|mimes:jpeg,jpg,png,svg,gif'
+        ]);
 
-        // generate & save group.
-        $organisation = $this->savePeople();
+        $people = $this->savePeople();
 
-        return response()->json($organisation);
+        return response()->json($people);
     }
 
     /**
@@ -46,13 +53,57 @@ class PeopleController extends PropellaBaseController
      */
     public function update($id)
     {
-        // Validate data
-        $this->validateData(false);
+        $people = $this->savePeople(false, $id);
 
-        // Update existing group.
-        $organisation = $this->saveOrganisation(false);
+        return response()->json($people);
+    }
 
-        return response()->json($organisation);
+    public function updateMultiple()
+    {
+        $this->validate($this->request, [
+            'people' => 'required|array',
+            'people.*.id' => 'required|exists:people,id',
+        ]);
+
+        $people = $this->request->people;
+
+        $result = [];
+
+        foreach($people as $singlePeople){
+            if(isset($singlePeople['id'])){
+                $people =  People::findOrFail($singlePeople['id']);
+                isset($singlePeople['title']) ? $people->title = $singlePeople['title'] : '';
+                isset($singlePeople['description']) ? $people->description = $singlePeople['description'] : '';
+                isset($singlePeople['status']) ? $people->status = $singlePeople['status'] : '';
+                isset($singlePeople['type_id']) ? $people->type_id = (int)$singlePeople['type_id'] : '';
+                isset($singlePeople['created_by']) ? $people->created_by = $singlePeople['created_by'] : '';
+                isset($singlePeople['organisation_id']) ? $people->organisation_id = (int) $singlePeople['organisation_id'] : '';
+                isset($singlePeople['positionX']) ? $people->positionX = $singlePeople['positionX'] : '';
+                isset($singlePeople['positionY']) ? $people->positionY = $singlePeople['positionY'] : '';
+                isset($singlePeople['trajectory']) ? $people->trajectory = $singlePeople['trajectory'] : '';
+                isset($singlePeople['character_id']) ? $people->character_id = $singlePeople['character_id'] : '';
+                isset($singlePeople['icon_size']) ? $people->icon_size = $singlePeople['icon_size'] : '';
+
+                // First check is has file.
+                if (isset($singlePeople['icon_path']) && is_file('icon_path')) {
+                    // Remove existing file.
+                    propellaRemoveImage($people->icon_path);
+
+                    $newIconPath = propellaUploadImage($singlePeople['icon_path'], $this->folderName);
+                    $people->icon_path = $newIconPath;
+                }
+
+                $people->save();
+
+                $organisation = Organisation::findOrFail($people->organisation_id);
+                $people->organisation_id = $organisation->id;
+                $people->organisation_title = $organisation->title;
+
+                $result[] = $people;
+            }
+        }
+
+        return response()->json($result);
     }
 
     /**
@@ -60,13 +111,10 @@ class PeopleController extends PropellaBaseController
      */
     public function list()
     {
-        $organisations = People::with(['organisation','coordinates']);
-
-        // project status, default it will give your 1, active records.
-        $this->status != null ? $organisations = $organisations->where('status', $this->status) : '';
-
-        // return all data without pagination.
-        $organisations = $this->allData ? $organisations->get() : $organisations->paginate($this->perPage);
+        $organisations = People::with(['organisation'])
+            ->whereIn('status', [0, 1])
+            ->where('archive', 0)
+            ->get();
 
         return response()->json($organisations);
     }
@@ -77,10 +125,10 @@ class PeopleController extends PropellaBaseController
      */
     public function single($id)
     {
-        $organisation = People::with(['organisation', 'coordinates'])
+        $people = People::with(['organisation'])
             ->findOrFail($id);
 
-        return response()->json($organisation);
+        return response()->json($people);
     }
 
     /**
@@ -91,122 +139,62 @@ class PeopleController extends PropellaBaseController
     {
         $people = People::findOrFail($id);
 
-        // If has file then delete file.
-        propellaRemoveImage($people->icon_path);
-
-        // Remove record.
-        $people->delete();
+        $people->status = 2;
+        $people->save();
 
         return response()->json($people);
     }
 
     /**
      * @param bool $create
-     */
-    private function validateData($create = true)
-    {
-        $this->validate($this->request, [
-            'group_id' => 'required|exists:groups,id',
-            'title' => 'required|string|min:1',
-            'description' => 'required|string|min:1',
-            'abbreviation' => 'required|string|min:1',
-            'coordinate' => 'required|array',
-            'coordinate.*.position_x' => 'required|integer|min:1',
-            'coordinate.*.position_y' => 'required|integer|min:1',
-            'coordinate.*.icon_size' => 'required|in:s,m,l',
-            'created_by' => 'required|integer|min:1',
-            'status' => 'required|integer|between:0,2',
-            'organisation_type_title' => 'required|string|min:1'
-        ]);
-
-        if (!$create) {
-            $this->validate($this->request, [
-                'id' => 'required|exists:organisations,id',
-            ]);
-        } else {
-            $this->validate($this->request, [
-                'coordinate.*.icon_path' => 'required|file|mimes:jpeg,jpg,png,svg'
-            ]);
-        }
-    }
-
-
-    /**
-     * @param bool $create
      * @return Group
      */
-    private function saveOrganisation($create = true)
+    private function savePeople($create = true, $id = 0)
     {
-        // Create new Group.
-        $organisation = $create ? new Organisation() : Organisation::find($this->request->id);
+        $people = $create ? new People() : People::findOrFail($id);
+        $this->request->has('title') ? $people->title = $this->request->title : '';
+        $this->request->has('description') ? $people->description = $this->request->description : '';
+        $this->request->has('status') ? $people->status = $this->request->status : '';
+        $this->request->has('type_id') ? $people->type_id = (int)$this->request->type_id : '';
+        $this->request->has('created_by') ? $people->created_by = $this->request->created_by : '';
+        $this->request->has('organisation_id') ? $people->organisation_id = (int)$this->request->organisation_id : '';
+        $this->request->has('positionX') ? $people->positionX = $this->request->positionX : '';
+        $this->request->has('positionY') ? $people->positionY = $this->request->positionY : '';
+        $this->request->has('trajectory') ? $people->trajectory = $this->request->trajectory : '';
+        $this->request->has('character_id') ? $people->character_id = $this->request->character_id : '';
+        $this->request->has('icon_size') ? $people->icon_size = $this->request->icon_size : '';
 
-        // Set title
-        $organisation->title = $this->request->title;
+        if ($create) {
+            $people->status = 1;
+            $people->created_by = $this->request->has('created_by') ?  $this->request->created_by : 0;
+            $people->character_id = $this->request->has('character_id') ?  $this->request->character_id : 0;
 
-        // Set description
-        $organisation->description = $this->request->description;
+            // Upload file if exists
+            if ($this->request->has('icon_path') && $this->request->hasFile('icon_path')) {
+                $iconPath = propellaUploadImage($this->request->icon_path, $this->folderName);
 
-        // Set abbreviation
-        $organisation->abbreviation = $this->request->abbreviation;
+                // Set image path into database
+                $people->icon_path = $iconPath;
+            }
+        }else {
+            // First check is has file.
+            if ($this->request->has('icon_path') && $this->request->hasFile('icon_path')) {
+                // Remove existing file.
+                propellaRemoveImage($people->icon_path);
 
-        // Set project id
-        $organisation->group_id = $this->request->group_id;
-
-        // Set status
-        $organisation->status = $this->request->status;
-
-        // set type_id
-        $organisation->type_id = OrganisationType::getOrganisationTypeByTitle($this->request->organisation_type_title);
-
-        // Set created by
-        $organisation->created_by = $this->request->created_by;
-
-        // Save group.
-        $organisation->save();
-
-        // Create coordinate record.
-        if ($this->request->coordinate) {
-
-            foreach ($this->request->coordinate as $coordinate) {
-                $newCoordinate = isset($coordinate['id']) ? OrganisationCoordinate::find($coordinate['id']) : new OrganisationCoordinate();
-                $newCoordinate->position_x = $coordinate['position_x'];
-                $newCoordinate->position_y = $coordinate['position_y'];
-                $newCoordinate->icon_size = $coordinate['icon_size'];
-                $newCoordinate->organisation_id = $organisation->id;
-
-
-                // Upload file if file exists & it is update.
-                if ($create) {
-                    // Upload file
-                    $iconPath = propellaUploadImage($coordinate['icon_path'], $this->folderName);
-
-                    // Set image path into database
-                    $newCoordinate->icon_path = $iconPath;
-                } else {
-                    // Default icon_path.
-                    $defaultPath = !empty($coordinate['icon_path']) && $this->request->hasFile($coordinate['icon_path']) == false ? $coordinate['icon_path'] : '';
-
-                    // Check is file exists or no, if yes then delete first then upload new image.
-                    if ($this->request->hasFile($coordinate['icon_path'])) {
-                        // Remove existing file.
-                        propellaRemoveImage($newCoordinate->icon_path);
-
-                        // Upload new file.
-                        $newIconPath = propellaUploadImage($coordinate['icon_path'], $this->folderName);
-                        $newCoordinate->icon_path = $newIconPath;
-                    }else{
-                        // if new coordinate & do not upload file
-                        $newCoordinate->icon_path = $defaultPath;
-                    }
-                }
-
-                // Save coordinate.
-                $newCoordinate->save();
+                // Upload new file.
+                $newIconPath = propellaUploadImage($this->request->icon_path, $this->folderName);
+                $people->icon_path = $newIconPath;
             }
         }
 
-        return $organisation;
+        $people->save();
+
+        $organisation = Organisation::findOrFail($people->organisation_id);
+
+        $people->organisation_id = $organisation->id;
+        $people->organisation_title = $organisation->title;
+
+        return $people;
     }
-
-
 }

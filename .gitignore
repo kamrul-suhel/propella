@@ -5,6 +5,7 @@
 
 # Ignore node modules
 node_modules
+app/node_modules
 
 # Ignore Sass Cache
 **/.sass-cache
@@ -68,3 +69,4 @@ api/.env
 api/database/.DS_Store
 api/public/images/
 /nbproject/private/
+api/database/mysql-diagram.mwb.bak

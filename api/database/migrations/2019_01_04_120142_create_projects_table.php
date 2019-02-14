@@ -18,6 +18,8 @@ class CreateProjectsTable extends Migration
             $table->string('title');
             $table->text('description');
             $table->tinyInteger('status')->unsigned()->index();
+            $table->bigInteger('parent_id')->index()->unsigned()->default(0);
+            $table->tinyinteger('archive')->index()->unsigned()->default(0);
             $table->timestamps();
         });
     }

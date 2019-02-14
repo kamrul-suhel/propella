@@ -25,7 +25,13 @@ class People extends Model
         'organisation_id',
         'character_id',
         'parent_id',
-        'status'
+        'status',
+        'icon_path',
+        'icon_size',
+        'positionX',
+        'positionY',
+        'trajectory',
+        'archive'
     ];
 
     /**
@@ -34,32 +40,30 @@ class People extends Model
      * @var array
      */
     protected $hidden = [
+        'archive'
     ];
 
     /**
      * @return mixed
      */
-    public function coordinates(){
-        return $this->hasMany('App\PeopleCoordinate', 'people_id')
-            ->orderBy('created_by', 'DESC');
-    }
-
-    /**
-     * @return mixed
-     */
-    public static function getDefaultField(){
+    public static function getDefaultField()
+    {
         return self::select([
             'people.id',
             'people.title',
             'people.description',
             'people.status',
-            'organisations.title as organisation_title',
+            'organisations.title as organisation',
             'organisations.description as organisation_description'
         ])
             ->leftJoin('organisations', 'people.organisation_id', '=', 'organisations.id');
     }
 
-    public function organisation(){
+    /**
+     * @return mixed
+     */
+    public function organisation()
+    {
         return $this->belongsTo('App\Organisation', 'organisation_id');
     }
 }

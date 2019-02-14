@@ -40,7 +40,7 @@ if (!function_exists('propellaUploadImage')) {
         }
 
         // For database record.
-        $publicPath = env('IMAGE_BASE_URL') . DIRECTORY_SEPARATOR . $imageFolder . DIRECTORY_SEPARATOR . date('Y') . DIRECTORY_SEPARATOR .date('j') ;
+        $publicPath = env('IMAGE_BASE_URL') . DIRECTORY_SEPARATOR . $imageFolder . DIRECTORY_SEPARATOR . date('Y') . DIRECTORY_SEPARATOR .date('n') ;
 
         // Absolute path.
         $uploadPath = public_path($publicPath);
@@ -64,7 +64,7 @@ if (!function_exists('propellaRemoveImage')) {
     function propellaRemoveImage($imageUrl)
     {
         $absolutePath = public_path(str_replace(env('APP_URL') . DIRECTORY_SEPARATOR, '', $imageUrl));
-        if (file_exists($absolutePath)) {
+        if (file_exists($absolutePath) && is_file($absolutePath)) {
             unlink($absolutePath);
             return true;
         }
