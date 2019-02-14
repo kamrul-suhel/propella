@@ -112,8 +112,6 @@ export default class Wrapper extends React.PureComponent {
         const {updatedCoordinates, selectedDraggable, selectedGroupCoordinates, progressLabel, clickOutSide} = this.state
         const childrenWithProps = React.Children.map(this.props.children, child => React.cloneElement(child, ...this.props));
 
-        const coordinates = selectedGroupCoordinates.coordinates && selectedGroupCoordinates.coordinates;
-
         const container = document.getElementById('gridwrapper-inner')
         const containerHeight = (container || {}).offsetHeight || 0
         const containerWidth = (container || {}).offsetWidth || 0
@@ -189,7 +187,7 @@ export default class Wrapper extends React.PureComponent {
                 }
                 {childrenWithProps}
 
-                {coordinates ? <Coordinate coordinates={coordinates}/> : ''}
+                {selectedGroupCoordinates.coordinates ? <Coordinate group={selectedGroupCoordinates}/> : ''}
             </React.Fragment>
         )
     }
