@@ -26,6 +26,12 @@ export default class Coordinate extends React.PureComponent {
                     angleDeg = Math.atan2(coordinate.positionY - nextCoordinate.positionY, coordinate.positionX - nextCoordinate.positionX) * 180 / Math.PI;
                     angleDeg = Math.floor(angleDeg);
 
+                    if(Math.sign(angleDeg) === 1){
+                        angleDeg = Math.abs(angleDeg) * -1;
+                    }else {
+                        angleDeg = Math.abs(angleDeg);
+                    }
+
                     // Distance between 2 points
                     let a = coordinate.positionX - nextCoordinate.positionX;
                     let b = coordinate.positionY - nextCoordinate.positionY;
