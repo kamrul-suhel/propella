@@ -2,8 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Competitor;
+use App\Group;
+use App\Organisation;
+use App\People;
+use App\PeopleType;
 use App\Project;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class ProjectController extends PropellaBaseController
 {
@@ -14,76 +20,85 @@ class ProjectController extends PropellaBaseController
      */
     public function __construct(Request $request)
     {
-        //
         parent::__construct($request);
     }
 
     /**
      * @return mixed
      */
-    public function create(){
-        // validate data.
-        $this->validateData();
+    public function create()
+    {
+        $this->validate($this->request, [
+            'title' => 'required|string|min:1',
+            'description' => 'required|string|min:1',
+            'status' => 'integer|between:1,3',
+            'people' => 'array',
+        ]);
 
         // Create project.
         $project = new Project();
         $project->title = $this->request->title;
         $project->description = $this->request->description;
-        $project->status = $this->request->status;
+        $project->status = $this->request->has('status') ? $this->request->status : 1;
 
         // Save project.
         $project->save();
 
-        if($this->request->has('people')){
-            $peoples = [];
-            foreach($this->request->peoples as $people){
-                $newPeople['title'] = $people['title'];
-                $newPeople['status'] = $people['status'];
-                $peoples[] = $newPeople;
-            }
-
-            $project->people()->createMany($peoples);
-        }
-
         return response()->json($project);
-
     }
 
     /**
      * @param $id
      * @return mixed
      */
-    public function update($id){
-
-        // Validate data
-        $this->validateData(false);
-
+    public function update($id)
+    {
         // Find project
         $project = Project::findOrFail($id);
 
-        $project->title = $this->request->title;
-        $project->description = $this->request->description;
-        $project->status = $this->request->status;
-
-        // Update project
+        $this->request->has('title') ? $project->title = $this->request->title : '';
+        $this->request->has('description') ? $project->description = $this->request->description : '';
+        $this->request->has('status') ? $project->status = $this->request->status : '';
         $project->save();
 
         return response()->json($project);
-
     }
 
     /**
      * @return mixed
      */
-    public function list(){
+    public function list()
+    {
         $projects = new Project();
 
-        // project status, default it will give your 1, active records.
-        $this->status != null ? $projects  = $projects->where('status', $this->status) : '';
+        // project status, default it will give your 0,1 active records
+        $projects = $this->status != null ? $projects->where('status', $this->status) : $projects->whereIn('status', [0, 1]);
 
-        // return all data without pagination.
-        $projects = $this->allData ? $projects->get() : $projects->paginate($this->perPage);
+        $projects = $projects->where('archive', 0);
+        $projects = $projects->paginate($this->perPage);
 
+        // If has parameter archives then add last 5 archive.
+        if ($this->request->has('archives') && $this->request->archives == 1) {
+            foreach ($projects->items() as $project) {
+                $ids = Project::getAllId($project->parent_id, $project->id);
+                $archives = Project::select([
+                    'id',
+                    'updated_at'
+                ])
+                    ->whereIn('id', $ids)
+                    ->orderBy('created_at', 'DESC')
+                    ->get();
+
+                $newArchives = [];
+                $archives->map(function ($archive) use (&$newArchives) {
+                    $newArchive['id'] = $archive->id;
+                    $newArchive['updated_at'] = $archive->updated_at->format('l jS \of F, Y h:i:s A');
+                    $newArchives[] = $newArchive;
+                });
+
+                $project->archives = $newArchives;
+            }
+        }
         return response()->json($projects);
     }
 
@@ -91,45 +106,201 @@ class ProjectController extends PropellaBaseController
      * @param $id
      * @return mixed
      */
-    public function single($id){
-        $project = Project::with(['groups.coordinates', 'people'])
+    public function single($id)
+    {
+        $project = Project::with(['groups.organisations.people'])
             ->findOrFail($id);
-        
-        return response()->json($project);
 
+        $project->groups->map(function ($group) {
+            $ids = Group::getAllId($group->parent_id);
+            $groups = Group::select([
+                'id',
+                'positionX',
+                'positionY',
+                'icon_size',
+                'icon_path'
+            ])
+                ->whereIn('id', $ids)
+                ->get();
+            $group->coordinates = $groups;
+        });
+
+        return response()->json($project);
     }
 
     /**
      * @param $id
      * @return mixed
      */
-    public function delete($id){
+    public function activateProjectById($id)
+    {
         $project = Project::findOrFail($id);
+        $ids = Project::getAllId($project->parent_id, $project->id);
 
-        $project->delete();
+        // Find the activated project fist, then disable this project
+        $disableProject = Project::with([
+            'groups.organisations.people',
+            'groups.competitors'
+        ])
+            ->whereIn('id', $ids)
+            ->where('archive', 0)
+            ->first();
+
+        if (!$disableProject) {
+            return response()->json('No activate project found');
+        }
+
+        $activateProject = Project::findOrFail($id);
+        $activateProject->archive = 0;
+        $activateProject->save();
+
+        $activateGroups = Group::where('project_id', $activateProject->id)
+            ->get();
+
+        $activateGroups->map(function ($group) {
+            $group->archive = 0;
+            $group->save();
+
+            // Enable competitor
+            $competitors = Competitor::where('group_id', $group->id)->get();
+            $competitors->map(function ($competitor) {
+                $competitor->archive = 0;
+                $competitor->save();
+            });
+
+            // Enable organisations
+            $organisations = Organisation::where('group_id', $group->id)->get();
+            $organisations->map(function ($organisation) {
+                $organisation->archive = 0;
+                $organisation->save();
+
+                // Enable people
+                $people = People::where('organisation_id', $organisation->id)->get();
+                $people->map(function ($people) {
+                    $people->archive = 0;
+                    $people->save();
+                });
+            });
+        });
+
+        // Disable activated project
+        $disableProject->archive = 1;
+        $disableProject->save();
+
+        $disableProject->groups->map(function ($group) {
+            // Disable group
+            $group->archive = 1;
+            $group->save();
+
+            // Disable competitor
+            $group->competitors->map(function ($competitor) {
+                $competitor->archive = 1;
+                $competitor->save();
+            });
+
+            $group->organisations->map(function ($organisation) {
+                // Disable organisation
+                $organisation->archive = 1;
+                $organisation->save();
+
+                // Disable people
+                $organisation->people->map(function ($people) {
+                    $people->archive = 1;
+                    $people->save();
+                });
+            });
+        });
+        return response()->json($activateProject);
+    }
+
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function delete($id)
+    {
+        $project = Project::findOrFail($id);
+        $project->status = 2;
+        $project->save();
 
         return response()->json($project);
     }
 
     /**
-     * @param bool $create
+     * @param $id
+     * @return mixed
      */
-    private function validateData($create = true){
-        $this->validate($this->request, [
-            'title' => 'required|string|min:1',
-            'description' => 'required|string|min:1',
-            'status' => 'required|integer|between:1,3',
-            'people' => 'array',
-            'people.*.title' => 'required|string|min:1',
-            'people.*.status' => 'required|integer|min:0'
-        ]);
+    public function archiveProject($id)
+    {
+        $project = Project::with([
+            'groups.organisations.people',
+            'groups.competitors'
+        ])
+            ->findOrFail($id);
 
-        if(!$create){
-            $this->validate($this->request, [
-                'id' => 'required|exists:projects,id',
-            ]);
-        }
+        $project->archive = 1;
+        $project->save();
+
+        $newProject = $project->replicate();
+        $newProject->parent_id = $project->id;
+        $newProject->archive = 0;
+        $newProject->save();
+
+        // Loop groups coordinate, insert last record & update previous record status.
+        $project->groups->map(function ($group) use ($newProject) {
+
+            // Check if it has status 1
+            $group->archive = 1;
+            $group->save();
+
+            // Duplicate record.
+            $newGroup = $group->replicate();
+            $newGroup->archive = 0;
+            $newGroup->parent_id = $group->id;
+            $newGroup->project_id = $newProject->id;
+            $newGroup->save();
+
+            // Disable competitor
+            $group->competitors->map(function ($competitor) use ($newGroup) {
+                $competitor->archive = 1;
+                $competitor->save();
+
+                // Duplicate competitor
+                $newCompetitor = $competitor->replicate();
+                $newCompetitor->archive = 0;
+                $newCompetitor->group_id = $newGroup->id;
+                $newCompetitor->parent_id = $competitor->id;
+                $newCompetitor->save();
+            });
+
+            // Archive organisations
+            $group->organisations->map(function ($organisation) use ($newGroup) {
+                $organisation->archive = 1;
+                $organisation->save();
+
+                // Duplicate organisation
+                $newOrganisation = $organisation->replicate();
+                $newOrganisation->parent_id = $organisation->id;
+                $newOrganisation->group_id = $newGroup->id;
+                $newOrganisation->archive = 0;
+                $newOrganisation->save();
+
+                // Archive people
+                $organisation->people->map(function ($people) use ($newOrganisation) {
+
+                    $people->archive = 1;
+                    $people->save();
+
+                    $newPeople = $people->replicate();
+                    $newPeople->parent_id = $people->id;
+                    $newPeople->organisation_id = $newOrganisation->id;
+                    $newPeople->archive = 0;
+                    $newPeople->save();
+                });
+            });
+        });
+
+        return response()->json($project);
     }
-
-
 }

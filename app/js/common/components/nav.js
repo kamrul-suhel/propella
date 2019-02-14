@@ -26,6 +26,8 @@ export default class Popup extends React.PureComponent {
             return `/projects/${params.id}`
         } else if (location.pathname.match(/^\/projects\/[0-9]*/)) {
             return `/projects/${params.id}/groups`
+        }else if(location.pathname.match(/^\/projects\/[0-9]*\/groups\/[0-9]\/edit/)){
+
         }
     }
 

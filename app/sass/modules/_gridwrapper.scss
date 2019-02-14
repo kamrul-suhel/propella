@@ -108,6 +108,9 @@
       }      
       &.size-l{
             .button-round{
+              cursor:pointer;
+              transition:all ease-in-out .3s;
+
                 &.first{
                     top:-50px;
                     left:-111px;

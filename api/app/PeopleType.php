@@ -20,8 +20,7 @@ class PeopleType extends Model
      */
     protected $fillable = [
         'title',
-        'project_id',
-        'status'
+        'user_group_id',
     ];
 
     /**
@@ -30,6 +29,20 @@ class PeopleType extends Model
      * @var array
      */
     protected $hidden = [
-        'project_id'
     ];
+
+    public static function getPeopleTypeByTitle($title){
+        $peopleType = self::where('title', $title)
+            ->first();
+
+        if($peopleType){
+            return response()->json($peopleType);
+        }
+
+        // Not found so create & send.
+        $peopleType = new self();
+        $peopleType->title = $title;
+        $peopleType->status = 1;
+
+    }
 }
