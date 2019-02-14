@@ -11,7 +11,6 @@ export default class Coordinate extends React.PureComponent {
         if (nextCoordinate) {
             // angle in degrees
             angleDeg = Math.atan2(currentCoordinate.positionY - nextCoordinate.positionY, currentCoordinate.positionX - nextCoordinate.positionX) * 180 / Math.PI;
-            angleDeg = Math.floor(angleDeg);
 
             // Change Positive Number to Negative Number
             if (Math.sign(angleDeg) === 1) {
@@ -33,12 +32,15 @@ export default class Coordinate extends React.PureComponent {
         }
     }
 
-    renderRootCoordinate(position) {
+    renderRootCoordinate(group, position) {
         return (
-            <div className="connector" style={{
-                transform: `rotate(${position.degree ? position.degree : 0}deg)`,
-                height: `${position.height ? position.height : 0}VH`
-            }}></div>
+            <div className="selected-group-wrapper first-coordinate progress-button"
+                 style={{top: `${group.positionX}%`, left: `${group.positionY}%`}}>
+                <div className="connector" style={{
+                    transform: `rotate(${position.degree ? position.degree : 0}deg)`,
+                    height: `${position.height ? position.height : 0}VH`
+                }}></div>
+            </div>
         )
     }
 
@@ -51,7 +53,7 @@ export default class Coordinate extends React.PureComponent {
                 return (
                     <div key={coordinate.id}
                          className="selected-group-wrapper progress-button"
-                         style={{top: `${coordinate.positionX}%`, left: `${coordinate.positionY}%`}}>
+                         style={{top: `${coordinate.positionX}px`, left: `${coordinate.positionY}px`}}>
                         <div className="connector" style={{
                             transform: `rotate(${position.degree ? position.degree : 0}deg)`,
                             height: `${position.height ? position.height : 0}VH`
@@ -71,7 +73,7 @@ export default class Coordinate extends React.PureComponent {
 
         return (
             <React.Fragment>
-                {this.renderRootCoordinate(rootConnector)}
+                {this.renderRootCoordinate(group, rootConnector)}
                 {this.renderCoordinate(group)}
             </React.Fragment>
         )
