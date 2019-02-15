@@ -18,7 +18,7 @@ export default class Description extends React.PureComponent {
             setFormRef
         } = this.props
 
-        const fileUploadClass = (icon) ? 'has-file' : 'has-no-file'
+        const fileUploadClass = (icon || icon_path) ? 'has-file' : 'has-no-file'
 
         return (
             <Form onSubmit={handleSubmit} ref={setFormRef}>
