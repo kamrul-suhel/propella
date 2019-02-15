@@ -98,7 +98,7 @@ export default class Wrapper extends React.PureComponent {
         if (selectedGroup) {
             this.setState({
                 selectedGroupCoordinates: selectedGroup,
-                progressLabel:'Hi progress'
+                progressLabel: 'Hi progress'
             })
         }
     }
@@ -145,14 +145,11 @@ export default class Wrapper extends React.PureComponent {
                             disabled={selectedDraggable === group.id}
                         >
                             <div handleid={group.id}
-                                 className={
-                                     [
-                                         (selectedGroupCoordinates.coordinates && group.id === selectedGroupCoordinates.id ? `b-size-${group.icon_size}` : `size-${group.icon_size}`),
-                                         (selectedGroupCoordinates.coordinates && group.id !== selectedGroupCoordinates.id ? 'disabled' : '')
-                                     ]
-                                 }
+                                 className={[
+                                     (selectedGroupCoordinates.coordinates && group.id === selectedGroupCoordinates.id ? `b-size-${group.icon_size}` : `size-${group.icon_size}`),
+                                     (selectedGroupCoordinates.coordinates && group.id !== selectedGroupCoordinates.id ? 'disabled' : '')
+                                 ]}
                                  onClick={(e) => this.handleClickInside(e, group.id)}>
-
                                 {group.icon_path ? <div className="icon-path"
                                                         style={{backgroundImage: `url(${group.icon_path})`}}></div> : ''}
 

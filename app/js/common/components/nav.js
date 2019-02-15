@@ -22,12 +22,12 @@ export default class Popup extends React.PureComponent {
     nextLink = () => {
         const {params, location} = this.props
 
-        if (location.pathname.match(/^\/projects\/[0-9]*\/groups/)) {
-            return `/projects/${params.id}`
+        if (location.pathname.match(/^\/projects\/[0-9]*\/groups\/[0-9]*/)) {
+            return `/projects/${params.id}/groups/`
         } else if (location.pathname.match(/^\/projects\/[0-9]*/)) {
             return `/projects/${params.id}/groups`
-        }else if(location.pathname.match(/^\/projects\/[0-9]*\/groups\/[0-9]\/edit/)){
-
+        }else if(location.pathname.match(/^\/projects\/[0-9]*\/groups/)){
+            return `/projects/${params.id}`
         }
     }
 
@@ -41,7 +41,7 @@ export default class Popup extends React.PureComponent {
                      // name="group"
                       //value={params.groupId}
                     ///>
-                    <span/>
+                    <Link to={this.nextLink} className="icon-stack"/>
                 ) : (
                     <Link to={this.nextLink} className="icon-stack"/>
                 )}

@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import Draggable from 'react-draggable';
 import {api} from 'app/utils';
 import * as selector from './selector';
+import {Link} from "react-router";
 
 @connect((state, ownProps) => {
     const getGroups = selector.makeGetGroups();
@@ -20,7 +21,10 @@ export default class Wrapper extends React.PureComponent {
         super(props)
 
         this.state = {
-            updatedCoordinates: {}
+            updatedCoordinates: {},
+            selectedDraggable: 0,
+            clickOutSide: false,
+            progressLabel: 'Progress'
         }
     }
 
@@ -39,21 +43,43 @@ export default class Wrapper extends React.PureComponent {
 
     onDraggableEventHandler = (event, data) => {
         // find the id we're moving
-        const groupId = Number(_.find(data.node.attributes, {name: 'handleid'}).value)
+        const organisationId = Number(_.find(data.node.attributes, {name: 'handleid'}).value)
 
-        // get the wrapper dimensions
-        const maxWidth = data.node.parentNode.clientWidth
-        const maxHeight = data.node.parentNode.clientHeight
+        console.log('handle id ', organisationId);
 
-        const newY = _.round((data.y / maxHeight) * 100, 4)
-        const newX = _.round((data.x / maxWidth) * 100, 4)
+        console.log('Delta is: ', data);
 
+        if (data.deltaX === 0 || data.deltaY === 0) {
+            this.setState({'selectedDraggable': organisationId, clickOutSide: false})
+        } else {
+            // get the wrapper dimensions
+            const maxWidth = data.node.parentNode.clientWidth
+            const maxHeight = data.node.parentNode.clientHeight
+
+            const newY = _.round((data.y / maxHeight) * 100, 4)
+            const newX = _.round((data.x / maxWidth) * 100, 4)
+
+            this.setState({
+                updatedCoordinates: {
+                    ...this.state.updatedCoordinates,
+                    [organisationId]: {id: organisationId, positionX: newX, positionY: newY}
+                }
+            })
+        }
+    }
+
+    handleClickInside = (e, organisationId) => {
+        const click = !this.state.clickOutSide;
         this.setState({
-            updatedCoordinates: {
-                ...this.state.updatedCoordinates,
-                [groupId]: {id: groupId, positionX: newX, positionY: newY}
-            }
-        })
+            selectedGroupCoordinates: {}
+        });
+
+        if (organisationId === this.state.selectedDraggable) {
+            this.setState({
+                clickOutSide: click,
+                progressLabel: 'Progress'
+            })
+        }
     }
 
     handleSaveChanges = async () => {
@@ -71,8 +97,8 @@ export default class Wrapper extends React.PureComponent {
     }
 
     render() {
-        const {groups, group} = this.props
-        const {updatedCoordinates} = this.state
+        const {groups, group, params} = this.props
+        const {updatedCoordinates, handleClickInside, selectedDraggable, clickOutSide, progressLabel} = this.state
 
         const childrenWithProps = React.Children.map(this.props.children, child => React.cloneElement(child, ...this.props));
 
@@ -105,8 +131,39 @@ export default class Wrapper extends React.PureComponent {
                             bounds=".gridwrapper-inner-section-wrapper"
                             onStop={this.onDraggableEventHandler}
                         >
-                            <div handleid={organisation.id} className={`size-${organisation.icon_size}`}>
+                            <div handleid={organisation.id}
+                                 className={`size-${organisation.icon_size}`}
+                                 onClick={(event) => this.handleClickInside(event, organisation.id)}
+                            >
                                 <div className="handle">{organisation.abbreviation}</div>
+
+                                {selectedDraggable === organisation.id && clickOutSide &&
+                                    <div className="react-draggable-actions">
+                                        <Link className="button-round first"
+                                              to={`/${url.projects}/${params.id}/groups/${group.id}/${url.organisations}/${organisation.id}`}>
+                                            <span className="button-round-inside icon-edit"/>
+                                            Edit
+                                        </Link>
+
+                                        <span className="button-round second"
+                                              onClick={(event) => this.getGroupCoordinate(event, group.id)}>
+                                            <span className="button-round-inside icon-chain"/>{progressLabel}
+                                        </span>
+
+                                        <Link className="button-round third"
+                                              to={`/${url.projects}/${params.id}/groups/${group.id}/`}>
+                                            <span className="button-round-inside icon-add-organisation"/>
+                                            People
+                                        </Link>
+
+                                        <Link className="button-round fourth"
+                                              to={`/${url.projects}/${params.id}/groups/${group.id}/competitors`}>
+                                            <span className="button-round-inside"/>
+                                            Add Person
+                                        </Link>
+                                    </div>
+                                }
+
                             </div>
                         </Draggable>
                     )
