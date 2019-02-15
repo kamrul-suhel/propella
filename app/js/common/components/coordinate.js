@@ -2,14 +2,10 @@ import React from 'react'
 import Propstype from 'prop-types'
 
 export default class Coordinate extends React.PureComponent {
-    state = {}
-
     getDegreeRotate(currentCoordinate, nextCoordinate) {
         let angleDeg = 0
         let c = 0
         const container = this.getContainer()
-        console.log('Current coordinate: ', currentCoordinate)
-        console.log('Next coordinate : ', nextCoordinate)
 
         if (nextCoordinate) {
             const cPositionX = container.width / 100 * currentCoordinate.positionX
@@ -69,7 +65,7 @@ export default class Coordinate extends React.PureComponent {
                 return (
                     <div key={coordinate.id}
                          id={coordinate.id}
-                         className="selected-group-wrapper progress-button"
+                         className={`selected-group-wrapper progress-button coordinate-${index}`}
                          style={{transform: `translate(${container.width / 100 * coordinate.positionX}px, ${container.height / 100 * coordinate.positionY}px)`}}>
                         <div className="connector" style={{
                             transform: `rotate(${position.degree ? position.degree : 0}deg)`,

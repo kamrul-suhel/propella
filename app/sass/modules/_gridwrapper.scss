@@ -113,7 +113,7 @@
         color: white;
       }
 
-      &.size-l {
+      &.size-l, &.b-size-l {
         .button-round {
           cursor: pointer;
           transition: all ease-in-out .3s;
@@ -194,6 +194,7 @@
       width: 56px;
       background-image: url(../images/marker-medium.svg);
       font-size: 14px;
+      background-size:cover;
     }
 
     .react-draggable.size-l {
@@ -201,6 +202,23 @@
       width: 82px;
       background-image: url(../images/marker-large.svg);
       font-size: 14px;
+      background-size:cover;
+    }
+
+    .react-draggable.b-size-m {
+      height: 67px;
+      width: 56px;
+      background-image: url(../images/marker-medium.svg);
+      font-size: 14px;
+      background-size:cover;
+    }
+
+    .react-draggable.b-size-l {
+      height: 95px;
+      width: 82px;
+      background-image: url(../images/marker-large-black.svg);
+      font-size: 14px;
+      background-size:cover;
     }
 
     .welcome-message {
@@ -393,12 +411,16 @@
 
     .connector {
       display: block;
-      height: 5px;
+      height: $connector-height;
       position: absolute;
       bottom: 50%;
       right: 50%;
       background-color: black;
       transform-origin: right;
     }
+  }
+
+  .first-coordinate.progress-button {
+    background:none;
   }
 }
