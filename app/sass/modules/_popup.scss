@@ -1,7 +1,7 @@
 .popup {
 	min-width: 300px;
 	width: 100%;
-	max-width: 550px;
+	max-width: 350px;
 	position: relative;
 	left: 50%;
 	transform: translateX(-50%);
@@ -159,10 +159,21 @@
       font-size: 15px;
       background: white;
       padding: 0;
-
       &:first-child {
         border-left: 0px none;
       }
     }
+  }
+  &.step-1{
+    max-width:550px;
+  }
+  &.step-1{
+    max-width:550px;
+  }
+  &.step-1{
+    max-width:550px;
+  }
+  &.step-1{
+    max-width:550px;
   }
 }
