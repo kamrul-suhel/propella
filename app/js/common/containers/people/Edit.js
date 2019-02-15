@@ -183,7 +183,7 @@ export default class Edit extends React.PureComponent {
 
 		return (
 			<Popup
-                additionalClass={(step !== 4 ? `people window` : 'people small-window')}
+                additionalClass={(step !== 4 ? `people large-window` : 'people small-window')}
 				title={popup.title ? `Person: ${popup.title}` : `New Person`}
 				closePath={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}`}
         buttons={this.popupActions()}
