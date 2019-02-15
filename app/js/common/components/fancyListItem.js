@@ -9,10 +9,8 @@ export default class FancyListItem extends React.PureComponent {
             <li
                 className={`fancylist-item ${className}`}
                 key={keyId}
-            >
-                {icon && <span className="fancylist-item-icon-size">{icon}</span>}
-
-                {iconPath && <span className="fancylist-item-icon-path"><img src={iconPath}/></span>}
+            >                
+                {iconPath && <span className="fancylist-item-icon"><img src={iconPath}/></span>}
 
                 <span className="fancylist-item-title">{children}</span>
 
