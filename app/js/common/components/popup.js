@@ -25,14 +25,15 @@ export default class Popup extends React.PureComponent {
                 <div className="popup-inner">
                     <Alerts/>
                     {this.props.children}
-                </div>
-                {buttons &&
-                <div className="popup-inner-buttons">
                     {buttons &&
-                    buttons
+                    <div className="popup-inner-buttons">
+                        {buttons &&
+                        buttons
+                        }
+                    </div>
                     }
                 </div>
-                }
+
             </div>
         );
     }
