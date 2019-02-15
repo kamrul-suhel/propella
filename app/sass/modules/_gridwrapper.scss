@@ -221,6 +221,10 @@
       background-size:cover;
     }
 
+    .react-draggable.disabled{
+      opacity:.5;
+    }
+
     .welcome-message {
       display: flex;
       align-items: center;
