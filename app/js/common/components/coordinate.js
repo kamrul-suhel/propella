@@ -21,11 +21,11 @@ export default class Coordinate extends React.PureComponent {
             angleDeg = Math.atan2(cPositionY - nPositionY, cPositionX - nPositionX) * 180 / Math.PI
 
             // Change Positive Number to Negative Number
-            if (Math.sign(angleDeg) === 1) {
-                angleDeg = Math.abs(angleDeg) * -1
-            } else {
-                angleDeg = Math.abs(angleDeg)
-            }
+            // if (Math.sign(angleDeg) === 1) {
+            //     angleDeg = Math.abs(angleDeg) * -1
+            // } else {
+            //     angleDeg = Math.abs(angleDeg)
+            // }
 
             console.log('Angle degree : ', angleDeg)
 
@@ -62,8 +62,8 @@ export default class Coordinate extends React.PureComponent {
             <div className="selected-group-wrapper first-coordinate progress-button"
                  style={{transform: `translate(${container.width / 100 * group.positionX}px, ${container.height / 100 * group.positionY}px)`}}>
                 <div className="connector" style={{
-                    transform: `rotate(${position.degree ? 360 - position.degree : 0}deg)`,
-                    width: `${position.height ? position.height : 0}VH`
+                    transform: `rotate(${position.degree ? position.degree : 0}deg)`,
+                    width: `${position.height ? position.height : 0}px`
                 }}></div>
             </div>
         )
@@ -82,7 +82,7 @@ export default class Coordinate extends React.PureComponent {
                          style={{transform: `translate(${container.width / 100 * coordinate.positionX}px, ${container.height / 100 * coordinate.positionY}px)`}}>
                         <div className="connector" style={{
                             transform: `rotate(${position.degree ? position.degree : 0}deg)`,
-                            height: `${position.height ? position.height : 0}VH`
+                            width: `${position.height ? position.height : 0}px`
                         }}></div>
                         <p><img src={coordinate.icon_path}/></p>
                     </div>
