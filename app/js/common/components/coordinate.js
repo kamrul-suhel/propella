@@ -20,13 +20,6 @@ export default class Coordinate extends React.PureComponent {
             // angle in degrees
             angleDeg = Math.atan2(cPositionY - nPositionY, cPositionX - nPositionX) * 180 / Math.PI
 
-            // Change Positive Number to Negative Number
-            // if (Math.sign(angleDeg) === 1) {
-            //     angleDeg = Math.abs(angleDeg) * -1
-            // } else {
-            //     angleDeg = Math.abs(angleDeg)
-            // }
-
             console.log('Angle degree : ', angleDeg)
 
             // Distance between 2 points
@@ -35,9 +28,6 @@ export default class Coordinate extends React.PureComponent {
 
             c = Math.sqrt(a * a + b * b)
         }
-
-        console.log('angle ', angleDeg)
-        console.log('Height ', c)
 
         return {
             degree: angleDeg,
@@ -78,6 +68,7 @@ export default class Coordinate extends React.PureComponent {
                 const position = this.getDegreeRotate(coordinate, nextCoordinate)
                 return (
                     <div key={coordinate.id}
+                         id={coordinate.id}
                          className="selected-group-wrapper progress-button"
                          style={{transform: `translate(${container.width / 100 * coordinate.positionX}px, ${container.height / 100 * coordinate.positionY}px)`}}>
                         <div className="connector" style={{
