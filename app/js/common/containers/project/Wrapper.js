@@ -129,8 +129,6 @@ export default class Wrapper extends React.PureComponent {
                         return
                     }
 
-                    console.log('changing again');
-
                     return (
                         <Draggable
                             key={group.id}
@@ -147,7 +145,12 @@ export default class Wrapper extends React.PureComponent {
                             disabled={selectedDraggable === group.id}
                         >
                             <div handleid={group.id}
-                                 className={(selectedGroupCoordinates.coordinates ? `b-size-${group.icon_size}` : `size-${group.icon_size}`)}
+                                 className={
+                                     [
+                                         (selectedGroupCoordinates.coordinates && group.id === selectedGroupCoordinates.id ? `b-size-${group.icon_size}` : `size-${group.icon_size}`),
+                                         (selectedGroupCoordinates.coordinates && group.id !== selectedGroupCoordinates.id ? 'disabled' : '')
+                                     ]
+                                 }
                                  onClick={(e) => this.handleClickInside(e, group.id)}>
 
                                 {group.icon_path ? <div className="icon-path"
