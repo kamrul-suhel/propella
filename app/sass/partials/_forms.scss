@@ -7,7 +7,10 @@
     margin: 10px auto;
 
     &.form-label-title{
-        margin-bottom:25px;
+        margin-bottom:23px;
+        .h2{
+            font-weight:500;
+        }
     }
 
     .tooltip {
@@ -25,6 +28,8 @@
         .form-label{
             font-weight:bold;
             margin-bottom:25px;
+            text-transform:none;
+            font-size:14px;
         }
         .handle{
             background-color:#F1F1F1;
@@ -65,6 +70,7 @@
     box-shadow: inset 0 0 3px 0 rgba(0,0,0,0.50);
     font-size: 24px;
     text-align: center;
+    font-weight:500;
     -webkit-appearance: none;
     border: 1px solid #FCFCFC;
     padding: 6px 0;
@@ -208,5 +214,8 @@
                 background-color:tranparent;
             }
         }
+    }
+    .slider-description{
+        margin-bottom:40px;
     }
 }

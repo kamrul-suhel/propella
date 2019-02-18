@@ -1,7 +1,7 @@
 .popup {
 	min-width: 300px;
 	width: 100%;
-	max-width: 550px;
+	max-width: 350px;
 	position: relative;
 	left: 50%;
 	transform: translateX(-50%);
@@ -37,11 +37,10 @@
 		position: relative;
 		text-align: center;
                 color: white;
-                display: flex;
-                box-shadow: 2px -1px 2px 0 rgba(0,0,0,0.50);
-                border-radius: 4px 4px 0 0;
+                display: flex;     
                 background-color: #1C1C1C;
                 z-index:1;
+                border-radius:5px 5px 0px 0px;
 		&:before {
 			width: 0;
 			height: 0;
@@ -59,8 +58,7 @@
 			font-size: 14px;
                         flex: 1;
                         padding: 17px 0px;
-                        box-shadow: 1px 2px 4px 0 rgba(0,0,0,0.50);
-                        border-radius: 4px 0 0 0;
+                        border-radius: 4px 4px 0 0;
 		}
 
     .popup-header-tab {
@@ -80,26 +78,25 @@
 
 		.popup-header-close {
 			position: absolute;
-                        right: 15px;
-                        top: 9px;
+                        right: 16px;
+                        top: 16px;
                         color: white;
                         &:before {
                           @include font-icon;
                           content: '\6f';
-                          font-size: 12px;
+                          font-size: 11px;
                         }
 		}
 	}
 
 	.popup-inner {
 		background: white;
-		text-align: center;
-		padding: 25px;
+		text-align: center;		
                 border: 0px none;
                 box-shadow: 1px 2px 4px 0 rgba(0,0,0,0.50);
-                border-radius: 0 0 4px 4px;
+                border-radius: 0px 0x 5px 5px;
                 position:relative;
-                z-index:2;
+                z-index:2; 
 		form {
 			flex-direction: column;
 		}
@@ -107,62 +104,111 @@
                     display:flex;
                     flex-wrap:wrap;
                     justify-content:center;
+                    flex-direction:column;
+                    padding:20px;
                     .success-message, .ov-message{
                         width:100%;
                         p{
                             text-transform:uppercase;
+                            font-size:12px;
+                            margin-bottom:20px;
                         }
                     }
-                    .royalty-wrapper{
-                        width:30%;                        
-                        span{
-                            background-image:url('../images/green-circle.svg');                            
-                        }
-                    }
-                    .loyalty-wrapper{
-                        width:30%;     
-                        span{
-                            background-image:url('../images/red-circle.svg');                            
-                        }
-                    }
-                    .loyalty-wrapper, .royalty-wrapper{                        
-                        span{
-                            background-size:100%;
-                            background-repeat:no-repeat;
-                            margin: auto;
-                            width: 73px;
-                            height: 75px;
+                    .ov-img-content{
+                        position:relative;
+                        margin-bottom:30px;
+                        .ov-icon-path{
+                            background-color: white;
+                            width: 150px;
+                            height: 150px; 
+                            border-radius: 80px;
                             display: flex;
                             align-items: center;
                             justify-content: center;
-                            color:white;
-                            font-size:24px;
+                            margin: auto;
+                            position: relative;
+                            border: 2px solid $brand-color-dark;
+                            img{                                
+                                width: 100px;
+                                height: auto;
+                            }                            
+                        }
+                        .ov-icon-size{
+                            position:absolute;
+                            top:0px;
+                            right:0px;
+                            border-radius:40px;
+                            background-color:white;
+                            border:2px solid $brand-color-dark;
+                            height:40px;
+                            width:40px;
+                            display:flex;
+                            align-items:center;
+                            justify-content:center;
+                            font-size:16px;
+                            line-height:1;
+                            font-weight:500;
                         }
                     }
+                    .ov-scores{
+                     display:flex;
+                     justify-content:center;
+                     margin-bottom:30px;
+                        .royalty-wrapper{
+                           width:40%;                        
+                           span{
+                               background-image:url('../images/green-circle.svg');                            
+                           }
+                       }
+                       .loyalty-wrapper{
+                           width:40%;  
+                           span{
+                               background-image:url('../images/red-circle.svg');                            
+                           }
+                       }
+                       .loyalty-wrapper, .royalty-wrapper{                        
+                           span{
+                               background-size:100%;
+                               background-repeat:no-repeat;
+                               margin: auto;
+                               width: 73px;
+                               height: 75px;
+                               display: flex;
+                               align-items: center;
+                               justify-content: center;
+                               color:white;
+                               font-size:24px;
+                           }
+                       }
+                    }                    
                 }
-
+                .fancylist{
+                    padding:25px;
+                }
 	}
   .popup-inner-buttons {
     display: flex;
     flex-direction: row;
     width: 100%;
     border-top: 1px solid #1C1C1C;
-    background: white;
-    box-shadow: 1px 2px 4px 0 rgba(0,0,0,0.50);
-    border-radius: 0 0 4px 4px;
-    .button {
-      flex: 1;
-      margin: 0;
-      border: solid #1C1C1C;
-      border-width: 0 0 0 1px;
-      line-height: 40px;
-      font-size: 15px;
-      background: white;
-      padding: 0;
-
-      &:first-child {
-        border-left: 0px none;
-      }
-    }
+        .button {
+          flex: 1;
+          margin: 0;
+          border: solid #1C1C1C;
+          border-width: 0 0 0 1px;
+          line-height: 40px;
+          font-size: 15px;
+          padding: 0;
+            &:first-child {
+              border-left: 0px none;
+            }
+        }    
   }
+  &.large-window{
+    max-width:550px;
+  }
+  &.small-window{
+    max-width:350px;
+  }
+
 }

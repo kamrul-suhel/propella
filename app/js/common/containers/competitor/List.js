@@ -76,7 +76,7 @@ export default class List extends React.PureComponent {
                           to={`/${url.projects}/${this.props.params.id}/${url.groups}/${params.groupId}`}>Cancel</Link>,
                     <button onClick={this.handleSubmit} className="button">Save Changes</button>
                 ]}
-                additionalClass="competitors"
+                additionalClass="competitors large-window"
             >
                 <ContentLoader
                     data={groups.collection}

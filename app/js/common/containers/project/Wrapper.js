@@ -84,7 +84,7 @@ export default class Wrapper extends React.PureComponent {
         if (selectedGroup) {
             this.setState({
                 selectedGroupCoordinates: selectedGroup,
-                progressLabel:'Hi progress'
+                progressLabel: 'Hi progress'
             })
         }
     }
@@ -148,7 +148,6 @@ export default class Wrapper extends React.PureComponent {
                                  }
                                  onClick={this.handleDraggableClick}
                                  >
-
 
                                 {selectedDraggable === group.id &&
                                 <div className="react-draggable-actions">
