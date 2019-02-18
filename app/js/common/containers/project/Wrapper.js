@@ -128,7 +128,7 @@ export default class Wrapper extends React.PureComponent {
                         <Draggable
                             key={group.id}
                             axis="both"
-                            handle=".handle"
+                            handle=".react-draggable-handle"
                             defaultPosition={{
                                 x: containerWidth / 100 * group.positionX,
                                 y: containerHeight / 100 * group.positionY
@@ -175,12 +175,12 @@ export default class Wrapper extends React.PureComponent {
                                     </Link>
                                 </div>
                                 }
-                                <div className="handle">
-                                  <React.Fragment>
-                                    {group.icon_path &&
-                                      <img className="icon-path" src={`${group.icon_path}`} />}
-                                    {group.abbreviation}
-                                  </React.Fragment>
+                                <div className="react-draggable-handle">
+                                    {group.icon_path ? (
+                                      <img className="react-draggable-icon" src={`${group.icon_path}`} />
+                                    ) : (
+                                      <div className="react-draggable-title">{group.abbreviation}</div>
+                                    )}
                                 </div>
                             </div>
                         </Draggable>
