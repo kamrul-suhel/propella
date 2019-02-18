@@ -45,10 +45,6 @@ export default class Wrapper extends React.PureComponent {
         // find the id we're moving
         const organisationId = Number(_.find(data.node.attributes, {name: 'handleid'}).value)
 
-        console.log('handle id ', organisationId);
-
-        console.log('Delta is: ', data);
-
         if (data.deltaX === 0 || data.deltaY === 0) {
             this.setState({'selectedDraggable': organisationId, clickOutSide: false})
         } else {

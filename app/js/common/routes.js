@@ -29,6 +29,7 @@ const Routes = (
             <Route path={`:id/${url.groups}/:groupId`} component={Group.Wrapper}>
                 <Route path="competitors" component={Competitor.List}/>
                 <IndexRoute component={Group.View}/>
+                <Route path="report" component={Group.Report} />
                 <Route path={url.organisations}>
                     <IndexRoute component={Organisation.List}/>
                     <Route path=":organisationId" component={Organisation.Edit}/>
