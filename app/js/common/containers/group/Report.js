@@ -16,13 +16,6 @@ export default class Report extends React.PureComponent {
         this.fetchData();
     }
 
-    fetchData = () => {
-        this.props.dispatch(fetchData({
-            type: 'GROUP_PEOPLE',
-            url: `/groups/${this.props.params.groupId}/people`,
-        }));
-    }
-
     render() {
 
         console.log('All state', this.props)
