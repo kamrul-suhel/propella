@@ -23,7 +23,6 @@ export default class Wrapper extends React.PureComponent {
         this.state = {
             updatedCoordinates: {},
             selectedDraggable: 0,
-            clickOutSide: false,
             selectedGroupCoordinates: {},
             progressLabel: 'Progress'
         }
@@ -41,12 +40,13 @@ export default class Wrapper extends React.PureComponent {
     }
 
     onDraggableEventHandler = (event, data) => {
+      console.log('moving')
         // find the id we're moving
         const groupId = Number(_.find(data.node.attributes, {name: 'handleid'}).value)
 
         // if we haven't moved assume its a click
-        if (data.deltaX === 0 || data.deltaY === 0) {
-            this.setState({'selectedDraggable': groupId, clickOutSide: false})
+        if (data.deltaX === 0 && data.deltaY === 0) {
+            this.setState({'selectedDraggable': groupId})
         } else {
             // get the wrapper dimensions
             const maxWidth = data.node.parentNode.clientWidth
@@ -74,20 +74,6 @@ export default class Wrapper extends React.PureComponent {
         }
     }
 
-    handleClickInside = (e, groupId) => {
-        const click = !this.state.clickOutSide;
-        this.setState({
-            selectedGroupCoordinates: {}
-        });
-
-        if (groupId === this.state.selectedDraggable) {
-            this.setState({
-                clickOutSide: click,
-                progressLabel: 'Progress'
-            })
-        }
-    }
-
     getGroupCoordinate = (event, groupId) => {
         const {project} = this.props;
 
@@ -103,13 +89,22 @@ export default class Wrapper extends React.PureComponent {
         }
     }
 
+    handleDraggableClick = (e) => {
+      console.log(e)
+      const { selectedDraggable } = this.state
+      const groupId = Number(_.find(e.node.attributes, {name: 'handleid'}).value)
+      if(selectedDraggable === groupId){
+        this.setState({'selectedDraggable': 0})
+      }
+    }
+
     handleResetChanges = () => {
         this.setState({updatedCoordinates: []}, this.fetchData())
     }
 
     render() {
         const {project, params} = this.props
-        const {updatedCoordinates, selectedDraggable, selectedGroupCoordinates, progressLabel, clickOutSide} = this.state
+        const {updatedCoordinates, selectedDraggable, selectedGroupCoordinates, progressLabel} = this.state
         const childrenWithProps = React.Children.map(this.props.children, child => React.cloneElement(child, ...this.props));
 
         const container = document.getElementById('gridwrapper-inner')
@@ -151,12 +146,11 @@ export default class Wrapper extends React.PureComponent {
                                          (selectedGroupCoordinates.coordinates && group.id !== selectedGroupCoordinates.id ? 'disabled' : '')
                                      ]
                                  }
-                                 onClick={(e) => this.handleClickInside(e, group.id)}>
+                                 onClick={this.handleDraggableClick}
+                                 >
 
-                                {group.icon_path ? <div className="icon-path"
-                                                        style={{backgroundImage: `url(${group.icon_path})`}}></div> : ''}
 
-                                {selectedDraggable === group.id && clickOutSide &&
+                                {selectedDraggable === group.id &&
                                 <div className="react-draggable-actions">
                                     <Link className="button-round first"
                                           to={`/${url.projects}/${params.id}/groups/${group.id}/edit`}>
@@ -183,7 +177,11 @@ export default class Wrapper extends React.PureComponent {
                                 </div>
                                 }
                                 <div className="handle">
+                                  <React.Fragment>
+                                    {group.icon_path &&
+                                      <img className="icon-path" src={`${group.icon_path}`} />}
                                     {group.abbreviation}
+                                  </React.Fragment>
                                 </div>
                             </div>
                         </Draggable>
