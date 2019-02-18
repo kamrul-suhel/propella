@@ -177,11 +177,14 @@ export default class Wrapper extends React.PureComponent {
                                 }
                                 <div className="react-draggable-handle">
                                     {group.icon_path ? (
-                                      <img className="react-draggable-icon" src={`${group.icon_path}`} />
+                                      <img className="react-draggable-handle-icon" src={`${group.icon_path}`} />
                                     ) : (
-                                      <div className="react-draggable-title">{group.abbreviation}</div>
+                                      <div className="react-draggable-handle-title">{group.abbreviation}</div>
                                     )}
                                 </div>
+                                {selectedDraggable === group.id &&
+                                  <span className="react-draggable-title">{group.title}</span>
+                                }
                             </div>
                         </Draggable>
                     )
