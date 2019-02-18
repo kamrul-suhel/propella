@@ -23,9 +23,17 @@ export default class Wrapper extends React.PureComponent {
         this.state = {
             updatedCoordinates: {},
             selectedDraggable: 0,
-            selectedGroupCoordinates: {},
-            progressLabel: 'Progress'
+            selectedProgress: 0,
+            selectedGroupCoordinates: {}
         }
+    }
+
+    componentWillMount() {
+      document.addEventListener('mousedown', this.handleClick, false)
+    }
+
+    componentWillUnmount() {
+      document.removeEventListener('mousedown', this.handleClick, false)
     }
 
     componentDidMount() {
@@ -40,7 +48,6 @@ export default class Wrapper extends React.PureComponent {
     }
 
     onDraggableEventHandler = (event, data) => {
-      console.log('moving')
         // find the id we're moving
         const groupId = Number(_.find(data.node.attributes, {name: 'handleid'}).value)
 
@@ -74,23 +81,32 @@ export default class Wrapper extends React.PureComponent {
         }
     }
 
+    handleClick = (e) => {
+      if(!this.node.contains(e.target)){
+        this.setState({selectedDraggable: 0, selectedGroupCoordinates: {}})
+      }
+    }
+
     getGroupCoordinate = (event, groupId) => {
         const {project} = this.props;
+        const {selectedGroupCoordinates} = this.state;
 
-        // Stop other event
-        event.stopPropagation();
-        const selectedGroup = _.find(project.groups, (group) => group.id === groupId)
+        if(!_.isEmpty(selectedGroupCoordinates)){
+          this.setState({selectedGroupCoordinates: {}})
+        } else {
+          // Stop other event
+          event.stopPropagation();
+          const selectedGroup = _.find(project.groups, (group) => group.id === groupId)
 
-        if (selectedGroup) {
-            this.setState({
-                selectedGroupCoordinates: selectedGroup,
-                progressLabel: 'Hi progress'
-            })
+          if (selectedGroup) {
+              this.setState({
+                  selectedGroupCoordinates: selectedGroup
+              })
+          }
         }
     }
 
     handleDraggableClick = (e) => {
-      console.log(e)
       const { selectedDraggable } = this.state
       const groupId = Number(_.find(e.node.attributes, {name: 'handleid'}).value)
       if(selectedDraggable === groupId){
@@ -102,6 +118,7 @@ export default class Wrapper extends React.PureComponent {
         this.setState({updatedCoordinates: []}, this.fetchData())
     }
 
+
     render() {
         const {project, params} = this.props
         const {updatedCoordinates, selectedDraggable, selectedGroupCoordinates, progressLabel} = this.state
@@ -111,9 +128,10 @@ export default class Wrapper extends React.PureComponent {
         const containerHeight = (container || {}).offsetHeight || 0
         const containerWidth = (container || {}).offsetWidth || 0
 
-        return (
+        console.log(selectedGroupCoordinates)
 
-            <React.Fragment>
+        return (
+            <div ref={node => this.node = node}>
                 {!_.isEmpty(updatedCoordinates) &&
                 <React.Fragment>
                     <button className="button gridwrapper-save" onClick={this.handleSaveChanges}>Save Changes</button>
@@ -142,7 +160,7 @@ export default class Wrapper extends React.PureComponent {
                             <div handleid={group.id}
                                  className={
                                      [
-                                         (selectedGroupCoordinates.coordinates && group.id === selectedGroupCoordinates.id ? `b-size-${group.icon_size}` : `size-${group.icon_size}`),
+                                         `size-${group.icon_size}`,
                                          (selectedGroupCoordinates.coordinates && group.id !== selectedGroupCoordinates.id ? 'disabled' : '')
                                      ]
                                  }
@@ -159,7 +177,7 @@ export default class Wrapper extends React.PureComponent {
 
                                     <span className="button-round second"
                                           onClick={(event) => this.getGroupCoordinate(event, group.id)}>
-                                        <span className="button-round-inside icon-chain"/>{progressLabel}
+                                        <span className="button-round-inside icon-chain"/>{_.isEmpty(selectedGroupCoordinates) ? 'Progress' : 'Hide Progress'}
                                     </span>
 
                                     <Link className="button-round third"
@@ -193,7 +211,7 @@ export default class Wrapper extends React.PureComponent {
                 {childrenWithProps}
 
                 {selectedGroupCoordinates.coordinates ? <Coordinate group={selectedGroupCoordinates}/> : ''}
-            </React.Fragment>
+            </div>
         )
     }
 }
