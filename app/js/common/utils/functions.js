@@ -489,6 +489,15 @@ export default {
         getImage(filename) {
             const imageDir = '../../../images';
             return `${imageDir}/${filename}`;
-        }
+        },
 
+	getContainer () {
+		const container = document.getElementById('gridwrapper-inner')
+		const containerHeight = (container || {}).offsetHeight || 0
+		const containerWidth = (container || {}).offsetWidth || 0
+		return {
+			height: containerHeight,
+			width: containerWidth
+		}
+	}
 };

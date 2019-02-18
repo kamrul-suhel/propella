@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Competitor;
 use App\Group;
+use App\Organisation;
 use App\People;
 use Illuminate\Http\Request;
 
@@ -59,7 +60,8 @@ class GroupController extends PropellaBaseController
     /**
      * @return mixed
      */
-    public function updateMultiple(){
+    public function updateMultiple()
+    {
 
         $this->validate($this->request, [
             'groups' => 'required|array',
@@ -68,13 +70,13 @@ class GroupController extends PropellaBaseController
 
         $result = [];
         $groups = $this->request->groups;
-        foreach($groups as $group){
-            if(isset($group['id'])){
+        foreach ($groups as $group) {
+            if (isset($group['id'])) {
                 $updateGroup = Group::findOrFail($group['id']);
                 isset($group['title']) ? $updateGroup->title = $group['title'] : '';
                 isset($group['description']) ? $updateGroup->description = $group['description'] : '';
                 isset($group['abbreviation']) ? $updateGroup->abbreviation = $group['abbreviation'] : '';
-                isset($group['project_id']) ? $updateGroup->project_id =  (int)$group['project_id'] : '';
+                isset($group['project_id']) ? $updateGroup->project_id = (int)$group['project_id'] : '';
                 isset($group['status']) ? $updateGroup->status = $group['status'] : '';
                 isset($group['created_by']) ? $updateGroup->created_by = $group['created_by'] : '';
                 isset($group['positionX']) ? $updateGroup->positionX = $group['positionX'] : '';
@@ -103,7 +105,7 @@ class GroupController extends PropellaBaseController
         $groups = Group::with('project');
 
         // project status, default it will give your 0,1, active records.
-        $status = $this->status == null ? [0,1] : [$this->status];
+        $status = $this->status == null ? [0, 1] : [$this->status];
         $groups = $groups->whereIn('status', $status);
         $groups = $groups->where('archive', 0);
 
@@ -119,6 +121,32 @@ class GroupController extends PropellaBaseController
      */
     public function single($id)
     {
+        // If format_type param pass, we need to download organisations as csv
+        if ($this->request->has('format_type')) {
+            $organisations = Organisation::where('group_id', $id)->get();
+            $organisations->map(function($organisation) {
+                if ($organisation->positionX > 50) {
+                    if ($organisation->positionY > 50) {
+                        $organisation->quadrant = 'VIP';
+                    } else {
+                        $organisation->quadrant = 'STA';
+                    }
+                } else {
+                    if ($organisation->positionY > 50) {
+                        $organisation->quadrant = 'UP';
+                    } else {
+                        $organisation->quadrant = 'NF';
+                    }
+                }
+            });
+
+            $csv = getCsvString($organisations->toArray());
+            $filename = 'organisation-' . date('U');
+            header("Content-type: text/csv");
+            header('Content-Disposition: attachment; filename="' . $filename . '.csv"');
+            return response()->make($csv, 200);
+        }
+
         // Get all group
         $group = Group::with([
             'organisations',
@@ -161,7 +189,7 @@ class GroupController extends PropellaBaseController
             ->leftJoin('organisations', 'organisations.id', '=', 'people.organisation_id')
             ->leftJoin('groups', 'groups.id', '=', 'organisations.group_id')
             ->where('groups.id', $id)
-            ->whereIn('people.status', [0,1])
+            ->whereIn('people.status', [0, 1])
             ->get();
 
         $group->people = $people;
@@ -172,11 +200,12 @@ class GroupController extends PropellaBaseController
     /**
      * @return mixed
      */
-    public function getAllProject(){
-        $projects = Group::with(['project' => function($query){
-            $query->whereIn('status', [0,1]);
+    public function getAllProject()
+    {
+        $projects = Group::with(['project' => function ($query) {
+            $query->whereIn('status', [0, 1]);
         }])
-            ->where('status', [0,1])
+            ->where('status', [0, 1])
             ->get()
             ->pluck('project')
             ->unique('id')
@@ -214,8 +243,32 @@ class GroupController extends PropellaBaseController
             ->leftJoin('organisations', 'organisations.id', '=', 'people.organisation_id')
             ->leftJoin('groups', 'groups.id', '=', 'organisations.group_id')
             ->where('groups.id', $id)
-            ->whereIn('people.status', [0,1])
+            ->whereIn('people.status', [0, 1])
             ->get();
+
+        if ($this->request->has('format_type')) {
+            $people = $people->each(function ($people) {
+                if ($people->positionX > 50) {
+                    if ($people->positionY > 50) {
+                        $people->quadrant = 'VIP';
+                    } else {
+                        $people->quadrant = 'STA';
+                    }
+                } else {
+                    if ($people->positionY > 50) {
+                        $people->quadrant = 'UP';
+                    } else {
+                        $people->quadrant = 'NF';
+                    }
+                }
+            });
+
+            $csv = getCsvString($people->toArray());
+            $filename = 'people' . date('U');
+            header("Content-type: text/csv");
+            header('Content-Disposition: attachment; filename="' . $filename . '.csv"');
+            return response()->make($csv, 200);
+        }
 
         return response()->json($people);
     }
@@ -237,7 +290,7 @@ class GroupController extends PropellaBaseController
      * @param bool $create
      * @return Group
      */
-    private function saveGroup($create = true, $id=0)
+    private function saveGroup($create = true, $id = 0)
     {
         // Create new Group
         $group = $create ? new Group() : Group::findOrFail($id);
@@ -248,9 +301,9 @@ class GroupController extends PropellaBaseController
         $this->request->has('status') ? $group->status = $this->request->status : '';
         $this->request->has('created_by') ? $group->created_by = $this->request->created_by : '';
 
-        if($create){
+        if ($create) {
             $group->status = 1;
-            $group->created_by = $this->request->has('created_by') ?  $this->request->created_by : 0;
+            $group->created_by = $this->request->has('created_by') ? $this->request->created_by : 0;
         }
 
         $this->request->has('positionX') ? $group->positionX = $this->request->positionX : '';
@@ -283,8 +336,8 @@ class GroupController extends PropellaBaseController
             $createdCompetitors = [];
             $deletedCompetitors = [];
 
-            if($this->request->has('competitors.deleted')){
-                foreach($this->request->competitors['deleted'] as $id){
+            if ($this->request->has('competitors.deleted')) {
+                foreach ($this->request->competitors['deleted'] as $id) {
                     $competitor = Competitor::findOrFail($id);
                     $competitor->status = 0;
                     $competitor->update();
@@ -297,15 +350,15 @@ class GroupController extends PropellaBaseController
             foreach ($this->request->competitors as $competitor) {
 
                 // Check if has delete flag.
-                    $newCompetitor = isset($competitor['id']) ? Competitor::findOrFail($competitor['id']) : new Competitor();
-                    $newCompetitor->title = $competitor['title'];
-                    $newCompetitor->description = $competitor['description'];
-                    $newCompetitor->group_id = $group->id;
-                    $newCompetitor->status = isset($competitor['status']) ? $competitor['status'] : 1;
+                $newCompetitor = isset($competitor['id']) ? Competitor::findOrFail($competitor['id']) : new Competitor();
+                $newCompetitor->title = $competitor['title'];
+                $newCompetitor->description = $competitor['description'];
+                $newCompetitor->group_id = $group->id;
+                $newCompetitor->status = isset($competitor['status']) ? $competitor['status'] : 1;
 
-                    // Save competitor
-                    $newCompetitor->save();
-                    $createdCompetitors[] = $newCompetitor;
+                // Save competitor
+                $newCompetitor->save();
+                $createdCompetitors[] = $newCompetitor;
             }
             return $createdCompetitors;
         }
