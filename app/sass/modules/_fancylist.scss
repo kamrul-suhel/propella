@@ -16,6 +16,11 @@
 
     &.is-inactive {
         color: #E7E7E7;
+
+        .fancylist-item-icon {
+          filter: grayscale(1);
+          opacity: 0.1;
+        }
     }
 
     &:first-child {
@@ -35,6 +40,18 @@
       text-align: left;
       font-weight: 500;
     }
+
+    .fancylist-item-icon {
+      max-width: 30px;
+      margin-right: 5px;
+
+      img {
+        width: 100%;
+        height: auto;
+        vertical-align: text-bottom;
+      }
+    }
+
     .fancylist-item-actions {
       display: flex;
       align-items: center;

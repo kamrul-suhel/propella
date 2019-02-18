@@ -12,8 +12,6 @@ export default class Popup extends React.PureComponent {
 
         return (
             <div className={`popup${(additionalClass ? ' '+ additionalClass : '')}`}>
-                
-                <div className="popup-inner">
                 <div className="popup-header">
                     {beforeTitle &&
                     <div className="popup-header-tab">{beforeTitle}</div>
@@ -24,6 +22,7 @@ export default class Popup extends React.PureComponent {
                     }
                     <Link to={closePath} className="popup-header-close"/>
                 </div>
+                <div className="popup-inner">                
                     <Alerts/>
                     {this.props.children}
                     {buttons &&

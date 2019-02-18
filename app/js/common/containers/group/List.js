@@ -54,8 +54,7 @@ export default class List extends React.PureComponent {
                 key={group.id}
                 keyId={group.id}
                 className={(group.status === 1) ? `is-active` : `is-inactive`}
-                icon={group.icon_size}
-                iconPath={group.icon_path}
+                icon={group.icon_path}
                 actions={
                     <React.Fragment>
                         <Checkbox
@@ -71,9 +70,15 @@ export default class List extends React.PureComponent {
                             styled
                             className="switch"
                         />
-                        <Link to={`/${url.projects}/${this.props.params.id}/${url.groups}/${group.id}/edit`}
-                              className="icon-edit"/>
+                        <Link
+                          to={`/${url.projects}/${this.props.params.id}/${url.groups}/${group.id}/edit`}
+                          className="icon-edit"
+                        />
                         <span onClick={() => this.handleDelete(group.id)} className="icon-bin"/>
+                        <Link
+                          to={`/${url.projects}/${this.props.params.id}/${url.groups}/${group.id}`}
+                          className="icon-add-organisation"
+                        />
                     </React.Fragment>
                 }
             >

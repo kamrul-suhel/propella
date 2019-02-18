@@ -5,15 +5,20 @@ import {connect} from 'react-redux';
 import Draggable from 'react-draggable';
 import {api} from 'app/utils';
 import * as selector from './selector';
+import { makeGetProject, makeGetProjects } from 'app/containers/project/selector';
 import {Link} from "react-router";
 
 @connect((state, ownProps) => {
     const getGroups = selector.makeGetGroups();
     const getGroup = selector.makeGetGroup();
+    const getProjects = makeGetProjects();
+    const getProject = makeGetProject();
 
     return {
         groups: getGroups(state),
-        group: getGroup(state, ownProps.params.groupId)
+        group: getGroup(state, ownProps.params.groupId),
+        projects: getProjects(state),
+        project: getProject(state, ownProps.params.id),
     };
 })
 export default class Wrapper extends React.PureComponent {
@@ -38,6 +43,10 @@ export default class Wrapper extends React.PureComponent {
         this.props.dispatch(fetchData({
             type: 'GROUP',
             url: `/groups/${this.props.params.groupId}`,
+        }));
+        this.props.dispatch(fetchData({
+            type: 'PROJECT',
+            url: `/projects/${this.props.params.id}`,
         }));
     }
 
@@ -117,7 +126,7 @@ export default class Wrapper extends React.PureComponent {
                         <Draggable
                             key={organisation.id}
                             axis="both"
-                            handle=".handle"
+                            handle=".react-draggable-handle"
                             defaultPosition={{
                                 x: containerWidth / 100 * organisation.positionX,
                                 y: containerHeight / 100 * organisation.positionY
@@ -131,7 +140,9 @@ export default class Wrapper extends React.PureComponent {
                                  className={`size-${organisation.icon_size}`}
                                  onClick={(event) => this.handleClickInside(event, organisation.id)}
                             >
-                                <div className="handle">{organisation.abbreviation}</div>
+                                <div className="react-draggable-handle">
+                                  <div className="react-draggable-title">{organisation.abbreviation}</div>
+                                </div>
 
                                 {selectedDraggable === organisation.id && clickOutSide &&
                                     <div className="react-draggable-actions">

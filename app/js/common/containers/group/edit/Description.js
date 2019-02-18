@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router';
-import {Form, TextInput, Radio, FileUpload} from '@xanda/react-components';
+import {Tooltip, Form, TextInput, Radio, FileUpload} from '@xanda/react-components';
 
 export default class Description extends React.PureComponent {
 
@@ -34,7 +34,7 @@ export default class Description extends React.PureComponent {
                 <div className="grid">
                     <div className="grid-xs-7">
                         <div className="form-group form-group-wide">
-                            <span className="form-label">Choose Icon or Set Abbreviation</span>
+                            <span className="form-label">Choose Icon or Set Abbreviation <Tooltip icon="i" message="Upload a custom icon or enter an abbreviation"/></span>
                             <FileUpload
                                 name="icon"
                                 onChange={handleInputChange}

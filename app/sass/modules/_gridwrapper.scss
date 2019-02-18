@@ -97,12 +97,18 @@
       width: 41px;
       position: absolute;
       background: url(../images/marker-small.svg) no-repeat 0 0 transparent;
+      background-size:contain;
+      background-position:center;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 11px;
       padding: 1px 2px 6px 0;
       font-weight: 500;
+
+      img {
+        -webkit-user-drag: none;
+      }
 
       .react-draggable-actions {
         position: absolute;
@@ -117,34 +123,35 @@
         .button-round {
           cursor: pointer;
           transition: all ease-in-out .3s;
-
+          max-width:80px;
           &.first {
-            top: -50px;
-            left: -111px;
+            top: -40px;
+            left: -100px;
           }
 
           &.second {
-            top: -120px;
+            top: -122px;
             left: -62px;
           }
 
           &.third {
-            top: -120px;
-            right: -24px;
+            top: -122px;
+            right: 3px;
           }
 
           &.fourth {
-            top: -50px;
-            right: -72px;
+            top: -40px;
+            right: -40px;
           }
         }
       }
 
-      &.size-m {
+      &.size-m {          
         .button-round {
+            max-width:80px;
           &.first {
             top: -40px;
-            left: -90px;
+            left: -85px;
           }
 
           &.second {
@@ -154,18 +161,19 @@
 
           &.third {
             top: -110px;
-            right: -43px;
+            right: -20px;
           }
 
           &.fourth {
             top: -40px;
-            right: -82px;
+            right: -58px;
           }
         }
       }
 
-      &.size-s {
-        .button-round {
+      &.size-s {          
+        .button-round { 
+            max-width:80px;
           &.first {
             top: -40px;
             left: -80px;
@@ -173,28 +181,27 @@
 
           &.second {
             top: -106px;
-            left: -51px;
+            left: -57px;
           }
 
           &.third {
             top: -106px;
-            right: -38px;
+            right: -30px;
           }
 
           &.fourth {
             top: -40px;
-            right: -65px;
+            right: -61px;
           }
         }
       }
     }
-
+    
     .react-draggable.size-m {
       height: 67px;
       width: 56px;
       background-image: url(../images/marker-medium.svg);
-      font-size: 14px;
-      background-size:cover;
+      font-size: 14px;      
     }
 
     .react-draggable.size-l {
@@ -202,7 +209,6 @@
       width: 82px;
       background-image: url(../images/marker-large.svg);
       font-size: 14px;
-      background-size:cover;
     }
 
     .react-draggable.b-size-m {
@@ -210,7 +216,6 @@
       width: 56px;
       background-image: url(../images/marker-medium.svg);
       font-size: 14px;
-      background-size:cover;
     }
 
     .react-draggable.b-size-l {
@@ -218,7 +223,6 @@
       width: 82px;
       background-image: url(../images/marker-large-black.svg);
       font-size: 14px;
-      background-size:cover;
     }
 
     .react-draggable.disabled{
@@ -247,7 +251,14 @@
           margin-bottom: 30px;
         }
       }
-
+    }
+    
+    .handle{        
+            height: 100%;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
     }
 
   }

@@ -14,11 +14,11 @@ export default class Loyalty extends React.PureComponent {
 
 		return (
 			<Form onSubmit={handleSubmit} ref={setFormRef} className="loyalty-form">
-				<p className="form-label">Okay now lets see where they sit on the board</p>
+				<p className="form-label form-label-title">Okay now lets see where they sit on the board</p>
 
 				<p className="h2">Loyalty</p>
 
-				<p><strong>Value, influence and power. Top drawer or bottom?</strong><br />
+				<p className="slider-description"><strong>Value, influence and power. Top drawer or bottom?</strong><br />
 				Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
 
 				<Slider

@@ -1,12 +1,9 @@
 .icon-add-organisation:before {
-  background: url(../images/icon-add-organisation.svg) no-repeat;
-  content: '';
-  height: 18px;
-  width: 18px;
-  margin:auto;
-  content: '';
-  height: 69%;
-  width: 68%;
-  display: block;
-  margin-top: 8px;
+    content: '';
+    background: url(../images/icon-add-organisation.svg) no-repeat;
+    background-size: 100%;
+    background-position: center;
+    height: 22px;
+    width: 24px;
+    display: block;
 }
