@@ -34,7 +34,7 @@ class PeopleController extends PropellaBaseController
             'positionX' => 'required|integer|min:1',
             'positionY' => 'required|integer|min:1',
             'trajectory' => 'integer|min:1',
-            'icon_size' => 'in:s,m,l',
+            'icon_size' => 'in:s,m,l,f',
             'character_id' => 'integer|min:1',
             'created_by' => 'integer|min:1',
             'status' => 'integer|between:0,2',

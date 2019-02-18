@@ -34,7 +34,6 @@ export default class Popup extends React.PureComponent {
                     </div>
                     }
                 </div>
-
             </div>
         );
     }
