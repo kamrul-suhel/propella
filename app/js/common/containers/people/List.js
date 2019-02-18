@@ -39,8 +39,7 @@ export default class List extends React.PureComponent {
                 }
                 <Link
                     to={`/${url.projects}/${this.props.params.id}/${url.groups}/${this.props.params.groupId}/${url.people}/${person.id}`}>Edit</Link>
-                <button type="button" onClick={() => this.handleDelete(this.props.params.groupId, person.id)}>Delete
-                </button>
+                <button type="button" onClick={() => this.handleDelete(this.props.params.groupId, person.id)}>Delete</button>
             </li>
         )
     }
