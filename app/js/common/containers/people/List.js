@@ -3,7 +3,7 @@ import {Link} from 'react-router';
 import {fetchData} from 'app/actions';
 import {connect} from 'react-redux';
 import {Form, Checkbox, ContentLoader} from '@xanda/react-components';
-import {Popup} from 'app/components';
+import {Popup, FancyList, FancyListItem} from 'app/components';
 import {api} from 'app/utils';
 import {url} from 'app/constants';
 import {makeGetGroup, makeGetGroups} from 'app/containers/group/selector';
@@ -39,15 +39,20 @@ export default class List extends React.PureComponent {
       }
 
       return (
-          <li key={person.id}>
-              <p>{person.title}</p>
-              {person.organisation_title &&
-              <p>{person.organisation_title}</p>
-              }
-              <Link
-                  to={`/${url.projects}/${this.props.params.id}/${url.groups}/${this.props.params.groupId}/${url.people}/${person.id}`}>Edit</Link>
-              <button type="button" onClick={() => this.handleDelete(this.props.params.groupId, person.id)}>Delete</button>
-          </li>
+          <FancyListItem
+            key={person.id}
+            actions={
+              <React.Fragment>
+                <Link
+                to={`/${url.projects}/${this.props.params.id}/${url.groups}/${this.props.params.groupId}/${url.people}/${person.id}`}
+                className="icon-edit"
+                />
+                <span type="button" onClick={() => this.handleDelete(this.props.params.groupId, person.id)} className="clickable icon-bin" />
+              </React.Fragment>
+            }
+          >
+              {person.title} - {person.organisation_title}
+          </FancyListItem>
       )
     }
 
@@ -80,11 +85,11 @@ export default class List extends React.PureComponent {
                         your first person <span dangerouslySetInnerHTML={{__html: `&plus;`}}/></Link>
                 ) : (
                     <React.Fragment>
-                        <ul>
+                        <FancyList>
                             {_.map(group.people, (person) => {
                                 return this.renderItem(person)
                             })}
-                        </ul>
+                        </FancyList>
                     </React.Fragment>
                 )}
             </ContentLoader>

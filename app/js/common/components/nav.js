@@ -3,18 +3,12 @@ import {Link, generatePath} from 'react-router';
 import {connect} from 'react-redux';
 import {fn} from 'app/utils';
 import { url } from 'app/constants';
-import {Select} from '@xanda/react-components';
-import { makeGetProject, makeGetProjects } from 'app/containers/project/selector';
 import { makeGetGroup } from 'app/containers/group/selector';
 
 @connect((state, ownProps) => {
-    const getProjects = makeGetProjects();
-    const getProject = makeGetProject();
     const getGroup = makeGetGroup();
 
     return {
-        projects: getProjects(state),
-        project: getProject(state, ownProps.params.id),
         group: getGroup(state, ownProps.params.groupId),
     };
 })
@@ -49,13 +43,12 @@ export default class Popup extends React.PureComponent {
             <div className="nav">
                 {params.groupId ? (
                   <React.Fragment>
-                    <Select
-                      name="group"
-                      options={project.groups}
-                      value={params.groupId}
-                      onChange={this.handleOnChange}
-                    />
-                    <Link to={this.nextLink} className="icon-hamburger"/>
+                    <Link
+                      to={this.nextLink}
+                    >
+                      {group.title}
+                    </Link>
+                    {/*<Link to={this.nextLink} className="icon-hamburger"/>*/}
                   </React.Fragment>
                 ) : (
                     <Link to={this.nextLink} className="icon-stack"/>

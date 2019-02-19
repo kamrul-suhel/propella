@@ -6,6 +6,7 @@ import * as Group from 'app/containers/group';
 import * as Project from 'app/containers/project';
 import * as Organisation from 'app/containers/organisation';
 import * as People from 'app/containers/people';
+import Report from 'app/containers/people/Report';
 import * as Competitor from 'app/containers/competitor';
 
 /**
@@ -31,13 +32,13 @@ const Routes = (
                 <IndexRoute component={Group.View}/>
                 <Route path={url.organisations}>
                     <IndexRoute component={Organisation.List}/>
-                    <Route path="report" component={Organisation.Report} />
+                    <Route path={url.report} component={Organisation.Report} />
                     <Route path=":organisationId" component={Organisation.Edit}/>
                 </Route>
                 <Route path={url.people}>
                     <IndexRoute component={People.List}/>
-                    <Route path="report" component={People.Report}/>
                     <Route path=":personId" component={People.Edit}/>
+                    <Route path={url.report} component={Report}/>
                 </Route>
             </Route>
         </Route>

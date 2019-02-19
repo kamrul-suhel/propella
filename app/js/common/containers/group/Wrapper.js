@@ -27,10 +27,16 @@ export default class Wrapper extends React.PureComponent {
 
         this.state = {
             updatedCoordinates: {},
-            selectedDraggable: 0,
-            clickOutSide: false,
-            progressLabel: 'Progress'
+            selectedDraggable: 0
         }
+    }
+
+    componentWillMount() {
+      document.addEventListener('mousedown', this.handleClick, false)
+    }
+
+    componentWillUnmount() {
+      document.removeEventListener('mousedown', this.handleClick, false)
     }
 
     componentDidMount() {
@@ -55,7 +61,7 @@ export default class Wrapper extends React.PureComponent {
         const organisationId = Number(_.find(data.node.attributes, {name: 'handleid'}).value)
 
         if (data.deltaX === 0 || data.deltaY === 0) {
-            this.setState({'selectedDraggable': organisationId, clickOutSide: false})
+            this.setState({'selectedDraggable': organisationId})
         } else {
             // get the wrapper dimensions
             const maxWidth = data.node.parentNode.clientWidth
@@ -73,18 +79,10 @@ export default class Wrapper extends React.PureComponent {
         }
     }
 
-    handleClickInside = (e, organisationId) => {
-        const click = !this.state.clickOutSide;
-        this.setState({
-            selectedGroupCoordinates: {}
-        });
-
-        if (organisationId === this.state.selectedDraggable) {
-            this.setState({
-                clickOutSide: click,
-                progressLabel: 'Progress'
-            })
-        }
+    handleClick = (e) => {
+      if(!this.node.contains(e.target)){
+        this.setState({selectedDraggable: 0, selectedGroupCoordinates: {}})
+      }
     }
 
     handleSaveChanges = async () => {
@@ -103,7 +101,7 @@ export default class Wrapper extends React.PureComponent {
 
     render() {
         const {groups, group, params} = this.props
-        const {updatedCoordinates, handleClickInside, selectedDraggable, clickOutSide, progressLabel} = this.state
+        const {updatedCoordinates, selectedDraggable, progressLabel} = this.state
 
         const childrenWithProps = React.Children.map(this.props.children, child => React.cloneElement(child, ...this.props));
 
@@ -112,7 +110,7 @@ export default class Wrapper extends React.PureComponent {
         const containerWidth = (container || {}).offsetWidth || 0
 
         return (
-            <React.Fragment>
+            <div ref={node => this.node = node}>
                 {!_.isEmpty(updatedCoordinates) &&
                 <React.Fragment>
                     <button className="button gridwrapper-save" onClick={this.handleSaveChanges}>Save Changes</button>
@@ -138,13 +136,12 @@ export default class Wrapper extends React.PureComponent {
                         >
                             <div handleid={organisation.id}
                                  className={`size-${organisation.icon_size}`}
-                                 onClick={(event) => this.handleClickInside(event, organisation.id)}
                             >
                                 <div className="react-draggable-handle">
                                   <div className="react-draggable-title">{organisation.abbreviation}</div>
                                 </div>
 
-                                {selectedDraggable === organisation.id && clickOutSide &&
+                                {selectedDraggable === organisation.id &&
                                     <div className="react-draggable-actions">
                                         <Link className="button-round first"
                                               to={`/${url.projects}/${params.id}/groups/${group.id}/${url.organisations}/${organisation.id}`}>
@@ -177,7 +174,7 @@ export default class Wrapper extends React.PureComponent {
                 })
                 }
                 {childrenWithProps}
-            </React.Fragment>
+            </div>
         )
     }
 }

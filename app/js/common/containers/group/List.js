@@ -74,7 +74,7 @@ export default class List extends React.PureComponent {
                           to={`/${url.projects}/${this.props.params.id}/${url.groups}/${group.id}/edit`}
                           className="icon-edit"
                         />
-                        <span onClick={() => this.handleDelete(group.id)} className="icon-bin"/>
+                        <span onClick={() => this.handleDelete(group.id)} className="clickable icon-bin"/>
                         <Link
                           to={`/${url.projects}/${this.props.params.id}/${url.groups}/${group.id}`}
                           className="icon-add-organisation"

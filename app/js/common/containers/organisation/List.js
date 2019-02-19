@@ -23,7 +23,7 @@ export default class List extends React.PureComponent {
           url: `/groups/${this.props.params.groupId}`,
       }));
   }
-  
+
   handleStatusChange = async (organisation, newStatus) => {
       // check status has changed
       const status = newStatus === "1" ? 1 : 0
@@ -72,13 +72,18 @@ export default class List extends React.PureComponent {
                           className="switch"
                       />
                       <Link
-                          to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.organisations}/${organisation.id}`}>Edit</Link>
+                          to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.organisations}/${organisation.id}`}
+                          className="icon-edit"
+                      />
                       <Link
-                          to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}/add?organisation_id=${organisation.id}`}>Add
-                          Person</Link>
-                      <button type="button"
-                              onClick={() => this.handleDelete(params.groupId, organisation.id)}>Delete
-                      </button>
+                          to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}/add?organisation_id=${organisation.id}`}
+                          className="icon-add-people"
+                      />
+                      <span
+                        className="clickable icon-bin"
+                        type="button"
+                        onClick={() => this.handleDelete(params.groupId, organisation.id)}>
+                      </span>
                   </React.Fragment>
               }
           >
@@ -97,15 +102,22 @@ export default class List extends React.PureComponent {
                   to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}`}>People</Link>}
               closePath={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}`}
               buttons={
-                  <React.Fragment>
-                      {!_.isEmpty(group.organisations) &&
-                      <Link
+                <React.Fragment>
+                  {!_.isEmpty(group.organisations) &&
+                    <React.Fragment>
+                        <Link
                           to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.organisations}/add`}
-                          className="button">Add organisation</Link>
-                      }
-                  </React.Fragment>
+                          className="button"
+                        >Add organisation</Link>
+                        <Link
+                          to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}`}
+                          className="button"
+                        >View People</Link>
+                    </React.Fragment>
+                  }
+                </React.Fragment>
               }
-              additionalClass="organisations"
+              additionalClass="organisations window-large"
           >
               <ContentLoader
                   data={groups.collection}

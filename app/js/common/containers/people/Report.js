@@ -17,9 +17,6 @@ import {makeGetGroup, makeGetGroups} from 'app/containers/group/selector';
     };
 })
 export default class Report extends React.PureComponent {
-
-
-
     handleReportExportCsv = async () => {
         const url = `groups/${this.props.params.groupId}/people?format_type=csv`;
         const res = await api.get(url);

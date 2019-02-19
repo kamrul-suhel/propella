@@ -7,3 +7,13 @@
     width: 24px;
     display: block;
 }
+
+.icon-add-people:before {
+    content: '';
+    background: url(../images/icon-add-people.svg) no-repeat;
+    background-size: 100%;
+    background-position: center;
+    height: 22px;
+    width: 24px;
+    display: block;
+}
