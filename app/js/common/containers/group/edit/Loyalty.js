@@ -28,7 +28,7 @@ export default class Loyalty extends React.PureComponent {
 					max={100}
 					value={positionX}
 					onChange={handleInputChange}
-          validation="required"
+                                        validation="required"
 					wide
 				/>
 				<span className="counter">{_.round(positionX, 0)}</span>

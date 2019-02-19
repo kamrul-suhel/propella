@@ -132,6 +132,7 @@
                             img{                                
                                 width: 100px;
                                 height: auto;
+                                border-radius:50%;
                             }                            
                         }
                         .ov-icon-size{
@@ -205,11 +206,30 @@
             }
         }    
   }
-  &.large-window{
-    max-width:550px;
-  }
-  &.small-window{
-    max-width:350px;
+  &.wide{
+    max-width: 550px;
   }
 
+  &.organisations{
+      .fancylist{
+          padding: 16px;
+          .fancylist-item{
+              &.is-active{                  
+                  @include background-opacity($brand-color-1, 0.25);
+              }
+              .fancylist-item-title{
+                  font-size:16px;
+                  font-weight:500;
+              }
+          }
+      }
+      .form-type-select{
+          width:100%;
+      }
+      .form-group{
+        .form-options-layout-horizontal{
+            margin:0px auto;
+        }
+      }
+  }
 }
