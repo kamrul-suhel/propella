@@ -40,7 +40,7 @@ if (!function_exists('propellaUploadImage')) {
         }
 
         // For database record.
-        $publicPath = env('IMAGE_BASE_URL') . DIRECTORY_SEPARATOR . $imageFolder . DIRECTORY_SEPARATOR . date('Y') . DIRECTORY_SEPARATOR .date('n') ;
+        $publicPath = env('IMAGE_BASE_URL') . DIRECTORY_SEPARATOR . $imageFolder . DIRECTORY_SEPARATOR . date('Y') . DIRECTORY_SEPARATOR . date('n');
 
         // Absolute path.
         $uploadPath = public_path($publicPath);
@@ -69,5 +69,38 @@ if (!function_exists('propellaRemoveImage')) {
             return true;
         }
         return false;
+    }
+}
+
+if (!function_exists('getCsvString')) {
+    /**
+     * @param $array
+     * @return string
+     */
+    function getCsvString($array)
+    {
+        $data = '';
+        $header = array_keys($array[0]);
+        $cleanHeader = [];
+        foreach ($header as $name) {
+            $cleanHeader[] = ucwords(str_replace('_', ' ', $name));
+        }
+        $header = implode(',', $cleanHeader);
+
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                foreach ($value as $k => $v) {
+                    if ($k == 'request_header') {
+                        $data .= '"' . str_replace(',', ';', $v) . '",';
+                    } else {
+                        $data .= '"' . $v . '",';
+                    }
+                }
+                $data .= "\n";
+            }
+        }
+
+        $data = substr($data, 0, -1);
+        return $header . "\n" . $data;
     }
 }

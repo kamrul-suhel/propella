@@ -6,8 +6,7 @@ const defaultState = {
     error: null,
     isLoading: true,
     misc: {},
-    pager: {},
-    groupPeople:[]
+    pager: {}
 };
 
 export default function group(state = defaultState, action) {
@@ -44,27 +43,6 @@ export default function group(state = defaultState, action) {
                     [action.payload.id]: action.payload
                 }
             };
-        }
-
-        case 'GROUP_PEOPLE_PENDING': {
-            return {
-                ...state,
-                groupPeople: []
-            }
-        }
-
-        case 'GROUP_PEOPLE_REJECTED': {
-            return {
-                ...state,
-                groupPeople: []
-            }
-        }
-
-        case 'GROUP_PEOPLE_FULFILLED': {
-            return {
-                ...state,
-                groupPeople: [...action.payload.data]
-            }
         }
 
         case 'GROUP_PEOPLE_ADDED': {
