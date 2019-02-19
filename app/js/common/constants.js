@@ -1,13 +1,13 @@
 export const url = {
-	projects: 'projects',
+    projects: 'projects',
 
-	groups: 'groups',
+    groups: 'groups',
 
-	organisations: 'organisations',
+    organisations: 'organisations',
 
-	people: 'people',
+    people: 'people',
 
-  report: 'report',
+    report: 'report',
 };
 
 export const storageUrl = 'http://api.callisto.hostings.co.uk/storage/';

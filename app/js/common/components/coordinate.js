@@ -1,11 +1,11 @@
 import React from 'react'
-import Propstype from 'prop-types'
+import {fn} from 'app/utils';
 
 export default class Coordinate extends React.PureComponent {
     getDegreeRotate(currentCoordinate, nextCoordinate) {
         let angleDeg = 0
         let c = 0
-        const container = this.getContainer()
+        const container = fn.getContainer()
 
         if (nextCoordinate) {
             const cPositionX = container.width / 100 * currentCoordinate.positionX
@@ -31,18 +31,8 @@ export default class Coordinate extends React.PureComponent {
         }
     }
 
-    getContainer = () => {
-        const container = document.getElementById('gridwrapper-inner')
-        const containerHeight = (container || {}).offsetHeight || 0
-        const containerWidth = (container || {}).offsetWidth || 0
-        return {
-            height: containerHeight,
-            width: containerWidth
-        }
-    }
-
     renderRootCoordinate(group, position) {
-        const container = this.getContainer()
+        const container = fn.getContainer()
 
         return (
             <div className="selected-group-wrapper first-coordinate progress-button"
@@ -56,7 +46,7 @@ export default class Coordinate extends React.PureComponent {
     }
 
     renderCoordinate(group) {
-        const container = this.getContainer();
+        const container = fn.getContainer();
         return (
             group.coordinates && _.map(group.coordinates, (coordinate, index) => {
                 // Next coordinate

@@ -37,8 +37,8 @@ const Routes = (
                 </Route>
                 <Route path={url.people}>
                     <IndexRoute component={People.List}/>
+                    <Route path={url.report} component={People.Report}/>
                     <Route path=":personId" component={People.Edit}/>
-                    <Route path={url.report} component={Report}/>
                 </Route>
             </Route>
         </Route>
