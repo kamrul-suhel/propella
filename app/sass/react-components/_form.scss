@@ -50,7 +50,7 @@
 
 .form-group {
 	margin: 0 0 8px;
-	width: calc(50% - 15px);
+	width:100%;
 	position: relative;
 
 	&.is-disabled {
@@ -212,6 +212,7 @@
 
 		.form-field {
 			flex: 1;
+                        margin-bottom:10px;
 		}
 	}
 
@@ -250,6 +251,11 @@
 	}
         &.form-type-upload{
                 margin:0px!important;            
+        }
+        &.group-half-size{
+            .form-group{
+                width:44%;
+            }
         }
 }
 

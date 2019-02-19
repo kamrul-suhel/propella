@@ -105,11 +105,27 @@
       font-size: 11px;
       padding: 1px 2px 6px 0;
       font-weight: 500;
-
-      img {
-        -webkit-user-drag: none;
-      }
-
+        .react-draggable-handle{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            img.react-draggable-handle-icon{
+                -webkit-user-drag: none;
+                width:78%;
+                border-radius:50%;
+            }
+        }
+        .react-draggable-title{
+                position: absolute;
+                bottom: -20px;
+                left: 50%;
+                transform: translateX(-50%);
+                font-size: 14px;
+                font-weight: 500;
+                color: white;
+            }      
       .react-draggable-actions {
         position: absolute;
         left: 50%;
@@ -118,12 +134,13 @@
         height: 100%;
         color: white;
       }
+      
 
       &.size-l, &.b-size-l {
         .button-round {
           cursor: pointer;
           transition: all ease-in-out .3s;
-          max-width:80px;
+          max-width:38px;
           &.first {
             top: -40px;
             left: -100px;
@@ -144,8 +161,8 @@
             right: -40px;
           }
         }
-      }
-
+      }      
+      
       &.size-m {          
         .button-round {
             max-width:80px;
@@ -221,7 +238,7 @@
     .react-draggable.b-size-l {
       height: 95px;
       width: 82px;
-      background-image: url(../images/marker-large-black.svg);
+      background-image: url(../images/marker-medium-black.svg);
       font-size: 14px;
     }
 
@@ -412,26 +429,31 @@
   .progress-button {
     padding: 10px;
     display: flex;
+    align-items:center;
+    justify-content:center;
     width: 56px;
     height: 61px;
-    background-image: url(../images/marker-large-black.svg);
+    background-image: url(../images/marker-medium-black.svg);
     background-repeat: no-repeat;
     position: absolute;
-
+    background-position: center;
+    background-size: contain;
     img {
-      width: 100%;
-      height: auto;
-      border-radius: 100%;
+        width: 100%;
+        height: auto;
+        border-radius: 100%;
+        z-index: 2;
+        margin-top: -8px;
     }
-
     .connector {
       display: block;
       height: $connector-height;
       position: absolute;
       bottom: 50%;
       right: 50%;
-      background-color: black;
+      background-color: $brand-color-dark;
       transform-origin: right;
+      z-index:1;
     }
   }
 

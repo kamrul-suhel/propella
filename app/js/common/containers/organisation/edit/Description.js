@@ -6,16 +6,16 @@ export default class Description extends React.PureComponent {
 
 	render() {
 		const {
-      title,
-      description,
-      abbreviation,
-      icon,
-      type_id,
-      icon_size,
-      handleInputChange,
-      handleSubmit,
-      organisationTypes,
-      setFormRef
+                    title,
+                    description,
+                    abbreviation,
+                    icon,
+                    type_id,
+                    icon_size,
+                    handleInputChange,
+                    handleSubmit,
+                    organisationTypes,
+                    setFormRef
     } = this.props
 
 		return (
@@ -25,57 +25,61 @@ export default class Description extends React.PureComponent {
 					label="Organisation's Name"
 					validation="required"
 					onChange={handleInputChange}
-          value={title}
+                                        value={title}
 					wide
 				/>
 
-        <Select
-          name="type_id"
-          value={type_id}
-          onChange={handleInputChange}
-          label="Type of Stakeholder"
-          options={organisationTypes}
-        />
-
-				<TextInput
-					name="abbreviation"
-          value={abbreviation}
-					onChange={handleInputChange}
-          label="Set an Abbreviation"
-				/>
-
-				<Radio
-					name="icon_size"
-					label="Choose Size of Icon"
-					options={
-						[
-							{
-								id: 's',
-								title: "S"
-							},
-							{
-								id: 'm',
-								title: "M"
-							},
-							{
-								id: 'l',
-								title: "L"
-							},
-						]
-					}
-					styled
-					wide
-          value={icon_size}
-					onChange={handleInputChange}
-				/>
+                                <Select
+                                  name="type_id"
+                                  value={type_id}
+                                  onChange={handleInputChange}
+                                  label="Type of Stakeholder"
+                                  options={organisationTypes}
+                                />
+                                <div className="grid">
+                                    <div className="grid-xs-6">
+                                        <TextInput
+                                                name="abbreviation"
+                                                value={abbreviation}
+                                                onChange={handleInputChange}
+                                                label="Set an Abbreviation"
+                                        />
+                                    </div>
+                                    <div className="grid-xs-6">
+                                        <Radio
+                                                name="icon_size"
+                                                label="Choose Size of Icon"
+                                                options={
+                                                        [
+                                                                {
+                                                                        id: 's',
+                                                                        title: "S"
+                                                                },
+                                                                {
+                                                                        id: 'm',
+                                                                        title: "M"
+                                                                },
+                                                                {
+                                                                        id: 'l',
+                                                                        title: "L"
+                                                                },
+                                                        ]
+                                                }
+                                                styled
+                                                wide
+                                                value={icon_size}
+                                                onChange={handleInputChange}
+                                        />
+                                    </div>
+                                </div>
 
 				<TextInput
 					name="description"
 					label="Give a Description to this Organisation"
 					textarea
-          value={description}
+                                        value={description}
 					onChange={handleInputChange}
-          validation="required"
+                                        validation="required"
 					wide
 				/>
 			</Form>

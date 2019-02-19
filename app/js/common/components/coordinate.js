@@ -70,8 +70,8 @@ export default class Coordinate extends React.PureComponent {
                         <div className="connector" style={{
                             transform: `rotate(${position.degree ? position.degree : 0}deg)`,
                             width: `${position.height ? position.height : 0}px`
-                        }}></div>
-                        <p><img src={coordinate.icon_path}/></p>
+                        }}></div>                        
+                        <img class="progress-button-img" src={coordinate.icon_path}/>                        
                     </div>
                 )
             })

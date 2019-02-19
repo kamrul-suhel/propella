@@ -14,13 +14,12 @@ export default class Royalty extends React.PureComponent {
 
 		return (
 			<Form onSubmit={handleSubmit} ref={setFormRef}>
-				<p>Okay now lets see where they sit on the board</p>
+				<p className="form-label form-label-title">Okay now lets see where they sit on the board</p>
 
-				<p>Royalty</p>
+				<p className="h2">Royalty</p>
 
-				<p>Value, influence and power. Top drawer or bottom?</p>
-
-				<p>Lorem ipsum dolor sit amet, sed do eiusmod.</p>
+                                <p className="slider-description"><strong>Value, influence and power. Top drawer or bottom?</strong><br/>
+				Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
 
 				<Slider
 					name="positionY"
@@ -29,7 +28,7 @@ export default class Royalty extends React.PureComponent {
 					max={100}
 					value={positionY}
 					onChange={handleInputChange}
-          validation="required"
+                                        validation="required"
 					wide
 				/>
 				<span className="counter">{positionY}</span>

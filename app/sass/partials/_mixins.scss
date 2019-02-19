@@ -34,6 +34,11 @@
 	:-ms-input-placeholder      {@content}
 }
 
+@mixin background-opacity($color, $opacity: 0.3) {
+    background: $color;
+    background: rgba($color, $opacity);
+}
+
 %clearfix {
 	&:after {
 		content: "";
