@@ -50,8 +50,9 @@ export default class List extends React.PureComponent {
                 <span type="button" onClick={() => this.handleDelete(this.props.params.groupId, person.id)} className="clickable icon-bin" />
               </React.Fragment>
             }
+            category={person.organisation_title}
           >
-              {person.title} - {person.organisation_title}
+              {person.title}
           </FancyListItem>
       )
     }
@@ -86,6 +87,13 @@ export default class List extends React.PureComponent {
                 ) : (
                     <React.Fragment>
                         <FancyList>
+                            <FancyListItem
+                                actions={<span/>}
+                                key="heading"
+                                category="Org"
+                              >
+                                  Name
+                              </FancyListItem>
                             {_.map(group.people, (person) => {
                                 return this.renderItem(person)
                             })}

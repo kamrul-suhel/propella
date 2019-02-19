@@ -189,7 +189,7 @@ export default class Wrapper extends React.PureComponent {
                                     <Link className="button-round fourth"
                                           to={`/${url.projects}/${params.id}/groups/${group.id}/competitors`}>
                                         <span className="button-round-inside"/>
-                                        Add Competitor
+                                        Competitor
                                     </Link>
                                 </div>
                                 }
