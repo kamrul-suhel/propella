@@ -150,6 +150,7 @@
                             font-size:16px;
                             line-height:1;
                             font-weight:500;
+                            color:$text-color;
                         }
                     }
                     .ov-scores{
@@ -170,8 +171,8 @@
                        }
                        .loyalty-wrapper, .royalty-wrapper{                        
                            span{
-                               background-size:100%;
-                               background-repeat:no-repeat;
+                               background-size: 100%;
+                               background-repeat: no-repeat;
                                margin: auto;
                                width: 73px;
                                height: 75px;
@@ -185,7 +186,13 @@
                     }                    
                 }
                 .fancylist{
-                    padding:25px;
+                    padding: 16px;
+                }
+                .add-first-link{
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    height:48px;
                 }
 	}
   .popup-inner-buttons {
@@ -212,7 +219,6 @@
 
   &.organisations{
       .fancylist{
-          padding: 16px;
           .fancylist-item{              
               .fancylist-item-title{
                   font-size:16px;
@@ -255,5 +261,15 @@
               text-align:center;
           }
       }
+      .overview{
+          .ov-img-content{
+              .ov-icon-path{
+                  img{
+                      width:153px;
+                  }
+              }
+          }
+      }
+      
   }
 }

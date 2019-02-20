@@ -82,8 +82,8 @@ export default class List extends React.PureComponent {
                 isLoading={groups.isLoading}
             >
                 {_.isEmpty(group.people) ? (
-                    <Link to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}/add`}>Add
-                        your first person <span dangerouslySetInnerHTML={{__html: `&plus;`}}/></Link>
+                    <Link className="add-first-link" to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}/add`}>Add
+                        your first person &nbsp;<span dangerouslySetInnerHTML={{__html: `&plus;`}}/></Link>
                 ) : (
                     <React.Fragment>
                         <FancyList>

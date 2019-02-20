@@ -83,3 +83,29 @@
     }
   }
 }
+
+.people{
+    .fancylist-item{
+        display:flex;
+        align-items:flex-start;
+        justify-content:center;
+        padding:0px;
+        text-align:left;
+        .fancylist-item-title{
+            width:47%;
+        }
+        .fancylist-item-category{
+            width:28%;
+            font-weight:500;
+        }
+        .fancylist-item-actions{
+            width:25%;
+            font-size:20px;
+            justify-content:flex-end;
+        }
+        &:first-child{
+            font-size:12px;
+            text-transform:uppercase;            
+        }
+    }
+}

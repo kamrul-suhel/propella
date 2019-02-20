@@ -121,7 +121,19 @@
               border-radius:50%;
               left:50%;
               transform:translateX(-50%);
-          }  
+              }
+              &:before{
+              content:"";
+              display:block;
+              position:absolute;
+              top:0px;
+              right:0px;
+              width: 0;
+              height: 0;
+              border-style: solid;
+              border-width: 0 9px 9px 0;
+              border-color: transparent #ffffff transparent transparent;
+              }  
             img.react-draggable-handle-icon{
                 -webkit-user-drag: none;
                 width:75%;
@@ -137,6 +149,8 @@
                 font-size: 14px;
                 font-weight: 500;
                 color: white;
+                width: 100px;
+                text-align: center;
             }      
         .react-draggable-actions {
           position: absolute;
@@ -330,7 +344,7 @@
 
     .axis-label {
       position: absolute;
-      top: 11px;
+      top: 17px;
       width: 100%;
       text-align: center;
       font-size: 18px;
@@ -341,7 +355,7 @@
     .left-icon {
       left: 0px;
       position: absolute;
-      top: 12px;
+      top: 17px;
       width: auto;
 
       p {
@@ -358,7 +372,7 @@
     .right-icon {
       right: 0px;
       position: absolute;
-      top: 12px;
+      top: 17px;
       width: auto;
       display: flex;
       font-size: 20px;

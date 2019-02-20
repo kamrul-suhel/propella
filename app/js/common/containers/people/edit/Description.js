@@ -55,13 +55,15 @@ export default class Description extends React.PureComponent {
                 <div className="grid-xs-6">
 
                 <FileUpload
-                    label="UPLOAD AN IMAGE"
+                    label="Upload your image"
                     name="icon"
-                    value={icon}
                     onChange={handleInputChange}
-                    className={fileUploadClass}  
+                    value={icon}
+                    className={fileUploadClass}                                
                     placeholder=""
-                />
+                >
+                    {<img src={icon ? icon.preview : icon_path}/>}
+                </FileUpload>          
                 
                 </div>
                 
@@ -74,11 +76,11 @@ export default class Description extends React.PureComponent {
                         [
                             {
                                 id: 'm',
-                                title: " "
+                                title: "M"
                             },
                             {
                                 id: 'f',
-                                title: " "
+                                title: "F"
                             },
                         ]
                     }
@@ -86,6 +88,7 @@ export default class Description extends React.PureComponent {
                     wide
                     value={icon_size}
                     onChange={handleInputChange}
+                    className="radio-gender"
                 />
                 
                 </div>

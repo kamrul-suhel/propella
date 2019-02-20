@@ -138,8 +138,11 @@ export default class Wrapper extends React.PureComponent {
                                  className={`size-${organisation.icon_size}`}
                             >
                                 <div className="react-draggable-handle">
-                                  <div className="react-draggable-title">{organisation.abbreviation}</div>
+                                  <div className="react-draggable-handle-title">{organisation.abbreviation}</div>
                                 </div>
+                                {selectedDraggable === organisation.id &&
+                                  <span className="react-draggable-title">{organisation.title}</span>
+                                }
 
                                 {selectedDraggable === organisation.id &&
                                     <div className="react-draggable-actions">
@@ -151,7 +154,7 @@ export default class Wrapper extends React.PureComponent {
 
                                         <span className="button-round second"
                                               onClick={(event) => this.getGroupCoordinate(event, group.id)}>
-                                            <span className="button-round-inside icon-chain"/>{progressLabel}
+                                            <span className="button-round-inside icon-chain"/>Progess
                                         </span>
 
                                         <Link className="button-round third"

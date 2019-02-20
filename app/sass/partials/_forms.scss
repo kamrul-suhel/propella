@@ -19,7 +19,7 @@
   }
 
   .form-group {
-    margin: 0 0 18px;
+    margin: 0 0 5px;
 
     &:last-child {
       margin-bottom: 0!important;
@@ -100,17 +100,17 @@
       z-index: 1;
       background-color: $brand-color-light;
       border-radius: 38px;
-
       .file-name {
         display: flex;
         justify-content: center;
         align-items: center;
       }
-
       img {
         display: block;
-        width: 100%;
+        width: 136%;
         height: auto;
+        border-radius:50%;
+        margin-top:-2px;
       }
     }
 
@@ -175,6 +175,55 @@
       background-size:100%;
       background-size: 100%;
       font-size: 26px;
+  }
+  .radio-gender{
+      margin-top:-22px;
+      .form-options-layout-horizontal{
+          margin-top:5px!important;
+          .form-option-radio{    
+              position:relative; 
+              border-radius:50%;              
+              .form-option-inner{
+                  height:59px;
+                  width:59px!important;
+                  border-radius:50%!important;
+                  .option-label{        
+                      display:flex;
+                      align-items:center;
+                      justify-content:center;
+                      height:100%;
+                      &:after{
+                          font-size:35px;
+                          font-family:$icon-family-base;                     
+                          content:"\41";
+                          position:absolute;
+                          top:50%;
+                          left:50%;
+                          transform:translateX(calc(-50%)) translateY(-50%);
+                          background-color:#F1F1F1;
+                          display:flex;
+                          justify-content:center;
+                          align-items:center;
+                          height:20px;
+                      }
+                  }
+              }
+              &.is-selected{
+                  .option-label{
+                      &:after{
+                          background-color:$brand-color-dark;
+                      }
+                  }
+              }
+              &:nth-child(2){
+                  .option-label{
+                      &:after{
+                          content:"\6e";
+                      }
+                  }
+              }
+          }
+      }
   }
 }
 
