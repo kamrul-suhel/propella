@@ -36,6 +36,7 @@
 @import 'partials/grid';
 @import 'partials/icons';
 @import 'partials/tooltips';
+@import 'partials/print_media';
 
 @import 'modules/gridwrapper';
 @import 'modules/popup';
@@ -47,6 +48,11 @@
 
 body {
   font-family: $family-base;
+  font-weight:500;
+  background-color:#F0F8FC;
+  height:100VH;
+  width:100VW;
+  overflow:hidden;
 }
 
 #app {

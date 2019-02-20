@@ -13,11 +13,9 @@
 		position: relative;
 		z-index: 1;
 		color: black;
-
 		&:hover {
 			color: $brand-color-alt;
 		}
-
 		.file-name {
 			display: block;
 			position: absolute;
@@ -29,7 +27,7 @@
 			white-space: nowrap;
 			text-overflow: ellipsis;
 			padding: 8px 10px;
-			color: #000;
+			color: #000;                    
 		}
 	}
 

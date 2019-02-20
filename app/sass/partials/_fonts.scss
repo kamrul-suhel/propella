@@ -9,6 +9,7 @@
     url("../fonts/propella.svg#propella") format("svg");
   font-weight: normal;
   font-style: normal;
+
 }
 
 [data-icon]:before {
@@ -37,81 +38,120 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-slide-icon-crown:before {
+.icon-arrow-down-small-black:before {
   content: "\61";
 }
-.icon-arrow-down:before {
+.icon-arrow-up-small-black:before {
   content: "\62";
 }
-.icon-arrow-up:before {
+.icon-bin:before {
   content: "\63";
 }
-.icon-bin:before {
+.icon-chain:before {
   content: "\64";
 }
-.icon-chain:before {
+.icon-character-ambassador:before {
   content: "\65";
 }
-.icon-chevron-bottom-left:before {
+.icon-character-assassin:before {
   content: "\66";
 }
-.icon-chevron-bottom-right:before {
+.icon-character-boomerang:before {
   content: "\67";
 }
-.icon-chevron-top-left:before {
+.icon-character-deadweight:before {
   content: "\68";
 }
-.icon-chevron-top-right:before {
+.icon-character-mirage:before {
   content: "\69";
 }
-.icon-eye:before {
+.icon-character-eager-beaver:before {
   content: "\6a";
 }
-.icon-hamburger:before {
+.icon-character-pirate:before {
   content: "\6b";
 }
-.icon-logo-icon:before {
+.icon-character-prize:before {
   content: "\6c";
 }
-.icon-mining-red:before {
+.icon-character-smiley:before {
   content: "\6d";
 }
-.icon-minus:before {
+.icon-person-female:before {
   content: "\6e";
 }
-.icon-x:before {
+.icon-edit:before {
   content: "\6f";
 }
-.icon-three-dots:before {
+.icon-minus:before {
   content: "\70";
 }
-.icon-telecommunications:before {
+.icon-mining-red:before {
   content: "\71";
 }
-.icon-stack:before {
+.icon-logo-icon:before {
   content: "\72";
 }
-.icon-stack-1:before {
+.icon-hamburger:before {
   content: "\73";
 }
-.icon-slide-icon-love:before {
+.icon-eye:before {
   content: "\74";
 }
-.icon-slide-icon-jester:before {
+.icon-compass:before {
   content: "\75";
 }
-.icon-slide-icon-hate:before {
+.icon-chevron-top-left:before {
   content: "\76";
 }
-.icon-retail-red:before {
+.icon-chevron-bottom-right:before {
   content: "\77";
 }
-.icon-plus-1:before {
+.icon-chevron-bottom-left:before {
   content: "\78";
 }
-.icon-plus:before {
+.icon-character-trojan-horse:before {
   content: "\79";
 }
-.icon-edit:before {
+.icon-chevron-top-right:before {
   content: "\7a";
+}
+.icon-person-male:before {
+  content: "\41";
+}
+.icon-plus:before {
+  content: "\42";
+}
+.icon-plus-gray-large:before {
+  content: "\43";
+}
+.icon-retail-red:before {
+  content: "\44";
+}
+.icon-slide-icon-crown:before {
+  content: "\45";
+}
+.icon-slide-icon-hate:before {
+  content: "\46";
+}
+.icon-slide-icon-jester:before {
+  content: "\47";
+}
+.icon-slide-icon-love:before {
+  content: "\48";
+}
+.icon-stack:before {
+  content: "\4a";
+}
+.icon-telecommunications-green:before {
+  content: "\4b";
+}
+.icon-three-dots:before {
+  content: "\4c";
+}
+.icon-x:before {
+  content: "\4d";
+}
+.icon-z-pirate:before {
+  content: "\4e";
 }

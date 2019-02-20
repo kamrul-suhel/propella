@@ -1,0 +1,28 @@
+@media print {
+  .report-component{
+
+    .table table{
+      width:100%;
+    }
+  }
+
+  .gridwrapper {
+    .gridwrapper-x{
+      display:none !important;
+    }
+
+    .gridwrapper-y{
+      display:none !important;
+    }
+
+    .gridwrapper-inner{
+      .react-draggable{
+        display:none !important;
+      }
+
+      .gridwrapper-inner-section-wrapper{
+        display:none !important;
+      }
+    }
+  }
+}

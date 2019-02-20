@@ -1,7 +1,7 @@
 .popup {
 	min-width: 300px;
 	width: 100%;
-	max-width: 350px;
+	max-width: 360px;
 	position: relative;
 	left: 50%;
 	transform: translateX(-50%);
@@ -13,7 +13,7 @@
   a {
     text-decoration: none;
     color: #1C1C1C;
-    font-weight:600;
+    font-weight:500;
   }
 
   .grid {
@@ -67,7 +67,7 @@
       background-color: #F1F1F1;
       box-shadow: 1px 2px 4px 0 rgba(0,0,0,0.50);
       border-radius: 4px 0 0 0;
-      
+      z-index:2;
       a {
         display: block;
         color: #D0D0D0;
@@ -83,7 +83,7 @@
                         color: white;
                         &:before {
                           @include font-icon;
-                          content: '\6f';
+                          content: '\4d';
                           font-size: 11px;
                         }
 		}
@@ -130,7 +130,7 @@
                             border: 2px solid $brand-color-dark;
                             text-transform:uppercase;
                             img{                                
-                                width: 100px;
+                                width: 130px;
                                 height: auto;
                                 border-radius:50%;
                             }                            
@@ -150,6 +150,7 @@
                             font-size:16px;
                             line-height:1;
                             font-weight:500;
+                            color:$text-color;
                         }
                     }
                     .ov-scores{
@@ -170,8 +171,8 @@
                        }
                        .loyalty-wrapper, .royalty-wrapper{                        
                            span{
-                               background-size:100%;
-                               background-repeat:no-repeat;
+                               background-size: 100%;
+                               background-repeat: no-repeat;
                                margin: auto;
                                width: 73px;
                                height: 75px;
@@ -185,7 +186,13 @@
                     }                    
                 }
                 .fancylist{
-                    padding:25px;
+                    padding: 16px;
+                }
+                .add-first-link{
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    height:48px;
                 }
 	}
   .popup-inner-buttons {
@@ -212,11 +219,7 @@
 
   &.organisations{
       .fancylist{
-          padding: 16px;
-          .fancylist-item{
-              &.is-active{                  
-                  @include background-opacity($brand-color-1, 0.25);
-              }
+          .fancylist-item{              
               .fancylist-item-title{
                   font-size:16px;
                   font-weight:500;
@@ -227,9 +230,46 @@
           width:100%;
       }
       .form-group{
-        .form-options-layout-horizontal{
-            margin:0px auto;
-        }
+          .form-options-layout-horizontal{
+              margin:0px auto;
+          }
       }
+      .overview{
+          .ov-img-content{
+              .ov-icon-path{
+                  background-color:$brand-color-dark;
+                  color:white;
+                  .ov-abbreviation{
+                      margin-bottom:0px;
+                      font-size:24px;
+                  }
+              }
+          }      
+      }
+  }
+  &.people{
+      .form-type-upload{
+          display:flex;
+          align-items:center;          
+          .form-label{
+              border-bottom:1px solid black;
+              padding-bottom:10px;
+              margin-right:30px;
+              text-align:left;
+          }
+          .form-field-wrapper{
+              text-align:center;
+          }
+      }
+      .overview{
+          .ov-img-content{
+              .ov-icon-path{
+                  img{
+                      width:153px;
+                  }
+              }
+          }
+      }
+      
   }
 }

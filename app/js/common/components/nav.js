@@ -45,6 +45,7 @@ export default class Popup extends React.PureComponent {
                   <React.Fragment>
                     <Link
                       to={this.nextLink}
+                      className="nav-link"
                     >
                       {group.title}
                     </Link>

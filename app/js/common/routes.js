@@ -22,7 +22,6 @@ const Routes = (
                 <IndexRoute component={Project.View}/>
                 <Route path={url.groups}>
                     <IndexRoute component={Group.List}/>
-
                     <Route path=":groupId">
                       <IndexRoute component={Group.View}/>
 

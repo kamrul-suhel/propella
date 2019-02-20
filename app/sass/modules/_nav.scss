@@ -1,15 +1,49 @@
 .nav {
-  display: flex;
-  justify-content: center;
-  height:40px;
-  a {
-    text-decoration: none;
-  }
-
-  [class*="icon-"] {
-    font-size: 24px;
-    line-height: 24px;
-    display:flex;
+    display: flex;
+    justify-content: center;
     align-items:center;
-  }
+    height:40px;
+    a {
+        text-decoration: none;
+    }
+
+    [class*="icon-"] {
+        font-size: 24px;
+        line-height: 24px;
+        display:flex;
+        align-items:center;
+    }
+    .nav-link{
+        background-color:rgba(255,255,255,0.8);
+        padding:4px 34px 4px 28px;
+        font-weight:500;
+        border-radius:5px 0px 0px 5px;
+        position:relative;
+        font-size:15px;        
+        &:before{
+            font-family:$icon-family-base;
+            content: "a";
+            position: absolute;
+            right: 7px;
+            top: 50%;            
+            transform: translateY(calc(-50% + 1px));
+        }
+        &:after{
+            font-family:$icon-family-base;
+            content: "\4d";
+            position: absolute;
+            right: -26px;
+            top: 0px;
+            background-color:$brand-color-dark;;
+            border-radius:0px 5px 5px 0px;
+            height:100%;
+            width:25px;
+            height:100%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            color:white;
+            font-size:10px;
+        }
+    }
 }
