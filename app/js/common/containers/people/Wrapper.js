@@ -136,18 +136,18 @@ export default class PeopleWrapper extends React.PureComponent {
                             onStop={this.onDraggableEventHandler}
                         >
                             <div handleid={item.id}
-                                 className={`size-${item.icon_size}`}
+                                 className={`size-m`}
                             >
                                 <div className="react-draggable-handle">
-                                  <div className="react-draggable-title">{item.abbreviation}</div>
+                                  <div className="react-draggable-title">Barclays</div>
                                 </div>
 
                                 {selectedDraggable === item.id &&
                                     <div className="react-draggable-actions">
                                         <Link className="button-round first"
                                               to={`/${url.projects}/${params.id}/groups/${group.id}/${url.people}/${item.id}`}>
-                                            <span className="button-round-inside"/>
-                                            Assign Character
+                                            <span className="button-round-inside icon-masks"/>
+                                            Assign<br/>Character
                                         </Link>
 
                                         <Link className="button-round second"
@@ -165,7 +165,7 @@ export default class PeopleWrapper extends React.PureComponent {
                                         <Link className="button-round fourth"
                                               to={`/${url.projects}/${params.id}/groups/${group.id}/competitors`}>
                                             <span className="button-round-inside icon-compass"/>
-                                            Choose Trajectory
+                                            Choose<br/>Trajectory
                                         </Link>
                                     </div>
                                 }

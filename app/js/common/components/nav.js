@@ -49,7 +49,8 @@ export default class Popup extends React.PureComponent {
                     >
                       {group.title}
                     </Link>
-                    {/*<Link to={this.nextLink} className="icon-hamburger"/>*/}
+                    <Link to={this.nextLink} className="nav-close icon-x"/>
+                            <Link to={this.nextLink} className="icon-hamburger"/>
                   </React.Fragment>
                 ) : (
                     <Link to={this.nextLink} className="icon-stack"/>

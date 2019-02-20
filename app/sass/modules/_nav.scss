@@ -27,23 +27,18 @@
             right: 7px;
             top: 50%;            
             transform: translateY(calc(-50% + 1px));
-        }
-        &:after{
-            font-family:$icon-family-base;
-            content: "\4d";
-            position: absolute;
-            right: -26px;
-            top: 0px;
-            background-color:$brand-color-dark;;
-            border-radius:0px 5px 5px 0px;
-            height:100%;
-            width:25px;
-            height:100%;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            color:white;
-            font-size:10px;
-        }
+        }        
+    }
+    .nav-close{
+        background-color:$brand-color-dark;
+        color: white;
+        border-radius: 0px 5px 5px 0px;
+        font-size: 10px;
+        height: 26px;
+        width: 21px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right:10px;
     }
 }
