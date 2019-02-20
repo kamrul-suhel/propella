@@ -61,6 +61,13 @@
     }
   }
 
+  .form-field-error-wrapper {
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+  }
+
   input,
   textarea {
     font-family: $family-base;

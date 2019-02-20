@@ -17,42 +17,25 @@ import {makeGetGroup, makeGetGroups} from 'app/containers/group/selector';
     };
 })
 export default class Report extends React.PureComponent {
-    handleReportExportCsv = async () => {
-        const url = `groups/${this.props.params.groupId}/people?format_type=csv`;
-        const res = await api.get(url);
+  componentDidMount() {
+      this.fetchData();
+  }
 
-        const fileName= 'people';
-        const linkUrl = window.URL.createObjectURL(new Blob([res.data]));
-        const link = document.createElement('a');
-        link.href = linkUrl;
-        link.setAttribute('download', `${fileName}${Date.now()}.csv`);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }
+  fetchData = () => {
+      this.props.dispatch(fetchData({
+          type: 'GROUP',
+          url: `/groups/${this.props.params.groupId}`,
+      }));
+  }
 
     handleReportPrint = () => {
         window.print();
     }
 
-    getQuadrant = (people) => {
-        if(people.positionX > 50){
-            if(people.positionY > 50){
-                return 'VIP'
-            }else{
-                return 'STA'
-            }
-        }else{
-            if(people.positionY > 50){
-                return 'UP'
-            }else{
-                return 'NF'
-            }
-        }
-    }
-
     render() {
         const {groups, group, params} = this.props
+
+        const downloadUrl = `groups/${this.props.params.groupId}/people?format_type=csv`;
 
         return (
             <div className="report-page">
@@ -78,7 +61,7 @@ export default class Report extends React.PureComponent {
                                         <td>{people.organisation_title}</td>
                                         <td>{people.positionX}</td>
                                         <td>{people.positionY}</td>
-                                        <td>{this.getQuadrant(people)}</td>
+                                        <td>{fn.getQuadrant(people.positionX, people.positionY)}</td>
                                         <td>{people.icon_size}</td>
                                     </tr>
                                 )
@@ -88,7 +71,7 @@ export default class Report extends React.PureComponent {
                 </ContentLoader>
 
                 <div className="report-action">
-                    <button onClick={this.handleReportExportCsv}>Create report</button>
+                    <button onClick={() => fn.downloadAttachment(downloadUrl, 'people-export')}>Create report</button>
                     <button onClick={this.handleReportPrint}>Print</button>
                 </div>
             </div>

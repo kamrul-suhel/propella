@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { makeGetProject, makeGetProjects } from 'app/containers/project/selector';
+import ProjectWrapper from './Wrapper'
 
 @connect((state, ownProps) => {
 	const getProjects = makeGetProjects();
@@ -15,7 +16,7 @@ export default class View extends React.PureComponent {
     const { project } = this.props
 
 		return (
-      <React.Fragment>
+      <ProjectWrapper {...this.props}>
         {_.isEmpty(project.groups) &&
           <div className="welcome-message">
             <div className="welcome-message-inner">
@@ -24,7 +25,7 @@ export default class View extends React.PureComponent {
             </div>
           </div>
         }
-      </React.Fragment>
+      </ProjectWrapper>
 	   )
    }
 }

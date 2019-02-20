@@ -12,6 +12,7 @@ import Description from './edit/Description';
 import Royalty from './edit/Royalty';
 import Loyalty from './edit/Loyalty';
 import Overview from './edit/Overview';
+import { GroupWrapper } from 'app/containers/group';
 
 @connect((state, ownProps) => {
     const getOrganisations = selector.makeGetOrganisations();
@@ -108,6 +109,7 @@ export default class Edit extends React.PureComponent {
 
         if (!api.error(response)) {
             this.fetchGroup()
+            this.fetchData()
             fn.navigate(`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.organisations}`)
         }
     }
@@ -177,14 +179,16 @@ export default class Edit extends React.PureComponent {
         const {step} = this.state
 
         return (
-            <Popup
-                additionalClass={(step !== 4 ? `organisations wide` : 'organisations small-window')}
-                title={popup.title ? `Organisation: ${popup.title}` : `New Organisation`}
-                closePath={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}`}
-                buttons={this.popupActions()}
-            >
-                {this.editStep()}
-            </Popup>
+            <GroupWrapper {...this.props}>
+              <Popup
+                  additionalClass={(step !== 4 ? `organisations wide` : 'organisations small-window')}
+                  title={popup.title ? `Organisation: ${popup.title}` : `New Organisation`}
+                  closePath={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}`}
+                  buttons={this.popupActions()}
+              >
+                  {this.editStep()}
+              </Popup>
+            </GroupWrapper>
         );
     }
 }

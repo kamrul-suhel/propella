@@ -3,7 +3,7 @@ import { url } from 'app/constants';
 import { fetchData } from 'app/actions';
 import { connect } from 'react-redux';
 import * as selector from './selector';
-import { GroupWrapper } from 'app/containers/group';
+import { PeopleWrapper } from 'app/containers/people';
 
 @connect((state, ownProps) => {
 	const getGroups = selector.makeGetGroups();
@@ -16,7 +16,7 @@ import { GroupWrapper } from 'app/containers/group';
 export default class View extends React.PureComponent {
 	render() {
 		return (
-      <GroupWrapper {...this.props} />
+      <PeopleWrapper {...this.props} />
 		);
 	}
 }

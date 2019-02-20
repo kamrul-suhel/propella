@@ -7,6 +7,7 @@ import {Popup} from 'app/components';
 import {api} from 'app/utils';
 import {url} from 'app/constants';
 import * as selector from 'app/containers/group/selector';
+import { ProjectWrapper } from 'app/containers/project';
 
 @connect((state, ownProps) => {
     const getGroups = selector.makeGetGroups();
@@ -68,53 +69,55 @@ export default class List extends React.PureComponent {
         const {groups, group, params} = this.props
 
         return (
-            <Popup
-                title="Competitors"
-                closePath={`/${url.projects}/${this.props.params.id}/${url.groups}/${params.groupId}`}
-                buttons={[
-                    <Link className="button"
-                          to={`/${url.projects}/${this.props.params.id}/${url.groups}/${params.groupId}`}>Cancel</Link>,
-                    <button onClick={this.handleSubmit} className="button">Save Changes</button>
-                ]}
-                additionalClass="competitors wide"
-            >
-                <ContentLoader
-                    data={groups.collection}
-                    isLoading={groups.isLoading}
-                >
-                    <Form onSubmit={this.handleSubmit} className="competitors-form">
-                        <p className="form-label">Competitors List</p>
-                        <Repeater
-                            min="1"
-                            max="3"
-                            name="competitors"
-                            onChange={this.handleInputChange}
-                            onRemoved={this.handleRemoved}
-                            value={group.competitors}
-                        >
-                            <Accordion
-                                title="Title"
-                            >
-                                <TextInput
-                                    label="Competitor Name"
-                                    name="title"
-                                    onChange={this.handleInputChange}
-                                    validation="required"
-                                    wide
-                                />
-                                <TextInput
-                                    label="Notes"
-                                    name="description"
-                                    onChange={this.handleInputChange}
-                                    wide
-                                    textarea
-                                    validation="required"
-                                />
-                            </Accordion>
-                        </Repeater>
-                    </Form>
-                </ContentLoader>
-            </Popup>
+          <ProjectWrapper {...this.props}>
+              <Popup
+                  title="Competitors"
+                  closePath={`/${url.projects}/${this.props.params.id}`}
+                  buttons={[
+                      <Link className="button"
+                            to={`/${url.projects}/${this.props.params.id}/${url.groups}/${params.groupId}`}>Cancel</Link>,
+                      <button onClick={this.handleSubmit} className="button">Save Changes</button>
+                  ]}
+                  additionalClass="competitors wide"
+              >
+                  <ContentLoader
+                      data={groups.collection}
+                      isLoading={groups.isLoading}
+                  >
+                      <Form onSubmit={this.handleSubmit} className="competitors-form">
+                          <p className="form-label">Competitors List</p>
+                          <Repeater
+                              min="1"
+                              max="3"
+                              name="competitors"
+                              onChange={this.handleInputChange}
+                              onRemoved={this.handleRemoved}
+                              value={group.competitors}
+                          >
+                              <Accordion
+                                  title="row.title"
+                              >
+                                  <TextInput
+                                      label="Competitor Name"
+                                      name="title"
+                                      onChange={this.handleInputChange}
+                                      validation="required"
+                                      wide
+                                  />
+                                  <TextInput
+                                      label="Notes"
+                                      name="description"
+                                      onChange={this.handleInputChange}
+                                      wide
+                                      textarea
+                                      validation="required"
+                                  />
+                              </Accordion>
+                          </Repeater>
+                      </Form>
+                  </ContentLoader>
+              </Popup>
+            </ProjectWrapper>
         )
     }
 }

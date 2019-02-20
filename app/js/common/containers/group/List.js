@@ -6,7 +6,8 @@ import {Form, Checkbox, ContentLoader} from '@xanda/react-components';
 import {Popup, FancyList, FancyListItem} from 'app/components';
 import {api} from 'app/utils';
 import {url} from 'app/constants';
-import {makeGetProject, makeGetProjects} from 'app/containers/project/selector';
+import { makeGetProject, makeGetProjects } from 'app/containers/project/selector';
+import GroupWrapper from './Wrapper';
 
 @connect((state, ownProps) => {
     const getProjects = makeGetProjects();
@@ -92,31 +93,33 @@ export default class List extends React.PureComponent {
         const {projects, project} = this.props
 
         return (
-            <Popup
-                additionalClass="groups"
-                title="Groups"
-                closePath={`/${url.projects}/${this.props.params.id}`}
-                buttons={[
-                    <Link className="button" to={`/${url.projects}/${this.props.params.id}/${url.groups}/add`}>Add
-                        group</Link>
-                ]}
-            >
-                <ContentLoader
-                    data={projects.collection}
-                    isLoading={projects.isLoading}
-                >
-                    {_.isEmpty(project.groups) ? (
-                        <Link to={`/${url.projects}/${this.props.params.id}/${url.groups}/add`}>Add your first
-                            group <span dangerouslySetInnerHTML={{__html: `&plus;`}}/></Link>
-                    ) : (
-                        <React.Fragment>
-                            <FancyList>
-                                {_.map(project.groups, (group) => this.renderItem(group))}
-                            </FancyList>
-                        </React.Fragment>
-                    )}
-                </ContentLoader>
-            </Popup>
+            <GroupWrapper {...this.props}>
+              <Popup
+                  additionalClass="groups"
+                  title="Groups"
+                  closePath={`/${url.projects}/${this.props.params.id}`}
+                  buttons={[
+                      <Link className="button" to={`/${url.projects}/${this.props.params.id}/${url.groups}/add`}>Add
+                          group</Link>
+                  ]}
+              >
+                  <ContentLoader
+                      data={projects.collection}
+                      isLoading={projects.isLoading}
+                  >
+                      {_.isEmpty(project.groups) ? (
+                          <Link to={`/${url.projects}/${this.props.params.id}/${url.groups}/add`}>Add your first
+                              group <span dangerouslySetInnerHTML={{__html: `&plus;`}}/></Link>
+                      ) : (
+                          <React.Fragment>
+                              <FancyList>
+                                  {_.map(project.groups, (group) => this.renderItem(group))}
+                              </FancyList>
+                          </React.Fragment>
+                      )}
+                  </ContentLoader>
+              </Popup>
+            </GroupWrapper>
         );
     }
 }

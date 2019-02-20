@@ -18,43 +18,25 @@ import {makeGetGroup, makeGetGroups} from 'app/containers/group/selector';
 })
 export default class Report extends React.PureComponent {
 
+  componentDidMount() {
+      this.fetchData();
+  }
 
-    handleReportExportCsv = async () => {
-        const url = `groups/${this.props.params.groupId}?format_type=csv`;
-        const res = await api.get(url);
-
-        const fileName = 'organisation-';
-        const linkUrl = window.URL.createObjectURL(new Blob([res.data]));
-        const link = document.createElement('a');
-        link.href = linkUrl;
-        link.setAttribute('download', `${fileName}${Date.now()}.csv`);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }
+  fetchData = () => {
+      this.props.dispatch(fetchData({
+          type: 'GROUP',
+          url: `/groups/${this.props.params.groupId}`,
+      }));
+  }
 
     handleReportPrint = () => {
         window.print();
     }
 
-    getQuadrant = (people) => {
-        if (people.positionX > 50) {
-            if (people.positionY > 50) {
-                return 'VIP'
-            } else {
-                return 'STA'
-            }
-        } else {
-            if (people.positionY > 50) {
-                return 'UP'
-            } else {
-                return 'NF'
-            }
-        }
-    }
-
     render() {
         const {groups, group, params} = this.props
+
+        const downloadUrl = `groups/${this.props.params.groupId}?format_type=csv`;
 
         return (
             <div className="report-page">
@@ -63,7 +45,7 @@ export default class Report extends React.PureComponent {
                     isLoading={groups.isLoading}
                 >
                     {_.isEmpty(group.organisations) ? (
-                        <h2>No organisation found</h2>
+                        <h2>No organisations found</h2>
                     ) : (
                         <Table headers={[
                             'Name',
@@ -80,7 +62,7 @@ export default class Report extends React.PureComponent {
                                         <td>{organisation.organisation_title}</td>
                                         <td>{organisation.positionX}</td>
                                         <td>{organisation.positionY}</td>
-                                        <td>{this.getQuadrant(organisation)}</td>
+                                        <td>{fn.getQuadrant(organisation.positionX, organisation.positionY)}</td>
                                         <td>{organisation.icon_size}</td>
                                     </tr>
                                 )
@@ -90,7 +72,7 @@ export default class Report extends React.PureComponent {
                 </ContentLoader>
 
                 <div className="report-action">
-                    <button onClick={this.handleReportExportCsv}>Create report</button>
+                    <button onClick={() => fn.downloadAttachment(downloadUrl, 'organisations-export')}>Create report</button>
                     <button onClick={this.handleReportPrint}>Print</button>
                 </div>
             </div>

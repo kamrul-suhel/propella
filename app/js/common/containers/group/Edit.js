@@ -12,6 +12,7 @@ import Description from './edit/Description';
 import Royalty from './edit/Royalty';
 import Loyalty from './edit/Loyalty';
 import Overview from './edit/Overview';
+import { ProjectWrapper } from 'app/containers/project';
 
 @connect((state, ownProps) => {
     const getGroups = selector.makeGetProjectGroups();
@@ -34,7 +35,7 @@ export default class Edit extends React.PureComponent {
     componentDidUpdate(prevProps) {
         const {group, popup} = this.props
         if ('add' !== this.props.route.type && popup.id != group.id) {
-            this.props.dispatch({type: 'POPUP_UPDATED', payload: group})
+            this.fetchData();
         }
     }
 
@@ -158,16 +159,18 @@ export default class Edit extends React.PureComponent {
         const {group, popup, params} = this.props
         const {step} = this.state;
         return (
-            <Popup
-                additionalClass={(step !== 4 ? `groups wide` : 'groups small-window')}
-                title={popup.title ? `Group: ${popup.title}` : `New Group`}
-                closePath={`/${url.projects}/${params.id}`}
-                buttons={this.popupActions()}
-            >
-                <div>
-                    {this.editStep()}
-                </div>
-            </Popup>
+            <ProjectWrapper {...this.props}>
+              <Popup
+                  additionalClass={(step !== 4 ? `groups wide` : 'groups small-window')}
+                  title={popup.title ? `Group: ${popup.title}` : `New Group`}
+                  closePath={`/${url.projects}/${params.id}`}
+                  buttons={this.popupActions()}
+              >
+                  <div>
+                      {this.editStep()}
+                  </div>
+              </Popup>
+            </ProjectWrapper>
         );
     }
 }

@@ -5,6 +5,7 @@ import moment from 'moment';
 import Store from 'app/store';
 import { fetchData, hideAlert, showAlert, storeToken } from 'app/actions';
 import { storageUrl, url } from 'app/constants';
+import { api } from 'app/utils';
 
 const cookie = new Cookie();
 
@@ -116,19 +117,21 @@ export default {
 		return JSON.parse(window.atob(base64));
 	},
 
-	async downloadAttachment(fileUrl) {
-		const blob = await fetch(`${storageUrl}${fileUrl}`, {
+	async downloadAttachment(fileUrl, fileName = 'filename') {
+		const response = await api.get(`${fileUrl}`, {
 			method: 'get',
 			headers: new Headers({
 				Authorization: `Bearer ${this.getCookie('token')}`,
 			}),
-		}).then(r => r.blob());
-		const fileName = /[^/]*$/.exec(fileUrl)[0];
-		const csvURL = window.URL.createObjectURL(blob);
-		const tempLink = document.createElement('a');
-		tempLink.href = csvURL;
-		tempLink.setAttribute('download', fileName);
-		tempLink.click();
+		});
+    
+    const linkUrl = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = linkUrl;
+    link.setAttribute('download', `${fileName}${Date.now()}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 	},
 
 	/**
@@ -399,82 +402,6 @@ export default {
 		return url.substring(url.lastIndexOf('/') + 1);
 	},
 
-	/**
-	 * Checks whether a user has completed and an admin activated the registration process.
-	 *
-	 * @return {boolean}
-	 */
-	shouldCompleteRegistration() {
-		// get global store
-		const { me } = Store.getState();
-
-		// checks if a non-admin user has activated their registration
-		if (this.isAdmin() || (!me.isLoading && (me.data.account_completion || {}).activated || me.data.role === 'company-general') ) {
-			return false;
-		}
-
-		return true;//true
-	},
-
-	getReturnsProgressIndex(status) {
-		let progressIndex;
-		switch (status) {
-			case 6:
-				progressIndex = 5;
-				break
-			case 4:
-			case 5:
-			case 3:
-				progressIndex = 3;
-				break
-			case 0:
-				progressIndex = 1;
-				break
-			case 2:
-			case 1:
-			default:
-				progressIndex = 2;
-		}
-
-		return progressIndex;
-	},
-
-	getAdminReturnsProgressIndex(status) {
-		let progressIndex;
-		switch (status) {
-			case 6:
-				progressIndex = 6;
-				break
-			case 4:
-			case 5:
-				progressIndex = 5;
-				break
-			case 3:
-				progressIndex = 4;
-				break
-			case 0:
-				progressIndex = 1;
-				break
-			case 2:
-				progressIndex = 3;
-				break
-			case 1:
-			default:
-				progressIndex = 2;
-		}
-
-		return progressIndex;
-	},
-
-	getReturnProgressSteps() {
-		return [
-			{ title: '1. Registered Claim' },
-			{ title: '2. Reviewed' },
-			{ title: '3. Responded' },
-			{ title: '3. Closed' },
-		];
-	},
-
 	activeMaintenanceMode(settings) {
 		const { setting, me } = Store.getState();
 
@@ -485,11 +412,11 @@ export default {
 
 		return false;
 	},
-        
-        getImage(filename) {
-            const imageDir = '../../../images';
-            return `${imageDir}/${filename}`;
-        },
+
+  getImage(filename) {
+      const imageDir = '../../../images';
+      return `${imageDir}/${filename}`;
+  },
 
 	getContainer () {
 		const container = document.getElementById('gridwrapper-inner')
@@ -499,5 +426,21 @@ export default {
 			height: containerHeight,
 			width: containerWidth
 		}
-	}
+	},
+
+  getQuadrant(x, y)  {
+      if (x > 50) {
+          if (y > 50) {
+              return 'VIP'
+          } else {
+              return 'STA'
+          }
+      } else {
+          if (y > 50) {
+              return 'UP'
+          } else {
+              return 'NF'
+          }
+      }
+  }
 };
