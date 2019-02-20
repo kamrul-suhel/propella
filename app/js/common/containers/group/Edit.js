@@ -88,7 +88,7 @@ export default class Edit extends React.PureComponent {
 
         // update if it already exists else create a new one
         let response
-        if (group.id) {
+        if ((group || {}).id) {
             formData.append('id', group.id)
             response = await api.put(`/groups/${group.id}`, formData)
         } else {
