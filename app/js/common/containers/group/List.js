@@ -7,7 +7,7 @@ import {Popup, FancyList, FancyListItem} from 'app/components';
 import {api} from 'app/utils';
 import {url} from 'app/constants';
 import { makeGetProject, makeGetProjects } from 'app/containers/project/selector';
-import GroupWrapper from './Wrapper';
+import { ProjectWrapper } from 'app/containers/project';
 
 @connect((state, ownProps) => {
     const getProjects = makeGetProjects();
@@ -93,7 +93,7 @@ export default class List extends React.PureComponent {
         const {projects, project} = this.props
 
         return (
-            <GroupWrapper {...this.props}>
+            <ProjectWrapper {...this.props}>
               <Popup
                   additionalClass="groups"
                   title="Groups"
@@ -119,7 +119,7 @@ export default class List extends React.PureComponent {
                       )}
                   </ContentLoader>
               </Popup>
-            </GroupWrapper>
+            </ProjectWrapper>
         );
     }
 }
