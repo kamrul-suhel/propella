@@ -137,10 +137,10 @@ export default class GroupWrapper extends React.PureComponent {
                                  className={`size-${item.icon_size}`}
                             >
                                 <div className="react-draggable-handle">
-                                  <div className="react-draggable-handle-title">{organisation.abbreviation}</div>
+                                  <div className="react-draggable-handle-title">{item.abbreviation}</div>
                                 </div>
-                                {selectedDraggable === organisation.id &&
-                                  <span className="react-draggable-title">{organisation.title}</span>
+                                {selectedDraggable === item.id &&
+                                  <span className="react-draggable-title">{item.title}</span>
                                 }
 
                                 {selectedDraggable === item.id &&

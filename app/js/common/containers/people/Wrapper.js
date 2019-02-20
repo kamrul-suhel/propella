@@ -108,13 +108,13 @@ export default class PeopleWrapper extends React.PureComponent {
                     <button className="button gridwrapper-save" onClick={this.handleSaveChanges}>Save Changes</button>
                 </React.Fragment>
                 }
-                <ul className="gridwrapper-inner-categories filters">
+                <ul className="gridwrapper-inner-categories filter">
                   {_.map(group.organisations, (item) => {
                     if (item.status < 1) {
                         return
                     }
 
-                    return <li>{item.title}</li>
+                    return <li className="filter">{item.title}</li>
                   })}
                 </ul>
                 {_.map(group.people, (item) => {

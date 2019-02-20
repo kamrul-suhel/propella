@@ -32,10 +32,16 @@ export default class Edit extends React.PureComponent {
         }
     }
 
+    componentDidMount(prevProps) {
+        if ('add' !== this.props.route.type) {
+            this.fetchData();
+        }
+    }
+
     componentDidUpdate(prevProps) {
         const {group, popup} = this.props
-        if ('add' !== this.props.route.type && popup.id != group.id) {
-            this.fetchData();
+        if (popup.id != (group || {}).id) {
+            this.props.dispatch({type: 'POPUP_UPDATED', payload: group})
         }
     }
 
@@ -158,6 +164,7 @@ export default class Edit extends React.PureComponent {
     render() {
         const {group, popup, params} = this.props
         const {step} = this.state;
+
         return (
             <ProjectWrapper {...this.props}>
               <Popup

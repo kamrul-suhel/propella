@@ -22,12 +22,12 @@ const Routes = (
                 <IndexRoute component={Project.View}/>
                 <Route path={url.groups}>
                     <IndexRoute component={Group.List}/>
+
+                    <Route path="add" component={Group.Edit} type="add"/>
+
                     <Route path=":groupId">
                       <IndexRoute component={Group.View}/>
-
-                      <Route path="edit" component={Group.Edit} type="edit"/>
-                      <Route path="add" component={Group.Edit} type="add"/>
-
+                        <Route path="edit" component={Group.Edit} type="edit"/>
                         <Route path="competitors" component={Competitor.List}/>
                         <Route path={url.organisations}>
                             <IndexRoute component={Organisation.List}/>
