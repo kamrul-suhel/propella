@@ -10,6 +10,7 @@ export default class Description extends React.PureComponent {
             description,
             type_id,
             icon,
+            icon_path,
             icon_size,
             handleInputChange,
             handleSubmit,
@@ -19,6 +20,8 @@ export default class Description extends React.PureComponent {
             setFormRef,
             location
         } = this.props
+        
+        const fileUploadClass = (icon || icon_path) ? 'has-file' : 'has-no-file'
 
         return (
             <Form onSubmit={handleSubmit} ref={setFormRef} className="new-person">
@@ -46,6 +49,25 @@ export default class Description extends React.PureComponent {
                     label="Assign an Organisation"
                     options={_.values(organisations)}
                 />
+                
+                <div className="grid">
+                
+                <div className="grid-xs-6">
+
+                <FileUpload
+                    label="Upload your image"
+                    name="icon"
+                    onChange={handleInputChange}
+                    value={icon}
+                    className={fileUploadClass}                                
+                    placeholder=""
+                >
+                    {<img src={icon ? icon.preview : icon_path}/>}
+                </FileUpload>          
+                
+                </div>
+                
+                <div className="grid-xs-6">
 
                 <Radio
                     name="icon_size"
@@ -66,14 +88,12 @@ export default class Description extends React.PureComponent {
                     wide
                     value={icon_size}
                     onChange={handleInputChange}
+                    className="radio-gender"
                 />
-
-                <FileUpload
-                    label="UPLOAD AN IMAGE"
-                    name="icon"
-                    value={icon}
-                    onChange={handleInputChange}
-                />
+                
+                </div>
+                
+                </div>
 
                 <TextInput
                     name="description"

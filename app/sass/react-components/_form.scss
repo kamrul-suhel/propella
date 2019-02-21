@@ -1,6 +1,8 @@
 .form-wrapper {
 	position: relative;
         padding:20px;
+        max-height:545px;
+        overflow-x:scroll;
 	&.form-loading {
 		pointer-events: none;
 
@@ -62,7 +64,6 @@
 		width: 100%;
                 display: flex;
                 flex-wrap: wrap;
-                margin-bottom:20px!important;
                 .form-type-input{
                     display: flex;
                     text-align:center;

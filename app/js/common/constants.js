@@ -8,6 +8,6 @@ export const url = {
     people: 'people',
 
     report: 'report',
-};
 
-export const storageUrl = 'http://api.callisto.hostings.co.uk/storage/';
+    characters: 'characters',
+};

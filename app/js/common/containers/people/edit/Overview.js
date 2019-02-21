@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router';
+import { fn } from 'app/utils'
 import {Form, Slider} from '@xanda/react-components';
 
 export default class Overview extends React.PureComponent {
@@ -10,26 +11,28 @@ export default class Overview extends React.PureComponent {
         return (
             <div className="overview">
                 <div className="ov-message">
-                    <p>Great, you're ready to add people!</p>
+                    <p>Great, you're ready to add group!</p>
                 </div>
 
-                <div className="ov-title">
+                <p className="ov-title h2">
                     {title}
-                </div>
+                </p>
 
                 <div className="ov-img-content">
-                    <div className="ov-icon-path"><img src={icon ? icon.preview : icon_path}/></div>
-                    <div className="ov-icon-size">{icon_size}</div>
+                    <div className="ov-icon-path">
+                        <img src={icon ? icon.preview : icon_path}/>
+                        <div className="ov-icon-size"><span className={`avatar-${fn.getAvatarClass(icon_size)}`}></span></div>
+                    </div>              
                 </div>
-
+                <div className="ov-scores">
                 <div className="royalty-wrapper">
                     <p>Royalty</p>
                     <span>{positionY}</span>
                 </div>
-
                 <div className="loyalty-wrapper">
                     <p>Loyalty</p>
                     <span>{positionX}</span>
+                </div>
                 </div>
             </div>
         );

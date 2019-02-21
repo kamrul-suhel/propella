@@ -3,25 +3,20 @@ import {url} from 'app/constants';
 import {fetchData} from 'app/actions';
 import {connect} from 'react-redux';
 import Draggable from 'react-draggable';
-import {api} from 'app/utils';
-import * as selector from './selector';
-import { makeGetProject, makeGetProjects } from 'app/containers/project/selector';
-import {Link} from "react-router";
+import { api } from 'app/utils';
+import * as selector from 'app/containers/group/selector';
+import { Link } from "react-router";
 
 @connect((state, ownProps) => {
     const getGroups = selector.makeGetGroups();
     const getGroup = selector.makeGetGroup();
-    const getProjects = makeGetProjects();
-    const getProject = makeGetProject();
 
     return {
         groups: getGroups(state),
         group: getGroup(state, ownProps.params.groupId),
-        projects: getProjects(state),
-        project: getProject(state, ownProps.params.id),
     };
 })
-export default class GroupWrapper extends React.PureComponent {
+export default class PeopleWrapper extends React.PureComponent {
     constructor(props) {
         super(props)
 
@@ -49,10 +44,6 @@ export default class GroupWrapper extends React.PureComponent {
         this.props.dispatch(fetchData({
             type: 'GROUP',
             url: `/groups/${this.props.params.groupId}`,
-        }));
-        this.props.dispatch(fetchData({
-            type: 'PROJECT',
-            url: `/projects/${this.props.params.id}`,
         }));
     }
 
@@ -89,11 +80,18 @@ export default class GroupWrapper extends React.PureComponent {
     handleSaveChanges = async () => {
         const {updatedCoordinates} = this.state
 
-        const response = await api.put(`/organisations`, {organisations: _.values(updatedCoordinates)})
+        const response = await api.put(`/people`, {people: _.values(updatedCoordinates)})
         if (!api.error(response)) {
             // if successfull remove from pending updates
             this.setState({'updatedCoordinates': {}})
         }
+    }
+
+    handleHideOrganisation = async (id) => {
+      const response = await api.put(`organisations/${id}`, {status: 0})
+      if (!api.error(response)) {
+        this.fetchData();
+      }
     }
 
     handleResetChanges = () => {
@@ -108,6 +106,9 @@ export default class GroupWrapper extends React.PureComponent {
         const containerHeight = (container || {}).offsetHeight || 0
         const containerWidth = (container || {}).offsetWidth || 0
 
+        // get the id's of the active organisations
+        const activeOrganisationIds = _.map(group.organisations, (item) => {if(item.status === 1) return item.id})
+
         return (
             <div ref={node => this.node = node}>
                 {!_.isEmpty(updatedCoordinates) &&
@@ -115,8 +116,24 @@ export default class GroupWrapper extends React.PureComponent {
                     <button className="button gridwrapper-save" onClick={this.handleSaveChanges}>Save Changes</button>
                 </React.Fragment>
                 }
-                {_.map(group.organisations, (item) => {
+                <ul className="gridwrapper-inner-categories filter">
+                  {_.map(group.organisations, (item) => {
                     if (item.status < 1) {
+                        return
+                    }
+
+                    return (
+                      <li className="filter">
+                        {item.title}
+                        <span className="clickable icon-x" onClick={() => this.handleHideOrganisation(item.id)} />
+                      </li>
+                    )
+                  })}
+                </ul>
+                {_.map(group.people, (item) => {
+                    // only display people belonging to an active organisation
+                    console.log(item.organisation_id, activeOrganisationIds)
+                    if (item.status < 1 || !_.includes(activeOrganisationIds, item.organisation_id)) {
                         return
                     }
                     return (
@@ -134,38 +151,36 @@ export default class GroupWrapper extends React.PureComponent {
                             onStop={this.onDraggableEventHandler}
                         >
                             <div handleid={item.id}
-                                 className={`size-${item.icon_size}`}
+                                 className={`size-m`}
                             >
                                 <div className="react-draggable-handle">
-                                  <div className="react-draggable-handle-title">{item.abbreviation}</div>
+                                  <div className="react-draggable-title">{item.title}</div>
                                 </div>
-                                {selectedDraggable === item.id &&
-                                  <span className="react-draggable-title">{item.title}</span>
-                                }
 
                                 {selectedDraggable === item.id &&
                                     <div className="react-draggable-actions">
                                         <Link className="button-round first"
-                                              to={`/${url.projects}/${params.id}/groups/${group.id}/${url.organisations}/${item.id}`}>
+                                              to={`/${url.projects}/${params.id}/groups/${group.id}/${url.people}/${item.id}`}>
+                                            <span className="button-round-inside icon-masks"/>
+                                            Assign<br/>Character
+                                        </Link>
+
+                                        <Link className="button-round second"
+                                              to={`/${url.projects}/${params.id}/groups/${group.id}/${url.people}/${item.id}`}>
                                             <span className="button-round-inside icon-edit"/>
                                             Edit
                                         </Link>
 
-                                        <span className="clickable button-round second"
-                                              onClick={(event) => this.getGroupCoordinate(event, group.id)}>
-                                            <span className="button-round-inside icon-chain"/>Progess
-                                        </span>
-
                                         <Link className="button-round third"
-                                              to={`/${url.projects}/${params.id}/groups/${group.id}/${url.organisations}/${url.people}`}>
-                                            <span className="button-round-inside icon-add-organisation"/>
-                                            People
+                                              to={`/${url.projects}/${params.id}/groups/${group.id}/`}>
+                                            <span className="button-round-inside icon-chain"/>
+                                            Progress
                                         </Link>
 
                                         <Link className="button-round fourth"
-                                              to={`/${url.projects}/${params.id}/groups/${group.id}/${url.people}/add?organisation_id=${item.id}`}>
-                                            <span className="button-round-inside icon-character-pirate"/>
-                                            Add Person
+                                              to={`/${url.projects}/${params.id}/groups/${group.id}/competitors`}>
+                                            <span className="button-round-inside icon-compass"/>
+                                            Choose<br/>Trajectory
                                         </Link>
                                     </div>
                                 }

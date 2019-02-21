@@ -7,6 +7,7 @@ import {FancyList, FancyListItem, Popup} from 'app/components';
 import {api} from 'app/utils';
 import {url} from 'app/constants';
 import {makeGetGroup, makeGetGroups} from 'app/containers/group/selector';
+import { GroupWrapper } from 'app/containers/group';
 
 @connect((state, ownProps) => {
     const getGroups = makeGetGroups();
@@ -96,44 +97,45 @@ export default class List extends React.PureComponent {
       const {groups, group, params} = this.props
 
       return (
-          <Popup
-              title="Organisations"
-              afterTitle={<Link
-                  to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}`}>People</Link>}
-              closePath={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}`}
-              buttons={
-                <React.Fragment>
-                  {!_.isEmpty(group.organisations) &&
-                    <React.Fragment>
+          <GroupWrapper {...this.props}>
+            <Popup
+                title="Organisations"
+                afterTitle={<Link
+                to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}`}>People</Link>}
+                buttons={
+                  <React.Fragment>
+                    {!_.isEmpty(group.organisations) &&
+                      <React.Fragment>
+                          <Link
+                            to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.organisations}/add`}
+                            className="button"
+                          >Add organisation</Link>
+                          <Link
+                            to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}`}
+                            className="button"
+                          >View People</Link>
+                      </React.Fragment>
+                    }
+                  </React.Fragment>
+                }
+                additionalClass="organisations window-large"
+            >
+                <ContentLoader
+                    data={groups.collection}
+                    isLoading={groups.isLoading}
+                >
+                    {_.isEmpty(group.organisations) ? (
                         <Link
-                          to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.organisations}/add`}
-                          className="button"
-                        >Add organisation</Link>
-                        <Link
-                          to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}`}
-                          className="button"
-                        >View People</Link>
-                    </React.Fragment>
-                  }
-                </React.Fragment>
-              }
-              additionalClass="organisations window-large"
-          >
-              <ContentLoader
-                  data={groups.collection}
-                  isLoading={groups.isLoading}
-              >
-                  {_.isEmpty(group.organisations) ? (
-                      <Link
-                          to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.organisations}/add`}>Add
-                          your first organisation <span dangerouslySetInnerHTML={{__html: `&plus;`}}/></Link>
-                  ) : (
-                      <FancyList>
-                          {_.map(group.organisations, (organisation) => this.renderItem(organisation))}
-                      </FancyList>
-                  )}
-              </ContentLoader>
-          </Popup>
+                            to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.organisations}/add`}>Add
+                            your first organisation <span dangerouslySetInnerHTML={{__html: `&plus;`}}/></Link>
+                    ) : (
+                        <FancyList>
+                            {_.map(group.organisations, (organisation) => this.renderItem(organisation))}
+                        </FancyList>
+                    )}
+                </ContentLoader>
+            </Popup>
+          </GroupWrapper>
       );
   }
 }

@@ -6,7 +6,8 @@ import {Form, Checkbox, ContentLoader} from '@xanda/react-components';
 import {Popup, FancyList, FancyListItem} from 'app/components';
 import {api} from 'app/utils';
 import {url} from 'app/constants';
-import {makeGetGroup, makeGetGroups} from 'app/containers/group/selector';
+import { makeGetGroup, makeGetGroups } from 'app/containers/group/selector';
+import PeopleWrapper from './Wrapper';
 
 @connect((state, ownProps) => {
     const getGroups = makeGetGroups();
@@ -50,8 +51,9 @@ export default class List extends React.PureComponent {
                 <span type="button" onClick={() => this.handleDelete(this.props.params.groupId, person.id)} className="clickable icon-bin" />
               </React.Fragment>
             }
+            category={person.organisation_title}
           >
-              {person.title} - {person.organisation_title}
+              {person.title}
           </FancyListItem>
       )
     }
@@ -60,40 +62,42 @@ export default class List extends React.PureComponent {
     const {groups, group, params} = this.props
 
     return (
-        <Popup
-            beforeTitle={<Link
-                to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.organisations}`}>Organisations</Link>}
-            title="People"
-            closePath={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}`}
-            buttons={
-                <React.Fragment>
-                    {!_.isEmpty(group.people) &&
-                    <Link className="button"
-                          to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}/add`}>Add
-                        person</Link>
-                    }
-                </React.Fragment>
-            }
-            additionalClass="people"
-        >
-            <ContentLoader
-                data={groups.collection}
-                isLoading={groups.isLoading}
-            >
-                {_.isEmpty(group.people) ? (
-                    <Link to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}/add`}>Add
-                        your first person <span dangerouslySetInnerHTML={{__html: `&plus;`}}/></Link>
-                ) : (
-                    <React.Fragment>
-                        <FancyList>
-                            {_.map(group.people, (person) => {
-                                return this.renderItem(person)
-                            })}
-                        </FancyList>
-                    </React.Fragment>
-                )}
-            </ContentLoader>
-        </Popup>
+        <PeopleWrapper {...this.props}>
+          <Popup
+              beforeTitle={<Link
+                  to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.organisations}`}>Organisations</Link>}
+              title="People"
+              buttons={
+                  <React.Fragment>
+                      {!_.isEmpty(group.people) &&
+                      <Link className="button"
+                            to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}/add`}>Add
+                          person</Link>
+                      }
+                  </React.Fragment>
+              }
+              additionalClass="people"
+              hide
+          >
+              <ContentLoader
+                  data={groups.collection}
+                  isLoading={groups.isLoading}
+              >
+                  {_.isEmpty(group.people) ? (
+                      <Link to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}/add`}>Add
+                          your first person <span dangerouslySetInnerHTML={{__html: `&plus;`}}/></Link>
+                  ) : (
+                      <React.Fragment>
+                          <FancyList>
+                              {_.map(group.people, (person) => {
+                                  return this.renderItem(person)
+                              })}
+                          </FancyList>
+                      </React.Fragment>
+                  )}
+              </ContentLoader>
+          </Popup>
+        </PeopleWrapper>
     );
   }
 }

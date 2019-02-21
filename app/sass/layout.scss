@@ -48,6 +48,10 @@
 
 body {
   font-family: $family-base;
+  font-weight:500;
+  height:100VH;
+  width:100VW;
+  overflow:hidden;
 }
 
 #app {

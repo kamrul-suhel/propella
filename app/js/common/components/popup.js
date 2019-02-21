@@ -20,9 +20,11 @@ export default class Popup extends React.PureComponent {
                     {afterTitle &&
                     <div className="popup-header-tab">{afterTitle}</div>
                     }
-                    <Link to={closePath} className="popup-header-close"/>
+                    {closePath &&
+                      <Link to={closePath} className="popup-header-close"/>
+                    }
                 </div>
-                <div className="popup-inner">                
+                <div className="popup-inner">
                     <Alerts/>
                     {this.props.children}
                     {buttons &&

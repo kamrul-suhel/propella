@@ -1,15 +1,44 @@
 .nav {
-  display: flex;
-  justify-content: center;
-  height:40px;
-  a {
-    text-decoration: none;
-  }
-
-  [class*="icon-"] {
-    font-size: 24px;
-    line-height: 24px;
-    display:flex;
+    display: flex;
+    justify-content: center;
     align-items:center;
-  }
+    height:40px;
+    a {
+        text-decoration: none;
+    }
+
+    [class*="icon-"] {
+        font-size: 24px;
+        line-height: 24px;
+        display:flex;
+        align-items:center;
+    }
+    .nav-link{
+        background-color:rgba(255,255,255,0.8);
+        padding:4px 34px 4px 28px;
+        font-weight:500;
+        border-radius:5px 0px 0px 5px;
+        position:relative;
+        font-size:15px;        
+        &:before{
+            font-family:$icon-family-base;
+            content: "a";
+            position: absolute;
+            right: 7px;
+            top: 50%;            
+            transform: translateY(calc(-50% + 1px));
+        }        
+    }
+    .nav-close{
+        background-color:$brand-color-dark;
+        color: white;
+        border-radius: 0px 5px 5px 0px;
+        font-size: 10px;
+        height: 26px;
+        width: 21px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right:10px;
+    }
 }
