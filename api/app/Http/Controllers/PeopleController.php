@@ -23,7 +23,8 @@ class PeopleController extends PropellaBaseController
     }
 
     /**
-     * @return mixed
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function create()
     {
@@ -34,6 +35,7 @@ class PeopleController extends PropellaBaseController
             'positionX' => 'required|integer|min:1',
             'positionY' => 'required|integer|min:1',
             'trajectory' => 'integer|min:1',
+            'abbreviation' => 'string|min:1',
             'icon_size' => 'in:s,m,l,f',
             'character_id' => 'integer|min:1',
             'created_by' => 'integer|min:1',
@@ -78,6 +80,7 @@ class PeopleController extends PropellaBaseController
                 isset($singlePeople['type_id']) ? $people->type_id = (int)$singlePeople['type_id'] : '';
                 isset($singlePeople['created_by']) ? $people->created_by = $singlePeople['created_by'] : '';
                 isset($singlePeople['organisation_id']) ? $people->organisation_id = (int) $singlePeople['organisation_id'] : '';
+                isset($singlePeople['abbreviation']) ? $people->abbreviation = $singlePeople['abbreviation'] : '';
                 isset($singlePeople['positionX']) ? $people->positionX = $singlePeople['positionX'] : '';
                 isset($singlePeople['positionY']) ? $people->positionY = $singlePeople['positionY'] : '';
                 isset($singlePeople['trajectory']) ? $people->trajectory = $singlePeople['trajectory'] : '';
@@ -128,6 +131,18 @@ class PeopleController extends PropellaBaseController
         $people = People::with(['organisation'])
             ->findOrFail($id);
 
+        $ids = People::getAllId($people->parent_id);
+        $coordinates = People::select([
+            'id',
+            'positionX',
+            'positionY',
+            'icon_size',
+            'icon_path'
+        ])
+            ->whereIn('id', $ids)
+            ->get();
+        $people->coordinates = $coordinates;
+
         return response()->json($people);
     }
 
@@ -158,6 +173,7 @@ class PeopleController extends PropellaBaseController
         $this->request->has('type_id') ? $people->type_id = (int)$this->request->type_id : '';
         $this->request->has('created_by') ? $people->created_by = $this->request->created_by : '';
         $this->request->has('organisation_id') ? $people->organisation_id = (int)$this->request->organisation_id : '';
+        $this->request->has('abbreviation') ? $people->abbreviation = $this->request->abbreviation : '';
         $this->request->has('positionX') ? $people->positionX = $this->request->positionX : '';
         $this->request->has('positionY') ? $people->positionY = $this->request->positionY : '';
         $this->request->has('trajectory') ? $people->trajectory = $this->request->trajectory : '';

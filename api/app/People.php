@@ -23,11 +23,13 @@ class People extends Model
         'description',
         'type_id',
         'organisation_id',
+        'abbreviation',
         'character_id',
         'parent_id',
         'status',
         'icon_path',
         'icon_size',
+        'abbreviation',
         'positionX',
         'positionY',
         'trajectory',
@@ -65,5 +67,33 @@ class People extends Model
     public function organisation()
     {
         return $this->belongsTo('App\Organisation', 'organisation_id');
+    }
+
+    /**
+     * @param $parent_id
+     * @return array
+     */
+    public static function getAllId($parent_id){
+        $ids = self::getAllIdAsString($parent_id);
+        return explode(',', $ids);
+    }
+
+    /**
+     * @param $parent_id
+     * @return string
+     */
+    public static function getAllIdAsString($parent_id, $count = 1)
+    {
+        $ids = [];
+        if ($parent_id > 0) {
+            if($count > 5){
+                return;
+            }
+            $count++;
+            $newGroup = self::findOrFail($parent_id);
+            $ids[] = self::getAllIdAsString($newGroup->parent_id, $count);
+        }
+        $ids[] = $parent_id;
+        return implode($ids,',');
     }
 }

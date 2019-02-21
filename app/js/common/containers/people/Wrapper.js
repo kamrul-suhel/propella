@@ -6,6 +6,7 @@ import Draggable from 'react-draggable';
 import { api } from 'app/utils';
 import * as selector from 'app/containers/group/selector';
 import { Link } from "react-router";
+import Coordinate from 'app/components/coordinate'
 
 @connect((state, ownProps) => {
     const getGroups = selector.makeGetGroups();
@@ -22,7 +23,8 @@ export default class PeopleWrapper extends React.PureComponent {
 
         this.state = {
             updatedCoordinates: {},
-            selectedDraggable: 0
+            selectedDraggable: 0,
+            selectedPeople: {}
         }
     }
 
@@ -73,7 +75,7 @@ export default class PeopleWrapper extends React.PureComponent {
 
     handleClick = (e) => {
       if(!this.node.contains(e.target)){
-        this.setState({selectedDraggable: 0, selectedGroupCoordinates: {}})
+        this.setState({selectedDraggable: 0, selectedPeople: {}})
       }
     }
 
@@ -94,13 +96,32 @@ export default class PeopleWrapper extends React.PureComponent {
       }
     }
 
+    getCoordinate = async (event, peopleId) => {
+        const {selectedPeople} = this.state;
+
+        if(!_.isEmpty(selectedPeople)){
+            this.setState({selectedPeople: {}})
+        } else {
+            // Stop other event
+            event.stopPropagation();
+            // Get the data from server
+            const data = await api.get('people/'+peopleId);
+
+            if (selectedPeople) {
+                this.setState({
+                    selectedPeople: {...data.data}
+                })
+            }
+        }
+    }
+
     handleResetChanges = () => {
         this.setState({updatedCoordinates: []}, this.fetchData())
     }
 
     render() {
         const {groups, group, params} = this.props
-        const {updatedCoordinates, selectedDraggable, progressLabel} = this.state
+        const {updatedCoordinates, selectedDraggable, progressLabel, selectedPeople} = this.state
 
         const container = document.getElementById('gridwrapper-inner')
         const containerHeight = (container || {}).offsetHeight || 0
@@ -132,7 +153,6 @@ export default class PeopleWrapper extends React.PureComponent {
                 </ul>
                 {_.map(group.people, (item) => {
                     // only display people belonging to an active organisation
-                    console.log(item.organisation_id, activeOrganisationIds)
                     if (item.status < 1 || !_.includes(activeOrganisationIds, item.organisation_id)) {
                         return
                     }
@@ -165,16 +185,15 @@ export default class PeopleWrapper extends React.PureComponent {
                                             Assign<br/>Character
                                         </Link>
 
-                                        <Link className="button-round second"
+                                        <span className="clickable button-round second"
+                                              onClick={(event) => this.getCoordinate(event, item.id)}>
+                                            <span className="button-round-inside icon-chain"/>Progess
+                                        </span>
+
+                                        <Link className="button-round third"
                                               to={`/${url.projects}/${params.id}/groups/${group.id}/${url.people}/${item.id}`}>
                                             <span className="button-round-inside icon-edit"/>
                                             Edit
-                                        </Link>
-
-                                        <Link className="button-round third"
-                                              to={`/${url.projects}/${params.id}/groups/${group.id}/`}>
-                                            <span className="button-round-inside icon-chain"/>
-                                            Progress
                                         </Link>
 
                                         <Link className="button-round fourth"
@@ -191,6 +210,8 @@ export default class PeopleWrapper extends React.PureComponent {
                 })
                 }
                 {this.props.children}
+
+                {selectedPeople.coordinates ? <Coordinate group={selectedPeople}/> : ''}
             </div>
         )
     }

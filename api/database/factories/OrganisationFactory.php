@@ -37,6 +37,6 @@ $factory->define(App\Organisation::class, function (Faker\Generator $faker) {
         'icon_path' => $faker->imageUrl(50, 50, 'cats', true, 'Faker'),
         'positionX' => $positionX,
         'positionY' => $positionY,
-        'status' => $faker->numberBetween(0,1) // 0 disabled, 1 active, 2 deleted
+        'status' => 1 // 0 disabled, 1 active, 2 deleted
     ];
 });

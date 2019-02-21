@@ -31,6 +31,7 @@ $factory->define(App\People::class, function (Faker\Generator $faker) {
         'description' => $faker->sentence(3),
         'type_id' => $peopleTypeId,
         'organisation_id' => $organasitionId,
+        'abbreviation' =>$faker->address('regionAbbr'),
         'created_by' => $faker->numberBetween(1, 10),
         'icon_size' => $faker->randomElement(['s','m','l','f']),
         'icon_path' => $faker->imageUrl(50, 50, 'cats', true, 'Faker'),
@@ -38,6 +39,6 @@ $factory->define(App\People::class, function (Faker\Generator $faker) {
         'positionY' => $positionY,
         'trajectory' => $faker->randomElement([0,1]),
         'character_id' => $faker->numberBetween(1, 20),
-        'status' => $faker->numberBetween(0,1) // 0 disabled, 1 active, 2 deleted
+        'status' => 1 // 0 disabled, 1 active, 2 deleted
     ];
 });

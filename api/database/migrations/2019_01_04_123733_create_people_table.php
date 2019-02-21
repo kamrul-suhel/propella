@@ -17,6 +17,7 @@ class CreatePeopleTable extends Migration
             $table->bigIncrements('id');
             $table->string('title');
             $table->text('description');
+            $table->string('abbreviation')->nullable();
             $table->bigInteger('type_id')->unsigned()->index();
             $table->bigInteger('organisation_id')->index()->unsigned();
             $table->bigInteger('created_by')->unsigned()->index();

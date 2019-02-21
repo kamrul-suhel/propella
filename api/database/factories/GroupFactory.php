@@ -35,6 +35,6 @@ $factory->define(App\Group::class, function (Faker\Generator $faker) {
         'positionY' => $positionY,
         'created_at' => $createdAt,
         'updated_at' => $createdAt,
-        'status' => $faker->numberBetween(0,1) // 0 disabled, 1 active, 2 deleted
+        'status' => 1 // 0 disabled, 1 active, 2 deleted
     ];
 });

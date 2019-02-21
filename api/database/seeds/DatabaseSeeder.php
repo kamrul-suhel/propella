@@ -102,8 +102,8 @@ class DatabaseSeeder extends Seeder
                 $newGroup->archive = 0;
                 $newGroup->parent_id = $group->id;
                 $newGroup->project_id = $newProject->id;
-                $newGroup->positionX = $newProject->positionX + $faker->numberBetween(30, 60);
-                $newGroup->positionY = $newProject->positionY + $faker->numberBetween(30, 60);
+                $newGroup->positionX = $this->getPosition($newProject->positionX);
+                $newGroup->positionY = $this->getPosition($newProject->positionY);
                 $newGroup->project_id = $newProject->id;
 
                 $newGroup->save();
@@ -139,8 +139,8 @@ class DatabaseSeeder extends Seeder
                     $newOrganisation = $organisation->replicate();
                     $newOrganisation->archive = 0;
                     $newOrganisation->parent_id = $organisation->id;
-                    $newOrganisation->positionX = $newOrganisation->positionX + $faker->numberBetween(30, 60);
-                    $newOrganisation->positionY = $newOrganisation->positionY + $faker->numberBetween(30, 60);
+                    $newOrganisation->positionX = $this->getPosition($newOrganisation->positionX);
+                    $newOrganisation->positionY = $this->getPosition($newOrganisation->positionY);
                     $newOrganisation->group_id = $newGroup->id;
                     $newOrganisation->save();
 
@@ -156,8 +156,8 @@ class DatabaseSeeder extends Seeder
                         $newPeople = $people->replicate();
                         $newPeople->archive = 0;
                         $newPeople->parent_id = $people->id;
-                        $newPeople->positionX = $newPeople->positionX + $faker->numberBetween(30, 60);
-                        $newPeople->positionY = $newPeople->positionY + $faker->numberBetween(30, 60);
+                        $newPeople->positionX = $this->getPosition($newPeople->positionX);
+                        $newPeople->positionY = $this->getPosition($newPeople->positionY);
                         $newPeople->organisation_id = $newOrganisation->id;
 
                         $newPeople->save();
@@ -181,5 +181,15 @@ class DatabaseSeeder extends Seeder
                 });
             });
         });
+    }
+
+    private function getPosition($position){
+        $faker = \Faker\Factory::create();
+        $newPosition = $position + $faker->numberBetween(20, 50);
+        if($newPosition > 100){
+            $newPosition = $faker->numberBetween(50, 100);
+            return $newPosition;
+        }
+        return $newPosition;
     }
 }
