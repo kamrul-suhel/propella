@@ -147,7 +147,7 @@ export default class GroupWrapper extends React.PureComponent {
                                     <div className="react-draggable-actions">
                                         <Link className="button-round first"
                                               to={`/${url.projects}/${params.id}/groups/${group.id}/${url.organisations}/${item.id}`}>
-                                            <span className="button-round-inside icon-edit"/>
+                                            <span className="button-round-inside icon-pencil"/>
                                             Edit
                                         </Link>
 
