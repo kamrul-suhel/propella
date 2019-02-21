@@ -159,7 +159,7 @@ export default class ProjectWrapper extends React.PureComponent {
                                  className={
                                      [
                                          `size-${item.icon_size}`,
-                                         (selectedGroupCoordinates.coordinates && item.id !== selectedGroupCoordinates.id ? 'disabled' : '')
+                                         (selectedGroupCoordinates.coordinates && item.id !== selectedGroupCoordinates.id ? 'disabled' : 'dark')
                                      ]
                                  }
                                  onClick={this.handleDraggableClick}
