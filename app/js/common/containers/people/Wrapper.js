@@ -146,7 +146,7 @@ export default class PeopleWrapper extends React.PureComponent {
                     return (
                       <li className="filter">
                         {item.title}
-                        <span className="clickable icon-x" onClick={() => this.handleHideOrganisation(item.id)} />
+                        <span className="clickable icon-x-small" onClick={() => this.handleHideOrganisation(item.id)} />
                       </li>
                     )
                   })}
@@ -168,13 +168,15 @@ export default class PeopleWrapper extends React.PureComponent {
                             grid={[10, 10]}
                             scale={1}
                             bounds=".gridwrapper-inner-section-wrapper"
-                            onStop={this.onDraggableEventHandler}
+                            onStop={this.onDraggableEventHandler} 
                         >
                             <div handleid={item.id}
                                  className={`size-m`}
                             >
                                 <div className="react-draggable-handle">
-                                  <div className="react-draggable-title">{item.title}</div>
+                                  {selectedDraggable === item.id &&
+                                    <span className="react-draggable-title">{item.title}</span>
+                                  }
                                 </div>
 
                                 {selectedDraggable === item.id &&
@@ -192,7 +194,7 @@ export default class PeopleWrapper extends React.PureComponent {
 
                                         <Link className="button-round third"
                                               to={`/${url.projects}/${params.id}/groups/${group.id}/${url.people}/${item.id}`}>
-                                            <span className="button-round-inside icon-edit"/>
+                                            <span className="button-round-inside icon-pencil"/>
                                             Edit
                                         </Link>
 
