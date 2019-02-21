@@ -79,8 +79,7 @@ export default {
 		const token = fn.getCookie('token');
 		data = _.assign({}, { method }, data);
 
-		// const baseURL = process.env.RELEASE_STAGE === 'prod' ? 'http://api.propella.hostings.co.uk/v1' : 'http://api.propella.hostings.co.uk/v1';
-		const baseURL = process.env.RELEASE_STAGE === 'prod' ? 'http://propella.test/v1' : 'http://propella.test/v1';
+		const baseURL = process.env.RELEASE_STAGE === 'prod' ? 'http://api.propella.hostings.co.uk/v1' : 'http://api.propella.hostings.co.uk/v1';
 		axios.defaults.baseURL = baseURL;
 		// axios.defaults.headers = { Authorization: `Bearer ${token}` };
 		// axios.defaults.withCredentials = true;
