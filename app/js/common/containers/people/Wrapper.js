@@ -87,6 +87,13 @@ export default class PeopleWrapper extends React.PureComponent {
         }
     }
 
+    handleHideOrganisation = async (id) => {
+      const response = await api.put(`organisations/${id}`, {status: 0})
+      if (!api.error(response)) {
+        this.fetchData();
+      }
+    }
+
     handleResetChanges = () => {
         this.setState({updatedCoordinates: []}, this.fetchData())
     }
@@ -99,7 +106,8 @@ export default class PeopleWrapper extends React.PureComponent {
         const containerHeight = (container || {}).offsetHeight || 0
         const containerWidth = (container || {}).offsetWidth || 0
 
-        console.log(group.organisations)
+        // get the id's of the active organisations
+        const activeOrganisationIds = _.map(group.organisations, (item) => {if(item.status === 1) return item.id})
 
         return (
             <div ref={node => this.node = node}>
@@ -114,11 +122,18 @@ export default class PeopleWrapper extends React.PureComponent {
                         return
                     }
 
-                    return <li className="filter">{item.title}</li>
+                    return (
+                      <li className="filter">
+                        {item.title}
+                        <span className="clickable icon-x" onClick={() => this.handleHideOrganisation(item.id)} />
+                      </li>
+                    )
                   })}
                 </ul>
                 {_.map(group.people, (item) => {
-                    if (item.status < 1) {
+                  console.log(item.organisation_id)
+                    // only display people belonging to an active organisation
+                    if (item.status < 1 || !_.includes(activeOrganisationIds, item.organisation_id)) {
                         return
                     }
                     return (
