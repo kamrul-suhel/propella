@@ -23,7 +23,8 @@ class GroupController extends PropellaBaseController
     }
 
     /**
-     * @return mixed
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function create()
     {
@@ -58,7 +59,8 @@ class GroupController extends PropellaBaseController
 
 
     /**
-     * @return mixed
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function updateMultiple()
     {
@@ -171,6 +173,7 @@ class GroupController extends PropellaBaseController
         $people = People::select([
             'people.id',
             'people.title',
+            'people.abbreviation',
             'people.description',
             'people.positionX',
             'people.positionY',
