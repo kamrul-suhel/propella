@@ -1,6 +1,10 @@
 .form {
   display: block;
 
+  .form-group{
+      
+  }
+  
   .form-label {
     text-transform: uppercase;
     font-size: 12px;
@@ -24,6 +28,7 @@
     &:last-child {
       margin-bottom: 0!important;
     }
+    
     &.form-type-slider{
         .form-label{
             font-weight:bold;
@@ -186,7 +191,6 @@
       font-size: 26px;
   }
   .radio-gender{
-      margin-top:-22px;
       .form-options-layout-horizontal{
           margin-top:5px!important;
           .form-option-radio{    

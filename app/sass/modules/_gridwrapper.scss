@@ -103,7 +103,7 @@
       align-items: center;
       justify-content: center;
       font-size: 11px;
-      padding: 1px 2px 6px 0;
+      padding: 0px 0px 5px 0px;
       font-weight: 500;
         .react-draggable-handle{
             width: 100%;
@@ -111,6 +111,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-direction:column;
             &:after{
               content:"";
               display:block;
@@ -140,6 +141,13 @@
                 border-radius:50%;
                 margin-top:-12%;
             }
+            .person-icon{
+                &:first-child{
+                height: 31px;
+                margin-top: -9px;
+                }
+            }
+            
         }
         .react-draggable-title{
                 position: absolute;
@@ -259,8 +267,8 @@
     }
     
     .react-draggable.size-m {
-      height: 67px;
-      width: 56px;
+      height: 78px;
+      width: 64px;
       background-image: url(../images/marker-medium.svg);
       font-size: 14px;      
     }
@@ -295,15 +303,18 @@
       align-items: center;
       justify-content: center;
       height: 100%;
-
+      top:50%;
+      left:50%;
+      transform: translateX(-50%) translateY(-50%);
+      position:absolute;
       .welcome-message-inner {
         background-color: white;
-        padding: 16px 10px;
+        padding: 14px;
         text-align: center;
         width: 100%;
         max-width: 300px;
         box-shadow: 1px 2px 4px 0 rgba(0, 0, 0, 0.50);
-        border-radius: 4px;
+        border-radius: 5px;
 
         h2 {
           font-size: 38px;
@@ -340,8 +351,9 @@
             position:relative;
             .clickable{
                 position:absolute;
-                right:0px;
-                top:0px;
+                right:9px;
+                top:9px;
+                font-size:10px;
             }
         }
     }

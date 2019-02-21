@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router';
-import { fn } from 'app/utils'
+import { fn } from 'app/utils';
 import {Form, Slider} from '@xanda/react-components';
 
 export default class Overview extends React.PureComponent {
