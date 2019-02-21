@@ -66,20 +66,8 @@
             font-size:24px;
         }
     }
-  }  
-  &.fourth{      
-      .button-round-inside{
-          &:after{
-              background-image:url(../images/pirate.svg);
-              content: "";
-              height: 24px;
-              width: 24px;
-              display: block;
-              position: absolute;
-              top: 6px;
-              left: 8px;
-              background-size: 100%;
-          }
-      }
-  }
+    &:before{
+        color:$brand-color-2;
+    }
+  }    
 }

@@ -164,7 +164,7 @@ export default class GroupWrapper extends React.PureComponent {
 
                                         <Link className="button-round fourth"
                                               to={`/${url.projects}/${params.id}/groups/${group.id}/${url.people}/add?organisation_id=${item.id}`}>
-                                            <span className="button-round-inside"/>
+                                            <span className="button-round-inside icon-character-pirate"/>
                                             Add Person
                                         </Link>
                                     </div>
