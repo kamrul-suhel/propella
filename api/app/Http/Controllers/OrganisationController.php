@@ -22,7 +22,8 @@ class OrganisationController extends PropellaBaseController
     }
 
     /**
-     * @return mixed
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function create()
     {
@@ -58,7 +59,8 @@ class OrganisationController extends PropellaBaseController
     }
 
     /**
-     * @return mixed
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function updateMultiple(){
 
@@ -114,6 +116,7 @@ class OrganisationController extends PropellaBaseController
         $organisations = $organisations->where('archive', 0);
         $organisations = $this->allData ? $organisations->get() : $organisations->paginate($this->perPage);
 
+
         return response()->json($organisations);
     }
 
@@ -126,6 +129,18 @@ class OrganisationController extends PropellaBaseController
         $organisation = Organisation::getDefaultField()
             ->with(['people'])
             ->findOrFail($id);
+
+        $ids = Organisation::getAllId($organisation->parent_id);
+        $coordinates = Organisation::select([
+            'id',
+            'positionX',
+            'positionY',
+            'icon_size',
+            'icon_path'
+        ])
+            ->whereIn('id', $ids)
+            ->get();
+        $organisation->coordinates = $coordinates;
 
         return response()->json($organisation);
     }

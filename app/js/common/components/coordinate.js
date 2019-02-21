@@ -16,8 +16,6 @@ export default class Coordinate extends React.PureComponent {
             // angle in degrees
             angleDeg = Math.atan2(cPositionY - nPositionY, cPositionX - nPositionX) * 180 / Math.PI
 
-            console.log('Angle degree : ', angleDeg)
-
             // Distance between 2 points
             let a = cPositionX - nPositionX
             let b = cPositionY - nPositionY
@@ -61,7 +59,7 @@ export default class Coordinate extends React.PureComponent {
                             transform: `rotate(${position.degree ? position.degree : 0}deg)`,
                             width: `${position.height ? position.height : 0}px`
                         }}></div>                        
-                        <img className="progress-button-img" src={coordinate.icon_path}/>                        
+                        <img className="progress-button-img" src={coordinate.icon_path}/>
                     </div>
                 )
             })
@@ -70,6 +68,8 @@ export default class Coordinate extends React.PureComponent {
 
     render() {
         const {group} = this.props
+
+        console.log('Coordinate table : ', group);
 
         const firstCoordinate = group.coordinates[0] && group.coordinates[0]
         const rootConnector = this.getDegreeRotate(group, firstCoordinate)

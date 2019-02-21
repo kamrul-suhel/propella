@@ -81,4 +81,32 @@ class Organisation extends Model
         ])
             ->leftJoin('organisation_types', 'organisation_types.id', '=', 'organisations.type_id');
     }
+
+    /**
+     * @param $parent_id
+     * @return array
+     */
+    public static function getAllId($parent_id){
+        $ids = self::getAllIdAsString($parent_id);
+        return explode(',', $ids);
+    }
+
+    /**
+     * @param $parent_id
+     * @return string
+     */
+    public static function getAllIdAsString($parent_id, $count = 1)
+    {
+        $ids = [];
+        if ($parent_id > 0) {
+            if($count > 5){
+                return;
+            }
+            $count++;
+            $newGroup = self::findOrFail($parent_id);
+            $ids[] = self::getAllIdAsString($newGroup->parent_id, $count);
+        }
+        $ids[] = $parent_id;
+        return implode($ids,',');
+    }
 }
