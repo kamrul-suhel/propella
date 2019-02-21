@@ -17,7 +17,13 @@ export default class Popup extends React.PureComponent {
     nextLink = () => {
       const {params, location} = this.props
 
-      if(location.pathname.match(/^\/projects\/[0-9]*\/groups\/[0-9]/)){
+      if(location.pathname.match(/^\/projects\/[0-9]*\/groups\/[0-9]*\/organisations\/people/)){
+        return `/projects/${params.id}/groups/${params.groupId}/people`
+      } else if(location.pathname.match(/^\/projects\/[0-9]*\/groups\/[0-9]*\/organisations/)){
+        return `/projects/${params.id}/groups/${params.groupId}`
+      } else if(location.pathname.match(/^\/projects\/[0-9]*\/groups\/[0-9]*\/people/)){
+        return `/projects/${params.id}/groups/${params.groupId}/organisations/people`
+      } else if(location.pathname.match(/^\/projects\/[0-9]*\/groups\/[0-9]/)){
         return `/projects/${params.id}/groups/${params.groupId}/organisations`
       } else if (location.pathname.match(/^\/projects\/[0-9]*\/groups/)) {
           return `/projects/${params.id}`
@@ -26,6 +32,15 @@ export default class Popup extends React.PureComponent {
       } else if(location.pathname.match(/^\/projects\/[0-9]*\/groups\/[0-9]\/edit/)){
 
       }
+    }
+
+    reportLink = () => {
+      const { params } = this.props
+
+      if(params.organisationId) {
+        return `/projects/${params.id}/groups/${params.groupId}/organisation/${url.report}`
+      }
+      return `/projects/${params.id}/groups/${params.groupId}/people/${url.report}`
     }
 
     handleOnChange = (name, value) => {
@@ -49,8 +64,8 @@ export default class Popup extends React.PureComponent {
                     >
                       {group.title}
                     </Link>
-                    <Link to={this.nextLink} className="nav-close icon-x"/>
-                            <Link to={this.nextLink} className="icon-hamburger"/>
+                    <Link to={`/${url.projects}/${params.id}`} className="nav-close icon-x"/>
+                    <Link to={this.reportLink} className="icon-hamburger"/>
                   </React.Fragment>
                 ) : (
                     <Link to={this.nextLink} className="icon-stack"/>

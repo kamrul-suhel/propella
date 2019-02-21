@@ -131,8 +131,8 @@ export default class PeopleWrapper extends React.PureComponent {
                   })}
                 </ul>
                 {_.map(group.people, (item) => {
-                  console.log(item.organisation_id)
                     // only display people belonging to an active organisation
+                    console.log(item.organisation_id, activeOrganisationIds)
                     if (item.status < 1 || !_.includes(activeOrganisationIds, item.organisation_id)) {
                         return
                     }
@@ -154,7 +154,7 @@ export default class PeopleWrapper extends React.PureComponent {
                                  className={`size-m`}
                             >
                                 <div className="react-draggable-handle">
-                                  <div className="react-draggable-title">Barclays</div>
+                                  <div className="react-draggable-title">{item.title}</div>
                                 </div>
 
                                 {selectedDraggable === item.id &&

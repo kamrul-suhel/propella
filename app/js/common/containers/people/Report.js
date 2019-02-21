@@ -1,7 +1,8 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {ReportList} from 'app/components';
-import {makeGetGroup, makeGetGroups} from 'app/containers/group/selector';
+import { connect } from 'react-redux';
+import { ReportList } from 'app/components';
+import { fetchData } from 'app/actions';
+import { makeGetGroup, makeGetGroups } from 'app/containers/group/selector';
 
 @connect((state, ownProps) => {
     const getGroups = makeGetGroups();

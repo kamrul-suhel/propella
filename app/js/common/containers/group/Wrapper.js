@@ -151,13 +151,13 @@ export default class GroupWrapper extends React.PureComponent {
                                             Edit
                                         </Link>
 
-                                        <span className="button-round second"
+                                        <span className="clickable button-round second"
                                               onClick={(event) => this.getGroupCoordinate(event, group.id)}>
                                             <span className="button-round-inside icon-chain"/>Progess
                                         </span>
 
                                         <Link className="button-round third"
-                                              to={`/${url.projects}/${params.id}/groups/${group.id}/`}>
+                                              to={`/${url.projects}/${params.id}/groups/${group.id}/${url.organisations}/${url.people}`}>
                                             <span className="button-round-inside icon-add-organisation"/>
                                             People
                                         </Link>
