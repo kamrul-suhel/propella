@@ -132,7 +132,6 @@ export default class PeopleWrapper extends React.PureComponent {
                 </ul>
                 {_.map(group.people, (item) => {
                     // only display people belonging to an active organisation
-                    console.log(item.organisation_id, activeOrganisationIds)
                     if (item.status < 1 || !_.includes(activeOrganisationIds, item.organisation_id)) {
                         return
                     }
@@ -160,7 +159,7 @@ export default class PeopleWrapper extends React.PureComponent {
                                 {selectedDraggable === item.id &&
                                     <div className="react-draggable-actions">
                                         <Link className="button-round first"
-                                              to={`/${url.projects}/${params.id}/groups/${group.id}/${url.people}/${item.id}`}>
+                                              to={`/${url.projects}/${params.id}/groups/${group.id}/${url.people}/${item.id}/${url.characters}`}>
                                             <span className="button-round-inside icon-masks"/>
                                             Assign<br/>Character
                                         </Link>
@@ -184,7 +183,6 @@ export default class PeopleWrapper extends React.PureComponent {
                                         </Link>
                                     </div>
                                 }
-
                             </div>
                         </Draggable>
                     )
