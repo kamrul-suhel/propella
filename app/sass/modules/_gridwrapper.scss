@@ -52,7 +52,7 @@
         color: #3bacac;
 
         &:after {
-          content: "\76";
+          @extend .icon-chevron-top-left:before;
           top: 12px;
           left: 12px;
         }
@@ -63,7 +63,7 @@
         color: #003d8b;
 
         &:after {
-          content: "\7a";
+          @extend .icon-chevron-top-right:before;
           top: 12px;
           right: 12px;
         }
@@ -74,7 +74,7 @@
         color: #e3412a;
 
         &:after {
-          content: "\78";
+          @extend .icon-chevron-bottom-left:before;
           bottom: 12px;
           left: 12px;
         }
@@ -85,7 +85,7 @@
         color: #8dcded;
 
         &:after {
-          content: "\77";
+          @extend .icon-chevron-bottom-right:before;
           bottom: 12px;
           right: 12px;
         }
@@ -103,7 +103,7 @@
       align-items: center;
       justify-content: center;
       font-size: 11px;
-      padding: 1px 2px 6px 0;
+      padding: 0px 0px 5px 0px;
       font-weight: 500;
         .react-draggable-handle{
             width: 100%;
@@ -111,6 +111,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-direction:column;
             &:after{
               content:"";
               display:block;
@@ -140,10 +141,17 @@
                 border-radius:50%;
                 margin-top:-12%;
             }
+            .person-icon{
+                &:first-child{
+                height: 31px;
+                margin-top: -9px;
+                }
+            }
+            
         }
         .react-draggable-title{
                 position: absolute;
-                bottom: -20px;
+                top:100%;
                 left: 50%;
                 transform: translateX(-50%);
                 font-size: 14px;
@@ -196,7 +204,7 @@
           .react-draggable-handle{
               &:after{
                   bottom:10px;
-              }
+              }              
           }
           .button-round {
               &.first {
@@ -259,8 +267,8 @@
     }
     
     .react-draggable.size-m {
-      height: 67px;
-      width: 56px;
+      height: 78px;
+      width: 64px;
       background-image: url(../images/marker-medium.svg);
       font-size: 14px;      
     }
@@ -295,15 +303,18 @@
       align-items: center;
       justify-content: center;
       height: 100%;
-
+      top:50%;
+      left:50%;
+      transform: translateX(-50%) translateY(-50%);
+      position:absolute;
       .welcome-message-inner {
         background-color: white;
-        padding: 16px 10px;
+        padding: 14px;
         text-align: center;
         width: 100%;
         max-width: 300px;
         box-shadow: 1px 2px 4px 0 rgba(0, 0, 0, 0.50);
-        border-radius: 4px;
+        border-radius: 5px;
 
         h2 {
           font-size: 38px;
@@ -330,13 +341,20 @@
         top:0px;
         left:0px;
         list-style:none;
-        li{
+        .filter{
             background-color:white;
             display:block;
             margin:5px;
             padding:5px 30px 5px 5px;
             border-radius:5px;
             box-shadow: 1px 2px 4px 0 rgba(0,0,0,0.50);
+            position:relative;
+            .clickable{
+                position:absolute;
+                right:9px;
+                top:9px;
+                font-size:10px;
+            }
         }
     }
   }

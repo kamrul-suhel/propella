@@ -46,7 +46,7 @@ export default class List extends React.PureComponent {
               <React.Fragment>
                 <Link
                 to={`/${url.projects}/${this.props.params.id}/${url.groups}/${this.props.params.groupId}/${url.people}/${person.id}`}
-                className="icon-edit"
+                className="icon-pencil"
                 />
                 <span type="button" onClick={() => this.handleDelete(this.props.params.groupId, person.id)} className="clickable icon-bin" />
               </React.Fragment>
@@ -84,7 +84,7 @@ export default class List extends React.PureComponent {
                   isLoading={groups.isLoading}
               >
                   {_.isEmpty(group.people) ? (
-                      <Link to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}/add`}>Add
+                      <Link className="button" to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}/add`}>Add
                           your first person <span dangerouslySetInnerHTML={{__html: `&plus;`}}/></Link>
                   ) : (
                       <React.Fragment>

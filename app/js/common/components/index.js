@@ -4,3 +4,4 @@ export { default as FancyList } from './fancyList';
 export { default as FancyListItem } from './fancyListItem';
 export { default as Nav } from './nav';
 export { default as ReportList } from './report'
+export { default as Coordinate } from './coordinate'

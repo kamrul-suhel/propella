@@ -16,8 +16,8 @@ export default class View extends React.PureComponent {
     const { project } = this.props
 
 		return (
-      <ProjectWrapper {...this.props}>
-        {_.isEmpty(project.groups) &&
+      <ProjectWrapper {...this.props}>          
+        {_.isEmpty(project.groups) &&          
           <div className="welcome-message">
             <div className="welcome-message-inner">
                 <h2>Welcome to your grid</h2>

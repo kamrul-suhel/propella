@@ -6,6 +6,8 @@ import Draggable from 'react-draggable';
 import { api } from 'app/utils';
 import * as selector from 'app/containers/group/selector';
 import { Link } from "react-router";
+import Coordinate from 'app/components/coordinate';
+import { fn } from 'app/utils';
 
 @connect((state, ownProps) => {
     const getGroups = selector.makeGetGroups();
@@ -22,7 +24,8 @@ export default class PeopleWrapper extends React.PureComponent {
 
         this.state = {
             updatedCoordinates: {},
-            selectedDraggable: 0
+            selectedDraggable: 0,
+            selectedPeople: {}
         }
     }
 
@@ -73,7 +76,7 @@ export default class PeopleWrapper extends React.PureComponent {
 
     handleClick = (e) => {
       if(!this.node.contains(e.target)){
-        this.setState({selectedDraggable: 0, selectedGroupCoordinates: {}})
+        this.setState({selectedDraggable: 0, selectedPeople: {}})
       }
     }
 
@@ -94,13 +97,32 @@ export default class PeopleWrapper extends React.PureComponent {
       }
     }
 
+    getCoordinate = async (event, peopleId) => {
+        const {selectedPeople} = this.state;
+
+        if(!_.isEmpty(selectedPeople)){
+            this.setState({selectedPeople: {}})
+        } else {
+            // Stop other event
+            event.stopPropagation();
+            // Get the data from server
+            const data = await api.get('people/'+peopleId);
+
+            if (selectedPeople) {
+                this.setState({
+                    selectedPeople: {...data.data}
+                })
+            }
+        }
+    }
+
     handleResetChanges = () => {
         this.setState({updatedCoordinates: []}, this.fetchData())
     }
 
     render() {
         const {groups, group, params} = this.props
-        const {updatedCoordinates, selectedDraggable, progressLabel} = this.state
+        const {updatedCoordinates, selectedDraggable, progressLabel, selectedPeople} = this.state
 
         const container = document.getElementById('gridwrapper-inner')
         const containerHeight = (container || {}).offsetHeight || 0
@@ -110,12 +132,7 @@ export default class PeopleWrapper extends React.PureComponent {
         const activeOrganisationIds = _.map(group.organisations, (item) => {if(item.status === 1) return item.id})
 
         return (
-            <div ref={node => this.node = node}>
-                {!_.isEmpty(updatedCoordinates) &&
-                <React.Fragment>
-                    <button className="button gridwrapper-save" onClick={this.handleSaveChanges}>Save Changes</button>
-                </React.Fragment>
-                }
+            <div ref={node => this.node = node}>                
                 <ul className="gridwrapper-inner-categories filter">
                   {_.map(group.organisations, (item) => {
                     if (item.status < 1) {
@@ -125,11 +142,16 @@ export default class PeopleWrapper extends React.PureComponent {
                     return (
                       <li className="filter">
                         {item.title}
-                        <span className="clickable icon-x" onClick={() => this.handleHideOrganisation(item.id)} />
+                        <span className="clickable icon-x-small" onClick={() => this.handleHideOrganisation(item.id)} />
                       </li>
                     )
                   })}
                 </ul>
+                {!_.isEmpty(updatedCoordinates) &&
+                <React.Fragment>
+                    <button className="button gridwrapper-save" onClick={this.handleSaveChanges}>Save Changes</button>
+                </React.Fragment>
+                }
                 {_.map(group.people, (item) => {
                     // only display people belonging to an active organisation
                     if (item.status < 1 || !_.includes(activeOrganisationIds, item.organisation_id)) {
@@ -147,13 +169,17 @@ export default class PeopleWrapper extends React.PureComponent {
                             grid={[10, 10]}
                             scale={1}
                             bounds=".gridwrapper-inner-section-wrapper"
-                            onStop={this.onDraggableEventHandler}
+                            onStop={this.onDraggableEventHandler} 
                         >
                             <div handleid={item.id}
                                  className={`size-m`}
                             >
                                 <div className="react-draggable-handle">
-                                  <div className="react-draggable-title">{item.title}</div>
+                                    <span className={`person-icon avatar-${fn.getAvatarClass(item.size)}`}></span>
+                                    <span className="person-abbr">{item.abbreviation}</span>
+                                  {selectedDraggable === item.id &&
+                                    <span className="react-draggable-title">{item.organisation_title}</span>
+                                  }
                                 </div>
 
                                 {selectedDraggable === item.id &&
@@ -164,16 +190,15 @@ export default class PeopleWrapper extends React.PureComponent {
                                             Assign<br/>Character
                                         </Link>
 
-                                        <Link className="button-round second"
-                                              to={`/${url.projects}/${params.id}/groups/${group.id}/${url.people}/${item.id}`}>
-                                            <span className="button-round-inside icon-edit"/>
-                                            Edit
-                                        </Link>
+                                        <span className="clickable button-round second"
+                                              onClick={(event) => this.getCoordinate(event, item.id)}>
+                                            <span className="button-round-inside icon-chain"/>Progess
+                                        </span>
 
                                         <Link className="button-round third"
-                                              to={`/${url.projects}/${params.id}/groups/${group.id}/`}>
-                                            <span className="button-round-inside icon-chain"/>
-                                            Progress
+                                              to={`/${url.projects}/${params.id}/groups/${group.id}/${url.people}/${item.id}`}>
+                                            <span className="button-round-inside icon-pencil"/>
+                                            Edit
                                         </Link>
 
                                         <Link className="button-round fourth"
@@ -189,6 +214,8 @@ export default class PeopleWrapper extends React.PureComponent {
                 })
                 }
                 {this.props.children}
+
+                {selectedPeople.coordinates ? <Coordinate group={selectedPeople}/> : ''}
             </div>
         )
     }

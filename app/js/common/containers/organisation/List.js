@@ -74,7 +74,7 @@ export default class List extends React.PureComponent {
                       />
                       <Link
                           to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.organisations}/${organisation.id}`}
-                          className="icon-edit"
+                          className="icon-pencil"
                       />
                       <Link
                           to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}/add?organisation_id=${organisation.id}`}
@@ -125,7 +125,7 @@ export default class List extends React.PureComponent {
                     isLoading={groups.isLoading}
                 >
                     {_.isEmpty(group.organisations) ? (
-                        <Link
+                        <Link className="button"
                             to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.organisations}/add`}>Add
                             your first organisation <span dangerouslySetInnerHTML={{__html: `&plus;`}}/></Link>
                     ) : (

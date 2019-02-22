@@ -7,6 +7,7 @@ import {api} from 'app/utils';
 import * as selector from './selector';
 import { makeGetProject, makeGetProjects } from 'app/containers/project/selector';
 import {Link} from "react-router";
+import Coordinate from 'app/components/coordinate'
 
 @connect((state, ownProps) => {
     const getGroups = selector.makeGetGroups();
@@ -27,7 +28,8 @@ export default class GroupWrapper extends React.PureComponent {
 
         this.state = {
             updatedCoordinates: {},
-            selectedDraggable: 0
+            selectedDraggable: 0,
+            selectedOrganisation: {}
         }
     }
 
@@ -80,9 +82,28 @@ export default class GroupWrapper extends React.PureComponent {
         }
     }
 
+    getCoordinate = async (event, organisationId) => {
+        const {selectedOrganisation} = this.state;
+
+        if(!_.isEmpty(selectedOrganisation)){
+            this.setState({selectedOrganisation: {}})
+        } else {
+            // Stop other event
+            event.stopPropagation();
+            // Get the data from server
+            const data = await api.get('organisations/'+organisationId);
+
+            if (selectedOrganisation) {
+                this.setState({
+                    selectedOrganisation: {...data.data}
+                })
+            }
+        }
+    }
+
     handleClick = (e) => {
       if(!this.node.contains(e.target)){
-        this.setState({selectedDraggable: 0, selectedGroupCoordinates: {}})
+        this.setState({selectedDraggable: 0, selectedOrganisation: {}})
       }
     }
 
@@ -102,7 +123,8 @@ export default class GroupWrapper extends React.PureComponent {
 
     render() {
         const {groups, group, params} = this.props
-        const {updatedCoordinates, selectedDraggable, progressLabel} = this.state
+
+        const {updatedCoordinates, selectedDraggable, progressLabel, selectedOrganisation} = this.state
 
         const container = document.getElementById('gridwrapper-inner')
         const containerHeight = (container || {}).offsetHeight || 0
@@ -116,6 +138,7 @@ export default class GroupWrapper extends React.PureComponent {
                 </React.Fragment>
                 }
                 {_.map(group.organisations, (item) => {
+                    console.log('Organisation: ', item);
                     if (item.status < 1) {
                         return
                     }
@@ -147,12 +170,12 @@ export default class GroupWrapper extends React.PureComponent {
                                     <div className="react-draggable-actions">
                                         <Link className="button-round first"
                                               to={`/${url.projects}/${params.id}/groups/${group.id}/${url.organisations}/${item.id}`}>
-                                            <span className="button-round-inside icon-edit"/>
+                                            <span className="button-round-inside icon-pencil"/>
                                             Edit
                                         </Link>
 
                                         <span className="clickable button-round second"
-                                              onClick={(event) => this.getGroupCoordinate(event, group.id)}>
+                                              onClick={(event) => this.getCoordinate(event, item.id)}>
                                             <span className="button-round-inside icon-chain"/>Progess
                                         </span>
 
@@ -176,6 +199,8 @@ export default class GroupWrapper extends React.PureComponent {
                 })
                 }
                 {this.props.children}
+
+                {selectedOrganisation.coordinates ? <Coordinate group={selectedOrganisation}/> : ''}
             </div>
         )
     }

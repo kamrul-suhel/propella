@@ -1,6 +1,10 @@
 .form {
   display: block;
 
+  .form-group{
+      
+  }
+  
   .form-label {
     text-transform: uppercase;
     font-size: 12px;
@@ -24,6 +28,7 @@
     &:last-child {
       margin-bottom: 0!important;
     }
+    
     &.form-type-slider{
         .form-label{
             font-weight:bold;
@@ -62,6 +67,10 @@
   }
 
   .form-field-error-wrapper {
+      position:absolute;
+      left:0px;
+      bottom:-7px;
+      color:$brand-color-3;
     ul {
       list-style: none;
       padding: 0;
@@ -172,19 +181,16 @@
       color:white;
       background-image:url(../images/blue-circle.svg);
       background-repeat:no-repeat;
+      background-size:100%;
       height: 75px;
       width: 75px;
-      display: block;
       display: flex;
       align-items: center;
       justify-content: center;
       margin: auto;
-      background-size:100%;
-      background-size: 100%;
       font-size: 26px;
   }
   .radio-gender{
-      margin-top:-22px;
       .form-options-layout-horizontal{
           margin-top:5px!important;
           .form-option-radio{    

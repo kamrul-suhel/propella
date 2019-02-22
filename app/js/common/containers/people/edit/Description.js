@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router';
-import {Form, TextInput, Radio, FileUpload, Select} from '@xanda/react-components';
+import {Tooltip, Form, TextInput, Radio, FileUpload, Select} from '@xanda/react-components';
 
 export default class Description extends React.PureComponent {
 
@@ -8,6 +8,7 @@ export default class Description extends React.PureComponent {
         const {
             title,
             description,
+            abbreviation,
             type_id,
             icon,
             icon_path,
@@ -52,46 +53,52 @@ export default class Description extends React.PureComponent {
                 
                 <div className="grid">
                 
-                <div className="grid-xs-6">
+                    <div className="grid-xs-7">
+                        <div className="form-group form-group-wide group-half-size">
+                            <span className="form-label">Choose Icon or Set Abbreviation <Tooltip icon="i" message="Upload a custom icon or enter an abbreviation"/></span>
 
-                <FileUpload
-                    label="Upload your image"
-                    name="icon"
-                    onChange={handleInputChange}
-                    value={icon}
-                    className={fileUploadClass}                                
-                    placeholder=""
-                >
-                    {<img src={icon ? icon.preview : icon_path}/>}
-                </FileUpload>          
+                            <FileUpload                            
+                                name="icon"
+                                onChange={handleInputChange}
+                                value={icon}
+                                className={fileUploadClass}                                
+                                placeholder=""
+                            >
+                                {<img src={icon ? icon.preview : icon_path}/>}
+                            </FileUpload>
+                            <TextInput
+                                    name="abbreviation"
+                                    value={abbreviation}
+                                    onChange={handleInputChange}
+                                />
+                        </div>
+                    </div>
                 
-                </div>
-                
-                <div className="grid-xs-6">
+                    <div className="grid-xs-5">
 
-                <Radio
-                    name="icon_size"
-                    label="Choose an icon"
-                    options={
-                        [
-                            {
-                                id: 'm',
-                                title: "M"
-                            },
-                            {
-                                id: 'f',
-                                title: "F"
-                            },
-                        ]
-                    }
-                    styled
-                    wide
-                    value={icon_size}
-                    onChange={handleInputChange}
-                    className="radio-gender"
-                />
-                
-                </div>
+                        <Radio
+                            name="icon_size"
+                            label="Choose an icon"
+                            options={
+                                [
+                                    {
+                                        id: 'm',
+                                        title: "M"
+                                    },
+                                    {
+                                        id: 'f',
+                                        title: "F"
+                                    },
+                                ]
+                            }
+                            styled
+                            wide
+                            value={icon_size}
+                            onChange={handleInputChange}
+                            className="radio-gender"
+                        />
+
+                    </div>
                 
                 </div>
 

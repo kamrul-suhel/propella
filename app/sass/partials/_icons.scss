@@ -17,3 +17,14 @@
     width: 24px;
     display: block;
 }
+
+.avatar-female{                        
+    @extend .icon-person-female;
+}
+.avatar-male{                        
+    @extend .icon-person-male;
+}
+.avatar-female, .avatar-male{
+    @extend [class^="icon-"];
+    font-size:31px;
+}

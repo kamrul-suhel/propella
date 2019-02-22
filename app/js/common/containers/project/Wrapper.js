@@ -159,7 +159,8 @@ export default class ProjectWrapper extends React.PureComponent {
                                  className={
                                      [
                                          `size-${item.icon_size}`,
-                                         (selectedGroupCoordinates.coordinates && item.id !== selectedGroupCoordinates.id ? 'disabled' : '')
+                                         (selectedGroupCoordinates.coordinates && item.id !== selectedGroupCoordinates.id ? 'disabled' : ''),
+                                         (selectedGroupCoordinates.coordinates && item.id === selectedGroupCoordinates.id ? 'dark-bg' : '')
                                      ]
                                  }
                                  onClick={this.handleDraggableClick}
@@ -169,7 +170,7 @@ export default class ProjectWrapper extends React.PureComponent {
                                 <div className="react-draggable-actions">
                                     <Link className="button-round first"
                                           to={`/${url.projects}/${params.id}/groups/${item.id}/edit`}>
-                                        <span className="button-round-inside icon-edit"/>
+                                        <span className="button-round-inside icon-pencil"/>
                                         Edit
                                     </Link>
 
@@ -186,7 +187,7 @@ export default class ProjectWrapper extends React.PureComponent {
 
                                     <Link className="button-round fourth"
                                           to={`/${url.projects}/${params.id}/groups/${item.id}/competitors`}>
-                                        <span className="button-round-inside"></span>
+                                        <span className="button-round-inside icon-character-pirate"></span>
                                         Competitors
                                     </Link>
                                 </div>
