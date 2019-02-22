@@ -13,9 +13,9 @@
   .gridwrapper-inner {
     position: absolute;
     top: 0;
-    right: 50px;
-    bottom: 50px;
-    left: 50px;
+    right: 40px;
+    bottom: 40px;
+    left: 40px;
 
     .gridwrapper-inner-section-wrapper {
       position: absolute;
@@ -170,7 +170,7 @@
       }
       
       
-      &.size-l, &.b-size-l {
+      &.size-l{
           .react-draggable-handle{
               &:after{
                   bottom:11px;
@@ -196,6 +196,13 @@
               &.fourth {
                   top: -10px;
                   left: 75px;
+              }
+          }
+          &.dark-bg{
+              background-image: url(../images/marker-medium-black.svg);
+              z-index:1;
+              .react-draggable-handle-icon{
+                  background-color:white;
               }
           }
       }      
@@ -360,23 +367,21 @@
   }
 
   .right-icon, .left-icon, .top-icon, .bottom-icon {
-    font-size: 20px;
     position: absolute;
     display: flex;
-    font-size: 20px;
+    font-size: 18px;
   }
 
   .gridwrapper-x {
     position: absolute;
     bottom: 0;
-    left: 50px;
+    left: 40px;
     right: 0;
-    height: 50px;
-    width: calc(100% - 100px);
+    height: 40px;
+    width: calc(100% - 80px);
     display: flex;
     justify-content: space-between;
-    font-size: 18px;
-
+    font-size: 16px;
     .axis-label {
       position: absolute;
       top: 17px;
@@ -441,11 +446,11 @@
     position: absolute;
     top: 0px;
     left: 0px;
-    width: 50px;
-    height: calc(100% - 50px);
+    width: 40px;
+    height: calc(100% - 40px);
     display: flex;
     justify-content: space-between;
-    font-size: 18px;
+    font-size: 16px;
 
     .axis-image {
       position: absolute;
@@ -502,7 +507,7 @@
       -ms-transform: rotate(-90deg);
       transform: rotate(-90deg);
       font-size: 18px;
-      left: -10px;
+      left: -15px;
       font-weight: bold;
     }
   }

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { ReportList } from 'app/components';
 import { fetchData } from 'app/actions';
 import { makeGetGroup, makeGetGroups } from 'app/containers/group/selector';
+import { Nav } from 'app/components';
 
 @connect((state, ownProps) => {
     const getGroups = makeGetGroups();
@@ -37,11 +38,15 @@ export default class Report extends React.PureComponent {
             (_.isEmpty(group.organisations) ? (
                 <h2>No people found</h2>
             ) : (
+            <React.Fragment>
+                <Nav {...this.props} />
                 <ReportList
                     reportType="people"
                     data={group}
                     params={params}/>
+            </React.Fragment>
             ))
+            
         );
     }
 }

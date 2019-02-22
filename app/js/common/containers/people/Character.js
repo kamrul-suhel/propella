@@ -83,7 +83,7 @@ export default class Edit extends React.PureComponent {
 		return (
       <PeopleWrapper {...this.props}>
   			<Popup
-          additionalClass={(step !== 4 ? `people wide` : 'people small-window')}
+          additionalClass={(step !== 4 ? `people` : 'people small-window')}
   				title={popup.title ? `Person: ${popup.title}` : `New Person`}
   				closePath={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}`}
           buttons={
@@ -93,22 +93,61 @@ export default class Edit extends React.PureComponent {
             </React.Fragment>
           }
   			>
-          <p className="form-label form-label-title">Choose a character</p>
-          <Slider {...sliderSettings}>
-            <div>
-              <h3>The Ambassador</h3>
-            </div>
-            <div>
-              <h3>The Mirage</h3>
-            </div>
-            <div>
-              <h3>The Boomerang</h3>
-            </div>
-            <div>
-              <h3>The Trojan Horse</h3>
-            </div>
-          </Slider>
-
+                        <div className="character-inner">
+                            <p className="form-label form-label-title">Choose a character</p>
+                                <Slider {...sliderSettings}>
+                                  <div className="character-slide">
+                                      <img className="character-image" src="/../../../images/Ambassador.svg"/>
+                                      <h3 className="character-title">The Ambassador</h3>
+                                      <p className="character-description">Donec id elit non mi porta etamit fusce a dapibus tellusacter cursus gravida at eget metus donec id elit nomi porta gravida at eget metus fusce a dapibus tellusacter cursus commodo tortorodio mauris nibh.</p>
+                                  </div>
+                                  <div className="character-slide">
+                                      <img className="character-image" src="/../../../images/Beaver.svg"/>
+                                      <h3 className="character-title">The Beaver</h3>
+                                      <p className="character-description">Donec id elit non mi porta etamit fusce a dapibus tellusacter cursus gravida at eget metus donec id elit nomi porta gravida at eget metus fusce a dapibus tellusacter cursus commodo tortorodio mauris nibh.</p>
+                                  </div>
+                                  <div className="character-slide">
+                                      <img className="character-image" src="/../../../images/Deadweight.svg"/>
+                                      <h3 className="character-title">The Deadweight</h3>
+                                      <p className="character-description">Donec id elit non mi porta etamit fusce a dapibus tellusacter cursus gravida at eget metus donec id elit nomi porta gravida at eget metus fusce a dapibus tellusacter cursus commodo tortorodio mauris nibh.</p>
+                                  </div>
+                                  <div className="character-slide">
+                                      <img className="character-image" src="/../../../images/Pirate_1.svg"/>
+                                      <h3 className="character-title">The Pirate</h3>
+                                      <p className="character-description">Donec id elit non mi porta etamit fusce a dapibus tellusacter cursus gravida at eget metus donec id elit nomi porta gravida at eget metus fusce a dapibus tellusacter cursus commodo tortorodio mauris nibh.</p>
+                                  </div>
+                                  <div className="character-slide">
+                                      <img className="character-image" src="/../../../images/Smiley.svg"/>
+                                      <h3 className="character-title">The Smiley</h3>
+                                      <p className="character-description">Donec id elit non mi porta etamit fusce a dapibus tellusacter cursus gravida at eget metus donec id elit nomi porta gravida at eget metus fusce a dapibus tellusacter cursus commodo tortorodio mauris nibh.</p>
+                                  </div>
+                                  <div className="character-slide">
+                                      <img className="character-image" src="/../../../images/Assassin.svg"/>
+                                      <h3 className="character-title">The Assassin</h3>
+                                      <p className="character-description">Donec id elit non mi porta etamit fusce a dapibus tellusacter cursus gravida at eget metus donec id elit nomi porta gravida at eget metus fusce a dapibus tellusacter cursus commodo tortorodio mauris nibh.</p>
+                                  </div>
+                                  <div className="character-slide">
+                                      <img className="character-image" src="/../../../images/Boomerang.svg"/>
+                                      <h3 className="character-title">The Boomerang</h3>
+                                      <p className="character-description">Donec id elit non mi porta etamit fusce a dapibus tellusacter cursus gravida at eget metus donec id elit nomi porta gravida at eget metus fusce a dapibus tellusacter cursus commodo tortorodio mauris nibh.</p>
+                                  </div>
+                                  <div className="character-slide">
+                                      <img className="character-image" src="/../../../images/Mirage.svg"/>
+                                      <h3 className="character-title">The Mirage</h3>
+                                      <p className="character-description">Donec id elit non mi porta etamit fusce a dapibus tellusacter cursus gravida at eget metus donec id elit nomi porta gravida at eget metus fusce a dapibus tellusacter cursus commodo tortorodio mauris nibh.</p>
+                                  </div>
+                                  <div className="character-slide">
+                                      <img className="character-image" src="/../../../images/Prize.svg"/>
+                                      <h3 className="character-title">The Prize</h3>
+                                      <p className="character-description">Donec id elit non mi porta etamit fusce a dapibus tellusacter cursus gravida at eget metus donec id elit nomi porta gravida at eget metus fusce a dapibus tellusacter cursus commodo tortorodio mauris nibh.</p>
+                                  </div>
+                                  <div className="character-slide">
+                                      <img className="character-image" src="/../../../images/Trojan Horse.svg"/>
+                                      <h3 className="character-title">The Trojan Horse</h3>
+                                      <p className="character-description">Donec id elit non mi porta etamit fusce a dapibus tellusacter cursus gravida at eget metus donec id elit nomi porta gravida at eget metus fusce a dapibus tellusacter cursus commodo tortorodio mauris nibh.</p>
+                                  </div>
+                                </Slider>
+                            </div>
   			</Popup>
       </PeopleWrapper>
 		);

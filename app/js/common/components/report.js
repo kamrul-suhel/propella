@@ -55,6 +55,7 @@ export default class ReportList extends React.Component {
                     data={collections}
                     isLoading={collections.isLoading}
                 >
+                <h1>Data visual: People</h1>
                     <Table headers={[
                         'Name',
                         'Organisation',

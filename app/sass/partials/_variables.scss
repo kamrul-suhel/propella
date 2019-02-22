@@ -26,3 +26,8 @@ $desktop: 			1480px;
 
 $grid-columns:                  12;
 $grid-gutter:                   20px;
+
+$hamburger-height: 14px;
+$hamburger-width: 19px;
+$hamburger-line-height: 2px;
+$hamburger-translateY: ($hamburger-height - $hamburger-line-height) / 2;

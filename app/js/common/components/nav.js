@@ -56,6 +56,7 @@ export default class Popup extends React.PureComponent {
 
         return (
             <div className="nav">
+                <img class="nav-logo" src="/../../../images/logo.svg"/>
                 {params.groupId ? (
                   <React.Fragment>
                     <Link
@@ -70,6 +71,25 @@ export default class Popup extends React.PureComponent {
                 ) : (
                     <Link to={this.nextLink} className="icon-stack"/>
                 )}
+                <div class="menu">
+                    <p>Hi, Will!</p>                    
+                </div>
+                <a class="hamburger" href="#" title="Menu">
+                        <span class="line-1"></span>
+                        <span class="line-2"></span>
+                        <span class="line-3"></span>
+                </a>
+                <nav id="main-nav" class="main-nav" role="navigation" aria-label="Main Navigation">
+                    <div class="header-greeting">
+                        <a href="http://propella.hostings.co.uk/wp-login.php?action=logout&amp;redirect_to=%2Flogin&amp;_wpnonce=6811e8790b">Log out Will</a>
+                    </div>
+                    <ul id="menu-main-menu" class="main"><li id="menu-item-47" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-47"><a href="http://propella.hostings.co.uk/dashboard/">Dashboard</a></li>
+                        <li id="menu-item-46" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-46"><a href="http://propella.hostings.co.uk/archive/">Archive</a></li>
+                        <li id="menu-item-44" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-44"><a href="http://propella.hostings.co.uk/faqs/">FAQS</a></li>
+                        <li id="menu-item-162" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-162"><a href="http://propella.hostings.co.uk/user-settings/">User Settings</a></li>
+                        <li id="menu-item-48" class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-9 current_page_item menu-item-48"><a href="http://propella.hostings.co.uk/step-1/">Tutorial</a></li>
+                    </ul>	
+                </nav>
             </div>
         );
     }
