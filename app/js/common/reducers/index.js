@@ -4,6 +4,7 @@ import { routerReducer } from 'react-router-redux';
 // reducers
 import alert from './alert'
 import popup from './popup'
+import projectUser from './projectUser'
 import project from 'app/containers/project/reducer'
 import group from 'app/containers/group/reducer'
 import { organisation, organisationType } from 'app/containers/organisation/reducer'
@@ -18,6 +19,7 @@ const appReducer = combineReducers({
   people: people,
 	peopleType: peopleType,
 	group: group,
+  projectUser: projectUser,
 	routing: routerReducer,
 });
 

@@ -19,9 +19,9 @@ const Routes = (
     <Route path={`${url.projects}/:id/${url.groups}/:groupId/${url.organisations}/${url.report}`} component={Organisation.Report} />
     <Route path={`${url.projects}/:id/${url.groups}/:groupId/${url.people}/${url.report}`} component={People.Report} />
 
-    <Route component={C.GridWrapper}>
       <Route path={url.projects}>
-        <Route path=":id">
+        <IndexRoute component={Project.List} />
+        <Route path=":id" component={C.GridWrapper}>
             <IndexRoute component={Project.View}/>
             <Route path={url.groups}>
               <IndexRoute component={Group.List}/>
@@ -47,7 +47,6 @@ const Routes = (
             </Route>
         </Route>
       </Route>
-    </Route>
   </Route>
 );
 
