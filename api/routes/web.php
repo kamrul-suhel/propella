@@ -91,6 +91,11 @@ $router->group(['prefix' => 'v1/competitors'] , function () use ($router) {
     $router->delete('{id}', 'CompetitorsController@delete');
 });
 
+$router->group(['prefix' => 'v1/users'], function() use ($router){
+    $router->get('', 'UserController@list');
+    $router->get('/me', 'UserController@me');
+});
+
 $router->group(['prefix' => 'v1/user_types'], function() use ($router){
     $router->get('{id}', 'OrganisationTypeController@getOrganisationTypeByUserGroupId');
 });

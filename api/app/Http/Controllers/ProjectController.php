@@ -6,13 +6,13 @@ use App\Competitor;
 use App\Group;
 use App\Organisation;
 use App\People;
-use App\PeopleType;
 use App\Project;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
 class ProjectController extends PropellaBaseController
 {
+    private $allowedIds;
     /**
      * Create a new controller instance.
      *
@@ -21,6 +21,8 @@ class ProjectController extends PropellaBaseController
     public function __construct(Request $request)
     {
         parent::__construct($request);
+        // Anyone in the team can view/edit projects created by a project manager
+        $this->allowedIds = [$this->request->authUserId, $this->request->projectManagerId];
     }
 
     /**
@@ -29,17 +31,21 @@ class ProjectController extends PropellaBaseController
     public function create()
     {
         $this->validate($this->request, [
-            'title' => 'required|string|min:1',
-            'description' => 'required|string|min:1',
-            'status' => 'integer|between:1,3',
-            'people' => 'array',
+            'title'         => 'required|string|min:1',
+            'description'   => 'required|string|min:1',
+            'status'        => 'integer|between:1,3'
         ]);
+
+        if(!$this->request->isPM){
+            return response()->json("You are not a PM", 422);
+        }
 
         // Create project.
         $project = new Project();
-        $project->title = $this->request->title;
-        $project->description = $this->request->description;
-        $project->status = $this->request->has('status') ? $this->request->status : 1;
+        $project->title         = $this->request->title;
+        $project->description   = $this->request->description;
+        $project->status        = $this->request->has('status') ? $this->request->status : 1;
+        $project->created_by    = $this->request->authUserId;
 
         // Save project.
         $project->save();
@@ -56,6 +62,10 @@ class ProjectController extends PropellaBaseController
         // Find project
         $project = Project::findOrFail($id);
 
+        if(!in_array($project->created_by,$this->allowedIds)){
+            return response()->json("You cannot update this project", 401);
+        }
+
         $this->request->has('title') ? $project->title = $this->request->title : '';
         $this->request->has('description') ? $project->description = $this->request->description : '';
         $this->request->has('status') ? $project->status = $this->request->status : '';
@@ -71,15 +81,17 @@ class ProjectController extends PropellaBaseController
     {
         $projects = new Project();
 
-        // project status, default it will give your 0,1 active records
+        // filter by project status if status is passed
         $projects = $this->status != null ? $projects->where('status', $this->status) : $projects->whereIn('status', [0, 1]);
-
         $projects = $projects->where('archive', 0);
+        $projects = $projects->whereIn('created_by', $this->allowedIds);
         $projects = $projects->paginate($this->perPage);
 
         // If has parameter archives then add last 5 archive.
         if ($this->request->has('archives') && $this->request->archives == 1) {
             foreach ($projects->items() as $project) {
+                if(empty($project->parent_id)) {continue; }
+
                 $ids = Project::getAllId($project->parent_id, $project->id);
                 $archives = Project::select([
                     'id',
@@ -87,6 +99,7 @@ class ProjectController extends PropellaBaseController
                 ])
                     ->whereIn('id', $ids)
                     ->orderBy('created_at', 'DESC')
+                    ->limit(5)
                     ->get();
 
                 $newArchives = [];
