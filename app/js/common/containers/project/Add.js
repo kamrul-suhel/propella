@@ -47,7 +47,7 @@ export default class List extends React.PureComponent {
                       </div>
                       <div className="grid-xs-12 grid-s-7">
                   <div className="central-graphic">
-                      <img src="images/resources/LayerGridStackBig.svg" alt="Big Stack" />
+                      <img src="../../images/LayerGridStackBig.svg" alt="Big Stack" />
                   </div>
               </div>
                   </div>

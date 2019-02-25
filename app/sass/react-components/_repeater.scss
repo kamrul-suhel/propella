@@ -37,9 +37,12 @@
 		line-height: 1;		
                 position:absolute;
                 right:0px;
-                top:49px;
-		i {
-			font-size: 32px;
-		}
+                top:28px;
+                color:transparent;                
+                &:after{
+                    @extend [class^="icon-"]:before;
+                    @extend .icon-bin:before;
+                    color:$brand-color-dark;
+                }		
 	}
 }

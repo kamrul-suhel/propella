@@ -49,7 +49,8 @@ export default class List extends React.PureComponent {
                 className="icon-pencil"
                 />
                 <span type="button" onClick={() => this.handleDelete(this.props.params.groupId, person.id)} className="clickable icon-bin" />
-              </React.Fragment>
+                <span type="button" class="icon-character-eager-beaver"></span>
+            </React.Fragment>
             }
             category={person.organisation_title}
           >
@@ -89,6 +90,11 @@ export default class List extends React.PureComponent {
                   ) : (
                       <React.Fragment>
                           <FancyList>
+                            <li class="fancylist-item undefined">
+                            <span class="fancylist-item-title">Name</span>
+                            <span class="fancylist-item-category">ORG</span>
+                            <span class="fancylist-item-actions"></span>
+                            </li>
                               {_.map(group.people, (person) => {
                                   return this.renderItem(person)
                               })}

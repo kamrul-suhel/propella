@@ -5,6 +5,7 @@
 @import 'partials/fonts';
 @import 'partials/typography';
 
+
 // @import 'vendor/ionicons';
 @import 'vendor/react-datepicker';
 @import 'vendor/react-draft-wysiwyg';
@@ -46,13 +47,11 @@
 @import 'modules/repeater';
 @import 'modules/nav';
 @import 'modules/report';
+@import 'modules/projects';
 
 body {
   font-family: $family-base;
   font-weight:500;
-  height:100VH;
-  width:100VW;
-  overflow:hidden;
 }
 
 #app {

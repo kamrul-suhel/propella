@@ -48,24 +48,11 @@
     align-items:center;
     justify-content:center;
     color: $brand-color-dark;
-    font-size: 18px;
+    font-size: 27px;
     position:relative;
     &.icon-progress {
       font-size: 24px;
-    }
-    &.icon-pencil{
-        &:before{            
-            display:block;
-            color:$brand-color-2;
-        }
-    }
-    &.icon-chain{
-        &:before{            
-            display:block;
-            color:$brand-color-2;
-            font-size:24px;
-        }
-    }
+    }    
     &:before{
         color:$brand-color-2;
     }
