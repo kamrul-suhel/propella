@@ -99,3 +99,7 @@ $router->group(['prefix' => 'v1/users'], function() use ($router){
 $router->group(['prefix' => 'v1/user_types'], function() use ($router){
     $router->get('{id}', 'OrganisationTypeController@getOrganisationTypeByUserGroupId');
 });
+
+$router->group(['prefix' => 'v1/users'], function() use ($router){
+    $router->get('{id}', 'UserController@getProjectUsers');
+});

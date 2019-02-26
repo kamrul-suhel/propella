@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="101px" height="24px" viewBox="0 0 101 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>propella_logo</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="propella_logo" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-3">
+            <g id="Group" transform="translate(0.930067, 1.718844)">
+                <polygon id="Fill-1" fill="#004B9B" points="7.66866211 7.55623828 14.8805587 7.55623828 14.8805587 0.343824488 7.66866211 0.343824488"></polygon>
+                <polygon id="Fill-2" fill="#E84F35" points="0.456248316 14.7686521 7.66866211 14.7686521 7.66866211 7.55623828 0.456248316 7.55623828"></polygon>
+                <polygon id="Fill-3" fill="#9CD6F0" points="7.66866211 14.7681348 14.8810759 14.7681348 14.8810759 7.55623828 7.66866211 7.55623828"></polygon>
+                <polygon id="Fill-4" fill="#48B9B9" points="0.456248316 7.55623828 7.66866211 7.55623828 7.66866211 0.343824488 0.456248316 0.343824488"></polygon>
+            </g>
+            <text id="Propella" font-family="Helvetica" font-size="19.4799995" font-weight="normal" letter-spacing="-0.7410869" fill="#1C1C1C">
+                <tspan x="21.1444731" y="19.575">Propella</tspan>
+            </text>
+        </g>
+    </g>
+</svg>

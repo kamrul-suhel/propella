@@ -131,12 +131,7 @@ export default class GroupWrapper extends React.PureComponent {
         const containerWidth = (container || {}).offsetWidth || 0
 
         return (
-            <div ref={node => this.node = node}>
-                {!_.isEmpty(updatedCoordinates) &&
-                <React.Fragment>
-                    <button className="button gridwrapper-save" onClick={this.handleSaveChanges}>Save Changes</button>
-                </React.Fragment>
-                }
+            <div ref={node => this.node = node}>                
                 {_.map(group.organisations, (item) => {
                     console.log('Organisation: ', item);
                     if (item.status < 1) {
@@ -201,6 +196,13 @@ export default class GroupWrapper extends React.PureComponent {
                 {this.props.children}
 
                 {selectedOrganisation.coordinates ? <Coordinate group={selectedOrganisation}/> : ''}
+                        
+                {!_.isEmpty(updatedCoordinates) &&
+                <React.Fragment>
+                    <button className="button gridwrapper-save" onClick={this.handleSaveChanges}>Save Changes</button>
+                </React.Fragment>
+                }
+                        
             </div>
         )
     }

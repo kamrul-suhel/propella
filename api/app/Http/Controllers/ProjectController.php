@@ -12,7 +12,6 @@ use Carbon\Carbon;
 
 class ProjectController extends PropellaBaseController
 {
-    private $allowedIds;
     /**
      * Create a new controller instance.
      *
@@ -21,8 +20,6 @@ class ProjectController extends PropellaBaseController
     public function __construct(Request $request)
     {
         parent::__construct($request);
-        // Anyone in the team can view/edit projects created by a project manager
-        $this->allowedIds = [$this->request->authUserId, $this->request->projectManagerId];
     }
 
     /**
@@ -62,7 +59,7 @@ class ProjectController extends PropellaBaseController
         // Find project
         $project = Project::findOrFail($id);
 
-        if(!in_array($project->created_by,$this->allowedIds)){
+        if(!in_array($project->created_by,[$this->request->authUserId, $this->request->projectManagerId])){
             return response()->json("You cannot update this project", 401);
         }
 
@@ -84,7 +81,8 @@ class ProjectController extends PropellaBaseController
         // filter by project status if status is passed
         $projects = $this->status != null ? $projects->where('status', $this->status) : $projects->whereIn('status', [0, 1]);
         $projects = $projects->where('archive', 0);
-        $projects = $projects->whereIn('created_by', $this->allowedIds);
+        // Anyone in the team can view/edit projects created by a project manager
+        $projects = $projects->whereIn('created_by', [$this->request->authUserId, $this->request->projectManagerId]);
         $projects = $projects->paginate($this->perPage);
 
         // If has parameter archives then add last 5 archive.

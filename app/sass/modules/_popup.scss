@@ -218,16 +218,16 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow:unset;
-            border:0px;
-            border-top:1px solid $brand-color-dark;
-            border-right:1px solid $brand-color-dark;
+            box-shadow: unset;
+            border: 0px;
+            border-top: 1px solid $brand-color-dark;
+            border-right: 1px solid $brand-color-dark;
             &:first-child{                
-                border-bottom-left-radius:5px;
+                border-bottom-left-radius: 5px;
             }
             &:last-child{
-                border-bottom-right-radius:5px;
-                border-right:0px;
+                border-bottom-right-radius: 5px;
+                border-right: 0px;
             }
         }        
     }
@@ -238,13 +238,13 @@
         .fancylist{
             .fancylist-item{              
                 .fancylist-item-title{
-                    font-size:16px;
-                    font-weight:500;
+                    font-size: 16px;
+                    font-weight: 500;
                 }
             }
         }
         .form-type-select{
-            width:100%;
+            width: 100%;
         }
         .form-group{
             .form-options-layout-horizontal{
@@ -254,11 +254,11 @@
         .overview{
             .ov-img-content{
                 .ov-icon-path{
-                    background-color:$brand-color-dark;
-                    color:white;
+                    background-color: $brand-color-dark;
+                    color: white;
                     .ov-abbreviation{
-                        margin-bottom:0px;
-                        font-size:24px;
+                        margin-bottom: 0px;
+                        font-size: 24px;
                     }
                 }
             }      
@@ -266,31 +266,68 @@
     }
     &.people{
         .form-type-upload{
-            display:flex;
-            align-items:center;          
+            display: flex;
+            align-items: center;          
             .form-label{
-                border-bottom:1px solid black;
-                padding-bottom:10px;
-                margin-right:30px;
-                text-align:left;
+                border-bottom: 1px solid black;
+                padding-bottom: 10px;
+                margin-right: 30px;
+                text-align: left;
             }
             .form-field-wrapper{
-                text-align:center;
+                text-align: center;
             }
         }
         .overview{
             .ov-img-content{
                 .ov-icon-path{
                     .ov-icon-size{
-                        height:44px;
-                        width:44px;
+                        height: 44px;
+                        width: 44px;
                     }
                     img{
-                        width:153px;
+                        width: 153px;
                     }
                 }
             }
         }
+        .character-inner{
+            padding: 26px;
+            .form-label-title{
 
+            }
+            .character-slide{
+                .character-image{
+                    height: 250px;
+                    margin:16px auto;
+                }
+                .character-title{
+                    font-size: 24px;
+                    color: #1C1C1C;
+                    letter-spacing: -0.32px;
+                    text-align: center;
+                    margin-bottom:0px;
+                }
+                .character-description{
+                    margin-bottom: 0px;
+                    font-size: 14px;                 
+                    line-height: 21px;
+                }                    
+            }
+            .slick-arrow{
+                height:32px;
+                width:32px;
+                &:before{
+                    color:$brand-color-dark;
+                    font-size:30px;
+                }
+                &.slick-next{
+                    right:-20px;
+                }
+                &.slick-previous{
+                    left:-20px;
+                }
+            }
+        }
     }
 }

@@ -82,7 +82,7 @@ export default {
 		const baseURL = process.env.RELEASE_STAGE === 'prod' ? 'http://api.propella.hostings.co.uk/v1' : 'http://api.propella.hostings.co.uk/v1';
 		axios.defaults.baseURL = baseURL;
 		// axios.defaults.headers = { Authorization: `Bearer ${token}` };
-		// axios.defaults.withCredentials = true;
+		axios.defaults.withCredentials = true;
 
 		// include catalog ID on every GET request
 		// const { currentCatalog } = Store.getState();

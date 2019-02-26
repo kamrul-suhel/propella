@@ -173,6 +173,14 @@ export default class PeopleWrapper extends React.PureComponent {
                         >
                             <div handleid={item.id}
                                  className={`size-m`}
+                                 className={
+                                     [
+                                         `size-m`,
+                                         (selectedPeople.coordinates && item.id !== selectedPeople.id ? 'disabled' : ''),
+                                         (selectedPeople.coordinates && item.id === selectedPeople.id ? 'dark-bg' : '')
+                                     ]
+                                 }
+                                 
                             >
                                 <div className="react-draggable-handle">
                                     <span className={`person-icon avatar-${fn.getAvatarClass(item.size)}`}></span>
