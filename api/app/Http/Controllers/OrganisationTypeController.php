@@ -55,6 +55,29 @@ class OrganisationTypeController extends PropellaBaseController
         return response()->json($organisationType);
     }
 
+    public function updateMultiple()
+    {
+        $this->validate($this->request, [
+            'types'                 => 'required|array',
+            'types.*.id'            => 'required|integer|min:0',
+            'types.*.title'         => 'required|string|min:1',
+            'types.*.description'   => 'required|string|min:1',
+            'types.*.user_group_id' => 'integer|min:0'
+        ]);
+
+        foreach($this->request->types as $type) {
+            // New types will have id 0
+            $organizationType = $type['id'] == 0 ? new OrganisationType : OrganisationType::findOrFail($type['id']);
+
+            $organizationType->title         = $type['title'];
+            $organizationType->description   = $type['description'];
+            $organizationType->user_group_id = $type['user_group_id'];
+            $organizationType->save();
+        }
+
+        return response()->json(['success' => true]);
+    }
+
     /**
      * @return array
      */
