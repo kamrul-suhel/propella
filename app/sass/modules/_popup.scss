@@ -250,11 +250,12 @@
             .form-options-layout-horizontal{
                 margin:0px auto;
             }
-        }
-        .overview{
+        }        
+    }
+    .overview{           
             .ov-img-content{
                 .ov-icon-path{
-                    background-color: $brand-color-dark;
+                    background-color: $brand-color-dark!important;
                     color: white;
                     .ov-abbreviation{
                         margin-bottom: 0px;
@@ -263,7 +264,6 @@
                 }
             }      
         }
-    }
     &.people{
         .form-type-upload{
             display: flex;

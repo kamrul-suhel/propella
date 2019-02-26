@@ -85,12 +85,12 @@ export default class List extends React.PureComponent {
                                   {selectedProject === item.id &&
                                         <ul className="project-menu">
                                             <li><a href="/project-page.html">Project mission</a></li>
-                                            <li><Link to={`/${url.projects}/:id`}>Straight to project</Link></li>
+                                            <li><Link to={`/${url.projects}/${item.id}`}>Straight to project</Link></li>
                                             <li><a href="/archive.html">Project snapshot</a></li>
                                         </ul>
                                   }
                               </div>
-                              <h2 className="title"><a href="#">{item.title}</a></h2>
+                              <h2 className="title">{item.title}</h2>
                                <span className="clickable" className="button-simple menu-toggle icon-three-dots" onClick={() => this.handleSelectProject(item.id)}><span className="icon-options"></span></span>
                           </div>
                         )

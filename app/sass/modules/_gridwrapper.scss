@@ -1,7 +1,7 @@
 .gridwrapper {
     height: calc(100% - 46px);
     position: relative;
-
+    overflow:hidden;
     .gridwrapper-save {
         position: absolute;
         top: 0px;
