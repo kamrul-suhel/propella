@@ -7,15 +7,17 @@ use Laravel\Lumen\Routing\Controller as BaseController;
 
 class PropellaBaseController extends BaseController
 {
-    protected $request;
-    protected $perPage;
-    protected $allData = false;
-    protected $status;
+    public $request;
+    public $perPage;
+    public $allData = false;
+    public $status;
 
     //
     public function __construct(Request $request)
     {
         $this->request = $request;
+        $this->middleware('auth');
+
         // Validate top laval status = active & inactive row.  & all = if you want all data without paginate.
         $this->validate($this->request, [
             'status' => 'integer|min:0|max:1',

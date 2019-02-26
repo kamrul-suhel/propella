@@ -78,11 +78,10 @@ class OrganisationController extends PropellaBaseController
                 $organisation = Organisation::findOrFail($updateOrganisation['id']);
                 isset($updateOrganisation['title']) ? $organisation->title = $updateOrganisation['title'] : '';
                 isset($updateOrganisation['description']) ? $organisation->description = $updateOrganisation['description'] : '';
-                isset($updateOrganisation['abbreviation']) ? $organisation->abbreviation = $updateOrganisation['abbreviation'] : '';
+                isset($updateOrganisation['abbreviation']) ? $organisation->abbreviation = ucwords($updateOrganisation['abbreviation']) : '';
                 isset($updateOrganisation['group_id']) ? $organisation->group_id = (int) $updateOrganisation['group_id'] : '';
                 isset($updateOrganisation['status']) ? $organisation->status =  $updateOrganisation['status'] : '';
                 isset($updateOrganisation['type_id']) ? $organisation->type_id = $updateOrganisation['type_id'] : '';
-                isset($updateOrganisation['created_by']) ? $organisation->created_by = $updateOrganisation['created_by'] : 0;
                 isset($updateOrganisation['positionX']) ? $organisation->positionX = $updateOrganisation['positionX'] : '';
                 isset($updateOrganisation['positionY']) ? $organisation->positionY = $updateOrganisation['positionY'] : '';
                 isset($updateOrganisation['trajectory']) ? $organisation->trajectory =  $updateOrganisation['trajectory'] : '';
@@ -168,11 +167,10 @@ class OrganisationController extends PropellaBaseController
         $organisation = $create ? new Organisation() : Organisation::findOrFail($id);
         $this->request->has('title') ? $organisation->title = $this->request->title : '';
         $this->request->has('description') ? $organisation->description = $this->request->description : '';
-        $this->request->has('abbreviation') ? $organisation->abbreviation = $this->request->abbreviation: '';
+        $this->request->has('abbreviation') ? $organisation->abbreviation = ucwords($this->request->abbreviation) : '';
         $this->request->has('group_id') ? $organisation->group_id = (int) $this->request->group_id : '';
         $this->request->has('status') ? $organisation->status =  $this->request->status : '';
         $this->request->has('type_id') ? $organisation->type_id = $this->request->type_id : '';
-        $this->request->has('created_by') ? $organisation->created_by = $this->request->created_by : 0;
         $this->request->has('positionX') ? $organisation->positionX = $this->request->positionX : '';
         $this->request->has('positionY') ? $organisation->positionY = $this->request->positionY : '';
         $this->request->has('trajectory') ? $organisation->trajectory =  $this->request->trajectory : '';
@@ -180,7 +178,7 @@ class OrganisationController extends PropellaBaseController
 
         if($create){
             $organisation->status = 1;
-            $organisation->created_by = $this->request->has('created_by') ?  $this->request->created_by : 0;
+            $organisation->created_by = $this->request->authUserId;
 
             if($this->request->has('icon_path') && $this->request->hasFile('icon_path')){
                 $iconPath = propellaUploadImage($this->request->icon_path, $this->folderName);

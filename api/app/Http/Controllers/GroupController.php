@@ -31,7 +31,6 @@ class GroupController extends PropellaBaseController
         // validate data
         $this->validate($this->request, [
             'positionX' => 'required|integer|min:1',
-            'created_by' => 'integer|min:1',
             'status' => 'integer|between:0,2',
             'title' => 'required|string|min:1',
             'description' => 'required|string|min:1',
@@ -77,10 +76,9 @@ class GroupController extends PropellaBaseController
                 $updateGroup = Group::findOrFail($group['id']);
                 isset($group['title']) ? $updateGroup->title = $group['title'] : '';
                 isset($group['description']) ? $updateGroup->description = $group['description'] : '';
-                isset($group['abbreviation']) ? $updateGroup->abbreviation = $group['abbreviation'] : '';
+                isset($group['abbreviation']) ? $updateGroup->abbreviation = ucwords($group['abbreviation']) : '';
                 isset($group['project_id']) ? $updateGroup->project_id = (int)$group['project_id'] : '';
                 isset($group['status']) ? $updateGroup->status = $group['status'] : '';
-                isset($group['created_by']) ? $updateGroup->created_by = $group['created_by'] : '';
                 isset($group['positionX']) ? $updateGroup->positionX = $group['positionX'] : '';
                 isset($group['positionY']) ? $updateGroup->positionY = $group['positionY'] : '';
                 isset($group['icon_size']) ? $updateGroup->icon_size = $group['icon_size'] : '';
@@ -299,14 +297,13 @@ class GroupController extends PropellaBaseController
         $group = $create ? new Group() : Group::findOrFail($id);
         $this->request->has('title') ? $group->title = $this->request->title : '';
         $this->request->has('description') ? $group->description = $this->request->description : '';
-        $this->request->has('abbreviation') ? $group->abbreviation = $this->request->abbreviation : '';
+        $this->request->has('abbreviation') ? $group->abbreviation = ucwords($this->request->abbreviation) : '';
         $this->request->has('project_id') ? $group->project_id = $group->project_id = (int)$this->request->project_id : '';
         $this->request->has('status') ? $group->status = $this->request->status : '';
-        $this->request->has('created_by') ? $group->created_by = $this->request->created_by : '';
 
         if ($create) {
             $group->status = 1;
-            $group->created_by = $this->request->has('created_by') ? $this->request->created_by : 0;
+            $group->created_by = $this->request->authUserId;
         }
 
         $this->request->has('positionX') ? $group->positionX = $this->request->positionX : '';

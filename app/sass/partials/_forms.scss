@@ -91,6 +91,10 @@
     border: 1px solid #FCFCFC;
     padding: 6px 0;
   }
+  
+  input[name=abbreviation]{
+      text-transform:uppercase;
+  }
 
   textarea,
   .form-group textarea {
@@ -123,10 +127,10 @@
       }
       img {
         display: block;
-        width: 136%;
-        height: auto;
+        width: 56px;
+        height:56px;
+        object-fit:cover;
         border-radius:50%;
-        margin-top:-2px;
       }
     }
 

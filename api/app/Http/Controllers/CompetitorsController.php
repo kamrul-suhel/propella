@@ -17,6 +17,26 @@ class CompetitorsController extends PropellaBaseController
         parent::__construct($request);
     }
 
+    /**
+     * @param bool $create
+     */
+    private function validateData($create = true){
+        $this->validate($this->request, [
+            'title' => 'required|string|min:1',
+            'description' => 'required|string|min:1'
+        ]);
+
+        if($create){
+            $this->validate($this->request, [
+                'group_id' => 'required|exists:groups,id'
+            ]);
+        }else{
+            $this->validate($this->request, [
+                'id' => 'required|exists:competitors,id'
+            ]);
+        }
+    }
+
     public function create(){
         // validate data.
         $this->validateData();
@@ -57,25 +77,6 @@ class CompetitorsController extends PropellaBaseController
         return response()->json($competitor);
     }
 
-    /**
-     * @param bool $create
-     */
-    private function validateData($create = true){
-        $this->validate($this->request, [
-            'title' => 'required|string|min:1',
-            'description' => 'required|string|min:1'
-        ]);
-
-        if($create){
-            $this->validate($this->request, [
-                'group_id' => 'required|exists:groups,id'
-            ]);
-        }else{
-            $this->validate($this->request, [
-                'id' => 'required|exists:competitors,id'
-            ]);
-        }
-    }
 
     private function saveData(){
         $competitors = $this->request->has('id') ? Competitor::findOrFail($this->request->id) : new Competitor();

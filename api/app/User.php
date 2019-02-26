@@ -29,4 +29,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $hidden = [
         'password',
     ];
+
+    protected $table = 'wp_users';
 }

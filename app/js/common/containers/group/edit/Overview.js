@@ -5,7 +5,7 @@ import {Slider} from '@xanda/react-components';
 export default class Overview extends React.PureComponent {
 
     render() {
-        const {positionX, positionY, icon, title, icon_path, icon_size} = this.props
+        const {positionX, positionY, icon, title, icon_path, icon_size, abbreviation} = this.props
 
         return (
             <div className="overview">
@@ -19,7 +19,12 @@ export default class Overview extends React.PureComponent {
 
                 <div className="ov-img-content">
                     <div className="ov-icon-path">
-                        <img src={icon ? icon.preview : icon_path}/>
+                    {icon &&
+                                 <img src={icon.preview}/>
+                    }
+                    {!icon &&
+                            <p class="ov-abbreviation">{abbreviation}</p>
+                    }                        
                         <div className="ov-icon-size">{icon_size}</div>
                     </div>              
                 </div>

@@ -1,155 +1,146 @@
 .gridwrapper {
-  height: calc(100% - 46px);
-  position: relative;
-
-  .gridwrapper-save {
-    position: absolute;
-    top: 0px;
-    right: -1px;
-    background-color: rgba(255, 255, 255, .9);
-    border: 0px;
-  }
-
-  .gridwrapper-inner {
-    position: absolute;
-    top: 0;
-    right: 40px;
-    bottom: 40px;
-    left: 40px;
-
-    .gridwrapper-inner-section-wrapper {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: -1;
-
-    }
-
-    .gridwrapper-inner-section {
-      width: 50%;
-      height: 50%;
-      float: left;
-      font-size: 80px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      pointer-events: none;
-      user-select: none;
-      position: relative;
-
-      &:after {
-        font-family: $icon-family-base;
-        content: "\68";
+    height: calc(100% - 46px);
+    position: relative;
+    overflow:hidden;
+    .gridwrapper-save {
         position: absolute;
-        font-size: 12px;
-        color: white;
-      }
-
-      &:nth-child(1) {
-        background: #48b9b9;
-        color: #3bacac;
-
-        &:after {
-          @extend .icon-chevron-top-left:before;
-          top: 12px;
-          left: 12px;
-        }
-      }
-
-      &:nth-child(2) {
-        background: #004b9b;
-        color: #003d8b;
-
-        &:after {
-          @extend .icon-chevron-top-right:before;
-          top: 12px;
-          right: 12px;
-        }
-      }
-
-      &:nth-child(3) {
-        background: #e84f35;
-        color: #e3412a;
-
-        &:after {
-          @extend .icon-chevron-bottom-left:before;
-          bottom: 12px;
-          left: 12px;
-        }
-      }
-
-      &:nth-child(4) {
-        background: #9cd6f0;
-        color: #8dcded;
-
-        &:after {
-          @extend .icon-chevron-bottom-right:before;
-          bottom: 12px;
-          right: 12px;
-        }
-      }
+        top: 0px;
+        right: -1px;
+        background-color: rgba(255, 255, 255, .9);
+        border: 0px;
     }
 
-    .react-draggable {
-      height: 48px;
-      width: 41px;
-      position: absolute;
-      background: url(../images/marker-small.svg) no-repeat 0 0 transparent;
-      background-size:contain;
-      background-position:center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      padding: 0px 0px 5px 0px;
-      font-weight: 500;
-        .react-draggable-handle{
-            width: 100%;
-            height: 100%;
+    .gridwrapper-inner {
+        position: absolute;
+        top: 0;
+        right: 40px;
+        bottom: 40px;
+        left: 40px;
+
+        .gridwrapper-inner-section-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+
+        }
+
+        .gridwrapper-inner-section {
+            width: 50%;
+            height: 50%;
+            float: left;
+            font-size: 80px;
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-direction:column;
-            &:after{
-              content:"";
-              display:block;
-              background-color:red;
-              width:6px;
-              height:6px;
-              position:absolute;              
-              border-radius:50%;
-              left:50%;
-              transform:translateX(-50%);
-              }
-              &:before{
-              content:"";
-              display:block;
-              position:absolute;
-              top:0px;
-              right:0px;
-              width: 0;
-              height: 0;
-              border-style: solid;
-              border-width: 0 9px 9px 0;
-              border-color: transparent #ffffff transparent transparent;
-              }  
-            img.react-draggable-handle-icon{
-                -webkit-user-drag: none;
-                width:75%;
-                border-radius:50%;
-                margin-top:-12%;
+            pointer-events: none;
+            user-select: none;
+            position: relative;
+
+            &:after {
+                font-family: $icon-family-base;
+                content: "\68";
+                position: absolute;
+                font-size: 12px;
+                color: white;
             }
-            .person-icon{
-                &:first-child{
-                height: 31px;
-                margin-top: -9px;
+
+            &:nth-child(1) {
+                background: #48b9b9;
+                color: #3bacac;
+
+                &:after {
+                    @extend .icon-chevron-top-left:before;
+                    top: 12px;
+                    left: 12px;
                 }
             }
-            
+
+            &:nth-child(2) {
+                background: #004b9b;
+                color: #003d8b;
+
+                &:after {
+                    @extend .icon-chevron-top-right:before;
+                    top: 12px;
+                    right: 12px;
+                }
+            }
+
+            &:nth-child(3) {
+                background: #e84f35;
+                color: #e3412a;
+
+                &:after {
+                    @extend .icon-chevron-bottom-left:before;
+                    bottom: 12px;
+                    left: 12px;
+                }
+            }
+
+            &:nth-child(4) {
+                background: #9cd6f0;
+                color: #8dcded;
+
+                &:after {
+                    @extend .icon-chevron-bottom-right:before;
+                    bottom: 12px;
+                    right: 12px;
+                }
+            }
         }
-        .react-draggable-title{
+
+        .react-draggable {
+            height: 48px;
+            width: 41px;
+            position: absolute;
+            background: url(../images/marker-small.svg) no-repeat 0 0 transparent;
+            background-size:contain;
+            background-position:center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            padding: 0px 1px 15px 1px;
+            font-weight: 500;
+            .react-draggable-handle{
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction:column;
+                &:after{
+                    content:"";
+                    display:block;
+                    background-color:red;
+                    width:6px;
+                    height:6px;
+                    position:absolute;              
+                    border-radius:50%;
+                    left:50%;
+                    transform:translateX(-50%);
+                }              
+                img.react-draggable-handle-icon{
+                    -webkit-user-drag: none;
+                    width:75%;
+                    height:75%;
+                    object-fit:cover;
+                    border-radius:50%;                
+                }
+                .react-draggable-handle-title{
+                    text-transform:uppercase;
+                }
+                .person-icon{
+                    &:first-child{
+                        height: 31px;
+                        margin-top: -9px;
+                    }
+                }                    
+            }
+            .react-draggable-title{
                 position: absolute;
                 top:100%;
                 left: 50%;
@@ -160,390 +151,425 @@
                 width: 100px;
                 text-align: center;
             }      
-        .react-draggable-actions {
-          position: absolute;
-          left: 50%;
-          top: 50%;
-          width: 100%;
-          height: 100%;
-          color: white;
-      }
-      
-      
-      &.size-l{
-          .react-draggable-handle{
-              &:after{
-                  bottom:11px;
-              }
-          }
-          .button-round {
-              transition: all ease-in-out .3s;
-              &.first {
-                  top: -10px;
-                  left: -75px;
-              }
+            .react-draggable-actions {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                width: 100%;
+                height: 100%;
+                color: white;
+            }
 
-              &.second {
-                  top: -82px;
-                  left: -42px;
-              }
 
-              &.third {
-                  top: -82px;
-                  left: 42px;
-              }
+            &.size-l{
+                .react-draggable-handle{
+                    &:after{
+                        bottom:14px;
+                    }
+                }
+                .button-round {
+                    transition: all ease-in-out .3s;
+                    &.first {
+                        top: -10px;
+                        left: -75px;
+                    }
 
-              &.fourth {
-                  top: -10px;
-                  left: 75px;
-              }
-          }
-          &.dark-bg{
-              background-image: url(../images/marker-medium-black.svg);
-              z-index:1;
-              .react-draggable-handle-icon{
-                  background-color:white;
-              }
-          }
-      }      
+                    &.second {
+                        top: -82px;
+                        left: -42px;
+                    }
 
-      &.size-m {
-          .react-draggable-handle{
-              &:after{
-                  bottom:10px;
-              }              
-          }
-          .button-round {
-              &.first {
-                  top: -10px;
-                  left: -65px;
-              }
+                    &.third {
+                        top: -82px;
+                        left: 42px;
+                    }
 
-              &.second {
-                  top: -74px;
-                  left: -35px;
-              }
+                    &.fourth {
+                        top: -10px;
+                        left: 75px;
+                    }
+                }          
+            }      
 
-              &.third {
-                  top: -74px;
-                  left: 35px;
-              }
+            &.size-m {
+                padding:1px 1px 15px 1px;
+                .react-draggable-handle{
+                    &:after{
+                        bottom:14px;
+                    }              
+                }
+                .button-round {
+                    &.first {
+                        top: -10px;
+                        left: -65px;
+                    }
 
-              &.fourth {
-                  top: -10px;
-                  left: 65px;
-              }
-          }
-          .react-draggable-handle{
-              &:after{
-                  bottom:11px;                
+                    &.second {
+                        top: -74px;
+                        left: -35px;
+                    }
 
-              }
-          }
-      }
+                    &.third {
+                        top: -74px;
+                        left: 35px;
+                    }
 
-      &.size-s {
-          .react-draggable-handle{
-              &:after{
-                  bottom:9px;
-                  margin-left:-1px;
-              }
-          }
-          .button-round {
-              &.first {
-                  top: 0px;
-                  left: -55px;
-              }
+                    &.fourth {
+                        top: -10px;
+                        left: 65px;
+                    }
+                }          
+            }
 
-              &.second {
-                  top: -61px;
-                  left: -35px;
-              }
+            &.size-s {
+                padding:1px 4px 13px 3px;
+                .react-draggable-handle{
+                    &:after{
+                        bottom:9px;
+                        margin-left:-1px;
+                    }
+                }
+                .button-round {
+                    &.first {
+                        top: 0px;
+                        left: -55px;
+                    }
 
-              &.third {
-                  top: -61px;
-                  left: 35px;
-              }
+                    &.second {
+                        top: -61px;
+                        left: -35px;
+                    }
 
-              &.fourth {
-                  top: 0px;
-                  left: 55px;
-              }
-          }
-      }
-    }
-    
-    .react-draggable.size-m {
-      height: 78px;
-      width: 64px;
-      background-image: url(../images/marker-medium.svg);
-      font-size: 14px;      
-    }
+                    &.third {
+                        top: -61px;
+                        left: 35px;
+                    }
 
-    .react-draggable.size-l {
-      height: 95px;
-      width: 82px;
-      background-image: url(../images/marker-large.svg);
-      font-size: 14px;
-    }
+                    &.fourth {
+                        top: 0px;
+                        left: 55px;
+                    }
+                }
+            }
+            &.is-selected{
+                background-image: url(../images/marker-medium-black.svg)!important;
+                z-index:1;
+                .react-draggable-handle-icon{
+                    background-color:white;
+                }
+                .react-draggable-handle-title{
+                    color:white;
+                }
+            }
 
-    .react-draggable.b-size-m {
-      height: 67px;
-      width: 56px;
-      background-image: url(../images/marker-medium.svg);
-      font-size: 14px;
-    }
-
-    .react-draggable.b-size-l {
-      height: 95px;
-      width: 82px;
-      background-image: url(../images/marker-medium-black.svg);
-      font-size: 14px;
-    }
-
-    .react-draggable.disabled{
-      opacity:.5;
-    }
-
-    .welcome-message {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100%;
-      top:50%;
-      left:50%;
-      transform: translateX(-50%) translateY(-50%);
-      position:absolute;
-      .welcome-message-inner {
-        background-color: white;
-        padding: 14px;
-        text-align: center;
-        width: 100%;
-        max-width: 300px;
-        box-shadow: 1px 2px 4px 0 rgba(0, 0, 0, 0.50);
-        border-radius: 5px;
-
-        h2 {
-          font-size: 38px;
-          letter-spacing: -0.47px;
-          line-height: 40px;
-          margin-bottom: 30px;
+            &.trajectory-up{
+                .react-draggable-handle{
+                    &:before{
+                        content:"";
+                        display:block;
+                        position:absolute;
+                        top:0px;
+                        right:0px;
+                        width: 0;
+                        height: 0;
+                        border-style: solid;
+                        border-width: 0 9px 9px 0;
+                        border-color: transparent #ffffff transparent transparent;
+                    } 
+                }
+            }
+            &.trajectory-down{
+                .react-draggable-handle{
+                    &:before{
+                        content:"";
+                        display:block;
+                        position:absolute;
+                        bottom:7px;
+                        left:0px;
+                        width: 0;
+                        height: 0;
+                        border-style: solid;
+                        border-width: 9px 0px 0px 9px;
+                        border-color: transparent transparent transparent #ffffff;
+                    } 
+                }
+            }    
         }
-      }
-    }
-    
-    .handle{
+
+
+
+        .react-draggable.size-m {
+            height: 78px;
+            width: 64px;
+            background-image: url(../images/marker-medium.svg);
+            font-size: 14px;      
+        }
+
+        .react-draggable.size-l {
+            height: 95px;
+            width: 82px;
+            background-image: url(../images/marker-large.svg);
+            font-size: 14px;
+        }
+
+        .react-draggable.b-size-m {
+            height: 67px;
+            width: 56px;
+            background-image: url(../images/marker-medium.svg);
+            font-size: 14px;
+        }
+
+        .react-draggable.b-size-l {
+            height: 95px;
+            width: 82px;
+            background-image: url(../images/marker-medium-black.svg);
+            font-size: 14px;
+        }
+
+        .react-draggable.disabled{
+            opacity:.5;
+        }
+
+        .welcome-message {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            top:50%;
+            left:50%;
+            transform: translateX(-50%) translateY(-50%);
+            position:absolute;
+            .welcome-message-inner {
+                background-color: white;
+                padding: 14px;
+                text-align: center;
+                width: 100%;
+                max-width: 300px;
+                box-shadow: 1px 2px 4px 0 rgba(0, 0, 0, 0.50);
+                border-radius: 5px;
+
+                h2 {
+                    font-size: 38px;
+                    letter-spacing: -0.47px;
+                    line-height: 40px;
+                    margin-bottom: 30px;
+                }
+            }
+        }
+
+        .handle{
             height: 100%;
             width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-    }
-    .gridwrapper-inner-categories{
-        position:absolute;
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        width:100%;
-        top:0px;
-        left:0px;
-        list-style:none;
-        .filter{
-            background-color:white;
-            display:block;
-            margin:5px;
-            padding:5px 30px 5px 5px;
-            border-radius:5px;
-            box-shadow: 1px 2px 4px 0 rgba(0,0,0,0.50);
-            position:relative;
-            .clickable{
-                position:absolute;
-                right:9px;
-                top:9px;
+        }
+        .gridwrapper-inner-categories{
+            position:absolute;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            width:100%;
+            top:0px;
+            left:0px;
+            list-style:none;
+            .filter{
+                background-color:white;
+                display:block;
+                margin:5px;
+                padding:5px 22px 5px 5px;
+                border-radius:5px;
+                box-shadow: 1px 2px 4px 0 rgba(0,0,0,0.50);
+                position:relative;
                 font-size:10px;
+                .clickable{
+                    position: absolute;
+                    right: 6px;
+                    top: 6px;
+                    font-size: 9px;
+                }
             }
         }
     }
-  }
 
-  .right-icon, .left-icon, .top-icon, .bottom-icon {
-    position: absolute;
-    display: flex;
-    font-size: 18px;
-  }
-
-  .gridwrapper-x {
-    position: absolute;
-    bottom: 0;
-    left: 40px;
-    right: 0;
-    height: 40px;
-    width: calc(100% - 80px);
-    display: flex;
-    justify-content: space-between;
-    font-size: 16px;
-    .axis-label {
-      position: absolute;
-      top: 17px;
-      width: 100%;
-      text-align: center;
-      font-size: 18px;
-      left: 0px;
-      font-weight: bold;
+    .right-icon, .left-icon, .top-icon, .bottom-icon {
+        position: absolute;
+        display: flex;
+        font-size: 18px;
     }
 
-    .left-icon {
-      left: 0px;
-      position: absolute;
-      top: 17px;
-      width: auto;
+    .gridwrapper-x {
+        position: absolute;
+        bottom: 0;
+        left: 40px;
+        right: 0;
+        height: 40px;
+        width: calc(100% - 80px);
+        display: flex;
+        justify-content: space-between;
+        font-size: 16px;
+        .axis-label {
+            position: absolute;
+            top: 17px;
+            width: 100%;
+            text-align: center;
+            font-size: 18px;
+            left: 0px;
+            font-weight: bold;
+        }
 
-      p {
-        color: #E84F35;
-      }
+        .left-icon {
+            left: 0px;
+            position: absolute;
+            top: 17px;
+            width: auto;
 
-      span {
-        color: #E84F35;
-        margin-top: 4px;
-        margin-right: 5px;
-      }
+            p {
+                color: #E84F35;
+            }
+
+            span {
+                color: #E84F35;
+                margin-top: 4px;
+                margin-right: 5px;
+            }
+        }
+
+        .right-icon {
+            right: 0px;
+            position: absolute;
+            top: 17px;
+            width: auto;
+            display: flex;
+            font-size: 20px;
+
+            p {
+                color: #48B9B9;
+                margin: 0px;
+                margin-left: 5px;
+            }
+
+            span {
+                color: #48B9B9;
+                margin: 3px 0px 0px 5px;
+            }
+        }
+
+        .axis-image {
+            height: auto;
+            width: 100%;
+            height: 8px;
+            top: -1px;
+            right: 0px;
+            position: absolute;
+            background-image: url(../images/horizontal-axis.svg);
+            background-size: 100% 100%;
+            background-repeat:no-repeat;
+        }
     }
 
-    .right-icon {
-      right: 0px;
-      position: absolute;
-      top: 17px;
-      width: auto;
-      display: flex;
-      font-size: 20px;
+    .gridwrapper-y {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 40px;
+        height: calc(100% - 40px);
+        display: flex;
+        justify-content: space-between;
+        font-size: 16px;
 
-      p {
-        color: #48B9B9;
-        margin: 0px;
-        margin-left: 5px;
-      }
+        .axis-image {
+            position: absolute;
+            right: -1px;
+            top: 0px;
+            height: 100%;
+            width: 7px;
+            background-image: url(../images/vertical-axis.svg);
+            background-size: 100% 100%;
+            background-repeat:no-repeat;
+        }
 
-      span {
-        color: #48B9B9;
-        margin: 3px 0px 0px 5px;
-      }
+        .top-icon {
+            position: absolute;
+            top: 0px;
+            left: -3px;
+            width: 100%;
+            text-align: center;
+            flex-direction: column;
+
+            p {
+                color: #48B9B9;
+                margin: 0px;
+            }
+
+            span {
+                color: #48B9B9;
+            }
+        }
+
+        .bottom-icon {
+            position: absolute;
+            left: -3px;
+            width: 100%;
+            text-align: center;
+            bottom: 0px;
+            flex-direction: column;
+
+            p {
+                color: #E84F35;
+                margin: 0px;
+                margin-bottom: 7px;
+            }
+
+            span {
+                color: #E84F35;
+            }
+        }
+
+        .axis-label {
+            position: absolute;
+            top: calc(50% - 16px);
+            -webkit-transform: rotate(-90deg);
+            -ms-transform: rotate(-90deg);
+            transform: rotate(-90deg);
+            font-size: 18px;
+            left: -15px;
+            font-weight: bold;
+        }
     }
 
-    .axis-image {
-      height: auto;
-      width: 100%;
-      height: 8px;
-      top: -1px;
-      right: 0px;
-      position: absolute;
-      background-image: url(../images/horizontal-axis.svg);
-      background-size: 100% 100%;
-      background-repeat:no-repeat;
-    }
-  }
-
-  .gridwrapper-y {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 40px;
-    height: calc(100% - 40px);
-    display: flex;
-    justify-content: space-between;
-    font-size: 16px;
-
-    .axis-image {
-      position: absolute;
-      right: -1px;
-      top: 0px;
-      height: 100%;
-      width: 7px;
-      background-image: url(../images/vertical-axis.svg);
-      background-size: 100% 100%;
-      background-repeat:no-repeat;
+    .progress-button {
+        padding: 10px;
+        display: flex;
+        align-items:center;
+        justify-content:center;
+        width: 56px;
+        height: 61px;
+        background-image: url(../images/marker-medium-black.svg);
+        background-repeat: no-repeat;
+        position: absolute;
+        background-position: center;
+        background-size: contain;
+        img {
+            width: 100%;
+            height: auto;
+            border-radius: 100%;
+            z-index: 2;
+            margin-top: -8px;
+        }
+        .connector {
+            display: block;
+            height: $connector-height;
+            position: absolute;
+            bottom: 50%;
+            right: 50%;
+            background-color: $brand-color-dark;
+            transform-origin: right;
+            z-index:1;
+        }
     }
 
-    .top-icon {
-      position: absolute;
-      top: 0px;
-      left: -3px;
-      width: 100%;
-      text-align: center;
-      flex-direction: column;
-
-      p {
-        color: #48B9B9;
-        margin: 0px;
-      }
-
-      span {
-        color: #48B9B9;
-      }
+    .first-coordinate.progress-button {
+        background:none;
     }
-
-    .bottom-icon {
-      position: absolute;
-      left: -3px;
-      width: 100%;
-      text-align: center;
-      bottom: 0px;
-      flex-direction: column;
-
-      p {
-        color: #E84F35;
-        margin: 0px;
-        margin-bottom: 7px;
-      }
-
-      span {
-        color: #E84F35;
-      }
-    }
-
-    .axis-label {
-      position: absolute;
-      top: calc(50% - 16px);
-      -webkit-transform: rotate(-90deg);
-      -ms-transform: rotate(-90deg);
-      transform: rotate(-90deg);
-      font-size: 18px;
-      left: -15px;
-      font-weight: bold;
-    }
-  }
-
-  .progress-button {
-    padding: 10px;
-    display: flex;
-    align-items:center;
-    justify-content:center;
-    width: 56px;
-    height: 61px;
-    background-image: url(../images/marker-medium-black.svg);
-    background-repeat: no-repeat;
-    position: absolute;
-    background-position: center;
-    background-size: contain;
-    img {
-        width: 100%;
-        height: auto;
-        border-radius: 100%;
-        z-index: 2;
-        margin-top: -8px;
-    }
-    .connector {
-      display: block;
-      height: $connector-height;
-      position: absolute;
-      bottom: 50%;
-      right: 50%;
-      background-color: $brand-color-dark;
-      transform-origin: right;
-      z-index:1;
-    }
-  }
-
-  .first-coordinate.progress-button {
-    background:none;
-  }
 }

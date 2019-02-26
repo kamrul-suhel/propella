@@ -78,9 +78,8 @@ class PeopleController extends PropellaBaseController
                 isset($singlePeople['description']) ? $people->description = $singlePeople['description'] : '';
                 isset($singlePeople['status']) ? $people->status = $singlePeople['status'] : '';
                 isset($singlePeople['type_id']) ? $people->type_id = (int)$singlePeople['type_id'] : '';
-                isset($singlePeople['created_by']) ? $people->created_by = $singlePeople['created_by'] : '';
                 isset($singlePeople['organisation_id']) ? $people->organisation_id = (int) $singlePeople['organisation_id'] : '';
-                isset($singlePeople['abbreviation']) ? $people->abbreviation = $singlePeople['abbreviation'] : '';
+                isset($singlePeople['abbreviation']) ? $people->abbreviation = ucwords($singlePeople['abbreviation']) : '';
                 isset($singlePeople['positionX']) ? $people->positionX = $singlePeople['positionX'] : '';
                 isset($singlePeople['positionY']) ? $people->positionY = $singlePeople['positionY'] : '';
                 isset($singlePeople['trajectory']) ? $people->trajectory = $singlePeople['trajectory'] : '';
@@ -171,9 +170,8 @@ class PeopleController extends PropellaBaseController
         $this->request->has('description') ? $people->description = $this->request->description : '';
         $this->request->has('status') ? $people->status = $this->request->status : '';
         $this->request->has('type_id') ? $people->type_id = (int)$this->request->type_id : '';
-        $this->request->has('created_by') ? $people->created_by = $this->request->created_by : '';
         $this->request->has('organisation_id') ? $people->organisation_id = (int)$this->request->organisation_id : '';
-        $this->request->has('abbreviation') ? $people->abbreviation = $this->request->abbreviation : '';
+        $this->request->has('abbreviation') ? $people->abbreviation = ucwords($this->request->abbreviation) : '';
         $this->request->has('positionX') ? $people->positionX = $this->request->positionX : '';
         $this->request->has('positionY') ? $people->positionY = $this->request->positionY : '';
         $this->request->has('trajectory') ? $people->trajectory = $this->request->trajectory : '';
@@ -182,7 +180,7 @@ class PeopleController extends PropellaBaseController
 
         if ($create) {
             $people->status = 1;
-            $people->created_by = $this->request->has('created_by') ?  $this->request->created_by : 0;
+            $people->created_by = $this->request->authUserId;
             $people->character_id = $this->request->has('character_id') ?  $this->request->character_id : 0;
 
             // Upload file if exists
