@@ -63,6 +63,7 @@ export default class Description extends React.PureComponent {
                                 value={icon}
                                 className={fileUploadClass}                                
                                 placeholder=""
+                                accept=".jpg,.jpeg,.gif,.png,.svg"
                             >
                                 {<img src={icon ? icon.preview : icon_path}/>}
                             </FileUpload>

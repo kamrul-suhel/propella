@@ -1,45 +1,54 @@
 .form-repeater {
-	width: 100%;
-	margin: 8px 0;
+    width: 100%;
+    margin: 8px 0;
 
-	.repeatable-label {
-		font-size: 32px;
-	}
+    .repeatable-label {
+        font-size: 32px;
+    }
 
-	.repeatable-row {
-		display: flex;
-		justify-content: space-between;
-		align-items: flex-start;
-                position:relative;
-		.form-group {
-			margin-right: 20px;
+    .repeatable-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        position:relative;
+        .form-group {
+            margin-right: 20px;
 
-			&:last-child {
-				margin-right: 0;
-			}
-		}
-	}
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
 
-	.repeatable-row-add {
-		display: inline-block;
-		cursor: pointer;
-		font-size: 22px;
-		margin-top: 5px;
-		text-align: center;
+    .repeatable-row-add {
+        display: inline-block;
+        cursor: pointer;
+        font-size: 22px;
+        margin-top: 5px;
+        text-align: center;
 
-		&:hover {
-			color: orange;
-		}
-	}
+        &:hover {
+            color: orange;
+        }
+    }
 
-	.repeatable-row-remove {
-		cursor: pointer;
-		line-height: 1;		
-                position:absolute;
-                right:0px;
-                top:49px;
-		i {
-			font-size: 32px;
-		}
-	}
+    .repeatable-row-remove {
+        position: absolute;
+        right: 0px;
+        top: 24px;
+        display: block;
+        color: transparent;
+        width: 23px;
+        overflow: hidden;
+        height: 23px;
+        &:after{
+            @extend [class^="icon-"]:before;
+            @extend .icon-bin:before;
+            color:$brand-color-dark;
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            font-size:20px;
+        }		
+    }
 }

@@ -66,8 +66,7 @@ export default class List extends React.PureComponent {
     }
 
     render() {
-        const {groups, group, params} = this.props
-
+        const {groups, group, params} = this.props        
         return (
           <ProjectWrapper {...this.props}>
               <Popup
@@ -93,9 +92,9 @@ export default class List extends React.PureComponent {
                               onChange={this.handleInputChange}
                               onRemoved={this.handleRemoved}
                               value={group.competitors}
-                          >
+                          >                          
                               <Accordion
-                                  title="row.title"
+                                  title="{group.competitors}"
                               >
                                   <TextInput
                                       label="Competitor Name"

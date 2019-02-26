@@ -153,6 +153,14 @@ export default class GroupWrapper extends React.PureComponent {
                         >
                             <div handleid={item.id}
                                  className={`size-${item.icon_size}`}
+                                 className={
+                                     [
+                                         `size-m`,
+                                         `trajectory-down`,
+                                         (selectedDraggable && selectedDraggable !== item.id ? 'disabled' : ''),
+                                         (selectedDraggable === item.id ? 'is-selected' : '')
+                                     ]
+                                 }  
                             >
                                 <div className="react-draggable-handle">
                                   <div className="react-draggable-handle-title">{item.abbreviation}</div>

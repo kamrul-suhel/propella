@@ -15,6 +15,14 @@ import { ContentLoader } from '@xanda/react-components';
 	};
 })
 export default class List extends React.PureComponent {
+        
+        constructor(props){
+            super(props);
+            
+            this.state = {
+                selectedProject: 0
+            }
+        }
 
   componentDidMount() {
       this.fetchData();
@@ -26,9 +34,18 @@ export default class List extends React.PureComponent {
           url: `/projects`,
       }));
   }
+  
+  handleSelectProject = (projectId) => {
+      this.setState({
+          selectedProject: projectId
+      })
+  }
 
 	render() {
     const { projects } = this.props
+    const { selectedProject } = this.state
+    
+    console.log(selectedProject)
 
 		return (
       <React.Fragment>
@@ -37,7 +54,7 @@ export default class List extends React.PureComponent {
             data={projects.collection}
             isLoading={projects.isLoading}
             >
-            <div className="centering">
+            <div className="centering project">
 
               <div className="page-wrap">
 
@@ -65,14 +82,16 @@ export default class List extends React.PureComponent {
                                   <div className="thumb">
                                       <img src="http://propella.hostings.co.uk/wp-content/themes/propella/images/LayerGridStack.svg" alt=""/>
                                   </div>
-                                  <ul className="project-menu">
-                                      <li><a href="/project-page.html">Project mission</a></li>
-                                      <li><Link to={`/${url.projects}/:id`}>Straight to project</Link></li>
-                                      <li><a href="/archive.html">Project snapshot</a></li>
-                                  </ul>
+                                  {selectedProject === item.id &&
+                                        <ul className="project-menu">
+                                            <li><a href="/project-page.html">Project mission</a></li>
+                                            <li><Link to={`/${url.projects}/${item.id}`}>Straight to project</Link></li>
+                                            <li><a href="/archive.html">Project snapshot</a></li>
+                                        </ul>
+                                  }
                               </div>
-                              <h2 className="title"><a href="#">{item.title}</a></h2>
-                               <a href="#" className="button-simple menu-toggle icon-options-active"><span className="icon-options"></span></a>
+                              <h2 className="title">{item.title}</h2>
+                               <span className="clickable" className="button-simple menu-toggle icon-three-dots" onClick={() => this.handleSelectProject(item.id)}><span className="icon-options"></span></span>
                           </div>
                         )
                     })}

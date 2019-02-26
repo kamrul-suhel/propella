@@ -171,16 +171,15 @@ export default class PeopleWrapper extends React.PureComponent {
                             bounds=".gridwrapper-inner-section-wrapper"
                             onStop={this.onDraggableEventHandler} 
                         >
-                            <div handleid={item.id}
-                                 className={`size-m`}
+                            <div handleid={item.id}                                 
                                  className={
                                      [
                                          `size-m`,
-                                         (selectedPeople.coordinates && item.id !== selectedPeople.id ? 'disabled' : ''),
-                                         (selectedPeople.coordinates && item.id === selectedPeople.id ? 'dark-bg' : '')
+                                         `trajectory-down`,
+                                         (selectedDraggable && selectedDraggable !== item.id ? 'disabled' : ''),
+                                         (selectedDraggable === item.id ? 'is-selected' : '')
                                      ]
-                                 }
-                                 
+                                 }                                 
                             >
                                 <div className="react-draggable-handle">
                                     <span className={`person-icon avatar-${fn.getAvatarClass(item.size)}`}></span>
