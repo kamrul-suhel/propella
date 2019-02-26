@@ -26,7 +26,7 @@ export default class List extends React.PureComponent {
 		return (
       <React.Fragment>
           <Nav {...this.props} />
-            <div className="centering">
+            <div className="centering project">
               <div className="page-wrap">
                   <div className="grid">
                       <div className="grid-xs-12 grid-s-5">

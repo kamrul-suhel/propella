@@ -54,7 +54,7 @@ export default class List extends React.PureComponent {
             data={projects.collection}
             isLoading={projects.isLoading}
             >
-            <div className="centering">
+            <div className="centering project">
 
               <div className="page-wrap">
 
