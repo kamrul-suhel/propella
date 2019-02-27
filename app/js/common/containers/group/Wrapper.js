@@ -117,6 +117,20 @@ export default class GroupWrapper extends React.PureComponent {
         }
     }
 
+    handleSetTrajectory = async (organisationId, newTrajectory) => {
+      const { params } = this.props
+      const response = await api.put(`organisations/${organisationId}`, {trajectory: newTrajectory});
+      this.props.dispatch(
+  			{
+  				type: 'GROUP_ORGANISATION_UPDATED',
+          payload: {
+  					'groupId': params.groupId,
+            'organisation': response.data
+  				}
+  			}
+  		)
+    }
+
     handleResetChanges = () => {
         this.setState({updatedCoordinates: []}, this.fetchData())
     }
@@ -136,6 +150,7 @@ export default class GroupWrapper extends React.PureComponent {
                     if (item.status < 1) {
                         return
                     }
+                    const trajectoryClass = (item.trajectory === 1) ? 'up': 'down'
 
                     return (
                         <Draggable
@@ -156,11 +171,11 @@ export default class GroupWrapper extends React.PureComponent {
                                  className={
                                      [
                                          `size-m`,
-                                         `trajectory-down`,
+                                         `trajectory-${trajectoryClass}`,
                                          (selectedDraggable && selectedDraggable !== item.id ? 'disabled' : ''),
                                          (selectedDraggable === item.id ? 'is-selected' : '')
                                      ]
-                                 }  
+                                 }
                             >
                                 <div className="react-draggable-handle">
                                   <div className="react-draggable-handle-title">{item.abbreviation}</div>
@@ -188,11 +203,15 @@ export default class GroupWrapper extends React.PureComponent {
                                             People
                                         </Link>
 
-                                        <Link className="button-round fourth"
-                                              to={`/${url.projects}/${params.id}/groups/${group.id}/${url.people}/add?organisation_id=${item.id}`}>
-                                            <span className="button-round-inside icon-character-pirate"/>
-                                            Add Person
-                                        </Link>
+                                        <span className="button-round fourth clickable"
+                                          onClick={() => {
+                                            const newTrajectory = (item.trajectory == 0) ? 1 : 0
+                                            this.handleSetTrajectory(item.id, newTrajectory)
+                                          }}
+                                        >
+                                            <span className="button-round-inside icon-compass"/>
+                                            Choose<br/>Trajectory
+                                        </span>
                                     </div>
                                 }
 

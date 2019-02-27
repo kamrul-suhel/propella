@@ -71,7 +71,24 @@ export default function group(state = defaultState, action) {
                     [action.payload.groupId]: {
                         ...state.collection[action.payload.groupId],
                         people: _.map(state.collection[action.payload.groupId].people, (p) => {
-                          return (action.payload.personId === p.id) ? action.payload.person : p
+                          return (action.payload.person.id === p.id) ? action.payload.person : p
+                        })
+                    }
+                }
+            };
+        }
+
+        case 'GROUP_ORGANISATION_UPDATED': {
+            console.log(state.collection[action.payload.groupId])
+            return {
+                ...state,
+                isLoading: false,
+                collection: {
+                    ...state.collection,
+                    [action.payload.groupId]: {
+                        ...state.collection[action.payload.groupId],
+                        organisations: _.map(state.collection[action.payload.groupId].organisations, (o) => {
+                          return (action.payload.organisation.id === o.id) ? action.payload.organisation : o
                         })
                     }
                 }
@@ -91,6 +108,7 @@ export default function group(state = defaultState, action) {
                 }
             };
         }
+
         case 'GROUP_ORGANISATION_DELETED': {
             return {
                 ...state,
