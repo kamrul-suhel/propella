@@ -59,12 +59,19 @@ class PeopleTypeController extends PropellaBaseController
             'types'                 => 'required|array',
             'types.*.id'            => 'required|integer|min:0',
             'types.*.title'         => 'required|string|min:1',
-            'types.*.user_group_id' => 'integer|min:0'
+            'types.*.user_group_id' => 'integer|min:0',
+            'types.*.deleted'       => 'integer|min:0|max:1'
         ]);
 
         foreach($this->request->types as $type) {
             // New types will have id 0
             $peopleType = $type['id'] == 0 ? new PeopleType : PeopleType::findOrFail($type['id']);
+
+            // Delete organisation that are marked as deleted
+            if(isset($type['deleted']) && $type['deleted'] == 1) {
+                $peopleType->delete();
+                continue;
+            }
 
             $peopleType->title         = $type['title'];
             $peopleType->user_group_id = $type['user_group_id'];

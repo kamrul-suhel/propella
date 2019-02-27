@@ -61,16 +61,21 @@ class OrganisationTypeController extends PropellaBaseController
             'types'                 => 'required|array',
             'types.*.id'            => 'required|integer|min:0',
             'types.*.title'         => 'required|string|min:1',
-            'types.*.description'   => 'required|string|min:1',
-            'types.*.user_group_id' => 'integer|min:0'
+            'types.*.user_group_id' => 'integer|min:0',
+            'types.*.deleted'       => 'integer|min:0|max:1'
         ]);
 
         foreach($this->request->types as $type) {
             // New types will have id 0
             $organizationType = $type['id'] == 0 ? new OrganisationType : OrganisationType::findOrFail($type['id']);
 
+            // Delete organisation that are marked as deleted
+            if(isset($type['deleted']) && $type['deleted'] == 1) {
+                $organizationType->delete();
+                continue;
+            }
+
             $organizationType->title         = $type['title'];
-            $organizationType->description   = $type['description'];
             $organizationType->user_group_id = $type['user_group_id'];
             $organizationType->save();
         }
