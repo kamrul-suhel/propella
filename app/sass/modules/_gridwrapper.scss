@@ -1,13 +1,13 @@
-.gridwrapper {
-    height: calc(100% - 46px);
+.gridwrapper {		
+    height: 100%;       
     position: relative;
     overflow:hidden;
     .gridwrapper-save {
-        position: absolute;
-        top: 0px;
-        right: -1px;
-        background-color: rgba(255, 255, 255, .9);
-        border: 0px;
+		position: absolute;
+		top: 0px;
+		right: -1px;
+		background-color: rgba(255, 255, 255, .9);
+		border: 0px;
     }
 
     .gridwrapper-inner {
@@ -24,7 +24,6 @@
             right: 0;
             bottom: 0;
             z-index: -1;
-
         }
 
         .gridwrapper-inner-section {
@@ -260,6 +259,14 @@
                 .react-draggable-handle-title{
                     color:white;
                 }
+                .person-abbr{
+                    color:white!important;
+                }
+                .person-icon{
+                    &:before{
+                        color:white;
+                    }
+                }
             }
 
             &.trajectory-up{
@@ -357,6 +364,31 @@
             }
         }
 
+        .grid-tooltip-message{
+            position:absolute;
+            top:10px;
+            left:50%;
+            transform:translateX(-50%);
+            background-color:$brand-color-dark;
+            color:white;
+            padding:10px;
+            margin:0px;
+			font-size:10px;
+			border-radius:5px;
+            &:before{
+				content: "";
+				width: 0;
+				height: 0;
+				border-style: solid;
+				border-width: 0 5px 8px 5px;
+				border-color: transparent transparent $brand-color-dark transparent;
+				position: absolute;
+				top: -7px;
+				left: 50%;
+				transform: translateX(-50%);
+			}
+        }
+
         .handle{
             height: 100%;
             width: 100%;
@@ -410,7 +442,7 @@
         font-size: 16px;
         .axis-label {
             position: absolute;
-            top: 17px;
+            top: 11px;
             width: 100%;
             text-align: center;
             font-size: 18px;
@@ -528,9 +560,7 @@
 
         .axis-label {
             position: absolute;
-            top: calc(50% - 16px);
-            -webkit-transform: rotate(-90deg);
-            -ms-transform: rotate(-90deg);
+            top: calc(50% - 16px);            
             transform: rotate(-90deg);
             font-size: 18px;
             left: -15px;

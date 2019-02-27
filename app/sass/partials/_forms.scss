@@ -151,35 +151,38 @@
     }
   }
 
-  .form-type-radio.form-styled .form-options {
-    .form-option-radio {
-      margin-left: 14px;
+	.form-type-radio.form-styled {
+		.form-options {
+			padding-bottom:10px;
+			.form-option-radio {
+				margin-left: 14px;
 
-      &:first-child {
-        margin-left: 0;
-      }
+				&:first-child {
+					margin-left: 0;
+				}
 
-      .form-option-inner {
-        display: block;
-        line-height: 42px;
-        min-width: 42px;
-        width: 42px;
-        text-align: center;
-        padding: 0;
-        color: inherit;
-        cursor: pointer;
-        border: 0px none;
-        background-color: $brand-color-light;
-        border-radius: 21px;
-      }
+				.form-option-inner {
+					display: block;
+					line-height: 42px;
+					min-width: 42px;
+					width: 42px;
+					text-align: center;
+					padding: 0;
+					color: inherit;
+					cursor: pointer;
+					border: 0px none;
+					background-color: $brand-color-light;
+					border-radius: 21px;
+				}
 
-      &.is-selected {
-        .form-option-inner {
-          background-color: $brand-color-dark;
-          color: white;
-        }
-      }
-    }
+				&.is-selected {
+					.form-option-inner {
+						background-color: $brand-color-dark;
+						color: white;
+					}
+				}
+			}
+		}
   }
   .counter{
       color:white;

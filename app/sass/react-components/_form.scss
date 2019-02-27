@@ -35,6 +35,10 @@
 			z-index: 2;
 		}
 	}
+        &.no-scroll{
+            overflow:auto;
+            max-height:unset;
+        }
 }
 
 .form {
@@ -201,7 +205,7 @@
 		}
 
 		.form-type-radio {
-			min-width: 14px;
+			min-width: 14px;					
 		}
 	}
 

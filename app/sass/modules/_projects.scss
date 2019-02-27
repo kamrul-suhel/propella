@@ -7,10 +7,18 @@
         padding-right: 40px;
         .page-wrap{
             padding: 40px 0;
-            margin-top: 60px;
+            margin-top: 30px;
+            .grid{
+                margin-top:30px;
+            }
             h1{
                 font-size:1.875rem;
-                margin-bottom:50px;
+                margin-bottom:20px;
+                font-weight:600;
+            }
+            .page-title{
+                font-size:2.2rem;
+                font-weight:bold;
             }
             .form-wrapper{
                 padding: 0px;
@@ -35,7 +43,13 @@
                         box-shadow:none;
                         text-align:left;
                     }
+                    textarea{
+                        height:230px;
+                    }
                 }
+            }
+            &.no-padding{
+                padding:0px;
             }
         }
     }    
@@ -74,6 +88,9 @@
                 .thumb{
                     max-width: 150px;
                     margin: auto;
+					img{
+						width:100%;
+					}
                 }
                 .project-menu{
                     position: absolute;
@@ -100,7 +117,7 @@
         }
     }
 
-    .button, .button-secondary {
+    .button, .button-secondary, .repeatable-row-add {
         background-color: #3e3e3e;
         border-radius: 3px;
         border: 0;
@@ -115,12 +132,42 @@
         text-decoration: none;
         width:100%;
         max-width:130px;
+        float:right;
+        margin-top:30px;
+    }    
+    .repeatable-row-add{
+        margin:38px auto 19px 22px;
     }
-
     .central-graphic {
         display: flex;
         align-items: center;
         justify-content: center;
         height: 100%;
+    }
+
+}
+
+.no-scroll{
+    .repeatable-row{
+        margin:0px;
+        border:0px;
+        
+        .form-group{
+            margin-right:50px;
+            .form-field{
+                margin-top:10px;
+                padding:3px 20px 3px 5px;
+                input{                    
+                    box-shadow: inset 0 0 3px 0 rgba(0, 0, 0, 0.5)!important;
+                }
+            }            
+        }    
+        .repeatable-row-remove{
+                top:22px;
+                right:24px;
+                &:after{
+                    @extend .icon-minus:before;
+                }
+            }
     }
 }

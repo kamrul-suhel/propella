@@ -80,7 +80,7 @@ export default class List extends React.PureComponent {
                           <div className="item-project">
                               <div className="wrap">
                                   <div className="thumb">
-                                      <img src="http://propella.hostings.co.uk/wp-content/themes/propella/images/LayerGridStack.svg" alt=""/>
+                                      <img src="../../images/LayerGridStackBig.svg" alt=""/>
                                   </div>
                                   {selectedProject === item.id &&
                                         <ul className="project-menu">
