@@ -34,7 +34,7 @@ export default class GridWrapper extends React.PureComponent {
                     </div>
                     <div className="gridwrapper-x">
                         <span className="horizontal-axis vs-class"></span>
-                        <span className="axis-image"> </span>
+                        <span className="axis-image"></span>
                         <div className="left-icon">
                             <span className="icon-slide-icon-hate"></span>
                             <p>0</p>

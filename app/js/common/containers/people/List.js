@@ -4,7 +4,7 @@ import {fetchData} from 'app/actions';
 import {connect} from 'react-redux';
 import {Form, Checkbox, ContentLoader} from '@xanda/react-components';
 import {Popup, FancyList, FancyListItem} from 'app/components';
-import {api} from 'app/utils';
+import {api, fn} from 'app/utils';
 import {url} from 'app/constants';
 import { makeGetGroup, makeGetGroups } from 'app/containers/group/selector';
 import PeopleWrapper from './Wrapper';
@@ -37,8 +37,8 @@ export default class List extends React.PureComponent {
   renderItem = (person) => {
       if (!person) {
           return
-      }
-
+      }      
+      
       return (
           <FancyListItem
             key={person.id}
@@ -49,7 +49,7 @@ export default class List extends React.PureComponent {
                 className="icon-pencil"
                 />
                 <span type="button" onClick={() => this.handleDelete(this.props.params.groupId, person.id)} className="clickable icon-bin" />
-                <span type="button" class="icon-character-eager-beaver"></span>
+                <span type="button" class={fn.getPeopleCharacter(1)['iconImage']}></span>
             </React.Fragment>
             }
             category={person.organisation_title}
