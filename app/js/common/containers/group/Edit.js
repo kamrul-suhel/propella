@@ -177,6 +177,7 @@ export default class Edit extends React.PureComponent {
     render() {
         const {group, popup, params} = this.props
         const {step} = this.state;
+        console.log('this.props.route',this.props.route)
 
         return (
             <ProjectWrapper {...this.props}>

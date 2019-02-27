@@ -63,6 +63,8 @@ export default class List extends React.PureComponent {
     const {peopleTypes}
     = this.props
 
+    console.log(this.state)
+
     return (
       <React.Fragment>
         <Nav {...this.props} />
@@ -81,6 +83,7 @@ export default class List extends React.PureComponent {
                           name="types"
                           value={peopleTypes.collection}
                           onChange={this.handleOnChange}
+                          onRemoved={this.handleDeleteItem}
                           >
                             <TextInput name="title" />
                           </Repeater>

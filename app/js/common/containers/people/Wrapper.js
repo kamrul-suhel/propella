@@ -121,7 +121,19 @@ export default class PeopleWrapper extends React.PureComponent {
     }
 
     handleSetTrajectory = async (peopleId, newTrajectory) => {
-      const response = api.put(`people/${peopleId}`, {trajectory: newTrajectory});
+      const { params } = this.props
+      const response = await api.put(`people/${peopleId}`, {trajectory: newTrajectory});
+      console.log(response)
+      this.props.dispatch(
+  			{
+  				type: 'GROUP_PEOPLE_UPDATED',
+          payload: {
+  					'groupId': params.groupId,
+  					'personId': response.data.id,
+            'person': response.data
+  				}
+  			}
+  		)
     }
 
     render() {

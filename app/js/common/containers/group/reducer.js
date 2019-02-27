@@ -61,6 +61,23 @@ export default function group(state = defaultState, action) {
                 }
             };
         }
+
+        case 'GROUP_PEOPLE_UPDATED': {
+            return {
+                ...state,
+                isLoading: false,
+                collection: {
+                    ...state.collection,
+                    [action.payload.groupId]: {
+                        ...state.collection[action.payload.groupId],
+                        people: _.map(state.collection[action.payload.groupId].people, (p) => {
+                          return (action.payload.personId === p.id) ? action.payload.person : p
+                        })
+                    }
+                }
+            };
+        }
+
         case 'GROUP_PEOPLE_DELETED': {
             return {
                 ...state,

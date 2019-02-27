@@ -77,6 +77,7 @@ export default class List extends React.PureComponent {
                         name="types"
                         value={organisationTypes.collection}
                         onChange={this.handleOnChange}
+                        onRemoved={this.handleDeleteItem}
                         >
                           <TextInput name="title" />
                         </Repeater>
