@@ -96,6 +96,7 @@ export default class Edit extends React.PureComponent {
         popup.icon && formData.append('icon_path', popup.icon)
         formData.append('positionX', popup.positionX)
         formData.append('positionY', popup.positionY)
+        formData.append('rel_user_id', popup.rel_user_id)
         formData.append('project_id', params.id)
 
         // update if it already exists else create a new one
@@ -177,7 +178,6 @@ export default class Edit extends React.PureComponent {
     render() {
         const {group, popup, params} = this.props
         const {step} = this.state;
-        console.log('this.props.route',this.props.route)
 
         return (
             <ProjectWrapper {...this.props}>

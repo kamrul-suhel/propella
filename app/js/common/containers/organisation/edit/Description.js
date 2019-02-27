@@ -31,7 +31,8 @@ export default class Description extends React.PureComponent {
       handleSubmit,
       organisationTypes,
       setFormRef,
-      projectUsers
+      projectUsers,
+      rel_user_id
     } = this.props
 
     const projectUserOptions = _.map(projectUsers.collection, (u) => { return {'id': u.ID, 'title': this.renderProjectUserTitle(u)}})
@@ -100,8 +101,8 @@ export default class Description extends React.PureComponent {
           isLoading={projectUsers.isLoading}
         >
           <Select
-            name="user_id"
-            value={false}
+            name="rel_user_id"
+            value={rel_user_id}
             onChange={handleInputChange}
             label="Assign a User to this Organisation"
             options={projectUserOptions}

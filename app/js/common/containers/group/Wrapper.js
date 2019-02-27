@@ -29,6 +29,7 @@ export default class GroupWrapper extends React.PureComponent {
         this.state = {
             updatedCoordinates: {},
             selectedDraggable: 0,
+            selectedCompetitor: 0,
             selectedOrganisation: {}
         }
     }
@@ -103,7 +104,7 @@ export default class GroupWrapper extends React.PureComponent {
 
     handleClick = (e) => {
       if(!this.node.contains(e.target)){
-        this.setState({selectedDraggable: 0, selectedOrganisation: {}})
+        this.setState({selectedDraggable: 0, selectedOrganisation: {}, selectedCompetitor: 0})
       }
     }
 
@@ -135,10 +136,12 @@ export default class GroupWrapper extends React.PureComponent {
         this.setState({updatedCoordinates: []}, this.fetchData())
     }
 
+    handleSelectCompetitor = (id) => this.setState({selectedCompetitor: id})
+
     render() {
         const {groups, group, params} = this.props
 
-        const {updatedCoordinates, selectedDraggable, progressLabel, selectedOrganisation} = this.state
+        const {updatedCoordinates, selectedDraggable, progressLabel, selectedOrganisation, selectedCompetitor} = this.state
 
         const container = document.getElementById('gridwrapper-inner')
         const containerHeight = (container || {}).offsetHeight || 0
@@ -146,6 +149,33 @@ export default class GroupWrapper extends React.PureComponent {
 
         return (
             <div ref={node => this.node = node}>
+                {_.map(group.competitors, (item, i) => {
+                    let positionClass
+                    console.log(i)
+                    switch (i) {
+                      case 0:
+                        positionClass = 'left'
+                        break;
+                      case 1:
+                        positionClass = 'bottom'
+                        break;
+                      case 2:
+                        positionClass = 'right'
+                        break;
+                    }
+                    return (
+                      <div className={`competitor ${positionClass}`} onClick={() => this.handleSelectCompetitor(item.id)}>
+                        <span className="competitor-title">{item.title}</span>
+                        {selectedCompetitor === item.id &&
+                          <div className="competitor-tooltip">
+                            <div className="competitor-tooltip-header">{item.title}</div>
+                            <div className="competitor-tooltip-inner"><Link to={`${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.competitors}`}>Edit</Link></div>
+                          </div>
+                        }
+                      </div>
+                    )
+                })}
+
                 {_.map(group.organisations, (item) => {
                     if (item.status < 1) {
                         return

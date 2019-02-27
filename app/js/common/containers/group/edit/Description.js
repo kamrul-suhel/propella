@@ -24,7 +24,8 @@ export default class Description extends React.PureComponent {
             handleInputChange,
             handleSubmit,
             setFormRef,
-            projectUsers
+            projectUsers,
+            rel_user_id
         } = this.props
 
         const fileUploadClass = (icon || icon_path) ? 'has-file' : 'has-no-file'
@@ -94,10 +95,11 @@ export default class Description extends React.PureComponent {
                 </div>
 
                 <Select
-                  name="project_user"
-                  value={false}
+                  name="rel_user_id"
+                  value={rel_user_id}
                   label="Assign a User to This Group"
                   options={projectUserOptions}
+                  onChange={handleInputChange}
                 />
 
                 <TextInput

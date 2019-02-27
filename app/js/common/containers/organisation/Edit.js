@@ -108,6 +108,7 @@ export default class Edit extends React.PureComponent {
         formData.append('positionX', popup.positionX)
         formData.append('positionY', popup.positionY)
         formData.append('type_id', popup.type_id)
+        formData.append('rel_user_id', popup.rel_user_id)
         formData.append('group_id', params.groupId)
 
         let response
