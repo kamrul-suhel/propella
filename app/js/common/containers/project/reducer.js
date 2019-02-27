@@ -9,7 +9,7 @@ const defaultState = {
 	pager: {},
 };
 
-export default function project(state = defaultState, action) {
+export function project(state = defaultState, action) {
 	switch	(action.type) {
 		case 'PROJECT_PENDING': {
 			return {
@@ -50,3 +50,43 @@ export default function project(state = defaultState, action) {
 		}
 	}
 }
+
+const defaultProjectUserState = {
+	collection: {},
+	currentCollection: [],
+	error: null,
+	isLoading: true,
+	misc: {},
+	pager: {},
+};
+
+export function projectUser(state = defaultProjectUserState, action) {
+	switch	(action.type) {
+		case 'PROJECT_USER_PENDING': {
+			return {
+				...state,
+				isLoading: true,
+			};
+		}
+		case 'PROJECT_USER_REJECTED': {
+			return {
+				...state,
+				isLoading: false,
+				error: action.payload.data,
+			};
+		}
+		case 'PROJECT_USER_FULFILLED': {
+			return {
+				...state,
+				isLoading: false,
+				collection: action.payload.data,
+			};
+		}
+		default: {
+			return state;
+		}
+	}
+}
+
+export const getProjectUsers = state => state.people;
+export const makeGetProjectUsers = () => createSelector([getProjectUsers], obj => obj);

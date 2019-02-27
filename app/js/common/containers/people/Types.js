@@ -28,6 +28,19 @@ export default class List extends React.PureComponent {
 
   handleOnChange = (name, value) => this.setState({[name]: value})
 
+  handleDeleteItem = (o) => {
+    const { types } = this.state
+    const updatedTypes = {
+      ...types,
+      [o.counter]: {
+        id: o.id,
+        title: o.title,
+        deleted: true
+      }
+    }
+    this.setState({types: updatedTypes})
+  }
+
   handleSubmit = async () => {
     const { types } = this.state
     const formData = new FormData()
@@ -37,6 +50,9 @@ export default class List extends React.PureComponent {
       formData.append(`types[${i}][user_group_id]`, user.id)
       formData.append(`types[${i}][title]`, type.title)
       formData.append(`types[${i}][id]`, type.id)
+      if(type.deleted){
+        formData.append(`types[${i}][deleted]`, 1)
+      }
     })
 
     const response = await api.put(`/people-types`, formData)
@@ -57,6 +73,7 @@ export default class List extends React.PureComponent {
                 name="types"
                 value={peopleTypes.collection}
                 onChange={this.handleOnChange}
+                onRemoved={this.handleDeleteItem}
               >
                 <TextInput name="title" />
               </Repeater>

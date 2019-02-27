@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router';
-import {Tooltip, Form, TextInput, Radio, FileUpload, Select} from '@xanda/react-components';
+import {Tooltip, Form, TextInput, Radio, FileUpload, Select, ContentLoader} from '@xanda/react-components';
 
 export default class Description extends React.PureComponent {
 
@@ -21,7 +21,7 @@ export default class Description extends React.PureComponent {
             setFormRef,
             location
         } = this.props
-        
+
         const fileUploadClass = (icon || icon_path) ? 'has-file' : 'has-no-file'
 
         return (
@@ -35,13 +35,18 @@ export default class Description extends React.PureComponent {
                     wide
                 />
 
-                <Select
-                    name="type_id"
-                    value={type_id}
-                    onChange={handleInputChange}
-                    label="Type of Stakeholder"
-                    options={peopleTypes}
-                />
+                <ContentLoader
+                  data={peopleTypes.collection}
+                  isLoading={peopleTypes.isLoading}
+                >
+                  <Select
+                      name="type_id"
+                      value={type_id}
+                      onChange={handleInputChange}
+                      label="Type of Stakeholder"
+                      options={_.values(peopleTypes.collection)}
+                  />
+                </ContentLoader>
 
                 <Select
                     name="organisation_id"
@@ -50,23 +55,24 @@ export default class Description extends React.PureComponent {
                     label="Assign an Organisation"
                     options={_.values(organisations)}
                 />
-                
+
                 <div className="grid">
-                
+
                     <div className="grid-xs-7">
                         <div className="form-group form-group-wide group-half-size">
                             <span className="form-label">Choose Icon or Set Abbreviation <Tooltip icon="i" message="Upload a custom icon or enter an abbreviation"/></span>
 
-                            <FileUpload                            
+                            <FileUpload
                                 name="icon"
                                 onChange={handleInputChange}
                                 value={icon}
-                                className={fileUploadClass}                                
+                                className={fileUploadClass}
                                 placeholder=""
                                 accept=".jpg,.jpeg,.gif,.png,.svg"
                             >
                                 {<img src={icon ? icon.preview : icon_path}/>}
                             </FileUpload>
+
                             <TextInput
                                     name="abbreviation"
                                     value={abbreviation}
@@ -74,7 +80,7 @@ export default class Description extends React.PureComponent {
                                 />
                         </div>
                     </div>
-                
+
                     <div className="grid-xs-5">
 
                         <Radio
@@ -100,7 +106,7 @@ export default class Description extends React.PureComponent {
                         />
 
                     </div>
-                
+
                 </div>
 
                 <TextInput

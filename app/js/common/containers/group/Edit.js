@@ -7,6 +7,7 @@ import {fetchData} from 'app/actions';
 import {api, fn} from 'app/utils';
 import {connect} from 'react-redux';
 import {Form, TextInput, Radio, FileUpload} from '@xanda/react-components';
+import { makeGetProjectUsers } from 'app/containers/project/selector';
 import * as selector from './selector';
 import Description from './edit/Description';
 import Royalty from './edit/Royalty';
@@ -17,10 +18,13 @@ import { ProjectWrapper } from 'app/containers/project';
 @connect((state, ownProps) => {
     const getGroups = selector.makeGetProjectGroups();
     const getGroup = selector.makeGetProjectGroup();
+    const getProjectUsers = makeGetProjectUsers();
+
     return {
         groups: getGroups(state, ownProps.params.id),
         group: getGroup(state, ownProps.params.id, ownProps.params.groupId),
-        popup: state.popup
+        popup: state.popup,
+        projectUsers: getProjectUsers(state)
     };
 })
 export default class Edit extends React.PureComponent {
@@ -34,8 +38,9 @@ export default class Edit extends React.PureComponent {
 
     componentDidMount(prevProps) {
         if ('add' !== this.props.route.type) {
-            this.fetchData();
+            this.fetchData()
         }
+        this.fetchProjectUsers()
     }
 
     componentDidUpdate(prevProps) {
@@ -49,6 +54,13 @@ export default class Edit extends React.PureComponent {
         this.props.dispatch(fetchData({
             type: 'PROJECT',
             url: `/projects/${this.props.params.id}`,
+        }));
+    }
+
+    fetchProjectUsers = () => {
+        this.props.dispatch(fetchData({
+            type: 'PROJECT_USER',
+            url: `/users`,
         }));
     }
 
@@ -146,7 +158,8 @@ export default class Edit extends React.PureComponent {
             handleInputChange: this.handleInputChange,
             handleFileInputChange: this.handleFileInputChange,
             handleSubmit: this.handleSubmit,
-            setFormRef: this.setFormRef
+            setFormRef: this.setFormRef,
+            projectUsers: this.props.projectUsers
         }
 
         switch (this.state.step) {

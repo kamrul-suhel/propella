@@ -58,6 +58,8 @@ export default class Popup extends React.PureComponent {
         const { project, location, group, groups, params } = this.props
         const user = fn.getUser()
 
+        console.log(this)
+
         return (
             <div className="nav">
                 <img className="nav-logo" src="/../../../images/logo.svg"/>

@@ -42,7 +42,7 @@ export default class Edit extends React.PureComponent {
     if('add' !== this.props.params.personId){
   		this.fetchData();
     }
-    this.fetchOrganisationTypes();
+    this.fetchPeopleTypes();
 	}
 
   componentDidUpdate(prevProps) {
@@ -66,10 +66,10 @@ export default class Edit extends React.PureComponent {
 		}));
   }
 
-	fetchOrganisationTypes = () => {
+	fetchPeopleTypes = () => {
 		this.props.dispatch(fetchData({
 			type: 'PEOPLE_TYPE',
-			url: `/people_types/7`,
+			url: `/people-types`,
 		}));
 	}
 
@@ -163,7 +163,8 @@ export default class Edit extends React.PureComponent {
       handleSubmit: this.handleSubmit,
       setFormRef: this.setFormRef,
       peopleTypes: this.props.peopleTypes,
-      organisations: this.props.group.organisations
+      organisations: this.props.group.organisations,
+      peopleTypes: this.props.peopleTypes
     }
 
     switch (this.state.step) {
