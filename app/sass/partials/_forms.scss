@@ -2,7 +2,12 @@
   display: block;
 
   .form-group{
-      
+      &.project-user-select{
+          .Select-value-label{
+          font-weight:500;
+          font-size:24px;
+          } 
+      }
   }
   
   .form-label {

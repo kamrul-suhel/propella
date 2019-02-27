@@ -8,7 +8,7 @@ export default class Description extends React.PureComponent {
         return (
           <React.Fragment>
             <span>{u.display_name}</span>
-            <span className="" style={{color: u.profile_colour}}></span>
+            <span className="user-color-dot" style={{backgroundColor: u.profile_colour}}></span>
           </React.Fragment>
         )
     }
@@ -98,6 +98,7 @@ export default class Description extends React.PureComponent {
                   value={false}
                   label="Assign a User to This Group"
                   options={projectUserOptions}
+                  className="project-user-select"
                 />
 
                 <TextInput

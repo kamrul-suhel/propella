@@ -25,12 +25,14 @@
 
 			.Select-value {
 				line-height: 22px;
+                height:calc(100% - 1px);
+                background-color:red;
 			}
 		}
 
 		.Select-input {
 			width: 100%;
-			height: 38px;
+			height: 100%;
 
 			& > input {
 				width: 100%!important;

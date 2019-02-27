@@ -208,6 +208,7 @@
         display: flex;
         flex-direction: row;
         width: 100%;
+        z-index:9999999999;
         .button {
             flex: 1;
             margin: 0;
@@ -287,6 +288,7 @@
                     }
                     img{
                         width: 153px;
+                        height:153px;
                     }
                 }
             }
@@ -333,6 +335,20 @@
     &.competitors{
         .accordion-item{
             padding-right:33px;
+        }
+    }
+    .user-color-dot{
+        border-radius: 50%;
+        height: 15px;
+        width: 15px;
+        display: block;
+        position: absolute;
+        left: 12px;
+        top: 12px;
+    }
+    .Select-menu-outer{
+        div{
+            position:relative;
         }
     }
 }

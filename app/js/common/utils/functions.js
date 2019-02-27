@@ -445,5 +445,84 @@ export default {
            return 'male'
        }
        return 'female'
+  },
+  
+  getPeopleCharacters() {
+      return [
+          {
+              id: 1,
+              title: 'The Ambassador',
+              largeImage: 'Ambassador.svg',
+              iconImage: 'icon-character-ambassador',
+              description: 'High royalty high loyalty organisations and people who recommend and protect. Think marketing department. Think forcefield.'
+          },
+          {
+              id: 2,
+              title: 'The Beaver',
+              largeImage: 'Beaver.svg',
+              iconImage: 'icon-character-eager-beaver',
+              description: 'Coming up fast on royalty, ripe for moving up on loyalty.'
+          },
+          {
+              id: 3,
+              title: 'The Deadweight',
+              largeImage: 'Deadweight.svg',
+              iconImage: 'icon-character-deadweight',
+              description: 'Low Royalty, low loyalty. Going nowhere.'
+          },
+          {
+              id: 4,
+              title: 'The Pirate',
+              largeImage: 'Pirate_1.svg',
+              iconImage: 'icon-character-pirate',
+              description: 'Your competitors'
+          },
+          {
+              id: 5,
+              title: 'The Smiley',
+              largeImage: 'Smiley.svg',
+              iconImage: 'icon-character-smiley',
+              description: 'Low royalty, high loyalty. Nice to spend time with but will never give you work or whatever else you need to succeed.'
+          },
+          {
+              id: 6,
+              title: 'The Assassin',
+              largeImage: '/Assassin.svg',
+              iconImage: 'icon-character-assassin',
+              description: 'High royalty but negative loyalty, damaging your organisation.'
+          },
+          {
+              id: 7,
+              title: 'The Boomerang',
+              largeImage: 'Boomerang.svg',
+              iconImage: 'icon-character-boomerang',
+              description: 'High royalty but reversed on loyalty'
+          },
+          {
+              id: 8,
+              title: 'The Mirage',
+              largeImage: 'Mirage.svg',
+              iconImage: 'icon-character-mirage',
+              description: 'High royalty low loyalty sometimes disguised as The Prize. But, they are never going to choose you.'
+          },
+          {
+              id: 9,
+              title: 'The Prize',
+              largeImage: 'Prize.svg',
+              iconImage: 'icon-character-prize',
+              description: 'High royalty low loyalty but worth pursuing because others will follow.'
+          },
+          {
+              id: 10,
+              title: 'The Trojan Horse',
+              largeImage: 'Trojan Horse.svg',
+              iconImage: 'icon-character-trojan-horse',
+              description: 'High royalty low loyalty organisations where you know someone on the inside.'
+          }
+      ]
+  },
+  
+  getPeopleCharacter(id) {
+      return _.find(this.getPeopleCharacters(), {id: id})
   }
 };
