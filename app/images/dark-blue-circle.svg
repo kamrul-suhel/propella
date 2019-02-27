@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="75px" height="75px" viewBox="0 0 75 75" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>Score Circle/Dark Blue Without Number Large</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <radialGradient cx="50%" cy="18.8576212%" fx="50%" fy="18.8576212%" r="81.1423788%" gradientTransform="translate(0.500000,0.188576),rotate(90.000000),scale(1.000000,1.708956),translate(-0.500000,-0.188576)" id="radialGradient-1">
+            <stop stop-color="#155EB6" offset="0%"></stop>
+            <stop stop-color="#92D3EF" offset="100%"></stop>
+        </radialGradient>
+    </defs>
+    <g id="Score-Circle/Dark-Blue-Without-Number-Large" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <circle id="Oval-2" fill="url(#radialGradient-1)" cx="37.5" cy="37.5" r="37.5"></circle>
+    </g>
+</svg>

@@ -31,7 +31,7 @@ export default class List extends React.PureComponent {
                   <div className="grid">
                       <div className="grid-xs-12 grid-s-5">
                           <div className="vertical-section-text">
-                              <h1>New Project</h1>
+                              <h1 className="page-title">New Project</h1>
                               <Form className="new-project" onSubmit={this.handleSubmit}>
                                   <div className="form-fields">
                                       <div className="form-field-row">

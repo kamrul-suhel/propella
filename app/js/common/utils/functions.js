@@ -124,7 +124,7 @@ export default {
 				Authorization: `Bearer ${this.getCookie('token')}`,
 			}),
 		});
-    
+
     const linkUrl = window.URL.createObjectURL(new Blob([response.data]));
     const link = document.createElement('a');
     link.href = linkUrl;
@@ -253,10 +253,6 @@ export default {
 	 * @return  {object}		User
 	 */
 	getUser() {
-		// if user role set return
-		if (this.user) {
-			return this.user;
-		}
 
 		// get global store
 		const store = Store.getState();
@@ -443,7 +439,7 @@ export default {
           }
       }
   },
-  
+
   getAvatarClass(gender) {
        if('m' === gender){
            return 'male'

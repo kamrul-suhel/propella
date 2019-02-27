@@ -10,6 +10,7 @@ import { makeGetGroup } from 'app/containers/group/selector';
 
     return {
         group: getGroup(state, ownProps.params.groupId),
+        me: state.me
     };
 })
 export default class Popup extends React.PureComponent {
@@ -55,6 +56,7 @@ export default class Popup extends React.PureComponent {
 
     render() {
         const { project, location, group, groups, params } = this.props
+        const user = fn.getUser()
 
         return (
             <div className="nav">
@@ -74,7 +76,9 @@ export default class Popup extends React.PureComponent {
                     <Link to={this.nextLink} className="icon-stack"/>
                 )}
                 <div className="menu">
-                    <p>Hi, Will!</p>
+                  {user &&
+                    <p>Hi, {user.display_name}!</p>
+                  }
                 </div>
                 <a className="hamburger" href="#" title="Menu">
                         <span className="line-1"></span>
