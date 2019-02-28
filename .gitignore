@@ -70,3 +70,5 @@ api/database/.DS_Store
 api/public/images/
 /nbproject/private/
 api/database/mysql-diagram.mwb.bak
+
+nbproject/

@@ -15,7 +15,7 @@ import * as Competitor from 'app/containers/competitor';
  * @param   {Object}    component        Components are imported from the containers folder
  */
 const Routes = (
-  <Route component={C.AppWrapper}>
+  <Route component={C.AppWrapper} >
     // Manage Exports
     <Route path={`${url.projects}/:id/${url.groups}/:groupId/${url.organisations}/${url.report}`} component={Organisation.Report} />
     <Route path={`${url.projects}/:id/${url.groups}/:groupId/${url.people}/${url.report}`} component={People.Report} />
@@ -29,7 +29,7 @@ const Routes = (
       <Route path=":id" component={C.GridWrapper}>
           <IndexRoute component={Project.View}/>
           <Route path={url.groups}>
-            <IndexRoute component={Group.List}/>
+            <IndexRoute component={Group.List} />
             <Route path="add" component={Group.Edit} type="add"/>
             <Route path=":groupId">
               <IndexRoute component={Group.View}/>

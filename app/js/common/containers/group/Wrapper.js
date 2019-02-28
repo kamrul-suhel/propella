@@ -29,6 +29,7 @@ export default class GroupWrapper extends React.PureComponent {
         this.state = {
             updatedCoordinates: {},
             selectedDraggable: 0,
+            selectedCompetitor: 0,
             selectedOrganisation: {}
         }
     }
@@ -103,7 +104,7 @@ export default class GroupWrapper extends React.PureComponent {
 
     handleClick = (e) => {
       if(!this.node.contains(e.target)){
-        this.setState({selectedDraggable: 0, selectedOrganisation: {}})
+        this.setState({selectedDraggable: 0, selectedOrganisation: {}, selectedCompetitor: 0})
       }
     }
 
@@ -117,14 +118,30 @@ export default class GroupWrapper extends React.PureComponent {
         }
     }
 
+    handleSetTrajectory = async (organisationId, newTrajectory) => {
+      const { params } = this.props
+      const response = await api.put(`organisations/${organisationId}`, {trajectory: newTrajectory});
+      this.props.dispatch(
+  			{
+  				type: 'GROUP_ORGANISATION_UPDATED',
+          payload: {
+  					'groupId': params.groupId,
+            'organisation': response.data
+  				}
+  			}
+  		)
+    }
+
     handleResetChanges = () => {
         this.setState({updatedCoordinates: []}, this.fetchData())
     }
 
+    handleSelectCompetitor = (id) => this.setState({selectedCompetitor: id})
+
     render() {
         const {groups, group, params} = this.props
 
-        const {updatedCoordinates, selectedDraggable, progressLabel, selectedOrganisation} = this.state
+        const {updatedCoordinates, selectedDraggable, progressLabel, selectedOrganisation, selectedCompetitor} = this.state
 
         const container = document.getElementById('gridwrapper-inner')
         const containerHeight = (container || {}).offsetHeight || 0
@@ -132,10 +149,38 @@ export default class GroupWrapper extends React.PureComponent {
 
         return (
             <div ref={node => this.node = node}>
+                {_.map(group.competitors, (item, i) => {
+                    let positionClass
+                    console.log(i)
+                    switch (i) {
+                      case 0:
+                        positionClass = 'left'
+                        break;
+                      case 1:
+                        positionClass = 'bottom'
+                        break;
+                      case 2:
+                        positionClass = 'right'
+                        break;
+                    }
+                    return (
+                      <div className={`competitor ${positionClass}`} onClick={() => this.handleSelectCompetitor(item.id)}>
+                        <span className="competitor-title">{item.title}</span>
+                        {selectedCompetitor === item.id &&
+                          <div className="competitor-tooltip">
+                            <div className="competitor-tooltip-header">{item.title}</div>
+                            <div className="competitor-tooltip-inner"><Link to={`${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.competitors}`}>Edit</Link></div>
+                          </div>
+                        }
+                      </div>
+                    )
+                })}
+
                 {_.map(group.organisations, (item) => {
                     if (item.status < 1) {
                         return
                     }
+                    const trajectoryClass = (item.trajectory === 1) ? 'up': 'down'
 
                     return (
                         <Draggable
@@ -156,11 +201,11 @@ export default class GroupWrapper extends React.PureComponent {
                                  className={
                                      [
                                          `size-m`,
-                                         `trajectory-down`,
+                                         `trajectory-${trajectoryClass}`,
                                          (selectedDraggable && selectedDraggable !== item.id ? 'disabled' : ''),
                                          (selectedDraggable === item.id ? 'is-selected' : '')
                                      ]
-                                 }  
+                                 }
                             >
                                 <div className="react-draggable-handle">
                                   <div className="react-draggable-handle-title">{item.abbreviation}</div>
@@ -188,11 +233,15 @@ export default class GroupWrapper extends React.PureComponent {
                                             People
                                         </Link>
 
-                                        <Link className="button-round fourth"
-                                              to={`/${url.projects}/${params.id}/groups/${group.id}/${url.people}/add?organisation_id=${item.id}`}>
-                                            <span className="button-round-inside icon-character-pirate"/>
-                                            Add Person
-                                        </Link>
+                                        <span className="button-round fourth clickable"
+                                          onClick={() => {
+                                            const newTrajectory = (item.trajectory == 0) ? 1 : 0
+                                            this.handleSetTrajectory(item.id, newTrajectory)
+                                          }}
+                                        >
+                                            <span className="button-round-inside icon-compass"/>
+                                            Choose<br/>Trajectory
+                                        </span>
                                     </div>
                                 }
 

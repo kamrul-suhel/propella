@@ -8,6 +8,7 @@ import {api, fn} from 'app/utils';
 import {connect} from 'react-redux';
 import {Form, TextInput, Radio, FileUpload} from '@xanda/react-components';
 import * as selector from './selector';
+import { makeGetProjectUsers } from 'app/containers/project/selector'
 import Description from './edit/Description';
 import Royalty from './edit/Royalty';
 import Loyalty from './edit/Loyalty';
@@ -18,10 +19,12 @@ import { GroupWrapper } from 'app/containers/group';
     const getOrganisations = selector.makeGetOrganisations();
     const getOrganisation = selector.makeGetOrganisation();
     const getOrganisationTypes = selector.makeGetOrganisationTypes();
+    const getProjectUsers = makeGetProjectUsers();
     return {
         organisations: getOrganisations(state),
         organisation: getOrganisation(state, ownProps.params.organisationId),
         organisationTypes: getOrganisationTypes(state),
+        projectUsers: getProjectUsers(state),
         popup: state.popup
     };
 })
@@ -39,6 +42,7 @@ export default class Edit extends React.PureComponent {
             this.fetchData();
         }
         this.fetchOrganisationTypes();
+        this.fetchProjectUsers();
     }
 
     componentDidUpdate(prevProps) {
@@ -65,7 +69,14 @@ export default class Edit extends React.PureComponent {
     fetchOrganisationTypes = () => {
         this.props.dispatch(fetchData({
             type: 'ORGANISATION_TYPE',
-            url: `/organisation_types/7`,
+            url: `/organisation-types`,
+        }));
+    }
+
+    fetchProjectUsers = () => {
+        this.props.dispatch(fetchData({
+            type: 'PROJECT_USER',
+            url: `/users`,
         }));
     }
 
@@ -97,6 +108,7 @@ export default class Edit extends React.PureComponent {
         formData.append('positionX', popup.positionX)
         formData.append('positionY', popup.positionY)
         formData.append('type_id', popup.type_id)
+        formData.append('rel_user_id', popup.rel_user_id)
         formData.append('group_id', params.groupId)
 
         let response
@@ -159,7 +171,8 @@ export default class Edit extends React.PureComponent {
             handleInputChange: this.handleInputChange,
             handleSubmit: this.handleSubmit,
             setFormRef: this.setFormRef,
-            organisationTypes: this.props.organisationTypes
+            organisationTypes: this.props.organisationTypes,
+            projectUsers: this.props.projectUsers
         }
 
         switch (this.state.step) {

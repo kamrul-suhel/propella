@@ -120,6 +120,21 @@ export default class PeopleWrapper extends React.PureComponent {
         this.setState({updatedCoordinates: []}, this.fetchData())
     }
 
+    handleSetTrajectory = async (peopleId, newTrajectory) => {
+      const { params } = this.props
+      const response = await api.put(`people/${peopleId}`, {trajectory: newTrajectory});
+      this.props.dispatch(
+  			{
+  				type: 'GROUP_PEOPLE_UPDATED',
+          payload: {
+  					'groupId': params.groupId,
+  					'personId': response.data.id,
+            'person': response.data
+  				}
+  			}
+  		)
+    }
+
     render() {
         const {groups, group, params} = this.props
         const {updatedCoordinates, selectedDraggable, progressLabel, selectedPeople} = this.state
@@ -132,7 +147,7 @@ export default class PeopleWrapper extends React.PureComponent {
         const activeOrganisationIds = _.map(group.organisations, (item) => {if(item.status === 1) return item.id})
 
         return (
-            <div ref={node => this.node = node}>                
+            <div ref={node => this.node = node}>
                 <ul className="gridwrapper-inner-categories filter">
                   {_.map(group.organisations, (item) => {
                     if (item.status < 1) {
@@ -157,6 +172,8 @@ export default class PeopleWrapper extends React.PureComponent {
                     if (item.status < 1 || !_.includes(activeOrganisationIds, item.organisation_id)) {
                         return
                     }
+
+                    const trajectoryClass = (item.trajectory === 1) ? 'up': 'down'
                     return (
                         <Draggable
                             key={item.id}
@@ -169,17 +186,17 @@ export default class PeopleWrapper extends React.PureComponent {
                             grid={[10, 10]}
                             scale={1}
                             bounds=".gridwrapper-inner-section-wrapper"
-                            onStop={this.onDraggableEventHandler} 
+                            onStop={this.onDraggableEventHandler}
                         >
-                            <div handleid={item.id}                                 
+                            <div handleid={item.id}
                                  className={
                                      [
                                          `size-m`,
-                                         `trajectory-down`,
+                                         `trajectory-${trajectoryClass}`,
                                          (selectedDraggable && selectedDraggable !== item.id ? 'disabled' : ''),
                                          (selectedDraggable === item.id ? 'is-selected' : '')
                                      ]
-                                 }                                 
+                                 }
                             >
                                 <div className="react-draggable-handle">
                                     <span className={`person-icon avatar-${fn.getAvatarClass(item.size)}`}></span>
@@ -208,11 +225,15 @@ export default class PeopleWrapper extends React.PureComponent {
                                             Edit
                                         </Link>
 
-                                        <Link className="button-round fourth"
-                                              to={`/${url.projects}/${params.id}/groups/${group.id}/competitors`}>
+                                        <span className="button-round fourth clickable"
+                                          onClick={() => {
+                                            const newTrajectory = (item.trajectory == 0) ? 1 : 0
+                                            this.handleSetTrajectory(item.id, newTrajectory)
+                                          }}
+                                        >
                                             <span className="button-round-inside icon-compass"/>
                                             Choose<br/>Trajectory
-                                        </Link>
+                                        </span>
                                     </div>
                                 }
                             </div>

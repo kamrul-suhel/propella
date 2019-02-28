@@ -1,9 +1,17 @@
 import React from 'react';
-import {Link} from 'react-router';
-import {Tooltip, Form, TextInput, Radio, FileUpload} from '@xanda/react-components';
+import { Link } from 'react-router';
+import { Tooltip, Form, TextInput, Radio, FileUpload, Select } from '@xanda/react-components';
 
 export default class Description extends React.PureComponent {
 
+    renderProjectUserTitle = (u) => {
+        return (
+          <React.Fragment>
+            <span>{u.display_name}</span>
+            <span className="user-color-dot" style={{backgroundColor: u.profile_colour}}></span>
+          </React.Fragment>
+        )
+    }
 
     render() {
         const {
@@ -15,10 +23,14 @@ export default class Description extends React.PureComponent {
             icon_size,
             handleInputChange,
             handleSubmit,
-            setFormRef
+            setFormRef,
+            projectUsers,
+            rel_user_id
         } = this.props
 
         const fileUploadClass = (icon || icon_path) ? 'has-file' : 'has-no-file'
+
+        const projectUserOptions = _.map(projectUsers.collection, (u) => { return {'id': u.ID, 'title': this.renderProjectUserTitle(u)}})
 
         return (
             <Form onSubmit={handleSubmit} ref={setFormRef}>
@@ -39,7 +51,7 @@ export default class Description extends React.PureComponent {
                                 name="icon"
                                 onChange={handleInputChange}
                                 value={icon}
-                                className={fileUploadClass}                                
+                                className={fileUploadClass}
                                 placeholder=""
                                 accept=".jpg,.jpeg,.gif,.png,.svg"
                             >
@@ -81,6 +93,15 @@ export default class Description extends React.PureComponent {
                         />
                     </div>
                 </div>
+
+                <Select
+                  name="rel_user_id"
+                  value={rel_user_id}
+                  label="Assign a User to This Group"
+                  options={projectUserOptions}
+                  onChange={handleInputChange}
+                  className="project-user-select"
+                />
 
                 <TextInput
                     name="description"

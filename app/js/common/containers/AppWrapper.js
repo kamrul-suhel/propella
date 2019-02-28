@@ -23,6 +23,6 @@ export default class AppWrapper extends React.PureComponent {
   }
 
 	render() {
-		return this.props.children
+		return React.Children.map(this.props.children, child => React.cloneElement(child, ...this.props));
 	}
 }

@@ -7,4 +7,5 @@ export const url = {
     peopleTypes: 'people-types',
     report: 'report',
     characters: 'characters',
+    competitors: 'competitors',
 };

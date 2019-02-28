@@ -2,17 +2,8 @@ import React from 'react';
 import Draggable from 'react-draggable';
 import {Nav} from 'app/components';
 import {fn} from 'app/utils';
-//import WPAPI from 'wpapi';
 
 export default class GridWrapper extends React.PureComponent {
-
-//  componentWillMount() {
-//    const wp = new WPAPI({ endpoint: 'http://propella.hostings.co.uk/wp-json' });
-//    wp.pages().auth( {username: 'xanda', password: 'lkjL0980=PROP?'} ).get().then(function( result ) {
-//        console.log( result );
-//    })
-//  }
-
     render() {
         const childrenWithProps = React.Children.map(this.props.children, child => React.cloneElement(child, ...this.props));
 
@@ -43,7 +34,7 @@ export default class GridWrapper extends React.PureComponent {
                     </div>
                     <div className="gridwrapper-x">
                         <span className="horizontal-axis vs-class"></span>
-                        <span className="axis-image"> </span>
+                        <span className="axis-image"></span>
                         <div className="left-icon">
                             <span className="icon-slide-icon-hate"></span>
                             <p>0</p>

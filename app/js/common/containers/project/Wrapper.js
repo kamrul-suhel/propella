@@ -129,7 +129,7 @@ export default class ProjectWrapper extends React.PureComponent {
         const containerWidth = (container || {}).offsetWidth || 0
 
         return (
-            <div className="gridwrapper-inner-" ref={node => this.node = node}>                
+            <div className="gridwrapper-inner-" ref={node => this.node = node}>
                 {_.map(project.groups, (item) => {
                     if (item.status < 1) {
                         return

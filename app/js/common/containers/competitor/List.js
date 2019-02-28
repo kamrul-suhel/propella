@@ -66,7 +66,7 @@ export default class List extends React.PureComponent {
     }
 
     render() {
-        const {groups, group, params} = this.props        
+        const {groups, group, params} = this.props
         return (
           <ProjectWrapper {...this.props}>
               <Popup
@@ -74,7 +74,7 @@ export default class List extends React.PureComponent {
                   closePath={`/${url.projects}/${this.props.params.id}`}
                   buttons={[
                       <Link className="button"
-                            to={`/${url.projects}/${this.props.params.id}/${url.groups}/${params.groupId}`}>Cancel</Link>,
+                            to={`/${url.projects}/${this.props.params.id}`}>Cancel</Link>,
                       <button onClick={this.handleSubmit} className="button">Save Changes</button>
                   ]}
                   additionalClass="competitors wide"
@@ -92,7 +92,7 @@ export default class List extends React.PureComponent {
                               onChange={this.handleInputChange}
                               onRemoved={this.handleRemoved}
                               value={group.competitors}
-                          >                          
+                          >
                               <Accordion
                                   title="{group.competitors}"
                               >
