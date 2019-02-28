@@ -192,8 +192,9 @@ export default class ProjectWrapper extends React.PureComponent {
                                     {item.icon_path ? (
                                       <img className="react-draggable-handle-icon" src={`${item.icon_path}`} />
                                     ) : (
-                                      <div className="react-draggable-handle-title">{item.abbreviation}</div>
+                                      <div className="react-draggable-handle-title">{item.profile_colour}</div>
                                     )}
+                                <span className="user-colour-dot" style={{backgroundColor: item.profile_colour}}></span>
                                 </div>
                                 {selectedDraggable === item.id &&
                                   <span className="react-draggable-title">{item.title}</span>
