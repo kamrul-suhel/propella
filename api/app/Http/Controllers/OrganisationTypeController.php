@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Group;
+
 use App\Organisation;
 use App\OrganisationType;
-use App\PeopleType;
-use App\Project;
 use Illuminate\Http\Request;
 
 class OrganisationTypeController extends PropellaBaseController
 {
+
     /**
      * Create a new controller instance.
      *
@@ -21,85 +20,66 @@ class OrganisationTypeController extends PropellaBaseController
         parent::__construct($request);
     }
 
-    /**
-     * @return mixed
-     */
-    public function create()
-    {
-        $this->validate($this->request, [
-            'types' => 'required|array',
-            'types.*.id' => 'required|integer|min:1',
-            'types.*.title' => 'required|string|min:1'
-        ]);
-
-        // Create people type, if set.
-        $people = $this->saveData();
-
-        return response()->json($people);
-
-    }
 
     /**
-     * @param $id
+     * Mass update organisation types.
+     *
      * @return mixed
      */
-    public function update($id)
-    {
-        $organisationType = OrganisationType::findOrFail($id);
-        $this->request->has('title') ? $organisationType->title = $this->request->title: '';
-        $this->request->has('user_group_id') ? $organisationType->user_group_id = $this->request->user_group_id : '';
-        $this->request->has('status') ? $organisationType->status = $this->request->status : '';
-
-        $organisationType->save();
-
-        return response()->json($organisationType);
-    }
-
-    public function updateMultiple()
+    public function update()
     {
         $this->validate($this->request, [
-            'types'                 => 'required|array',
-            'types.*.id'            => 'required|integer|min:0',
-            'types.*.title'         => 'required|string|min:1',
-            'types.*.user_group_id' => 'integer|min:0',
-            'types.*.deleted'       => 'integer|min:0|max:1'
+            'types'           => 'required|array',
+            'types.*.id'      => 'required|integer|min:0',
+            'types.*.title'   => 'required|string|min:1',
+            'types.*.deleted' => 'integer|min:0|max:1'
         ]);
+
+        if(!$this->request->isPM){
+            return response()->json("You need to be a PM to edit this", 422);
+        }
 
         foreach($this->request->types as $type) {
             // New types will have id 0
             $organizationType = $type['id'] == 0 ? new OrganisationType : OrganisationType::findOrFail($type['id']);
 
+            // Do not update if the user does not have the correct user group
+            if(!in_array($organizationType->user_group_id, [$this->request->authUserId, $this->request->projectManagerId]) && ($type['id'] != 0) ) {
+                continue;
+            }
+
             // Delete organisation that are marked as deleted
             if(isset($type['deleted']) && $type['deleted'] == 1) {
+                // Make sure the organization type is not assigned to any organization
+                $organization = Organisation::where('type_id', $type['id'])->first();
+                if(!empty($organization)) {
+                    $couldNotDelete[] = $type['title'];
+                    continue;
+                }
                 $organizationType->delete();
                 continue;
             }
 
             $organizationType->title         = $type['title'];
-            $organizationType->user_group_id = $type['user_group_id'];
+            $organizationType->user_group_id = $this->request->authUserId;
             $organizationType->save();
         }
 
-        return response()->json(['success' => true]);
-    }
+        if(!empty($couldNotDelete)) {
+            $typeTitles = implode(",", $couldNotDelete);
 
-    /**
-     * @return array
-     */
-    private function saveData(){
-        $organisationTypes = [];
-        if ($this->request->has('types')) {
-            foreach ($this->request->types as $type) {
-                $organisationType = $this->getOrganisationTypeModel($type['id'], $type['title']);
-                $organisationType->title = $type['title'];
-                $organisationType->user_group_id = (int) $type['id'];
-                $organisationType->status = isset($type['status']) ? $type['status'] : 1;
-                $organisationType->save();
+            $organizationTypes = OrganisationType::all();
 
-                $organisationTypes[] = $organisationType;
-            }
+            $response = array(
+                'success' => false,
+                'message' => "The following types could not be deleted because they are assigned to organisations: $typeTitles",
+                'data'    => $organizationTypes
+            );
+
+            return response()->json($response, 422);
         }
-        return $organisationTypes;
+
+        return response()->json(['success' => true]);
     }
 
     /**
@@ -107,63 +87,10 @@ class OrganisationTypeController extends PropellaBaseController
      */
     public function list()
     {
-        $organisationTypes = OrganisationType::select([
-            'id',
-            'title',
-            'user_group_id'
-        ])->get();
-
-        return response()->json($organisationTypes);
-    }
-
-    /**
-     * @param $userGroupId
-     * @return mixed
-     */
-    public function getOrganisationTypeByUserGroupId($userGroupId){
-        $organisationTypes = OrganisationType::select([
-            'id',
-            'title'
-        ])
-            ->where('user_group_id', $userGroupId)
+        $organisationTypes = OrganisationType::select('id', 'title', 'user_group_id')
+            ->whereIn('user_group_id', [$this->request->authUserId, $this->request->projectManagerId])
             ->get();
 
         return response()->json($organisationTypes);
-    }
-
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function single($id)
-    {
-        $organisationType = OrganisationType::findOrFail($id);
-        
-        return response()->json($organisationType);
-    }
-
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function delete($id)
-    {
-        $organisationType = OrganisationType::findOrFail($id);
-
-        $organisationType->status = 2;
-        $organisationType->save();
-
-        return response()->json($organisationType);
-    }
-
-    /**
-     * @param $userGroupId
-     * @return PeopleType
-     */
-    private function getOrganisationTypeModel($userGroupId, $title){
-        $peopleType = OrganisationType::where(['user_group_id' => $userGroupId, 'title' => $title])
-            ->first();
-
-        return $peopleType ? $peopleType : new OrganisationType();
     }
 }

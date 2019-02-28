@@ -53,12 +53,8 @@ $router->group(['prefix' => 'v1/organisations'] , function () use ($router) {
 
 // OrganisationType route
 $router->group(['prefix' => 'v1/organisation-types'] , function () use ($router) {
-    $router->post('', 'OrganisationTypeController@create');
     $router->get('', 'OrganisationTypeController@list');
-    $router->get('{id}', 'OrganisationTypeController@single');
-    $router->put('', 'OrganisationTypeController@updateMultiple');
-    $router->put('{id}', 'OrganisationTypeController@update');
-    $router->delete('{id}', 'OrganisationTypeController@delete');
+    $router->put('', 'OrganisationTypeController@update');
 });
 
 // People route.
@@ -74,12 +70,8 @@ $router->group(['prefix' => 'v1/people'] , function () use ($router) {
 
 // PeopleType route
 $router->group(['prefix' => 'v1/people-types'] , function () use ($router) {
-    $router->get('{id}', 'PeopleTypeController@getPeopleTypeByUserGroupId');
-    $router->post('', 'PeopleTypeController@create');
     $router->get('', 'PeopleTypeController@list');
-    $router->put('', 'PeopleTypeController@updateMultiple');
-    $router->put('{id}', 'PeopleTypeController@update');
-    $router->delete('{id}', 'PeopleTypeController@delete');
+    $router->put('', 'PeopleTypeController@update');
 });
 
 // Competitors route
