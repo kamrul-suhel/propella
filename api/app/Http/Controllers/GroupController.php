@@ -370,10 +370,13 @@ class GroupController extends PropellaBaseController
     public function getCompetitorsByGroupId($id)
     {
         $competitors = Competitor::where([
-            ['status', '= ', 1],
+            ['status', '=', 1],
             ['archive', '=', 0],
             ['group_id', '=', $id]
-        ])->get();
+        ])
+            ->orderBy('created_at', 'DESC')
+            ->limit(3)
+            ->get();
 
         return response()->json($competitors);
     }
