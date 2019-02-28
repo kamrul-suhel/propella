@@ -76,6 +76,7 @@ class OrganisationController extends PropellaBaseController
             if(isset($updateOrganisation['id'])){
                 // Create new Group.
                 $organisation = Organisation::findOrFail($updateOrganisation['id']);
+                isset($updateOrganisation['rel_user_id']) ? $organisation->rel_user_id = $updateOrganisation['rel_user_id'] : '';
                 isset($updateOrganisation['title']) ? $organisation->title = $updateOrganisation['title'] : '';
                 isset($updateOrganisation['description']) ? $organisation->description = $updateOrganisation['description'] : '';
                 isset($updateOrganisation['abbreviation']) ? $organisation->abbreviation = ucwords($updateOrganisation['abbreviation']) : '';
@@ -135,7 +136,8 @@ class OrganisationController extends PropellaBaseController
             'positionX',
             'positionY',
             'icon_size',
-            'icon_path'
+            'icon_path',
+            'rel_user_id'
         ])
             ->whereIn('id', $ids)
             ->get();
@@ -165,6 +167,7 @@ class OrganisationController extends PropellaBaseController
     {
         // Create new Group.
         $organisation = $create ? new Organisation() : Organisation::findOrFail($id);
+        $this->request->has('rel_user_id') ? $organisation->rel_user_id = $this->request->rel_user_id : '';
         $this->request->has('title') ? $organisation->title = $this->request->title : '';
         $this->request->has('description') ? $organisation->description = $this->request->description : '';
         $this->request->has('abbreviation') ? $organisation->abbreviation = ucwords($this->request->abbreviation) : '';

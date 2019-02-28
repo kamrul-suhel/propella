@@ -74,6 +74,7 @@ class GroupController extends PropellaBaseController
         foreach ($groups as $group) {
             if (isset($group['id'])) {
                 $updateGroup = Group::findOrFail($group['id']);
+                isset($group['rel_user_id']) ? $updateGroup->rel_user_id = $group['rel_user_id'] : '';
                 isset($group['title']) ? $updateGroup->title = $group['title'] : '';
                 isset($group['description']) ? $updateGroup->description = $group['description'] : '';
                 isset($group['abbreviation']) ? $updateGroup->abbreviation = ucwords($group['abbreviation']) : '';
@@ -82,7 +83,6 @@ class GroupController extends PropellaBaseController
                 isset($group['positionX']) ? $updateGroup->positionX = $group['positionX'] : '';
                 isset($group['positionY']) ? $updateGroup->positionY = $group['positionY'] : '';
                 isset($group['icon_size']) ? $updateGroup->icon_size = $group['icon_size'] : '';
-
                 // Upload file, if file exists & it is update
                 if (isset($group['icon_path']) && is_file($group['icon_path'])) {
                     $iconPath = propellaUploadImage($group['icon_path'], $this->folderName);
@@ -124,7 +124,7 @@ class GroupController extends PropellaBaseController
         // If format_type param pass, we need to download organisations as csv
         if ($this->request->has('format_type')) {
             $organisations = Organisation::where('group_id', $id)->get();
-            $organisations->map(function($organisation) {
+            $organisations->map(function ($organisation) {
                 if ($organisation->positionX > 50) {
                     if ($organisation->positionY > 50) {
                         $organisation->quadrant = 'VIP';
@@ -295,6 +295,7 @@ class GroupController extends PropellaBaseController
     {
         // Create new Group
         $group = $create ? new Group() : Group::findOrFail($id);
+        $this->request->has('rel_user_id') ? $group->rel_user_id = $this->request->rel_user_id : '';
         $this->request->has('title') ? $group->title = $this->request->title : '';
         $this->request->has('description') ? $group->description = $this->request->description : '';
         $this->request->has('abbreviation') ? $group->abbreviation = ucwords($this->request->abbreviation) : '';
@@ -364,5 +365,16 @@ class GroupController extends PropellaBaseController
         }
 
         return $group;
+    }
+
+    public function getCompetitorsByGroupId($id)
+    {
+        $competitors = Competitor::where([
+            ['status', '= ', 1],
+            ['archive', '=', 0],
+            ['group_id', '=', $id]
+        ])->get();
+
+        return response()->json($competitors);
     }
 }
