@@ -124,7 +124,7 @@ class GroupController extends PropellaBaseController
         // If format_type param pass, we need to download organisations as csv
         if ($this->request->has('format_type')) {
             $organisations = Organisation::where('group_id', $id)->get();
-            $organisations->map(function($organisation) {
+            $organisations->map(function ($organisation) {
                 if ($organisation->positionX > 50) {
                     if ($organisation->positionY > 50) {
                         $organisation->quadrant = 'VIP';
@@ -367,11 +367,14 @@ class GroupController extends PropellaBaseController
         return $group;
     }
 
-    public function getCompetitorsByGroupId($id){
-        $group = Group::with('competitors')
-            ->where('id', $id)->get();
-        $competitors = $group->pluck('competitors')
-            ->collapse();
+    public function getCompetitorsByGroupId($id)
+    {
+        $competitors = Competitor::where([
+            ['status', '= ', 1],
+            ['archive', '=', 0],
+            ['group_id', '=', $id]
+        ])->get();
+
         return response()->json($competitors);
     }
 }
