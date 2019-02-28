@@ -30,22 +30,22 @@ const Routes = (
           <IndexRoute component={Project.View}/>
           <Route path={url.groups}>
             <IndexRoute component={Group.List} />
-            <Route path="add" component={Group.Edit} type="add"/>
+            <Route path="add" component={Group.Edit} type="add" activeNav/>
             <Route path=":groupId">
               <IndexRoute component={Group.View}/>
-                <Route path="edit" component={Group.Edit} type="edit"/>
-                <Route path="competitors" component={Competitor.List}/>
+                <Route path="edit" component={Group.Edit} type="edit" activeNav />
+                <Route path="competitors" component={Competitor.List} activeNav />
                 <Route path={url.organisations}>
                   <IndexRoute component={Organisation.List}/>
                   <Route path={url.people} component={People.PeopleWrapper} />
-                  <Route path=":organisationId" component={Organisation.Edit}/>
-                  <Route path={url.organisations} component={Organisation.Edit}/>
+                  <Route path=":organisationId" component={Organisation.Edit} activeNav />
+                  <Route path={url.organisations} component={Organisation.Edit} activeNav />
                 </Route>
                 <Route path={url.people}>
                     <IndexRoute component={People.List}/>
                     <Route path=":personId" >
                       <IndexRoute component={People.Edit} />
-                      <Route path={url.characters} component={People.Character} />
+                      <Route path={url.characters} component={People.Character} activeNav />
                     </Route>
                 </Route>
               </Route>

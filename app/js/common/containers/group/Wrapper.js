@@ -164,12 +164,13 @@ export default class GroupWrapper extends React.PureComponent {
                         break;
                     }
                     return (
-                      <div className={`competitor ${positionClass}`} onClick={() => this.handleSelectCompetitor(item.id)}>
-                        <span className="competitor-title">{item.title}</span>
+                      <div className={`competitor ${positionClass}`} onClick={() => this.handleSelectCompetitor(item.id)}>                        
                         {selectedCompetitor === item.id &&
-                          <div className="competitor-tooltip">
+                            <div className="competitor-tooltip">                            
                             <div className="competitor-tooltip-header">{item.title}</div>
-                            <div className="competitor-tooltip-inner"><Link to={`${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.competitors}`}>Edit</Link></div>
+                            <div className="competitor-tooltip-inner">
+                                <Link to={`${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.competitors}`}>Edit</Link>
+                            </div>
                           </div>
                         }
                       </div>
