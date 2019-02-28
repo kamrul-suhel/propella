@@ -94,8 +94,7 @@
         .react-draggable {
             height: 48px;
             width: 41px;
-            position: absolute;
-            background: url(../images/marker-small.svg) no-repeat 0 0 transparent;
+            position: absolute;            
             background-size:100% 100%;
             background-position:center;
             display: flex;
@@ -222,6 +221,7 @@
 
             &.size-s {
                 padding:0px 2px 11px 2px;
+                background-image: url(../images/marker-medium.svg);
                 .react-draggable-handle{
                     &:after{
                         bottom:9px;
@@ -248,7 +248,7 @@
                         top: 0px;
                         left: 55px;
                     }
-                }
+                }                
             }
             &.is-selected{
                 background-image: url(../images/marker-medium-black.svg)!important;
@@ -487,15 +487,15 @@
         }
 
         .axis-image {
-            height: auto;
             width: 100%;
             height: 20px;
             top: -1px;
             right: 0px;
             position: absolute;
-            background-image: url(../images/horizontal-axis-extended.svg);
-            background-size: contain;
+            background-image: url(../images/horizontal-axis.svg);
+            background-size: 100% 100%;
             background-repeat: no-repeat;
+            background-position: 0px -7px;
         }
     }
 
@@ -602,3 +602,121 @@
         background:none;
     }
 }
+
+.competitor{
+    height: 51px;
+    width: 44px;
+    position: absolute;
+    background-image: url(../images/marker-medium.svg);
+    background-size:100% 100%;
+    background-position:center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    z-index:1;
+    @extend .icon-character-pirate;
+    @extend [class^="icon-"];
+    &:before{
+        font-size: 28px;
+        margin-top: -7px;
+    }
+    .competitor-tooltip{
+        background-color:black;
+        position:absolute;
+        left:calc(100% + 13px);
+        top:0px;
+        border-radius:5px;
+        width:130px;
+        box-shadow:1px 2px 4px 0 rgba(0, 0, 0, 0.5);
+        .competitor-tooltip-header{
+            color:white;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            text-align:center;
+            padding:1px;
+            font-size: 14px;
+            letter-spacing: -0.16px;
+            line-height: 17px;
+            min-height:51px;
+        }
+        .competitor-tooltip-inner{
+            background-color:white;
+            border-radius:0px 0px 5px 5px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            height:51px;
+            font-size: 14px;
+            color: #1C1C1C;
+            letter-spacing: -0.16px;
+            text-align: center;
+            line-height: 17px;
+            font-weight:500;
+            a{
+                text-decoration:none;                
+            }
+        }
+        &:before{
+            content:"";
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 7px 15px 7px 0;
+            border-color: transparent #000000 transparent transparent;
+            position: absolute;
+            left: -14px;
+            top: 18px;       
+        }
+    }
+    &.undefined{
+        display:none;
+    }
+    &.left{
+    top:6%;
+    left:-42px;
+    animation: left-pirate 11s infinite linear;    
+    }
+    &.right{
+    top:50%;
+    left:0px;
+    animation: right-pirate 16s infinite linear;  
+    }
+    &.bottom{
+    bottom:-42px;
+    left:5%;
+    animation: bottom-pirate 14s infinite linear;  
+    .competitor-tooltip{
+        top:-117px;
+        left:-44px;
+        &:before{
+            left: 50%;
+            transform:translateX(-50%);
+            bottom: -15px;
+            top: unset;
+            border-width: 15px 7px 0 7px;
+            border-color: #000000 transparent transparent transparent;
+        }
+    }
+    }
+}
+
+
+/*@keyframes left-pirate {
+  0%   {top: 6%;}
+  50%  {top: 98%;}
+  100% {top: 5%;}
+}
+
+@keyframes bottom-pirate {
+   0%   {left: 5%;}
+  50%  {left: 98%;}
+  100% {left: 5%;}
+}
+
+@keyframes right-pirate {
+   0%   {left: 5%;}
+  50%  {left: 98%;}
+  100% {left: 5%;}
+}*/
