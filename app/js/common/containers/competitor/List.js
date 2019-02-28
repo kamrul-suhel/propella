@@ -122,8 +122,7 @@ export default class List extends React.PureComponent {
                 onRemoved={this.handleRemoved}
                 value={competitors.collection}
               >
-                <Accordion title="row.title">
-                  <h3 dangerouslySetInnerHTML={{ __html: "row.title" }}></h3>
+                <Accordion title="row.title">                  
                   <TextInput
                     label="Competitor Name"
                     name="title"

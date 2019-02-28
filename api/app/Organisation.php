@@ -78,9 +78,11 @@ class Organisation extends Model
             'organisations.status',
             'organisation_types.id as type_id',
             'organisation_types.title as organisation_title',
-            'organisation_types.title as organisation_description'
+            'organisation_types.title as organisation_description',
+            'wp_usermeta.meta_value AS profile_colour'
         ])
-            ->leftJoin('organisation_types', 'organisation_types.id', '=', 'organisations.type_id');
+            ->leftJoin('organisation_types', 'organisation_types.id', '=', 'organisations.type_id')
+            ->leftJoin('wp_usermeta', 'organisations.rel_user_id', '=', DB::raw("wp_usermeta.user_id AND wp_usermeta.meta_key = 'profile_colour'"));
     }
 
     /**

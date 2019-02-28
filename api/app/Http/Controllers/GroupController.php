@@ -7,6 +7,7 @@ use App\Group;
 use App\Organisation;
 use App\People;
 use Illuminate\Http\Request;
+use DB;
 
 class GroupController extends PropellaBaseController
 {
@@ -102,7 +103,12 @@ class GroupController extends PropellaBaseController
      */
     public function list()
     {
-        $groups = Group::with('project');
+        $groups = Group::select(
+            'groups.*',
+            'wp_usermeta.meta_value AS profile_colour'
+        )
+            ->with('project')
+            ->leftJoin('wp_usermeta', 'groups.rel_user_id', '=', DB::raw("wp_usermeta.user_id AND wp_usermeta.meta_key = 'profile_colour'"));
 
         // project status, default it will give your 0,1, active records.
         $status = $this->status == null ? [0, 1] : [$this->status];
@@ -148,10 +154,12 @@ class GroupController extends PropellaBaseController
         }
 
         // Get all group
-        $group = Group::with([
-            'organisations',
-            'competitors'
-        ])
+        $group = Group::select(
+            'groups.*',
+            'wp_usermeta.meta_value AS profile_colour'
+        )
+            ->leftJoin('wp_usermeta', 'groups.rel_user_id', '=', DB::raw("wp_usermeta.user_id AND wp_usermeta.meta_key = 'profile_colour'"))
+            ->with(['organisations', 'competitors'])
             ->findOrFail($id);
 
         // Get the coordinates
@@ -370,10 +378,13 @@ class GroupController extends PropellaBaseController
     public function getCompetitorsByGroupId($id)
     {
         $competitors = Competitor::where([
-            ['status', '= ', 1],
+            ['status', '=', 1],
             ['archive', '=', 0],
             ['group_id', '=', $id]
-        ])->get();
+        ])
+            ->orderBy('created_at', 'DESC')
+            ->limit(3)
+            ->get();
 
         return response()->json($competitors);
     }

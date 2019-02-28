@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Group;
 use App\Organisation;
 use Illuminate\Http\Request;
