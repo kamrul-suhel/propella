@@ -93,9 +93,7 @@ export default class List extends React.PureComponent {
                               onRemoved={this.handleRemoved}
                               value={group.competitors}
                           >
-                              <Accordion
-                                  title="{group.competitors}"
-                              >
+                              <Accordion>
                                   <TextInput
                                       label="Competitor Name"
                                       name="title"
@@ -111,7 +109,7 @@ export default class List extends React.PureComponent {
                                       textarea
                                       validation="required"
                                   />
-                              </Accordion>
+                              </Accordion>                           
                           </Repeater>
                       </Form>
                   </ContentLoader>

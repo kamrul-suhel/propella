@@ -157,7 +157,22 @@
                 height: 100%;
                 color: white;
             }
-
+            .button-round{
+                &.second{
+                    span{
+                        &:before{
+                            font-size:32px;
+                        }
+                    }
+                }
+                &.fourth{
+                    span{
+                        &:before{
+                            color:black;
+                        }
+                    }
+                }
+            }
 
             &.size-l{
                 .react-draggable-handle{
@@ -614,7 +629,7 @@
     align-items: center;
     justify-content: center;
     font-weight: 500;
-    z-index:1;
+    z-index:99;
     @extend .icon-character-pirate;
     @extend [class^="icon-"];
     &:before{
@@ -676,17 +691,27 @@
     &.left{
     top:6%;
     left:-42px;
-    animation: left-pirate 11s infinite linear;    
+    animation: side-pirate 31s infinite linear,  side-bob 3s infinite linear,  side-rock 7s infinite linear;   
     }
     &.right{
     top:50%;
-    left:0px;
-    animation: right-pirate 16s infinite linear;  
+    right:-42px;
+    animation: side-pirate 29s infinite linear,  side-bob 2.5s infinite linear,  side-rock 5s infinite linear;   
+        .competitor-tooltip{
+            right:calc(100% + 13px);
+            left:unset;
+            &:before{
+                right:-14px;
+                left:unset;
+                border-width: 7px 0 7px 15px;
+                border-color: transparent transparent transparent #000000;
+            }
+        }
     }
     &.bottom{
     bottom:-42px;
     left:5%;
-    animation: bottom-pirate 14s infinite linear;  
+    animation: bottom-pirate 28s infinite linear,  bottom-bob 2s infinite linear,  bottom-rock 7s infinite linear;   
     .competitor-tooltip{
         top:-117px;
         left:-44px;
@@ -703,9 +728,9 @@
 }
 
 
-/*@keyframes left-pirate {
+@keyframes side-pirate {
   0%   {top: 6%;}
-  50%  {top: 98%;}
+  50%  {top: 89%;}
   100% {top: 5%;}
 }
 
@@ -715,8 +740,30 @@
   100% {left: 5%;}
 }
 
-@keyframes right-pirate {
-   0%   {left: 5%;}
-  50%  {left: 98%;}
-  100% {left: 5%;}
-}*/
+@keyframes side-bob{
+    0% {transform:translateX(0%)}
+    25% {transform:translateX(5%)}
+    75% {transform:translateX(-5%)}
+    100% {transform:translateX(0%)}
+}
+
+@keyframes bottom-bob{
+    0% {transform:translateY(0%)}
+    25% {transform:translateY(10%)}
+    75% {transform:translateY(-10%)}
+    100 {transform:translateY(0%)}
+}
+
+@keyframes left-rock{
+    0% {margin-top: 0px} 
+    25% {margin-top: 10px}
+    75% {margin-top: -10px}
+    100% {margin-top: 0px}
+}
+
+@keyframes bottom-rock{
+    0% {margin-left: 0px} 
+    25% {margin-left: 10px}
+    75% {margin-left: -10px}
+    100% {margin-left: 0px}
+}

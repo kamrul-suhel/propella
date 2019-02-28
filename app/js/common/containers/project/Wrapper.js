@@ -155,7 +155,8 @@ export default class ProjectWrapper extends React.PureComponent {
                                      [
                                          `size-${item.icon_size}`,
                                          (selectedDraggable && selectedDraggable !== item.id ? 'disabled' : ''),
-                                         (selectedDraggable === item.id ? 'is-selected' : '')
+                                         (selectedDraggable === item.id ? 'is-selected' : ''),
+                                         item
                                      ]
                                  }
                                  onClick={this.handleDraggableClick}
