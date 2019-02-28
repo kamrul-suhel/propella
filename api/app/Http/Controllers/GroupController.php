@@ -366,4 +366,12 @@ class GroupController extends PropellaBaseController
 
         return $group;
     }
+
+    public function getCompetitorsByGroupId($id){
+        $group = Group::with('competitors')
+            ->where('id', $id)->get();
+        $competitors = $group->pluck('competitors')
+            ->collapse();
+        return response()->json($competitors);
+    }
 }
