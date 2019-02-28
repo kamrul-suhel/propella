@@ -45,7 +45,7 @@ export default class ReportList extends React.Component {
     }
 
     render() {
-        const {data, reportType} = this.props;
+        const {data, reportType, title} = this.props;
 
         const collections = reportType === 'organisations' ? data.organisations : data.people;
 
@@ -55,7 +55,7 @@ export default class ReportList extends React.Component {
                     data={collections}
                     isLoading={collections.isLoading}
                 >
-                <h1>Data visual: People</h1>
+                <h1>{title}</h1>
                     <Table headers={[
                         'Name',
                         'Organisation',

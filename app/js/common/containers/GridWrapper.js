@@ -32,8 +32,7 @@ export default class GridWrapper extends React.PureComponent {
                         </div>
                         {childrenWithProps}
                     </div>
-                    <div className="gridwrapper-x">
-                        <span className="horizontal-axis vs-class"></span>
+                    <div className="gridwrapper-x">                        
                         <span className="axis-image"></span>
                         <div className="left-icon">
                             <span className="icon-slide-icon-hate"></span>
