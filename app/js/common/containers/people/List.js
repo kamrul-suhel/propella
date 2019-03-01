@@ -37,8 +37,10 @@ export default class List extends React.PureComponent {
   renderItem = (person) => {
       if (!person) {
           return
-      }      
-      
+      }
+
+      const character = fn.getPeopleCharacter(parseInt(person.character_id))
+
       return (
           <FancyListItem
             key={person.id}
@@ -48,9 +50,9 @@ export default class List extends React.PureComponent {
                 to={`/${url.projects}/${this.props.params.id}/${url.groups}/${this.props.params.groupId}/${url.people}/${person.id}`}
                 className="icon-pencil"
                 />
-                <span type="button" onClick={() => this.handleDelete(this.props.params.groupId, person.id)} className="clickable icon-bin" />                
+                <span type="button" onClick={() => this.handleDelete(this.props.params.groupId, person.id)} className="clickable icon-bin" />
                 {person.character_id &&
-                <span type="button" class={fn.getPeopleCharacter(parseInt(person.character_id))['iconImage']}></span>
+                  <span type="button" class={character['iconImage']} title={character['title']}></span>
                 }
             </React.Fragment>
             }

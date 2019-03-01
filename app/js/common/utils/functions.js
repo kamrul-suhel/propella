@@ -446,7 +446,7 @@ export default {
        }
        return 'female'
   },
-  
+
   getPeopleCharacters() {
       return [
           {
@@ -521,12 +521,32 @@ export default {
           }
       ]
   },
-  
+
   getPeopleCharacter(id) {
       const totalArray = this.getPeopleCharacters().length;
       if(totalArray < id){
          return _.find(this.getPeopleCharacters(), {id: 1})
       }
       return _.find(this.getPeopleCharacters(), {id: id})
+  },
+
+  handleReportPrint() {
+      window.print();
+  },
+
+  getQuadrant(x, y) {
+      if (x > 50) {
+          if (y > 50) {
+              return 'VIP'
+          } else {
+              return 'STA'
+          }
+      } else {
+          if (y > 50) {
+              return 'UP'
+          } else {
+              return 'NF'
+          }
+      }
   }
 };

@@ -24,25 +24,7 @@ export default class ReportList extends React.Component {
         document.body.removeChild(link);
     }
 
-    handleReportPrint = () => {
-        window.print();
-    }
 
-    getQuadrant = (collection) => {
-        if (collection.positionX > 50) {
-            if (collection.positionY > 50) {
-                return 'VIP'
-            } else {
-                return 'STA'
-            }
-        } else {
-            if (collection.positionY > 50) {
-                return 'UP'
-            } else {
-                return 'NF'
-            }
-        }
-    }
 
     render() {
         const {data, reportType, title} = this.props;
@@ -71,7 +53,7 @@ export default class ReportList extends React.Component {
                                     <td>{collection.organisation_title}</td>
                                     <td>{collection.positionX}</td>
                                     <td>{collection.positionY}</td>
-                                    <td>{this.getQuadrant(collection)}</td>
+                                    <td>{this.getQuadrant(collection.positionX, collection.positionY)}</td>
                                     <td>{collection.icon_size}</td>
                                 </tr>
                             )

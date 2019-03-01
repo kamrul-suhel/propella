@@ -4,6 +4,8 @@ import { ReportList } from "app/components";
 import { fetchData } from "app/actions";
 import { makeGetGroup, makeGetGroups } from "app/containers/group/selector";
 import { Nav } from "app/components";
+import { fn } from "app/utils";
+import {ContentLoader, Table} from '@xanda/react-components';
 
 @connect((state, ownProps) => {
   const getGroups = makeGetGroups();
@@ -32,22 +34,51 @@ export default class Report extends React.PureComponent {
   };
 
   render() {
-    const { group, params } = this.props;
+    const { groups, group, params } = this.props;
 
     return (
       <React.Fragment>
         <Nav {...this.props} />
-        {_.isEmpty(group.organisations) ? (
+        {_.isEmpty(groups.collection) ? (
           <div className="report-component">
-               <h1>No organisation found</h1>
+               <h1>No people found</h1>
            </div>
         ) : (
-          <ReportList
-            title="Data visual: People"
-            reportType="people"
-            data={group}
-            params={params}
-          />
+          <div className="report-component">
+              <ContentLoader
+                  data={groups.collection}
+                  isLoading={groups.isLoading}
+              >
+              <h1>Data visual: People</h1>
+                  <Table headers={[
+                      'Name',
+                      'Organisation',
+                      'Royalty',
+                      'Loyalty',
+                      'Quadrant',
+                      'Character'
+                  ]}>
+                      {_.map(group.people, (collection) => {
+                        const character = fn.getPeopleCharacter(collection.character_id)
+                          return (
+                              <tr key={collection.id}>
+                                  <td>{collection.title}</td>
+                                  <td>{collection.organisation_title}</td>
+                                  <td>{collection.positionX}</td>
+                                  <td>{collection.positionY}</td>
+                                  <td>{fn.getQuadrant(collection.positionX, collection.positionY)}</td>
+                                  <td>{character.title}</td>
+                              </tr>
+                          )
+                      })}
+                  </Table>
+              </ContentLoader>
+
+              <div className="report-action">
+                  <button onClick={() => fn.downloadAttachment(`groups/${this.props.params.groupId}/people?format_type=csv`, 'export-people.csv')}>Create report</button>
+                  <button onClick={fn.handleReportPrint}>Print</button>
+              </div>
+          </div>
         )}
       </React.Fragment>
     );
