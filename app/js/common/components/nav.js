@@ -62,7 +62,7 @@ export default class Nav extends React.PureComponent {
   };
 
   handleOnChange = (name, value) => {
-    const { params } = this.props;
+    const { params, location } = this.props;
 
     if (value !== params.groupId) {
       fn.navigate(`/${url.projects}/${params.id}/${url.groups}/${value}`);
@@ -79,7 +79,7 @@ export default class Nav extends React.PureComponent {
     return (
       <div className="nav">
         <img className="nav-logo" src="/../../../images/logo.svg" />
-        {params.groupId ? (
+        {params.groupId && location.pathname.match(/(\/organisations|\/people|\/\groups\/[0-9]+$)/) ? (
           <React.Fragment>
             <Link to={this.nextLink} className="nav-link">
               {group.title}

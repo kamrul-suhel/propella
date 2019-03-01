@@ -6,8 +6,9 @@ import Draggable from 'react-draggable';
 import {api} from 'app/utils';
 import * as selector from './selector';
 import { makeGetProject, makeGetProjects } from 'app/containers/project/selector';
-import {Link} from "react-router";
+import { Link} from "react-router";
 import Coordinate from 'app/components/coordinate'
+import { ContentLoader } from '@xanda/react-components';
 
 @connect((state, ownProps) => {
     const getGroups = selector.makeGetGroups();
@@ -148,10 +149,13 @@ export default class GroupWrapper extends React.PureComponent {
         const containerWidth = (container || {}).offsetWidth || 0
 
         return (
-            <div ref={node => this.node = node}>
+          <div ref={node => this.node = node}>
+          <ContentLoader
+            data={groups.collection}
+            isLoading={groups.isLoading}
+          >
                 {_.map(group.competitors, (item, i) => {
                     let positionClass
-                    console.log(i)
                     switch (i) {
                       case 0:
                         positionClass = 'left'
@@ -164,9 +168,9 @@ export default class GroupWrapper extends React.PureComponent {
                         break;
                     }
                     return (
-                      <div className={`competitor ${positionClass}`} onClick={() => this.handleSelectCompetitor(item.id)}>                        
+                      <div className={`competitor ${positionClass}`} onClick={() => this.handleSelectCompetitor(item.id)}>
                         {selectedCompetitor === item.id &&
-                            <div className="competitor-tooltip">                            
+                            <div className="competitor-tooltip">
                             <div className="competitor-tooltip-header">{item.title}</div>
                             <div className="competitor-tooltip-inner">
                                 <Link to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.competitors}`}>Edit</Link>
@@ -262,6 +266,7 @@ export default class GroupWrapper extends React.PureComponent {
                 </React.Fragment>
                 }
 
+              </ContentLoader>
             </div>
         )
     }
