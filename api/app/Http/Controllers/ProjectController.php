@@ -96,6 +96,7 @@ class ProjectController extends PropellaBaseController
                     'updated_at'
                 ])
                     ->whereIn('id', $ids)
+                    ->where('status', 1)
                     ->orderBy('created_at', 'DESC')
                     ->limit(5)
                     ->get();
