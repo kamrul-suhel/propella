@@ -110,16 +110,13 @@
                 align-items: center;
                 justify-content: center;
                 flex-direction:column;
-                &:after{
+                .user-colour-dot{
                     content:"";
                     display:block;
-                    background-color:red;
                     width:6px;
                     height:6px;
                     position:absolute;              
                     border-radius:50%;
-                    left:50%;
-                    transform:translateX(-50%);
                 }              
                 img.react-draggable-handle-icon{
                     -webkit-user-drag: none;
@@ -176,7 +173,7 @@
 
             &.size-l{
                 .react-draggable-handle{
-                    &:after{
+                    .user-colour-dot{
                         bottom:14px;
                     }
                 }
@@ -207,7 +204,7 @@
             &.size-m {
                 padding:1px 1px 15px 1px;
                 .react-draggable-handle{
-                    &:after{
+                    .user-colour-dot{
                         bottom:14px;
                     }              
                 }
@@ -238,7 +235,7 @@
                 padding:0px 2px 11px 2px;
                 background-image: url(../images/marker-medium.svg);
                 .react-draggable-handle{
-                    &:after{
+                    .user-colour-dot{
                         bottom:9px;
                         margin-left:-1px;
                     }

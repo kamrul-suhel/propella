@@ -210,6 +210,7 @@ export default class GroupWrapper extends React.PureComponent {
                             >
                                 <div className="react-draggable-handle">
                                   <div className="react-draggable-handle-title">{item.abbreviation}</div>
+                                    <span className="user-colour-dot" style={{backgroundColor: item.profile_colour}}></span>
                                 </div>
                                 {selectedDraggable === item.id &&
                                   <span className="react-draggable-title">{item.title}</span>
