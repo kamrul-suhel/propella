@@ -56,10 +56,8 @@ export default class List extends React.PureComponent {
         }
 
         formData.append(`competitors[${i}][title]`, competitor.title);
-        formData.append(
-          `competitors[${i}][description]`,
-          competitor.description
-        );
+        const competitorDescription = (competitor.description) ? competitor.description : ''
+        formData.append(`competitors[${i}][description]`, competitorDescription);
       });
 
       _.map(competitorsRemoved, id =>
@@ -69,12 +67,7 @@ export default class List extends React.PureComponent {
       const response = await api.put(`/groups/${params.groupId}`, formData);
 
       if (!api.error(response)) {
-        this.props.dispatch(
-          fetchData({
-            type: "GROUP",
-            url: `/groups/${this.props.params.groupId}`
-          })
-        );
+        this.fetchData();
       }
     }
   };
@@ -122,7 +115,7 @@ export default class List extends React.PureComponent {
                 onRemoved={this.handleRemoved}
                 value={competitors.collection}
               >
-                <Accordion title="row.title">                  
+                <Accordion title={<span />}>
                   <TextInput
                     label="Competitor Name"
                     name="title"
