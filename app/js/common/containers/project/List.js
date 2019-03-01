@@ -80,7 +80,9 @@ export default class List extends React.PureComponent {
                           <div className="item-project">
                               <div className="wrap">
                                   <div className="thumb">
-                                      <img src="../../images/LayerGridStackBig.svg" alt=""/>
+                                      <Link to={`/${url.projects}/${item.id}`}>
+                                        <img src="../../images/LayerGridStackBig.svg" alt=""/>
+                                      </Link>
                                   </div>
                                   {selectedProject === item.id &&
                                         <ul className="project-menu">

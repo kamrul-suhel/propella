@@ -184,10 +184,16 @@ export default class ProjectWrapper extends React.PureComponent {
                                         Edit
                                     </Link>
 
+                                    {item.coordinates && item.coordinates.length > 0 ? (
                                     <span className="clickable button-round second"
                                           onClick={(event) => this.getGroupCoordinate(event, item.id)}>
                                         <span className="button-round-inside icon-chain"/>{_.isEmpty(selectedGroupCoordinates) ? 'Progress' : 'Hide Progress'}
                                     </span>
+                                    ) : (
+                                    <span className="button-round second progress-hide">
+                                        <span className="button-round-inside icon-chain"/>Progress
+                                    </span>
+                                    )}
 
                                     <Link className="button-round third"
                                           to={`/${url.projects}/${params.id}/groups/${item.id}/`}>
