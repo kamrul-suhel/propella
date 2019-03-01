@@ -15,10 +15,10 @@ import { ContentLoader } from '@xanda/react-components';
 	};
 })
 export default class List extends React.PureComponent {
-        
+
         constructor(props){
             super(props);
-            
+
             this.state = {
                 selectedProject: 0
             }
@@ -34,7 +34,7 @@ export default class List extends React.PureComponent {
           url: `/projects`,
       }));
   }
-  
+
   handleSelectProject = (projectId) => {
       this.setState({
           selectedProject: projectId
@@ -44,7 +44,7 @@ export default class List extends React.PureComponent {
 	render() {
     const { projects } = this.props
     const { selectedProject } = this.state
-    
+
     console.log(selectedProject)
 
 		return (
@@ -84,7 +84,7 @@ export default class List extends React.PureComponent {
                                   </div>
                                   {selectedProject === item.id &&
                                         <ul className="project-menu">
-                                            <li><a href="/project-page.html">Project mission</a></li>
+                                            <li><Link to={`/${url.projects}/${item.id}/edit`}>Project mission</Link></li>
                                             <li><Link to={`/${url.projects}/${item.id}`}>Straight to project</Link></li>
                                             <li><a href="/archive.html">Project snapshot</a></li>
                                         </ul>

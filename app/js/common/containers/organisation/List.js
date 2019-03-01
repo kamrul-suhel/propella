@@ -18,11 +18,15 @@ import { GroupWrapper } from 'app/containers/group';
     };
 })
 export default class List extends React.PureComponent {
-  fetchData = () => {
-      this.props.dispatch(fetchData({
+  fetchData = async () => {
+      await this.props.dispatch(fetchData({
           type: 'GROUP',
           url: `/groups/${this.props.params.groupId}`,
       }));
+
+      if(_.isEmpty(this.state.groups.collection)){
+        fn.navigate(`/${url.projects}/${this.props.params.id}/${url.organisations}`)
+      }
   }
 
   handleStatusChange = async (organisation, newStatus) => {

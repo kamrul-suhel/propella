@@ -25,7 +25,8 @@ const Routes = (
 
     <Route path={url.projects}>
       <IndexRoute component={Project.List} />
-      <Route path="add" component={Project.Add} />
+      <Route path="add" component={Project.Edit} />
+      <Route path=":id/edit" component={Project.Edit} />
       <Route path=":id" component={C.GridWrapper}>
           <IndexRoute component={Project.View}/>
           <Route path={url.groups}>
