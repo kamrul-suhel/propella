@@ -96,6 +96,7 @@ class ProjectController extends PropellaBaseController
                     'updated_at'
                 ])
                     ->whereIn('id', $ids)
+                    ->where('status', 1)
                     ->orderBy('created_at', 'DESC')
                     ->limit(5)
                     ->get();
@@ -120,6 +121,7 @@ class ProjectController extends PropellaBaseController
     public function single($id)
     {
         $project = Project::with(['groups.organisations.people'])
+            ->whereIn('created_by', [$this->request->authUserId, $this->request->projectManagerId])
             ->findOrFail($id);
 
         $project->groups->map(function ($group) {

@@ -24,10 +24,19 @@ export default class Edit extends React.PureComponent {
     this.props.dispatch(
       fetchData({
         type: "PROJECT",
-        url: `/projects/`
+        url: `/projects/?archives=1`
       })
     );
   };
+
+  handleDeleteArchive = async (id) => {
+    if (window.confirm("Are you sure you want to delete this archive?")) {
+        const response = await api.delete(`projects/${id}`)
+        if (!api.error(response)) {
+            this.fetchData()
+        }
+    }
+  }
 
   render() {
     const { projects } = this.props;
@@ -64,23 +73,27 @@ export default class Edit extends React.PureComponent {
                       </Link>
                     </div>
 
-                    <div className="revisions">
-                      <div className="revision">
-                        <div className="date">
-                          Tuesday 24th February 2017, 12:34pm
-                        </div>
-                        <div className="actions">
-                          <a href="#">
-                            <span className="icon-eye" />
-                            View
-                          </a>
-                          <a href="#">
-                            <span className="icon-bin" />
-                            Delete
-                          </a>
-                        </div>
+                    {!_.isEmpty(project.archives) && (
+                      <div className="revisions">
+                        {_.map(project.archives, (archive) => (
+                          <div className="revision">
+                            <div className="date">
+                              {archive.updated_at}
+                            </div>
+                            <div className="actions">
+                              <Link to={`/${url.projects}/${archive.id}`}>
+                                <span className="icon-eye" />
+                                View
+                              </Link>
+                              <span className="clickable" onClick={() => this.handleDeleteArchive(archive.id)}>
+                                <span className="icon-bin" />
+                                Delete
+                              </span>
+                            </div>
+                          </div>
+                        ))}
                       </div>
-                    </div>
+                    )}
                   </div>
                 ))}
               </div>
