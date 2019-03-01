@@ -120,6 +120,7 @@ class ProjectController extends PropellaBaseController
     public function single($id)
     {
         $project = Project::with(['groups.organisations.people'])
+            ->whereIn('created_by', [$this->request->authUserId, $this->request->projectManagerId])
             ->findOrFail($id);
 
         $project->groups->map(function ($group) {
