@@ -7,6 +7,7 @@ import {url} from 'app/constants';
 import {api} from 'app/utils';
 import {makeGetProject, makeGetProjects} from 'app/containers/project/selector';
 import Coordinate from 'app/components/coordinate'
+import {ContentLoader} from '@xanda/react-components';
 
 @connect((state, ownProps) => {
     const getProjects = makeGetProjects();
@@ -79,6 +80,7 @@ export default class ProjectWrapper extends React.PureComponent {
         if (!api.error(response)) {
             // if successfull remove from pending updates
             this.setState({'updatedCoordinates': {}})
+            this.fetchData()
         }
     }
 
@@ -136,7 +138,7 @@ export default class ProjectWrapper extends React.PureComponent {
 
 
     render() {
-        const {project, params} = this.props
+        const {projects, project, params} = this.props
         const {updatedCoordinates, selectedDraggable, selectedGroupCoordinates, progressLabel} = this.state
 
         const container = document.getElementById('gridwrapper-inner')
@@ -145,6 +147,10 @@ export default class ProjectWrapper extends React.PureComponent {
 
         return (
             <div className="gridwrapper-inner-" ref={node => this.node = node}>
+              <ContentLoader
+                data={projects.collection}
+                isLoading={projects.isLoading}
+                >
                 {_.map(project.groups, (item) => {
                     if (item.status < 1) {
                         return
@@ -227,6 +233,7 @@ export default class ProjectWrapper extends React.PureComponent {
                     <button className="button gridwrapper-save" onClick={this.handleSaveChanges}>Save Changes</button>
                 </React.Fragment>
                 }
+                </ContentLoader>
             </div>
         )
     }

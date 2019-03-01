@@ -19,23 +19,22 @@ export default class Overview extends React.PureComponent {
 
                 <div className="ov-img-content">
                     <div className="ov-icon-path">
-                    {icon &&
-                                 <img src={icon.preview}/>
-                    }
-                    {!icon &&
-                            <p class="ov-abbreviation">{abbreviation}</p>
-                    }                        
-                        <div className="ov-icon-size">{icon_size}</div>
-                    </div>              
+                    {icon || icon_path ? (
+                      <img src={icon ? icon.preview : icon_path}/>
+                    ) : (
+                      <p className="ov-abbreviation">{abbreviation}</p>
+                    )}
+                    <div className="ov-icon-size">{icon_size}</div>
+                    </div>
                 </div>
                 <div className="ov-scores">
                 <div className="royalty-wrapper">
                     <p>Royalty</p>
-                    <span>{positionY}</span>
+                    <span>{_.round(positionY)}</span>
                 </div>
                 <div className="loyalty-wrapper">
                     <p>Loyalty</p>
-                    <span>{positionX}</span>
+                    <span>{_.round(positionX)}</span>
                 </div>
                 </div>
             </div>
