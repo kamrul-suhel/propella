@@ -33,19 +33,20 @@ export default class Report extends React.PureComponent {
   render() {
     const { group, params } = this.props;
 
-    const downloadUrl = `groups/${this.props.params.groupId}?format_type=csv`;
-
-    return _.isEmpty(group.organisations) ? (
-      <h2>No organisation found</h2>
-    ) : (
+    return (
       <React.Fragment>
         <Nav {...this.props} />
-        <ReportList
-          title="Data visual: Organisations"
-          reportType="organisations"
-          data={group}
-          params={params}
-        />
+
+        {_.isEmpty(group.organisations) ? (
+          <h2>No organisation found</h2>
+        ) : (
+          <ReportList
+            title="Data visual: Organisations"
+            reportType="organisations"
+            data={group}
+            params={params}
+          />
+        )}
       </React.Fragment>
     );
   }
