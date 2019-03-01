@@ -16,7 +16,7 @@ class PropellaBaseController extends BaseController
     public function __construct(Request $request)
     {
         $this->request = $request;
-//        $this->middleware('auth');
+        $this->middleware('auth');
 
         // Validate top laval status = active & inactive row.  & all = if you want all data without paginate.
         $this->validate($this->request, [
@@ -29,7 +29,7 @@ class PropellaBaseController extends BaseController
         // If searching, then you need all the data without paginate
         $this->allData = $this->request->has('all') ? true : false;
 
-        // Set status active or inactive one you need to search
+        // Set status active or inactive one, you need to search
         $this->status = $this->request->has('status') ? $this->request->status : null;
     }
 }
