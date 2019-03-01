@@ -48,7 +48,7 @@ export default class Edit extends React.PureComponent {
           data={projects.collection}
           isLoading={projects.isLoading}
         >
-          <div className="centering">
+          <div className="centering project">
             <div className="page-wrap">
               <div className="page-header">
                 <h1 className="page-title">Archive</h1>

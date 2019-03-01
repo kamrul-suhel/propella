@@ -144,14 +144,87 @@
         justify-content: center;
         height: 100%;
     }
-
+    .archive{
+        .item-archive {
+            border-top: 1px solid rgba(28, 28, 28, 0.4);
+            padding: 20px 40px;
+            margin: 0 -40px;
+            display: flex;
+            flex-flow: row wrap;
+            .summary {
+                padding: 0 50px;
+                max-width: 420px;
+                flex: 1;
+                p{
+                    font-size: 14px;
+                    font-weight: 400;
+                    letter-spacing: -0.25px;
+                }
+            }
+            .title {
+                font-size: 20px;
+                margin-bottom: 5px;
+            }
+            .revisions {
+                max-width: 100%;
+                flex: 1;
+                .revision {
+                    border-top: 1px solid #979797;
+                    display: flex;
+                    flex-flow: row wrap;
+                    font-size: 12px;
+                    justify-content: space-between;
+                    padding: 9px 0 6px;
+                    &:first-child {
+                        border-top: 0;
+                    }
+                    .date {
+                        text-transform: uppercase;
+                        margin-right: 40px;
+                    }
+                    .actions {
+                        display: flex;
+                        margin: 0 -20px;
+                        a {
+                            margin: 0 20px;
+                            text-decoration: none;
+                            display:flex;
+                            align-items:center;
+                            [class^="icon-"]{
+                                margin-right:5px;
+                            }
+                        }
+                        span{
+                            margin:0px 20px;
+                        }
+                        .icon-bin{
+                            margin-right:5px;
+                        }
+                    }
+                }
+            }
+        }
+        .button-simple{
+            &.button-small{
+                text-decoration: none;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                font-size: 12px;
+                font-weight: 400;
+                text-transform: uppercase;
+            }
+        }
+        [class*="icon"] {
+            margin-right: 10px;
+        }
+    }
 }
 
 .no-scroll{
     .repeatable-row{
         margin:0px;
-        border:0px;
-        
+        border:0px;        
         .form-group{
             margin-right:50px;
             .form-field{
