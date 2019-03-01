@@ -98,7 +98,7 @@ export default class PeopleWrapper extends React.PureComponent {
     }
 
     getCoordinate = async (event, peopleId) => {
-        const {selectedPeople} = this.state;
+        const {selectedPeople,updatedCoordinates} = this.state;
 
         if(!_.isEmpty(selectedPeople)){
             this.setState({selectedPeople: {}})
@@ -108,9 +108,18 @@ export default class PeopleWrapper extends React.PureComponent {
             // Get the data from server
             const data = await api.get('people/'+peopleId);
 
+            let selectedPeople = {...data.data};
+
+            _.map(updatedCoordinates, (updatedCoordinate) => {
+                if(updatedCoordinate.id === selectedPeople.id){
+                    selectedPeople.positionX = updatedCoordinate.positionX;
+                    selectedPeople.positionY = updatedCoordinate.positionY;
+                }
+            });
+
             if (selectedPeople) {
                 this.setState({
-                    selectedPeople: {...data.data}
+                    selectedPeople: {...selectedPeople}
                 })
             }
         }

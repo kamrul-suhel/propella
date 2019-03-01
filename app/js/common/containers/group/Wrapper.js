@@ -5,10 +5,10 @@ import {connect} from 'react-redux';
 import Draggable from 'react-draggable';
 import {api} from 'app/utils';
 import * as selector from './selector';
-import { makeGetProject, makeGetProjects } from 'app/containers/project/selector';
-import { Link} from "react-router";
+import {makeGetProject, makeGetProjects} from 'app/containers/project/selector';
+import {Link} from "react-router";
 import Coordinate from 'app/components/coordinate'
-import { ContentLoader } from '@xanda/react-components';
+import {ContentLoader} from '@xanda/react-components';
 
 @connect((state, ownProps) => {
     const getGroups = selector.makeGetGroups();
@@ -36,11 +36,11 @@ export default class GroupWrapper extends React.PureComponent {
     }
 
     componentWillMount() {
-      document.addEventListener('mousedown', this.handleClick, false)
+        document.addEventListener('mousedown', this.handleClick, false)
     }
 
     componentWillUnmount() {
-      document.removeEventListener('mousedown', this.handleClick, false)
+        document.removeEventListener('mousedown', this.handleClick, false)
     }
 
     componentDidMount() {
@@ -85,28 +85,36 @@ export default class GroupWrapper extends React.PureComponent {
     }
 
     getCoordinate = async (event, organisationId) => {
-        const {selectedOrganisation} = this.state;
+        const {selectedOrganisation, updatedCoordinates} = this.state;
 
-        if(!_.isEmpty(selectedOrganisation)){
+        if (!_.isEmpty(selectedOrganisation)) {
             this.setState({selectedOrganisation: {}})
         } else {
             // Stop other event
             event.stopPropagation();
             // Get the data from server
-            const data = await api.get('organisations/'+organisationId);
+            const data = await api.get('organisations/' + organisationId);
+            let selectedOrganisation = {...data.data};
+            _.map(updatedCoordinates, (updatedCoordinate) => {
+                if (updatedCoordinate.id === selectedOrganisation.id) {
+                    console.log("Group founded: ", selectedOrganisation)
+                    selectedOrganisation.positionX = updatedCoordinate.positionX;
+                    selectedOrganisation.positionY = updatedCoordinate.positionY;
+                }
+            });
 
             if (selectedOrganisation) {
                 this.setState({
-                    selectedOrganisation: {...data.data}
+                    selectedOrganisation: {...selectedOrganisation}
                 })
             }
         }
     }
 
     handleClick = (e) => {
-      if(!this.node.contains(e.target)){
-        this.setState({selectedDraggable: 0, selectedOrganisation: {}, selectedCompetitor: 0})
-      }
+        if (!this.node.contains(e.target)) {
+            this.setState({selectedDraggable: 0, selectedOrganisation: {}, selectedCompetitor: 0})
+        }
     }
 
     handleSaveChanges = async () => {
@@ -120,17 +128,17 @@ export default class GroupWrapper extends React.PureComponent {
     }
 
     handleSetTrajectory = async (organisationId, newTrajectory) => {
-      const { params } = this.props
-      const response = await api.put(`organisations/${organisationId}`, {trajectory: newTrajectory});
-      this.props.dispatch(
-  			{
-  				type: 'GROUP_ORGANISATION_UPDATED',
-          payload: {
-  					'groupId': params.groupId,
-            'organisation': response.data
-  				}
-  			}
-  		)
+        const {params} = this.props
+        const response = await api.put(`organisations/${organisationId}`, {trajectory: newTrajectory});
+        this.props.dispatch(
+            {
+                type: 'GROUP_ORGANISATION_UPDATED',
+                payload: {
+                    'groupId': params.groupId,
+                    'organisation': response.data
+                }
+            }
+        )
     }
 
     handleResetChanges = () => {
@@ -149,78 +157,81 @@ export default class GroupWrapper extends React.PureComponent {
         const containerWidth = (container || {}).offsetWidth || 0
 
         return (
-          <div ref={node => this.node = node}>
-          <ContentLoader
-            data={groups.collection}
-            isLoading={groups.isLoading}
-          >
-                {_.map(group.competitors, (item, i) => {
-                    let positionClass
-                    switch (i) {
-                      case 0:
-                        positionClass = 'left'
-                        break;
-                      case 1:
-                        positionClass = 'bottom'
-                        break;
-                      case 2:
-                        positionClass = 'right'
-                        break;
-                    }
-                    return (
-                      <div className={`competitor ${positionClass}`} onClick={() => this.handleSelectCompetitor(item.id)}>
-                        {selectedCompetitor === item.id &&
-                            <div className="competitor-tooltip">
-                            <div className="competitor-tooltip-header">{item.title}</div>
-                            <div className="competitor-tooltip-inner">
-                                <Link to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.competitors}`}>Edit</Link>
-                            </div>
-                          </div>
+            <div ref={node => this.node = node}>
+                <ContentLoader
+                    data={groups.collection}
+                    isLoading={groups.isLoading}
+                >
+                    {_.map(group.competitors, (item, i) => {
+                        let positionClass
+                        switch (i) {
+                            case 0:
+                                positionClass = 'left'
+                                break;
+                            case 1:
+                                positionClass = 'bottom'
+                                break;
+                            case 2:
+                                positionClass = 'right'
+                                break;
                         }
-                      </div>
-                    )
-                })}
-
-                {_.map(group.organisations, (item) => {
-                    if (item.status < 1) {
-                        return
-                    }
-                    const trajectoryClass = (item.trajectory === 1) ? 'up': 'down'
-
-                    return (
-                        <Draggable
-                            key={item.id}
-                            axis="both"
-                            handle=".react-draggable-handle"
-                            defaultPosition={{
-                                x: containerWidth / 100 * item.positionX,
-                                y: containerHeight / 100 * item.positionY
-                            }}
-                            grid={[10, 10]}
-                            scale={1}
-                            bounds=".gridwrapper-inner-section-wrapper"
-                            onStop={this.onDraggableEventHandler}
-                        >
-                            <div handleid={item.id}
-                                 className={`size-${item.icon_size}`}
-                                 className={
-                                     [
-                                         `size-m`,
-                                         `trajectory-${trajectoryClass}`,
-                                         (selectedDraggable && selectedDraggable !== item.id ? 'disabled' : ''),
-                                         (selectedDraggable === item.id ? 'is-selected' : '')
-                                     ]
-                                 }
-                            >
-                                <div className="react-draggable-handle">
-                                  <div className="react-draggable-handle-title">{item.abbreviation}</div>
-                                    <span className="user-colour-dot" style={{backgroundColor: item.profile_colour}}></span>
+                        return (
+                            <div className={`competitor ${positionClass}`}
+                                 onClick={() => this.handleSelectCompetitor(item.id)}>
+                                {selectedCompetitor === item.id &&
+                                <div className="competitor-tooltip">
+                                    <div className="competitor-tooltip-header">{item.title}</div>
+                                    <div className="competitor-tooltip-inner">
+                                        <Link
+                                            to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.competitors}`}>Edit</Link>
+                                    </div>
                                 </div>
-                                {selectedDraggable === item.id &&
-                                  <span className="react-draggable-title">{item.title}</span>
                                 }
+                            </div>
+                        )
+                    })}
 
-                                {selectedDraggable === item.id &&
+                    {_.map(group.organisations, (item) => {
+                        if (item.status < 1) {
+                            return
+                        }
+                        const trajectoryClass = (item.trajectory === 1) ? 'up' : 'down'
+
+                        return (
+                            <Draggable
+                                key={item.id}
+                                axis="both"
+                                handle=".react-draggable-handle"
+                                defaultPosition={{
+                                    x: containerWidth / 100 * item.positionX,
+                                    y: containerHeight / 100 * item.positionY
+                                }}
+                                grid={[10, 10]}
+                                scale={1}
+                                bounds=".gridwrapper-inner-section-wrapper"
+                                onStop={this.onDraggableEventHandler}
+                            >
+                                <div handleid={item.id}
+                                     className={`size-${item.icon_size}`}
+                                     className={
+                                         [
+                                             `size-m`,
+                                             `trajectory-${trajectoryClass}`,
+                                             (selectedDraggable && selectedDraggable !== item.id ? 'disabled' : ''),
+                                             (selectedDraggable === item.id ? 'is-selected' : '')
+                                         ]
+                                     }
+                                >
+                                    <div className="react-draggable-handle">
+                                        <div className="react-draggable-handle-title">{item.abbreviation}</div>
+                                        <span className="user-colour-dot"
+                                              style={{backgroundColor: item.profile_colour}}></span>
+                                    </div>
+                                    {selectedDraggable === item.id &&
+                                    <span className="react-draggable-title">{item.title}</span>
+                                    }
+
+                                    {selectedDraggable === item.id &&
                                     <div className="react-draggable-actions">
                                         <Link className="button-round first"
                                               to={`/${url.projects}/${params.id}/groups/${group.id}/${url.organisations}/${item.id}`}>
@@ -240,33 +251,34 @@ export default class GroupWrapper extends React.PureComponent {
                                         </Link>
 
                                         <span className="button-round fourth clickable"
-                                          onClick={() => {
-                                            const newTrajectory = (item.trajectory == 0) ? 1 : 0
-                                            this.handleSetTrajectory(item.id, newTrajectory)
-                                          }}
+                                              onClick={() => {
+                                                  const newTrajectory = (item.trajectory == 0) ? 1 : 0
+                                                  this.handleSetTrajectory(item.id, newTrajectory)
+                                              }}
                                         >
                                             <span className="button-round-inside icon-compass"/>
                                             Choose<br/>Trajectory
                                         </span>
                                     </div>
-                                }
+                                    }
 
-                            </div>
-                        </Draggable>
-                    )
-                })
-                }
-                {this.props.children}
+                                </div>
+                            </Draggable>
+                        )
+                    })
+                    }
+                    {this.props.children}
 
-                {selectedOrganisation.coordinates ? <Coordinate group={selectedOrganisation}/> : ''}
+                    {selectedOrganisation.coordinates ? <Coordinate group={selectedOrganisation}/> : ''}
 
-                {!_.isEmpty(updatedCoordinates) &&
-                <React.Fragment>
-                    <button className="button gridwrapper-save" onClick={this.handleSaveChanges}>Save Changes</button>
-                </React.Fragment>
-                }
+                    {!_.isEmpty(updatedCoordinates) &&
+                    <React.Fragment>
+                        <button className="button gridwrapper-save" onClick={this.handleSaveChanges}>Save Changes
+                        </button>
+                    </React.Fragment>
+                    }
 
-              </ContentLoader>
+                </ContentLoader>
             </div>
         )
     }
