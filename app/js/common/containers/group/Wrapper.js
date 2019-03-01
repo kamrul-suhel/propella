@@ -97,7 +97,6 @@ export default class GroupWrapper extends React.PureComponent {
             let selectedOrganisation = {...data.data};
             _.map(updatedCoordinates, (updatedCoordinate) => {
                 if (updatedCoordinate.id === selectedOrganisation.id) {
-                    console.log("Group founded: ", selectedOrganisation)
                     selectedOrganisation.positionX = updatedCoordinate.positionX;
                     selectedOrganisation.positionY = updatedCoordinate.positionY;
                 }
