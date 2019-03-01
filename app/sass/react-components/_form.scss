@@ -1,13 +1,12 @@
 .form-wrapper {
         position: relative;
         padding:20px;
-        max-height:calc(100VH - 210px);
+        max-height:calc(100VH - 225px);
         height:100%;
         overflow-x:hidden;
         overflow-y:scroll;
         &.form-loading {
 		pointer-events: none;
-
 		&:before {
 			content: "";
 			position: absolute;

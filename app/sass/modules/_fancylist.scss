@@ -3,7 +3,7 @@
   margin: 0;
   list-style: none;
   overflow:hidden scroll;
-  max-height:500px;
+  max-height:calc(100VH - 214px);
   .fancylist-item {
     display: flex;
     flex-direction: row;
@@ -14,7 +14,6 @@
     color: $brand-color-dark;
     padding: 0 10px;
     line-height: 30px;
-
     &.is-inactive {
         color: #E7E7E7;
 

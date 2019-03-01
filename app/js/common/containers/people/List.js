@@ -48,8 +48,10 @@ export default class List extends React.PureComponent {
                 to={`/${url.projects}/${this.props.params.id}/${url.groups}/${this.props.params.groupId}/${url.people}/${person.id}`}
                 className="icon-pencil"
                 />
-                <span type="button" onClick={() => this.handleDelete(this.props.params.groupId, person.id)} className="clickable icon-bin" />
-                <span type="button" class={fn.getPeopleCharacter(1)['iconImage']}></span>
+                <span type="button" onClick={() => this.handleDelete(this.props.params.groupId, person.id)} className="clickable icon-bin" />                
+                {person.character_id &&
+                <span type="button" class={fn.getPeopleCharacter(parseInt(person.character_id))['iconImage']}></span>
+                }
             </React.Fragment>
             }
             category={person.organisation_title}

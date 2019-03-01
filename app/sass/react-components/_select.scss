@@ -73,11 +73,12 @@
 
 			.Select-value-label {
 				color: $text-color;
+                font-size:24px;
 			}
 		}
 
 		.Select-menu-outer {
-			z-index: 100;
+			z-index: 100;           
 		}
 
 		.Select-option,

@@ -519,17 +519,18 @@
         height: calc(100% - 40px);
         display: flex;
         justify-content: space-between;
-        font-size: 16px;
+        font-size: 16px;        
 
         .axis-image {
             position: absolute;
             right: -1px;
             top: 0px;
             height: 100%;
-            width: 7px;
+            width: 19px;
             background-image: url(../images/vertical-axis.svg);
             background-size: 100% 100%;
-            background-repeat:no-repeat;
+            background-repeat: no-repeat;
+            background-position: 7px 0px;
         }
 
         .top-icon {
