@@ -45,6 +45,7 @@ export default class Description extends React.PureComponent {
                       onChange={handleInputChange}
                       label="Type of Stakeholder"
                       options={_.values(peopleTypes.collection)}
+                      validation="required"
                   />
                 </ContentLoader>
 
@@ -54,6 +55,7 @@ export default class Description extends React.PureComponent {
                     onChange={handleInputChange}
                     label="Assign an Organisation"
                     options={_.values(organisations)}
+                    validation="required"
                 />
 
                 <div className="grid">
@@ -103,6 +105,7 @@ export default class Description extends React.PureComponent {
                             value={icon_size}
                             onChange={handleInputChange}
                             className="radio-gender"
+                            validation="required"
                         />
 
                     </div>
