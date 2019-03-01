@@ -87,11 +87,12 @@ export default class Nav extends React.PureComponent {
             <Link
               to={`/${url.projects}/${params.id}`}
               className="nav-close icon-x-small"
+              title="Back to All Groups"
             />
             {activeReport ? (
-              <Link to={this.closeReportLink} className="icon-toggled" />
+              <Link to={this.closeReportLink} className="icon-toggled" title="View Grid" />
             ) : (
-              <Link to={this.reportLink} className="icon-normal" />
+              <Link to={this.reportLink} className="icon-normal" title="Download Report"/>
             )}
           </React.Fragment>
         ) : (

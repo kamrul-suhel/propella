@@ -8,4 +8,5 @@ export const url = {
     report: 'report',
     characters: 'characters',
     competitors: 'competitors',
+    archives: 'archives',
 };

@@ -58,6 +58,7 @@ export default class Description extends React.PureComponent {
             onChange={handleInputChange}
             label="Type of Stakeholder"
             options={_.values(organisationTypes.collection)}
+            validation="required"
           />
         </ContentLoader>
 
@@ -68,6 +69,7 @@ export default class Description extends React.PureComponent {
               value={abbreviation}
               onChange={handleInputChange}
               label="Set an Abbreviation"
+              validation="required"
             />
           </div>
           <div className="grid-xs-6">
@@ -92,6 +94,7 @@ export default class Description extends React.PureComponent {
               wide
               value={icon_size}
               onChange={handleInputChange}
+              validation="required"
             />
           </div>
         </div>
@@ -106,6 +109,7 @@ export default class Description extends React.PureComponent {
             onChange={handleInputChange}
             label="Assign a User to this Organisation"
             options={projectUserOptions}
+            validation="required"
           />
         </ContentLoader>
 
