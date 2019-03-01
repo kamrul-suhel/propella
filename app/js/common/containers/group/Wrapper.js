@@ -85,7 +85,7 @@ export default class GroupWrapper extends React.PureComponent {
     }
 
     getCoordinate = async (event, organisationId) => {
-        const {selectedOrganisation} = this.state;
+        const {selectedOrganisation, updatedCoordinates} = this.state;
 
         if(!_.isEmpty(selectedOrganisation)){
             this.setState({selectedOrganisation: {}})
@@ -94,10 +94,18 @@ export default class GroupWrapper extends React.PureComponent {
             event.stopPropagation();
             // Get the data from server
             const data = await api.get('organisations/'+organisationId);
+            let selectedOrganisation = {...data.data};
+            _.map(updatedCoordinates, (updatedCoordinate) => {
+                if(updatedCoordinate.id === selectedOrganisation.id){
+                    console.log("Group founded: ", selectedOrganisation)
+                    selectedOrganisation.positionX = updatedCoordinate.positionX;
+                    selectedOrganisation.positionY = updatedCoordinate.positionY;
+                }
+            });
 
             if (selectedOrganisation) {
                 this.setState({
-                    selectedOrganisation: {...data.data}
+                    selectedOrganisation: {...selectedOrganisation}
                 })
             }
         }

@@ -102,19 +102,12 @@ export default class ProjectWrapper extends React.PureComponent {
           event.stopPropagation();
           let selectedGroup = _.find(project.groups, (group) => group.id === groupId)
 
-            console.log("Selected coordinate before: ", selectedGroup)
-
             _.map(updatedCoordinates, (updatedCoordinate) => {
                 if(updatedCoordinate.id === selectedGroup.id){
-                    console.log("found one: ", updatedCoordinate)
-                    const coordinate = {
-                        positionX : updatedCoordinate.positionX,
-                        positionY : updatedCoordinate.positionY
-                    }
                     selectedGroup.positionX = updatedCoordinate.positionX;
                     selectedGroup.positionY = updatedCoordinate.positionY;
                 }
-            })
+            });
 
           if (selectedGroup) {
               this.setState({
