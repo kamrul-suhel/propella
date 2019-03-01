@@ -75,7 +75,7 @@
       position:absolute;
       left:0px;
       bottom:-7px;
-      color:$brand-color-3;
+      color:#ff6961;
     ul {
       list-style: none;
       padding: 0;
@@ -95,6 +95,7 @@
     -webkit-appearance: none;
     border: 1px solid #FCFCFC;
     padding: 6px 0;
+    color:$brand-color-dark;
   }
   
   input[name=abbreviation]{

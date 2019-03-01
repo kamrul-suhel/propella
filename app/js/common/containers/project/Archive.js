@@ -24,7 +24,7 @@ export default class Edit extends React.PureComponent {
     this.props.dispatch(
       fetchData({
         type: "PROJECT",
-        url: `/projects/archives`
+        url: `/projects/`
       })
     );
   };

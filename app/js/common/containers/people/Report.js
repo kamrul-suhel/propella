@@ -39,7 +39,7 @@ export default class Report extends React.PureComponent {
         <Nav {...this.props} />
         {_.isEmpty(group.organisations) ? (
           <div className="report-component">
-               <h1>No organisation found</h1>
+               <h1>No people found</h1>
            </div>
         ) : (
           <ReportList
