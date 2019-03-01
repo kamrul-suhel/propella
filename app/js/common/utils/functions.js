@@ -523,6 +523,10 @@ export default {
   },
   
   getPeopleCharacter(id) {
+      const totalArray = this.getPeopleCharacters().length;
+      if(totalArray < id){
+         return _.find(this.getPeopleCharacters(), {id: 1})
+      }
       return _.find(this.getPeopleCharacters(), {id: id})
   }
 };
