@@ -9,4 +9,5 @@ export const url = {
     characters: 'characters',
     competitors: 'competitors',
     archives: 'archives',
+    wordpress: 'http://propella.hostings.co.uk'
 };

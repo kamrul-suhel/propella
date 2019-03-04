@@ -1,19 +1,34 @@
 import React from "react";
 import { Link } from "react-router";
-import { connect } from "react-redux";
+import {fetchData} from 'app/actions';
+import {connect} from 'react-redux';
 import { fn } from "app/utils";
 import { url } from "app/constants";
 import { makeGetGroup } from "app/containers/group/selector";
+import { makeGetMenu } from "app/reducers/menu";
 
 @connect((state, ownProps) => {
   const getGroup = makeGetGroup();
+  const getMenu = makeGetMenu();
 
   return {
     group: getGroup(state, ownProps.params.groupId),
-    me: state.me
+    me: state.me,
+    menu: getMenu(state)
   };
 })
 export default class Nav extends React.PureComponent {
+  componentDidMount() {
+      this.fetchData();
+  }
+
+  fetchData = async () => {
+    this.props.dispatch(fetchData({
+        type: 'MENU',
+        url: `${url.wordpress}/wp-admin/admin-ajax.php?action=get_menu`,
+    }));
+  }
+
   nextLink = () => {
     const { params, location } = this.props;
 
@@ -70,11 +85,13 @@ export default class Nav extends React.PureComponent {
   };
 
   render() {
-    const { project, location, group, groups, params } = this.props;
+    const { project, location, group, groups, params, menu } = this.props;
     const user = fn.getUser();
 
     // check if already on a report page
     const activeReport = location.pathname.match(/(\/report)/);
+
+    console.log(menu.collection)
 
     return (
       <div className="nav">
@@ -115,40 +132,18 @@ export default class Nav extends React.PureComponent {
               Log out {user.display_name}
             </a>
           </div>
-          <ul id="menu-main-menu" className="main">
-            <li
-              id="menu-item-47"
-              className="menu-item menu-item-type-post_type menu-item-object-page menu-item-47"
-            >
-              <a href="http://propella.hostings.co.uk/dashboard/">Dashboard</a>
-            </li>
-            <li
-              id="menu-item-46"
-              className="menu-item menu-item-type-post_type menu-item-object-page menu-item-46"
-            >
-              <a href="http://propella.hostings.co.uk/archive/">Archive</a>
-            </li>
-            <li
-              id="menu-item-44"
-              className="menu-item menu-item-type-post_type menu-item-object-page menu-item-44"
-            >
-              <a href="http://propella.hostings.co.uk/faqs/">FAQS</a>
-            </li>
-            <li
-              id="menu-item-162"
-              className="menu-item menu-item-type-post_type menu-item-object-page menu-item-162"
-            >
-              <a href="http://propella.hostings.co.uk/user-settings/">
-                User Settings
-              </a>
-            </li>
-            <li
-              id="menu-item-48"
-              className="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-9 current_page_item menu-item-48"
-            >
-              <a href="http://propella.hostings.co.uk/step-1/">Tutorial</a>
-            </li>
-          </ul>
+          {!_.isEmpty(menu.collection) &&
+            <ul id="menu-main-menu" className="main">
+              {_.map(menu.collection, (item) => (
+                <li
+                  key={item.ID}
+                  className="menu-item"
+                >
+                  <a href={item.url}>{item.title}</a>
+                </li>
+              ))}
+            </ul>
+          }
         </nav>
       </div>
     );
