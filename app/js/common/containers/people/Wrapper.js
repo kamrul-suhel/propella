@@ -208,7 +208,12 @@ export default class PeopleWrapper extends React.PureComponent {
                                  }
                             >
                                 <div className="react-draggable-handle">
+                                {item.character_id === 0 &&
                                     <span className={`person-icon avatar-${fn.getAvatarClass(item.size)}`}></span>
+                                }
+                                {item.character_id !== 0 &&
+                                    <span className={`person-icon ${fn.getPeopleCharacter(item.character_id)['iconImage']}`}></span>
+                                }
                                     <span className="person-abbr">{item.abbreviation}</span>
                                   {selectedDraggable === item.id &&
                                     <span className="react-draggable-title">{item.organisation_title}</span>

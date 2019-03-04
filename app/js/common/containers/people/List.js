@@ -114,6 +114,9 @@ export default class List extends React.PureComponent {
                   )}
               </ContentLoader>
           </Popup>
+          {_.isEmpty(group.people) &&
+              <span class="large-plus-sign"></span>
+                }
         </PeopleWrapper>
     );
   }

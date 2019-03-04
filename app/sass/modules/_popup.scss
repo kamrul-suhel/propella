@@ -360,3 +360,15 @@
         }
     }
 }
+ 
+.large-plus-sign{
+    background-image:url('../images/large-plus.png');
+    height:151px;
+    width:150px;
+    display:flex;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    background-size:contain;
+}
