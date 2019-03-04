@@ -17,6 +17,7 @@
   "dependencies": {
     "@xanda/react-components": "^1.0.298",
     "axios": "^0.18.0",
+    "body-scroll-lock": "^2.6.1",
     "express": "^4.16.4",
     "lodash": "^4.17.11",
     "moment": "^2.23.0",

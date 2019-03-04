@@ -235,9 +235,9 @@ export default {
 	 * @since   2017-07-21
 	 * @return  {boolean}		True if logged in, false if logged out
 	 */
-	isLoggedIn() { // TODO: Cookie seemed to transfer from electralink, and this.getCookie returned true.
-		// return false; // TODO: Remove
-		if (this.getCookie('token')) {
+	isLoggedIn() {
+
+		if (this.getUser().id) {
 			return true;
 		}
 

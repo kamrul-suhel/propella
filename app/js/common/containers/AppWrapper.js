@@ -11,8 +11,12 @@ import { fetchData } from 'app/actions';
 })
 export default class AppWrapper extends React.PureComponent {
 
-  componentDidMount() {
-      this.fetchData()
+  async componentWillMount() {
+      await this.fetchData()
+
+      if (!fn.isLoggedIn()) {
+        window.location.href = `${url.wordpress}/${url.login}`
+      }
 	}
 
   fetchData = async () => {
@@ -23,6 +27,9 @@ export default class AppWrapper extends React.PureComponent {
   }
 
 	render() {
+    if (!fn.isLoggedIn()) {
+      return null
+    }
 		return React.Children.map(this.props.children, child => React.cloneElement(child, ...this.props));
 	}
 }

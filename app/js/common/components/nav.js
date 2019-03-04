@@ -18,6 +18,13 @@ import { makeGetMenu } from "app/reducers/menu";
   };
 })
 export default class Nav extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      menuOpen: false
+    };
+  }
   componentDidMount() {
       this.fetchData();
   }
@@ -84,19 +91,23 @@ export default class Nav extends React.PureComponent {
     }
   };
 
+  handleToggleMenu = () => {
+    const newMenuState = this.state.menuOpen ? false : true
+    this.setState({menuOpen: newMenuState})
+  }
+
   render() {
     const { project, location, group, groups, params, menu } = this.props;
     const user = fn.getUser();
 
     // check if already on a report page
     const activeReport = location.pathname.match(/(\/report)/);
-
-    console.log(menu.collection)
+    const menuClass = this.state.menuOpen ?'is-open-menu' : ''
 
     return (
       <div className="nav">
         <img className="nav-logo" src="/../../../images/logo.svg" />
-        {params.groupId && location.pathname.match(/(\/organisations|\/people|\/\groups\/[0-9]+$)/) ? (
+        {params.groupId && location.pathname.match(/(\/organisations|\/people|\/\groups\/[0-9]+)/) ? (
           <React.Fragment>
             <Link to={this.nextLink} className="nav-link">
               {group.title}
@@ -116,19 +127,19 @@ export default class Nav extends React.PureComponent {
           <Link to={this.nextLink} className="icon-stack" />
         )}
         <div className="menu">{user && <p>Hi, {user.display_name}!</p>}</div>
-        <a className="hamburger" href="#" title="Menu">
+        <span className="hamburger clickable" onClick={this.handleToggleMenu} title="Menu">
           <span className="line-1" />
           <span className="line-2" />
           <span className="line-3" />
-        </a>
+        </span>
         <nav
           id="main-nav"
-          className="main-nav"
+          className={`main-nav ${menuClass}`}
           role="navigation"
           aria-label="Main Navigation"
         >
           <div className="header-greeting">
-            <a href="http://propella.hostings.co.uk/wp-login.php?action=logout&amp;redirect_to=%2Flogin&amp;_wpnonce=6811e8790b">
+            <a href={`${url.wordpress}/wp-login.php?action=logout&amp;redirect_to=%2Flogin&amp;_wpnonce=6811e8790b`}>
               Log out {user.display_name}
             </a>
           </div>
@@ -137,7 +148,7 @@ export default class Nav extends React.PureComponent {
               {_.map(menu.collection, (item) => (
                 <li
                   key={item.ID}
-                  className="menu-item"
+                  className={`menu-item`}
                 >
                   <a href={item.url}>{item.title}</a>
                 </li>
