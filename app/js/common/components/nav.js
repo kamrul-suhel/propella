@@ -107,25 +107,29 @@ export default class Nav extends React.PureComponent {
     return (
       <div className="nav">
         <img className="nav-logo" src="/../../../images/logo.svg" />
-        {params.groupId && location.pathname.match(/(\/organisations|\/people|\/\groups\/[0-9]+)/) ? (
+        {params.id &&
           <React.Fragment>
-            <Link to={this.nextLink} className="nav-link">
-              {group.title}
-            </Link>
-            <Link
-              to={`/${url.projects}/${params.id}`}
-              className="nav-close icon-x-small"
-              title="Back to All Groups"
-            />
-            {activeReport ? (
-              <Link to={this.closeReportLink} className="icon-toggled" title="View Grid" />
-            ) : (
-              <Link to={this.reportLink} className="icon-normal" title="Download Report"/>
-            )}
+          {params.groupId && location.pathname.match(/(\/organisations|\/people|\/\groups\/[0-9]+)/) ? (
+            <React.Fragment>
+              <Link to={this.nextLink} className="nav-link">
+                {group.title}
+              </Link>
+              <Link
+                to={`/${url.projects}/${params.id}`}
+                className="nav-close icon-x-small"
+                title="Back to All Groups"
+              />
+              {activeReport ? (
+                <Link to={this.closeReportLink} className="icon-toggled" title="View Grid" />
+              ) : (
+                <Link to={this.reportLink} className="icon-normal" title="Download Report"/>
+              )}
+            </React.Fragment>
+          ) : (
+            <Link to={this.nextLink} className="icon-stack" />
+          )}
           </React.Fragment>
-        ) : (
-          <Link to={this.nextLink} className="icon-stack" />
-        )}
+        }
         <div className="menu">{user && <p>Hi, {user.display_name}!</p>}</div>
         <span className="hamburger clickable" onClick={this.handleToggleMenu} title="Menu">
           <span className="line-1" />
