@@ -35,6 +35,8 @@ export default class List extends React.PureComponent {
   }
 
   renderItem = (person) => {
+      const { params } = this.props
+
       if (!person) {
           return
       }
@@ -47,12 +49,17 @@ export default class List extends React.PureComponent {
             actions={
               <React.Fragment>
                 <Link
-                to={`/${url.projects}/${this.props.params.id}/${url.groups}/${this.props.params.groupId}/${url.people}/${person.id}`}
+                to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}/${person.id}`}
                 className="icon-pencil"
                 />
-                <span type="button" onClick={() => this.handleDelete(this.props.params.groupId, person.id)} className="clickable icon-bin" />
+                <span type="button" onClick={() => this.handleDelete(params.groupId, person.id)} className="clickable icon-bin" />
                 {person.character_id &&
-                  <span type="button" class={character['iconImage']} title={character['title']}></span>
+                  <Link
+                    to={`/${url.projects}/${params.id}/groups/${params.groupId}/${url.people}/${person.id}/${url.characters}?character=${character.id}`}
+                    class={character['iconImage']}
+                    title={character['title']}
+
+                  />
                 }
             </React.Fragment>
             }

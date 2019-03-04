@@ -31,9 +31,7 @@ export default class GroupWrapper extends React.PureComponent {
             updatedCoordinates: {},
             selectedDraggable: 0,
             selectedCompetitor: 0,
-            selectedOrganisation: {},
-            containerWidth: 0,
-            containerHeight: 0
+            selectedOrganisation: {}
         }
     }
 
