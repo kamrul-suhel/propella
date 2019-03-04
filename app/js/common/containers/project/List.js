@@ -66,7 +66,9 @@ export default class List extends React.PureComponent {
                       <div className="item-project new-project">
                           <div className="wrap">
                               <div className="thumb">
-                                  <img src="http://propella.hostings.co.uk/wp-content/themes/propella/images/DottedStack.svg" alt=""/>
+                                    <Link to={`/${url.projects}/add`}>
+                                        <img src="http://propella.hostings.co.uk/wp-content/themes/propella/images/DottedStack.svg" alt=""/>
+                                    </Link>
                               </div>
                           </div>
                           <h2 className="title"><Link to={`/${url.projects}/add`}>Add Project</Link></h2>

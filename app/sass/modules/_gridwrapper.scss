@@ -128,11 +128,10 @@
                 .react-draggable-handle-title{
                     text-transform:uppercase;
                 }
-                .person-icon{
-                    &:first-child{
+                .person-icon{                    
                         height: 31px;
                         margin-top: -9px;
-                    }
+                        font-size: 31px;
                 }                    
             }
             .react-draggable-title{
@@ -277,7 +276,7 @@
                 .person-icon{
                     &:before{
                         color:white;
-                    }
+                    }                    
                 }
             }
 

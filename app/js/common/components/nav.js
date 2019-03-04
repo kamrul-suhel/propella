@@ -103,6 +103,7 @@ export default class Nav extends React.PureComponent {
     // check if already on a report page
     const activeReport = location.pathname.match(/(\/report)/);
     const menuClass = this.state.menuOpen ?'is-open-menu' : ''
+    const burgerClass = this.state.menuOpen ?'is-active' : ''
 
     return (
       <div className="nav">
@@ -131,7 +132,7 @@ export default class Nav extends React.PureComponent {
           </React.Fragment>
         }
         <div className="menu">{user && <p>Hi, {user.display_name}!</p>}</div>
-        <span className="hamburger clickable" onClick={this.handleToggleMenu} title="Menu">
+        <span className={`hamburger clickable ${burgerClass}`} onClick={this.handleToggleMenu} title="Menu">
           <span className="line-1" />
           <span className="line-2" />
           <span className="line-3" />

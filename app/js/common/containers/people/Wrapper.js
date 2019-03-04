@@ -151,8 +151,6 @@ export default class PeopleWrapper extends React.PureComponent {
         const {groups, group, params, container, people} = this.props
         const {updatedCoordinates, selectedDraggable, progressLabel, selectedPeople, showCharacters} = this.state
 
-        console.log(people.showCharacters)
-
         if(!container){
           return null
         }
