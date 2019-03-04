@@ -18,7 +18,7 @@ import { Form, TextInput } from "@xanda/react-components";
 })
 export default class Edit extends React.PureComponent {
   componentDidMount() {
-    if('add' !== this.props.params.id){
+    if(this.props.params.id && 'add' !== this.props.params.id){
       this.fetchData();
     }
   }
