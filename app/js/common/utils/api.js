@@ -185,7 +185,7 @@ export default {
 			return false;
 		}
 
-		if (response.status === 424) {
+		if (response.status === 424 || response.status === 401) {
 			return true;
 		}
 

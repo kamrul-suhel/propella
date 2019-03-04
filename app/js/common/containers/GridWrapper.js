@@ -9,13 +9,30 @@ import {
 } from "body-scroll-lock";
 
 export default class GridWrapper extends React.PureComponent {
+  constructor(props){
+    super(props);
+
+    this.state = {
+      container: null,
+    };
+  }
+
   componentDidMount() {
-    disableBodyScroll(document.querySelector("#app"));
+    disableBodyScroll();
+
+    this.setState({
+      container: {
+        width: this.container.offsetWidth,
+        height: this.container.offsetHeight,
+      }
+    });
   }
 
   render() {
+    const { container } = this.state;
+
     const childrenWithProps = React.Children.map(this.props.children, child =>
-      React.cloneElement(child, ...this.props)
+      React.cloneElement(child, {...this.props, container: this.state.container})
     );
 
     return (
@@ -34,7 +51,7 @@ export default class GridWrapper extends React.PureComponent {
             </div>
             <p className="axis-label">Royalty</p>
           </div>
-          <div id="gridwrapper-inner" className="gridwrapper-inner">
+          <div id="gridwrapper-inner" className="gridwrapper-inner" ref={el => (this.container = el)}>
             <div className="gridwrapper-inner-section-wrapper">
               <span className="gridwrapper-inner-section">Upgraders</span>
               <span className="gridwrapper-inner-section">VIP</span>

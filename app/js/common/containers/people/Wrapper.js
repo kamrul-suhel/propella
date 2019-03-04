@@ -51,27 +51,27 @@ export default class PeopleWrapper extends React.PureComponent {
     }
 
     onDraggableEventHandler = (event, data) => {
-        // find the id we're moving
-        const organisationId = Number(_.find(data.node.attributes, {name: 'handleid'}).value)
+      const { container } = this.props
+      // find the id we're moving
+      const organisationId = Number(_.find(data.node.attributes, {name: 'handleid'}).value)
 
-        if (data.deltaX === 0 || data.deltaY === 0) {
-            this.setState({'selectedDraggable': organisationId})
-        } else {
-            // get the wrapper dimensions
-            const container = document.getElementById('gridwrapper-inner')
-            const maxWidth = container.clientWidth
-            const maxHeight = container.clientHeight
+      if (data.deltaX === 0 || data.deltaY === 0) {
+          this.setState({'selectedDraggable': organisationId})
+      } else {
+          // get the wrapper dimensions
+          const maxWidth = container.width
+          const maxHeight = container.height
 
-            const newY = _.round((data.y / maxHeight) * 100, 4)
-            const newX = _.round((data.x / maxWidth) * 100, 4)
+          const newY = _.round((data.y / maxHeight) * 100, 4)
+          const newX = _.round((data.x / maxWidth) * 100, 4)
 
-            this.setState({
-                updatedCoordinates: {
-                    ...this.state.updatedCoordinates,
-                    [organisationId]: {id: organisationId, positionX: newX, positionY: newY}
-                }
-            })
-        }
+          this.setState({
+              updatedCoordinates: {
+                  ...this.state.updatedCoordinates,
+                  [organisationId]: {id: organisationId, positionX: newX, positionY: newY}
+              }
+          })
+      }
     }
 
     handleClick = (e) => {
@@ -145,12 +145,12 @@ export default class PeopleWrapper extends React.PureComponent {
     }
 
     render() {
-        const {groups, group, params} = this.props
+        const {groups, group, params, container} = this.props
         const {updatedCoordinates, selectedDraggable, progressLabel, selectedPeople} = this.state
 
-        const container = document.getElementById('gridwrapper-inner')
-        const containerHeight = (container || {}).offsetHeight || 0
-        const containerWidth = (container || {}).offsetWidth || 0
+        if(!container){
+          return null
+        }
 
         // get the id's of the active organisations
         const activeOrganisationIds = _.map(group.organisations, (item) => {if(item.status === 1) return item.id})
@@ -189,8 +189,8 @@ export default class PeopleWrapper extends React.PureComponent {
                             axis="both"
                             handle=".react-draggable-handle"
                             defaultPosition={{
-                                x: containerWidth / 100 * item.positionX,
-                                y: containerHeight / 100 * item.positionY
+                                x: container.width / 100 * item.positionX,
+                                y: container.height / 100 * item.positionY
                             }}
                             grid={[10, 10]}
                             scale={1}

@@ -49,6 +49,8 @@ export default class ProjectWrapper extends React.PureComponent {
     }
 
     onDraggableEventHandler = (event, data) => {
+        const { container } = this.props
+
         // find the id we're moving
         const groupId = Number(_.find(data.node.attributes, {name: 'handleid'}).value)
 
@@ -57,9 +59,8 @@ export default class ProjectWrapper extends React.PureComponent {
             this.setState({'selectedDraggable': groupId})
         } else {
             // get the wrapper dimensions
-            const container = document.getElementById('gridwrapper-inner')
-            const maxWidth = container.clientWidth
-            const maxHeight = container.clientHeight
+            const maxWidth = container.width
+            const maxHeight = container.height
 
             const newY = _.round((data.y / maxHeight) * 100, 4)
             const newX = _.round((data.x / maxWidth) * 100, 4)
@@ -131,12 +132,13 @@ export default class ProjectWrapper extends React.PureComponent {
 
 
     render() {
-        const {projects, project, params} = this.props
+        const {projects, project, params, container} = this.props
         const {updatedCoordinates, selectedDraggable, selectedGroupCoordinates, progressLabel} = this.state
 
-        const container = document.getElementById('gridwrapper-inner')
-        const containerHeight = (container || {}).offsetHeight || 0
-        const containerWidth = (container || {}).offsetWidth || 0
+        // dont load unless we have the container's dimensions
+        if(!container){
+          return null
+        }
 
         return (
             <div className="gridwrapper-inner-" ref={node => this.node = node}>

@@ -31,7 +31,9 @@ export default class GroupWrapper extends React.PureComponent {
             updatedCoordinates: {},
             selectedDraggable: 0,
             selectedCompetitor: 0,
-            selectedOrganisation: {}
+            selectedOrganisation: {},
+            containerWidth: 0,
+            containerHeight: 0
         }
     }
 
@@ -61,19 +63,16 @@ export default class GroupWrapper extends React.PureComponent {
     }
 
     onDraggableEventHandler = (event, data) => {
+        const { container } = this.props
+
         // find the id we're moving
         const organisationId = Number(_.find(data.node.attributes, {name: 'handleid'}).value)
 
-        if (data.deltaX === 0 || data.deltaY === 0) {
+        if (Math.abs(data.deltaX) === 0 || Math.abs(data.deltaY) === 0) {
             this.setState({'selectedDraggable': organisationId})
         } else {
-            // get the wrapper dimensions
-            const container = document.getElementById('gridwrapper-inner')
-            const maxWidth = container.clientWidth
-            const maxHeight = container.clientHeight
-
-            const newY = _.round((data.y / maxHeight) * 100, 4)
-            const newX = _.round((data.x / maxWidth) * 100, 4)
+            const newY = _.round((data.y / container.height) * 100, 4)
+            const newX = _.round((data.x / container.width) * 100, 4)
 
             this.setState({
                 updatedCoordinates: {
@@ -147,13 +146,13 @@ export default class GroupWrapper extends React.PureComponent {
     handleSelectCompetitor = (id) => this.setState({selectedCompetitor: id})
 
     render() {
-        const {groups, group, params} = this.props
-
+        const {groups, group, params, container} = this.props
         const {updatedCoordinates, selectedDraggable, progressLabel, selectedOrganisation, selectedCompetitor} = this.state
 
-        const container = document.getElementById('gridwrapper-inner')
-        const containerHeight = (container || {}).offsetHeight || 0
-        const containerWidth = (container || {}).offsetWidth || 0
+        // dont load unless we have the container's dimensions
+        if(!container){
+          return null
+        }
 
         return (
             <div ref={node => this.node = node}>
@@ -202,8 +201,8 @@ export default class GroupWrapper extends React.PureComponent {
                                 axis="both"
                                 handle=".react-draggable-handle"
                                 defaultPosition={{
-                                    x: containerWidth / 100 * item.positionX,
-                                    y: containerHeight / 100 * item.positionY
+                                    x: container.width / 100 * item.positionX,
+                                    y: container.height / 100 * item.positionY
                                 }}
                                 grid={[10, 10]}
                                 scale={1}

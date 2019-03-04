@@ -74,7 +74,7 @@ export default class Nav extends React.PureComponent {
   reportLink = () => {
     const { params, location } = this.props;
 
-    return location.pathname.match(/(\/organisations\/people)/) ? `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/people/${url.report}` : `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.organisations}/${url.report}`;
+    return location.pathname.match(/(\/people)/) ? `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/people/${url.report}` : `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.organisations}/${url.report}`;
   };
 
   closeReportLink = () => {

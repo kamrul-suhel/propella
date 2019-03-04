@@ -74,10 +74,17 @@ export default class List extends React.PureComponent {
               title="People"
               buttons={
                   <React.Fragment>
-                      {!_.isEmpty(group.people) &&
-                      <Link className="button"
-                            to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}/add`}>Add
-                          person</Link>
+                    {!_.isEmpty(group.people) &&
+                      <React.Fragment>
+                        <Link
+                          className="button"
+                          to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}/add`}
+                        >Add Person</Link>
+                        <Link
+                          className="button"
+                          to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}/add`}
+                        >View Characters</Link>
+                        </React.Fragment>
                       }
                   </React.Fragment>
               }
