@@ -157,8 +157,8 @@ export default class ProjectWrapper extends React.PureComponent {
                             axis="both"
                             handle=".react-draggable-handle"
                             defaultPosition={{
-                                x: containerWidth / 100 * item.positionX,
-                                y: containerHeight / 100 * item.positionY
+                                x: container.width / 100 * item.positionX,
+                                y: container.height / 100 * item.positionY
                             }}
                             grid={[10, 10]}
                             scale={1}
