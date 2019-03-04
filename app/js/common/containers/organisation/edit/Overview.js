@@ -20,7 +20,7 @@ export default class Overview extends React.PureComponent {
                 <div className="ov-img-content">
                     <div className="ov-icon-path">
                         <div className="ov-icon-size">{icon_size}</div>
-                        <p class="ov-abbreviation">{abbreviation}</p>
+                        <p className="ov-abbreviation">{abbreviation}</p>
                     </div>
                 </div>
                 <div className="ov-scores">

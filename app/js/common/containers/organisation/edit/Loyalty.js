@@ -16,7 +16,7 @@ export default class Loyalty extends React.PureComponent {
 			<Form onSubmit={handleSubmit} ref={setFormRef}>
 				<p className="form-label form-label-title">Okay now lets see where they sit on the board</p>
 
-				<p class="h2">Loyalty</p>
+				<p className="h2">Loyalty</p>
 
                                 <p className="slider-description"><strong>Value, influence and power. King of the realm or court jester?</strong><br />
 				Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
@@ -31,7 +31,7 @@ export default class Loyalty extends React.PureComponent {
           validation="required"
 					wide
 				/>
-				<span class="counter">{positionX}</span>
+				<span className="counter">{positionX}</span>
 			</Form>
 		);
 	}

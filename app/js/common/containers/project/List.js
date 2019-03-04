@@ -59,7 +59,7 @@ export default class List extends React.PureComponent {
               <div className="page-wrap">
 
                   <div className="page-header">
-                      <h1 className="page-title">Your Propella projects</h1>
+                      <h1 className="page-title">Your Propella Projects</h1>
                   </div>
 
                   <div className="projects">

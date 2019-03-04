@@ -1,4 +1,4 @@
-import { api } from 'app/utils';
+import { fn, api } from 'app/utils';
 
 const defaultState = {
 	collection: {},
@@ -7,6 +7,7 @@ const defaultState = {
 	isLoading: true,
 	misc: {},
 	pager: {},
+  showCharacters: fn.getCookie('showCharacters') == 1 ? true : false
 };
 
 export function people(state = defaultState, action) {
@@ -32,6 +33,14 @@ export function people(state = defaultState, action) {
 				...normalizedData,
 			};
 		}
+    case 'TOGGLE_DISPLAY_CHARACTERS': {
+      fn.toggleDisplayCharacters();
+      const showCharacters = fn.shouldDisplayCharacters();
+      return {
+        ...state,
+        showCharacters
+      };
+    }
 		default: {
 			return state;
 		}

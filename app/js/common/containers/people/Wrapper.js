@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import Draggable from 'react-draggable';
 import { api } from 'app/utils';
 import * as selector from 'app/containers/group/selector';
+import { makeGetPeople } from './selector';
 import { Link } from "react-router";
 import Coordinate from 'app/components/coordinate';
 import { fn } from 'app/utils';
@@ -12,8 +13,10 @@ import { fn } from 'app/utils';
 @connect((state, ownProps) => {
     const getGroups = selector.makeGetGroups();
     const getGroup = selector.makeGetGroup();
+    const getPeople = makeGetPeople();
 
     return {
+        people: getPeople(state),
         groups: getGroups(state),
         group: getGroup(state, ownProps.params.groupId),
     };
@@ -145,8 +148,10 @@ export default class PeopleWrapper extends React.PureComponent {
     }
 
     render() {
-        const {groups, group, params, container} = this.props
-        const {updatedCoordinates, selectedDraggable, progressLabel, selectedPeople} = this.state
+        const {groups, group, params, container, people} = this.props
+        const {updatedCoordinates, selectedDraggable, progressLabel, selectedPeople, showCharacters} = this.state
+
+        console.log(people.showCharacters)
 
         if(!container){
           return null
@@ -208,8 +213,12 @@ export default class PeopleWrapper extends React.PureComponent {
                                  }
                             >
                                 <div className="react-draggable-handle">
+                                  {people.showCharacters ? (
+                                    <span className={`person-icon`}>Character</span>
+                                  ) : (
                                     <span className={`person-icon avatar-${fn.getAvatarClass(item.size)}`}></span>
-                                    <span className="person-abbr">{item.abbreviation}</span>
+                                  )}
+                                  <span className="person-abbr">{item.abbreviation}</span>
                                   {selectedDraggable === item.id &&
                                     <span className="react-draggable-title">{item.organisation_title}</span>
                                   }

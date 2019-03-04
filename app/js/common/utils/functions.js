@@ -548,5 +548,25 @@ export default {
               return 'NF'
           }
       }
+  },
+
+  shouldDisplayCharacters(){
+    const value = this.getCookie('showCharacters');
+    if(value && value == 1){
+      return true
+    }
+    return false;
+  },
+
+  toggleDisplayCharacters() {
+    const value = this.getCookie('showCharacters');
+    let showCharacters;
+    if(value && value == 1){
+      showCharacters = 0
+    } else {
+      showCharacters = 1
+    }
+
+    return this.saveCookie('showCharacters', showCharacters, {path: '/'})
   }
 };

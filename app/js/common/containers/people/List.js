@@ -7,14 +7,18 @@ import {Popup, FancyList, FancyListItem} from 'app/components';
 import {api, fn} from 'app/utils';
 import {url} from 'app/constants';
 import { makeGetGroup, makeGetGroups } from 'app/containers/group/selector';
+import { makeGetPeople } from './selector';
 import PeopleWrapper from './Wrapper';
 
 @connect((state, ownProps) => {
     const getGroups = makeGetGroups();
     const getGroup = makeGetGroup();
+    const getPeople = makeGetPeople();
+
     return {
         groups: getGroups(state),
         group: getGroup(state, ownProps.params.groupId),
+        people: getPeople(state)
     };
 })
 export default class List extends React.PureComponent {
@@ -32,6 +36,10 @@ export default class List extends React.PureComponent {
               this.fetchData()
           }
       }
+  }
+
+  handleToggleCharacters = () => {
+    this.props.dispatch({type: 'TOGGLE_DISPLAY_CHARACTERS'})
   }
 
   renderItem = (person) => {
@@ -56,7 +64,7 @@ export default class List extends React.PureComponent {
                 {person.character_id &&
                   <Link
                     to={`/${url.projects}/${params.id}/groups/${params.groupId}/${url.people}/${person.id}/${url.characters}?character=${character.id}`}
-                    class={character['iconImage']}
+                    className={character['iconImage']}
                     title={character['title']}
 
                   />
@@ -71,7 +79,7 @@ export default class List extends React.PureComponent {
     }
 
   render() {
-    const {groups, group, params} = this.props
+    const {groups, group, params, people} = this.props
 
     return (
         <PeopleWrapper {...this.props}>
@@ -87,10 +95,10 @@ export default class List extends React.PureComponent {
                           className="button"
                           to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}/add`}
                         >Add Person</Link>
-                        <Link
+                        <span
                           className="button"
-                          to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}/add`}
-                        >View Characters</Link>
+                          onClick={this.handleToggleCharacters}
+                        >{people.showCharacters ? 'View' : 'Hide'} Characters</span>
                         </React.Fragment>
                       }
                   </React.Fragment>
@@ -108,10 +116,10 @@ export default class List extends React.PureComponent {
                   ) : (
                       <React.Fragment>
                           <FancyList>
-                            <li class="fancylist-item undefined">
-                            <span class="fancylist-item-title">Name</span>
-                            <span class="fancylist-item-category">ORG</span>
-                            <span class="fancylist-item-actions"></span>
+                            <li className="fancylist-item undefined">
+                            <span className="fancylist-item-title">Name</span>
+                            <span className="fancylist-item-category">ORG</span>
+                            <span className="fancylist-item-actions"></span>
                             </li>
                               {_.map(group.people, (person) => {
                                   return this.renderItem(person)
