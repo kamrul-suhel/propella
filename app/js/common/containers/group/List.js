@@ -98,8 +98,8 @@ export default class List extends React.PureComponent {
                   additionalClass="groups"
                   title="Groups"
                   closePath={`/${url.projects}/${this.props.params.id}`}                  
-                  buttons={_.isEmpty(project.groups) ? `` : <Link className="button" to={'/${url.projects}/${this.props.params.id}/${url.groups}/add'}>Add
-                          group 2</Link>}
+                  buttons={_.isEmpty(project.groups) ? `` : <Link className="button" to={`/${url.projects}/${this.props.params.id}/${url.groups}/add`}>Add
+                          group</Link>}
               >
                   <ContentLoader
                       data={projects.collection}
