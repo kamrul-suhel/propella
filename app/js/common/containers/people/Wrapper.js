@@ -64,7 +64,7 @@ export default class PeopleWrapper extends React.PureComponent {
           const maxWidth = container.width
           const maxHeight = container.height
 
-          const newY = _.round((data.y / maxHeight) * 100, 4)
+          const newY = 100 - _.round((data.y / maxHeight) * 100, 4)
           const newX = _.round((data.x / maxWidth) * 100, 4)
 
           this.setState({
@@ -194,7 +194,7 @@ export default class PeopleWrapper extends React.PureComponent {
                             handle=".react-draggable-handle"
                             defaultPosition={{
                                 x: container.width / 100 * item.positionX,
-                                y: container.height / 100 * item.positionY
+                                y: container.height - (container.height / 100 * item.positionY)
                             }}
                             grid={[10, 10]}
                             scale={1}
@@ -213,7 +213,7 @@ export default class PeopleWrapper extends React.PureComponent {
                             >
                                 <div className="react-draggable-handle">
                                   {people.showCharacters && item.character_id !== 0 ? (
-                                    <span className={`person-icon avatar-${fn.getAvatarClass(item.size)}`}></span>                                    
+                                    <span className={`person-icon avatar-${fn.getAvatarClass(item.size)}`}></span>
                                   ) : (
                                     <span className={`person-icon ${fn.getPeopleCharacter(item.character_id)['iconImage']}`}></span>
                                   )}

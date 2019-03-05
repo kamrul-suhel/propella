@@ -138,9 +138,7 @@ export default class List extends React.PureComponent {
                       </span>
                     </div>
                   );
-                })}
-
-                      
+                })}                      
               </div>
             </div>
           </div>
