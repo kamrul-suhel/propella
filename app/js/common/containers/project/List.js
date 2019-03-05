@@ -47,6 +47,10 @@ export default class List extends React.PureComponent {
     });
   };
 
+  handleSnapshotProject = async projectId => {
+    const response = await api.get(`projects/${projectId}/archives`)
+  }
+
   handleDeleteProject = async projectId => {
     if (window.confirm("Are you sure you want to delete this project?")) {
       const response = await api.delete(`projects/${projectId}`)
@@ -120,7 +124,7 @@ export default class List extends React.PureComponent {
                               </Link>
                             </li>
                             <li key="archive">
-                              <a href="/archive.html">Project snapshot</a>
+                              <span className="clickable" onClick={() => this.handleSnapshotProject(item.id)}>Project snapshot</span>
                             </li>
                             <li key="delete">
                               <span className="clickable" onClick={() => this.handleDeleteProject(item.id)}>Delete project</span>
@@ -138,7 +142,7 @@ export default class List extends React.PureComponent {
                       </span>
                     </div>
                   );
-                })}                      
+                })}
               </div>
             </div>
           </div>
