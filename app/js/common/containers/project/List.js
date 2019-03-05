@@ -90,7 +90,7 @@ export default class List extends React.PureComponent {
                                         <ul className="project-menu">
                                             <li><Link to={`/${url.projects}/${item.id}/edit`}>Project mission</Link></li>
                                             <li><Link to={`/${url.projects}/${item.id}`}>Straight to project</Link></li>
-                                            <li><a href="/archive.html">Project snapshot</a></li>
+                                            <li><Link to={`/${url.projects}/${item.id}/archives`}>Project snapshot</Link></li>
                                         </ul>
                                   }
                               </div>
