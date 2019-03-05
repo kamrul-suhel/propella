@@ -98,7 +98,7 @@ export default class Description extends React.PureComponent {
                 <Select
                   name="rel_user_id"
                   value={rel_user_id}
-                  label={`Assign a User to This Group` + <span className="foo"/>}
+                  label="Assign a User to This Group"
                   options={projectUserOptions}
                   onChange={handleInputChange}
                   className="project-user-select"
