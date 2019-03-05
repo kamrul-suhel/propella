@@ -3,12 +3,11 @@ import {url} from 'app/constants';
 import {fetchData} from 'app/actions';
 import {connect} from 'react-redux';
 import Draggable from 'react-draggable';
-import { api } from 'app/utils';
+import { fn, api } from 'app/utils';
 import * as selector from 'app/containers/group/selector';
 import { makeGetPeople } from './selector';
 import { Link } from "react-router";
 import Coordinate from 'app/components/coordinate';
-import { fn } from 'app/utils';
 
 @connect((state, ownProps) => {
     const getGroups = selector.makeGetGroups();
@@ -213,10 +212,10 @@ export default class PeopleWrapper extends React.PureComponent {
                                  }
                             >
                                 <div className="react-draggable-handle">
-                                  {people.showCharacters ? (
-                                    <span className={`person-icon`}>Character</span>
+                                  {people.showCharacters && item.character_id !== 0 ? (
+                                    <span className={`person-icon avatar-${fn.getAvatarClass(item.size)}`}></span>                                    
                                   ) : (
-                                    <span className={`person-icon avatar-${fn.getAvatarClass(item.size)}`}></span>
+                                    <span className={`person-icon ${fn.getPeopleCharacter(item.character_id)['iconImage']}`}></span>
                                   )}
                                   <span className="person-abbr">{item.abbreviation}</span>
                                   {selectedDraggable === item.id &&

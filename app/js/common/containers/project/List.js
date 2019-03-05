@@ -139,10 +139,11 @@ export default class List extends React.PureComponent {
                     </div>
                   );
                 })}
+
+                      
               </div>
             </div>
           </div>
-          {/*_.map(projects, (project) => <li>{project.ID}</li>)*/}
         </ContentLoader>
       </React.Fragment>
     );

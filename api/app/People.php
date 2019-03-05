@@ -56,9 +56,11 @@ class People extends Model
             'people.description',
             'people.status',
             'organisations.title as organisation',
-            'organisations.description as organisation_description'
+            'organisations.description as organisation_description',
+            'wp_usermeta.meta_value AS profile_colour'
         ])
-            ->leftJoin('organisations', 'people.organisation_id', '=', 'organisations.id');
+            ->leftJoin('organisations', 'people.organisation_id', '=', 'organisations.id')
+            ->leftJoin('wp_usermeta', 'organisations.rel_user_id', '=', DB::raw("wp_usermeta.user_id AND wp_usermeta.meta_key = 'profile_colour'"));
     }
 
     /**
