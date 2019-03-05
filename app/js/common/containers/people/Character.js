@@ -23,8 +23,10 @@ export default class Edit extends React.PureComponent {
   constructor(props) {
     super(props);
 
+    const { location } = props;
+
     this.state = {
-      activeSlide: 0
+      activeSlide: location.query.character ? location.query.character - 1 : 0
     };
   }
 
@@ -65,7 +67,7 @@ export default class Edit extends React.PureComponent {
     const { params } = this.props;
     const { activeSlide } = this.state;
     const response = await api.put(`/people/${params.personId}`, {
-      character_id: activeSlide
+      character_id: activeSlide + 1
     });
     if (!api.error(response)) {
       this.fetchGroup();
@@ -78,7 +80,7 @@ export default class Edit extends React.PureComponent {
   };
 
   render() {
-    const { person, popup, params } = this.props;
+    const { person, popup, params, location } = this.props;
     const { step } = this.state;
     const characters = fn.getPeopleCharacters();
 
@@ -88,7 +90,8 @@ export default class Edit extends React.PureComponent {
       speed: 500,
       slidesToShow: 1,
       slidesToScroll: 1,
-      beforeChange: (current, next) => this.setState({ activeSlide: next })
+      beforeChange: (current, next) => this.setState({ activeSlide: next }),
+      initialSlide: (location.query.character) ? (location.query.character - 1) : 0
     };
 
     return (
@@ -122,8 +125,7 @@ export default class Edit extends React.PureComponent {
           <div className="character-inner">
             <p className="form-label form-label-title">Choose a character</p>
             <Slider {...sliderSettings}>
-              {characters.map(item => {
-                return (
+              {_.map(characters, (item) => (
                   <div className="character-slide">
                     <img
                       className="character-image"
@@ -134,8 +136,7 @@ export default class Edit extends React.PureComponent {
                       {item["description"]}
                     </p>
                   </div>
-                );
-              })}
+                ))}
             </Slider>
           </div>
         </Popup>

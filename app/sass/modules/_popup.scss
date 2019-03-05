@@ -63,7 +63,6 @@
             background: white;
             flex: 1;
             background-color: #F1F1F1;
-            border-radius: 5px 0 0 0;
             z-index:2;
             a {
                 display: block;
@@ -359,4 +358,16 @@
             position:relative;
         }
     }
+}
+ 
+.large-plus-sign{
+    background-image:url('../images/large-plus.png');
+    height:151px;
+    width:150px;
+    display:flex;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    background-size:contain;
 }

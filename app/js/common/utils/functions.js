@@ -235,9 +235,9 @@ export default {
 	 * @since   2017-07-21
 	 * @return  {boolean}		True if logged in, false if logged out
 	 */
-	isLoggedIn() { // TODO: Cookie seemed to transfer from electralink, and this.getCookie returned true.
-		// return false; // TODO: Remove
-		if (this.getCookie('token')) {
+	isLoggedIn() {
+
+		if (this.getUser().id) {
 			return true;
 		}
 
@@ -523,6 +523,9 @@ export default {
   },
 
   getPeopleCharacter(id) {
+      if(id === 0){
+          return {}
+      }
       const totalArray = this.getPeopleCharacters().length;
       if(totalArray < id){
          return _.find(this.getPeopleCharacters(), {id: 1})
@@ -548,5 +551,25 @@ export default {
               return 'NF'
           }
       }
+  },
+
+  shouldDisplayCharacters(){
+    const value = this.getCookie('showCharacters');
+    if(value && value == 1){
+      return true
+    }
+    return false;
+  },
+
+  toggleDisplayCharacters() {
+    const value = this.getCookie('showCharacters');
+    let showCharacters;
+    if(value && value == 1){
+      showCharacters = 0
+    } else {
+      showCharacters = 1
+    }
+
+    return this.saveCookie('showCharacters', showCharacters, {path: '/'})
   }
 };

@@ -3,17 +3,19 @@ import {url} from 'app/constants';
 import {fetchData} from 'app/actions';
 import {connect} from 'react-redux';
 import Draggable from 'react-draggable';
-import { api } from 'app/utils';
+import { fn, api } from 'app/utils';
 import * as selector from 'app/containers/group/selector';
+import { makeGetPeople } from './selector';
 import { Link } from "react-router";
 import Coordinate from 'app/components/coordinate';
-import { fn } from 'app/utils';
 
 @connect((state, ownProps) => {
     const getGroups = selector.makeGetGroups();
     const getGroup = selector.makeGetGroup();
+    const getPeople = makeGetPeople();
 
     return {
+        people: getPeople(state),
         groups: getGroups(state),
         group: getGroup(state, ownProps.params.groupId),
     };
@@ -51,27 +53,27 @@ export default class PeopleWrapper extends React.PureComponent {
     }
 
     onDraggableEventHandler = (event, data) => {
-        // find the id we're moving
-        const organisationId = Number(_.find(data.node.attributes, {name: 'handleid'}).value)
+      const { container } = this.props
+      // find the id we're moving
+      const organisationId = Number(_.find(data.node.attributes, {name: 'handleid'}).value)
 
-        if (data.deltaX === 0 || data.deltaY === 0) {
-            this.setState({'selectedDraggable': organisationId})
-        } else {
-            // get the wrapper dimensions
-            const container = document.getElementById('gridwrapper-inner')
-            const maxWidth = container.clientWidth
-            const maxHeight = container.clientHeight
+      if (data.deltaX === 0 || data.deltaY === 0) {
+          this.setState({'selectedDraggable': organisationId})
+      } else {
+          // get the wrapper dimensions
+          const maxWidth = container.width
+          const maxHeight = container.height
 
-            const newY = _.round((data.y / maxHeight) * 100, 4)
-            const newX = _.round((data.x / maxWidth) * 100, 4)
+          const newY = _.round((data.y / maxHeight) * 100, 4)
+          const newX = _.round((data.x / maxWidth) * 100, 4)
 
-            this.setState({
-                updatedCoordinates: {
-                    ...this.state.updatedCoordinates,
-                    [organisationId]: {id: organisationId, positionX: newX, positionY: newY}
-                }
-            })
-        }
+          this.setState({
+              updatedCoordinates: {
+                  ...this.state.updatedCoordinates,
+                  [organisationId]: {id: organisationId, positionX: newX, positionY: newY}
+              }
+          })
+      }
     }
 
     handleClick = (e) => {
@@ -145,12 +147,12 @@ export default class PeopleWrapper extends React.PureComponent {
     }
 
     render() {
-        const {groups, group, params} = this.props
-        const {updatedCoordinates, selectedDraggable, progressLabel, selectedPeople} = this.state
+        const {groups, group, params, container, people} = this.props
+        const {updatedCoordinates, selectedDraggable, progressLabel, selectedPeople, showCharacters} = this.state
 
-        const container = document.getElementById('gridwrapper-inner')
-        const containerHeight = (container || {}).offsetHeight || 0
-        const containerWidth = (container || {}).offsetWidth || 0
+        if(!container){
+          return null
+        }
 
         // get the id's of the active organisations
         const activeOrganisationIds = _.map(group.organisations, (item) => {if(item.status === 1) return item.id})
@@ -189,8 +191,8 @@ export default class PeopleWrapper extends React.PureComponent {
                             axis="both"
                             handle=".react-draggable-handle"
                             defaultPosition={{
-                                x: containerWidth / 100 * item.positionX,
-                                y: containerHeight / 100 * item.positionY
+                                x: container.width / 100 * item.positionX,
+                                y: container.height / 100 * item.positionY
                             }}
                             grid={[10, 10]}
                             scale={1}
@@ -208,8 +210,12 @@ export default class PeopleWrapper extends React.PureComponent {
                                  }
                             >
                                 <div className="react-draggable-handle">
-                                    <span className={`person-icon avatar-${fn.getAvatarClass(item.size)}`}></span>
-                                    <span className="person-abbr">{item.abbreviation}</span>
+                                  {people.showCharacters && item.character_id !== 0 ? (
+                                    <span className={`person-icon avatar-${fn.getAvatarClass(item.size)}`}></span>                                    
+                                  ) : (
+                                    <span className={`person-icon ${fn.getPeopleCharacter(item.character_id)['iconImage']}`}></span>
+                                  )}
+                                  <span className="person-abbr">{item.abbreviation}</span>
                                   {selectedDraggable === item.id &&
                                     <span className="react-draggable-title">{item.organisation_title}</span>
                                   }

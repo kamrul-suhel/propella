@@ -59,14 +59,16 @@ export default class List extends React.PureComponent {
               <div className="page-wrap">
 
                   <div className="page-header">
-                      <h1 className="page-title">Your Propella projects</h1>
+                      <h1 className="page-title">Your Propella Projects</h1>
                   </div>
 
                   <div className="projects">
                       <div className="item-project new-project">
                           <div className="wrap">
                               <div className="thumb">
-                                  <img src="http://propella.hostings.co.uk/wp-content/themes/propella/images/DottedStack.svg" alt=""/>
+                                    <Link to={`/${url.projects}/add`}>
+                                        <img src="http://propella.hostings.co.uk/wp-content/themes/propella/images/DottedStack.svg" alt=""/>
+                                    </Link>
                               </div>
                           </div>
                           <h2 className="title"><Link to={`/${url.projects}/add`}>Add Project</Link></h2>
@@ -88,7 +90,7 @@ export default class List extends React.PureComponent {
                                         <ul className="project-menu">
                                             <li><Link to={`/${url.projects}/${item.id}/edit`}>Project mission</Link></li>
                                             <li><Link to={`/${url.projects}/${item.id}`}>Straight to project</Link></li>
-                                            <li><a href="/archive.html">Project snapshot</a></li>
+                                            <li><Link to={`/${url.projects}/${item.id}/archives`}>Project snapshot</Link></li>
                                         </ul>
                                   }
                               </div>

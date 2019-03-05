@@ -15,7 +15,8 @@ import * as Competitor from 'app/containers/competitor';
  * @param   {Object}    component        Components are imported from the containers folder
  */
 const Routes = (
-  <Route component={C.AppWrapper} >
+  <Route path="/" component={C.AppWrapper} >
+    <IndexRedirect to={`/${url.projects}`} />
     // Manage Exports
     <Route path={`${url.projects}/:id/${url.groups}/:groupId/${url.organisations}/${url.report}`} component={Organisation.Report} />
     <Route path={`${url.projects}/:id/${url.groups}/:groupId/${url.people}/${url.report}`} component={People.Report} />

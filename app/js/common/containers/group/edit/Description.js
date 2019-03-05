@@ -46,7 +46,8 @@ export default class Description extends React.PureComponent {
                 <div className="grid">
                     <div className="grid-xs-7">
                         <div className="form-group form-group-wide group-half-size">
-                            <span className="form-label">Choose Icon or Set Abbreviation <Tooltip icon="i" message="Upload a custom icon or enter an abbreviation"/></span>
+                            {/*<Tooltip icon="i" message="Upload a custom icon or enter an abbreviation"/>*/}
+                            <span className="form-label">Choose Icon or Set Abbreviation</span>
                             <FileUpload
                                 name="icon"
                                 onChange={handleInputChange}

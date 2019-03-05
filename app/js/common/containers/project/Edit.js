@@ -18,7 +18,7 @@ import { Form, TextInput } from "@xanda/react-components";
 })
 export default class Edit extends React.PureComponent {
   componentDidMount() {
-    if('add' !== this.props.params.id){
+    if(this.props.params.id && 'add' !== this.props.params.id){
       this.fetchData();
     }
   }
@@ -63,7 +63,13 @@ export default class Edit extends React.PureComponent {
             <div className="grid">
               <div className="grid-xs-12 grid-s-5">
                 <div className="vertical-section-text">
-                  <h1 className="page-title">New Project</h1>
+                  <h1 className="page-title">
+                    {this.props.params.id && 'add' !== this.props.params.id ? (
+                      <span>Edit Project</span>
+                    ):(
+                      <span>New Project</span>
+                    )}
+                  </h1>
                   <Form className="new-project" onSubmit={this.handleSubmit}>
                     <div className="form-fields">
                       <div className="form-field-row">
