@@ -54,7 +54,12 @@ class OrganisationController extends PropellaBaseController
     {
         $organisation = $this->saveOrganisation(false, $id);
 
-        return response()->json($organisation);
+        $response = Organisation::getDefaultField()
+            ->with(['people'])
+            ->findOrFail($id);
+
+
+        return response()->json($response);
     }
 
     /**
