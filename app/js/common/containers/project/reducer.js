@@ -32,6 +32,13 @@ export function project(state = defaultState, action) {
 				...normalizedData,
 			};
 		}
+    case 'PROJECT_DELETED': {
+			return {
+				...state,
+				isLoading: false,
+        collection: _.pickBy(state.collection, (o) => o.id !== action.payload.id)
+			};
+		}
     case 'GROUP_DELETED': {
 			return {
 				...state,

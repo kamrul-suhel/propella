@@ -97,7 +97,7 @@ export default class List extends React.PureComponent {
               <Popup
                   additionalClass="groups"
                   title="Groups"
-                  closePath={`/${url.projects}/${this.props.params.id}`}                  
+                  closePath={`/${url.projects}/${this.props.params.id}`}
                   buttons={_.isEmpty(project.groups) ? `` : <Link className="button" to={`/${url.projects}/${this.props.params.id}/${url.groups}/add`}>Add
                           group</Link>}
               >
@@ -118,7 +118,7 @@ export default class List extends React.PureComponent {
                   </ContentLoader>
               </Popup>
               {_.isEmpty(project.groups) &&
-              <span class="large-plus-sign"></span>
+              <span className="large-plus-sign"></span>
                 }
             </ProjectWrapper>
         );

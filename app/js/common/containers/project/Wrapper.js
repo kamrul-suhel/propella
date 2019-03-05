@@ -55,14 +55,14 @@ export default class ProjectWrapper extends React.PureComponent {
         const groupId = Number(_.find(data.node.attributes, {name: 'handleid'}).value)
 
         // if we haven't moved assume its a click
-        if (data.deltaX === 0 && data.deltaY === 0) {
+        if (Math.abs(data.deltaX) === 0 && Math.abs(data.deltaY) === 0) {
             this.setState({'selectedDraggable': groupId})
         } else {
             // get the wrapper dimensions
             const maxWidth = container.width
             const maxHeight = container.height
 
-            const newY = _.round((data.y / maxHeight) * 100, 4)
+            const newY = 100 - _.round((data.y / maxHeight) * 100, 4)
             const newX = _.round((data.x / maxWidth) * 100, 4)
 
             this.setState({
@@ -86,8 +86,10 @@ export default class ProjectWrapper extends React.PureComponent {
     }
 
     handleClick = (e) => {
-      if(!this.node.contains(e.target)){
-        this.setState({selectedDraggable: 0, selectedGroupCoordinates: {}})
+      if(this.node){
+        if(!this.node.contains(e.target)){
+          this.setState({selectedDraggable: 0, selectedGroupCoordinates: {}})
+        }
       }
     }
 
@@ -158,7 +160,7 @@ export default class ProjectWrapper extends React.PureComponent {
                             handle=".react-draggable-handle"
                             defaultPosition={{
                                 x: container.width / 100 * item.positionX,
-                                y: container.height / 100 * item.positionY
+                                y: container.height - (container.height / 100 * item.positionY)
                             }}
                             grid={[10, 10]}
                             scale={1}

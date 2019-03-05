@@ -66,10 +66,10 @@ export default class GroupWrapper extends React.PureComponent {
         // find the id we're moving
         const organisationId = Number(_.find(data.node.attributes, {name: 'handleid'}).value)
 
-        if (Math.abs(data.deltaX) === 0 || Math.abs(data.deltaY) === 0) {
+        if (Math.abs(data.deltaX) === 0 && Math.abs(data.deltaY) === 0) {
             this.setState({'selectedDraggable': organisationId})
         } else {
-            const newY = _.round((data.y / container.height) * 100, 4)
+            const newY = 100 - _.round((data.y / container.height) * 100, 4)
             const newX = _.round((data.x / container.width) * 100, 4)
 
             this.setState({
@@ -108,9 +108,11 @@ export default class GroupWrapper extends React.PureComponent {
     }
 
     handleClick = (e) => {
+      if(this.node){
         if (!this.node.contains(e.target)) {
             this.setState({selectedDraggable: 0, selectedOrganisation: {}, selectedCompetitor: 0})
         }
+      }
     }
 
     handleSaveChanges = async () => {
@@ -200,16 +202,16 @@ export default class GroupWrapper extends React.PureComponent {
                                 handle=".react-draggable-handle"
                                 defaultPosition={{
                                     x: container.width / 100 * item.positionX,
-                                    y: container.height / 100 * item.positionY
+                                    y: container.height - (container.height / 100 * item.positionY)
                                 }}
                                 grid={[10, 10]}
                                 scale={1}
                                 bounds=".gridwrapper-inner-section-wrapper"
                                 onStop={this.onDraggableEventHandler}
                             >
-                                <div handleid={item.id}                                     
+                                <div handleid={item.id}
                                      className={
-                                         [   
+                                         [
                                              `size-${item.icon_size}`,
                                              `trajectory-${trajectoryClass}`,
                                              (selectedDraggable && selectedDraggable !== item.id ? 'disabled' : ''),

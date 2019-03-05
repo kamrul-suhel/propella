@@ -68,7 +68,7 @@ export default class List extends React.PureComponent {
                     title={character['title']}
                   />
                 ) : (
-                  <span type="button" class="icon-masks"></span>
+                  <span type="button" className="icon-masks"></span>
                 )}
             </React.Fragment>
             }
@@ -131,7 +131,7 @@ export default class List extends React.PureComponent {
               </ContentLoader>
           </Popup>
           {_.isEmpty(group.people) &&
-              <span class="large-plus-sign"></span>
+              <span className="large-plus-sign"></span>
                 }
         </PeopleWrapper>
     );

@@ -37,7 +37,10 @@ const Routes = (
             <Route path=":groupId">
               <IndexRoute component={Group.View}/>
                 <Route path="edit" component={Group.Edit} type="edit" activeNav />
-                <Route path="competitors" component={Competitor.List} activeNav />
+                <Route path="competitors" activeNav>
+                  <IndexRoute component={Competitor.List} />
+                  <Route path=":competitorId" component={Competitor.Edit} activeNav />
+                </Route>
                 <Route path={url.organisations}>
                   <IndexRoute component={Organisation.List}/>
                   <Route path={url.people} component={People.PeopleWrapper} />
