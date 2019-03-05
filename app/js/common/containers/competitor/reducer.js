@@ -32,6 +32,13 @@ export default function competitor(state = defaultState, action) {
         ...normalizedData
       };
     }
+    case "COMPETITOR_DELETED": {
+      return {
+        ...state,
+        isLoading: false,
+        collection: _.pickBy(state.collection, (o) => o.id !== action.payload.id)
+      };
+    }
     default: {
       return state;
     }

@@ -66,7 +66,7 @@ export default class GroupWrapper extends React.PureComponent {
         // find the id we're moving
         const organisationId = Number(_.find(data.node.attributes, {name: 'handleid'}).value)
 
-        if (Math.abs(data.deltaX) === 0 || Math.abs(data.deltaY) === 0) {
+        if (Math.abs(data.deltaX) === 0 && Math.abs(data.deltaY) === 0) {
             this.setState({'selectedDraggable': organisationId})
         } else {
             const newY = _.round((data.y / container.height) * 100, 4)

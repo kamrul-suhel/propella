@@ -55,7 +55,7 @@ export default class ProjectWrapper extends React.PureComponent {
         const groupId = Number(_.find(data.node.attributes, {name: 'handleid'}).value)
 
         // if we haven't moved assume its a click
-        if (data.deltaX === 0 && data.deltaY === 0) {
+        if (Math.abs(data.deltaX) === 0 && Math.abs(data.deltaY) === 0) {
             this.setState({'selectedDraggable': groupId})
         } else {
             // get the wrapper dimensions

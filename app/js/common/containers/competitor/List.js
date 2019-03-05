@@ -9,27 +9,28 @@ import {
   Accordion,
   TextInput
 } from "@xanda/react-components";
-import { Popup } from "app/components";
+import { Popup, FancyList, FancyListItem } from "app/components";
 import { api } from "app/utils";
 import { url } from "app/constants";
 import * as selector from "./selector";
+import { makeGetProjects } from "app/containers/project/selector";
+import { makeGetProjectGroups, makeGetProjectGroup } from "app/containers/group/selector";
 import { ProjectWrapper } from "app/containers/project";
 
 @connect((state, ownProps) => {
+  const getProjects = makeGetProjects();
+  const getGroups = makeGetProjectGroups();
+  const getGroup = makeGetProjectGroup();
   const getCompetitors = selector.makeGetCompetitors();
+
   return {
-    competitors: getCompetitors(state)
+    competitors: getCompetitors(state),
+    projects: getProjects(state),
+    groups: getGroups(state, ownProps.params.id),
+    group: getGroup(state, ownProps.params.id, ownProps.params.groupId),
   };
 })
 export default class List extends React.PureComponent {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      competitorsRemoved: []
-    };
-  }
-
   componentDidMount() {
     this.fetchData();
   }
@@ -81,61 +82,80 @@ export default class List extends React.PureComponent {
     }
   };
 
+  handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this competitor?")) {
+      const response = await api.delete(`competitors/${id}`)
+      if (!api.error(response)) {
+        this.props.dispatch({type: 'COMPETITOR_DELETED', payload: response.data})
+      }
+    }
+  }
+
+  renderItem = item => {
+    const { params } = this.props
+
+    return (
+      <FancyListItem
+          key={item.id}
+          keyId={item.id}
+          actions={
+              <React.Fragment>
+                  <Link
+                    to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.competitors}/${item.id}`}
+                    className="icon-pencil"
+                  />
+                  <span onClick={() => this.handleDelete(item.id)} className="clickable icon-bin"/>
+              </React.Fragment>
+          }
+      >
+          {item.title}
+      </FancyListItem>
+    )
+  }
+
   render() {
-    const { competitors, params } = this.props;
+    const { competitors, params, projects, group } = this.props;
+
+    console.log(projects)
+
     return (
       <ProjectWrapper {...this.props}>
-        <Popup
-          title="Competitors"
-          closePath={`/${url.projects}/${this.props.params.id}`}
-          buttons={[
-            <Link
-              className="button"
-              to={`/${url.projects}/${this.props.params.id}`}
-            >
-              Cancel
-            </Link>,
-            <button onClick={this.handleSubmit} className="button">
-              Save Changes
-            </button>
-          ]}
-          additionalClass="competitors wide"
+        <ContentLoader
+          data={projects.collection}
+          isLoading={projects.isLoading}
         >
-          <ContentLoader
-            data={competitors.collection}
-            isLoading={competitors.isLoading}
+          <Popup
+            title={`${group.title}'s Competitors`}
+            closePath={`/${url.projects}/${this.props.params.id}`}
+            buttons={
+              <React.Fragment>
+                {!_.isEmpty(competitors.collection) &&
+                  <Link to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.competitors}/add`} className="button">
+                    Add competitor
+                  </Link>
+                }
+              </React.Fragment>
+            }
+            additionalClass="competitors wide"
           >
-            <Form onSubmit={this.handleSubmit} className="competitors-form">
-              <p className="form-label">Competitors List</p>
-              <Repeater
-                min="1"
-                max="3"
-                name="competitors"
-                onChange={this.handleInputChange}
-                onRemoved={this.handleRemoved}
-                value={competitors.collection}
-              >
-                <Accordion title={<span />}>
-                  <TextInput
-                    label="Competitor Name"
-                    name="title"
-                    onChange={this.handleInputChange}
-                    validation="required"
-                    wide
-                  />
-                  <TextInput
-                    label="Notes"
-                    name="description"
-                    onChange={this.handleInputChange}
-                    wide
-                    textarea
-                    validation="required"
-                  />
-                </Accordion>
-              </Repeater>
-            </Form>
-          </ContentLoader>
-        </Popup>
+            <ContentLoader
+              data={competitors.collection}
+              isLoading={competitors.isLoading}
+            >
+              {_.isEmpty(competitors.collection) ? (
+                  <Link className="button" to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.competitors}/add`}>Add your first
+                      competitor <span dangerouslySetInnerHTML={{__html: `&plus;`}}/></Link>
+              ) : (
+                <FancyList>
+                  {_.map(competitors.currentCollection, (id) => {
+                    const item  = competitors.collection[id]
+                    return this.renderItem(item)
+                  })}
+                </FancyList>
+              )}
+            </ContentLoader>
+          </Popup>
+        </ContentLoader>
       </ProjectWrapper>
     );
   }

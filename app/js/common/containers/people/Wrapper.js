@@ -58,7 +58,7 @@ export default class PeopleWrapper extends React.PureComponent {
       // find the id we're moving
       const organisationId = Number(_.find(data.node.attributes, {name: 'handleid'}).value)
 
-      if (data.deltaX === 0 || data.deltaY === 0) {
+      if (Math.abs(data.deltaX) === 0 && Math.abs(data.deltaY) === 0) {
           this.setState({'selectedDraggable': organisationId})
       } else {
           // get the wrapper dimensions
@@ -78,8 +78,10 @@ export default class PeopleWrapper extends React.PureComponent {
     }
 
     handleClick = (e) => {
-      if(!this.node.contains(e.target)){
-        this.setState({selectedDraggable: 0, selectedPeople: {}})
+      if(this.node){
+        if(!this.node.contains(e.target)){
+          this.setState({selectedDraggable: 0, selectedPeople: {}})
+        }
       }
     }
 

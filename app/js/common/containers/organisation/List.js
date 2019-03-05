@@ -140,7 +140,7 @@ export default class List extends React.PureComponent {
                 </ContentLoader>
             </Popup>
             {_.isEmpty(group.organisations) &&
-              <span class="large-plus-sign"></span>
+              <span className="large-plus-sign"></span>
                 }
           </GroupWrapper>
       );
