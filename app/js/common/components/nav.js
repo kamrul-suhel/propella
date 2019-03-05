@@ -144,7 +144,7 @@ export default class Nav extends React.PureComponent {
           aria-label="Main Navigation"
         >
           <div className="header-greeting">
-            <a href={`${url.wordpress}/wp-login.php?action=logout&amp;redirect_to=%2Flogin&amp;_wpnonce=6811e8790b`}>
+            <a href={`${url.wordpress}/wp-login.php?action=logout`}>
               Log out {user.display_name}
             </a>
           </div>

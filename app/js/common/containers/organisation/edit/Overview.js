@@ -14,7 +14,7 @@ export default class Overview extends React.PureComponent {
                 </div>
 
                 <p className="ov-title h2">
-                    {abbreviation}
+                    {title}
                 </p>
 
                 <div className="ov-img-content">

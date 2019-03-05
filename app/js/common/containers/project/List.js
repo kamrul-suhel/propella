@@ -133,9 +133,8 @@ export default class List extends React.PureComponent {
                         )}
                       </div>
                       <h2 className="title">{item.title}</h2>
-                      <span
-                        className="clickable"
-                        className="button-simple menu-toggle icon-three-dots"
+                      <span                        
+                        className={`clickable button-simple menu-toggle icon-three-dots ${selectedProject === item.id && "three-dots-active"}`}
                         onClick={() => this.handleSelectProject(item.id)}
                       >
                         <span className="icon-options" />

@@ -214,10 +214,15 @@
                 font-size: 12px;
                 font-weight: 400;
                 text-transform: uppercase;
-            }
+            }            
         }
         [class*="icon"] {
             margin-right: 10px;
+        }
+    }
+    .three-dots-active{
+        &:before{
+            @extend .icon-x-small:before;
         }
     }
 }

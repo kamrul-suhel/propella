@@ -2,6 +2,8 @@
     margin:40px;
     box-shadow:unset;
     height:calc(100VH - 80px);
+    position:relative;
+    z-index:1;
     .table{
         margin-bottom:20px;
         .table-inner{

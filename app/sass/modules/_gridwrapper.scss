@@ -314,11 +314,14 @@
             }    
         }
 
-
+        .react-draggable.size-s {            
+            margin-top:-24px;                
+        }
 
         .react-draggable.size-m {
             height: 78px;
             width: 64px;
+            margin-top:-39px;
             background-image: url(../images/marker-medium.svg);
             font-size: 14px;      
         }
@@ -326,16 +329,10 @@
         .react-draggable.size-l {
             height: 95px;
             width: 82px;
+            margin-top:-47px;
             background-image: url(../images/marker-large.svg);
             font-size: 14px;
-        }
-
-        .react-draggable.b-size-m {
-            height: 67px;
-            width: 56px;
-            background-image: url(../images/marker-medium.svg);
-            font-size: 14px;
-        }
+        }        
 
         .react-draggable.disabled{
             opacity:.5;
