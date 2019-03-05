@@ -207,11 +207,10 @@ export default class GroupWrapper extends React.PureComponent {
                                 bounds=".gridwrapper-inner-section-wrapper"
                                 onStop={this.onDraggableEventHandler}
                             >
-                                <div handleid={item.id}
-                                     className={`size-${item.icon_size}`}
+                                <div handleid={item.id}                                     
                                      className={
-                                         [
-                                             `size-m`,
+                                         [   
+                                             `size-${item.icon_size}`,
                                              `trajectory-${trajectoryClass}`,
                                              (selectedDraggable && selectedDraggable !== item.id ? 'disabled' : ''),
                                              (selectedDraggable === item.id ? 'is-selected' : '')
