@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="83px" height="123px" viewBox="0 0 83 123" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>Greyscale Stack</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Greyscale-Stack" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g transform="translate(0.000000, 0.745469)">
+            <polygon id="Fill-1" fill="#1C1C1C" points="0.000282849316 87.1567556 0.000282849316 93.2061695 41.0134337 121.320017 82.0265845 93.2061695 82.0265845 87.1567556 41.0134337 61.6296151"></polygon>
+            <polygon id="Fill-2" fill="#4C4C4C" points="0.000282849316 66.9191654 0.000282849316 72.967842 41.0134337 101.082427 82.0265845 72.967842 82.0265845 66.9191654 41.0134337 41.3920249"></polygon>
+            <polygon id="Fill-3" fill="#858585" points="0.000282849316 46.6815753 0.000282849316 52.7309892 41.0134337 80.8448367 82.0265845 52.7309892 82.0265845 46.6815753 41.0134337 21.1544348"></polygon>
+            <polygon id="Fill-4" fill="#E4E4E4" points="41.0131508 0.916549633 0 26.4436901 0 32.4931041 41.0131508 60.6076889 82.0270088 32.4931041 82.0270088 26.4436901"></polygon>
+        </g>
+    </g>
+</svg>

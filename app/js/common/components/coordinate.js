@@ -9,9 +9,9 @@ export default class Coordinate extends React.PureComponent {
 
         if (nextCoordinate) {
             const cPositionX = container.width / 100 * currentCoordinate.positionX
-            const cPositionY = container.height / 100 * currentCoordinate.positionY
+            const cPositionY = container.height- (container.height / 100 * currentCoordinate.positionY)
             const nPositionX = container.width / 100 * nextCoordinate.positionX
-            const nPositionY = container.height / 100 * nextCoordinate.positionY
+            const nPositionY = container.height - (container.height / 100 * nextCoordinate.positionY)
 
             // angle in degrees
             angleDeg = Math.atan2(cPositionY - nPositionY, cPositionX - nPositionX) * 180 / Math.PI
@@ -58,7 +58,7 @@ export default class Coordinate extends React.PureComponent {
                         <div className="connector" style={{
                             transform: `rotate(${position.degree ? position.degree : 0}deg)`,
                             width: `${position.height ? position.height : 0}px`
-                        }}></div>                        
+                        }}></div>
                         <img className="progress-button-img" src={coordinate.icon_path}/>
                     </div>
                 )

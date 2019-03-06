@@ -26,15 +26,15 @@
         font-weight:500;
         border-radius:5px 0px 0px 5px;
         position:relative;
-        font-size:15px;        
+        font-size:15px;
         &:before{
             font-family:$icon-family-base;
             content: "a";
             position: absolute;
             right: 7px;
-            top: 50%;            
+            top: 50%;
             transform: translateY(calc(-50% + 1px));
-        }        
+        }
     }
     .nav-close{
         background-color:$brand-color-dark;
@@ -148,7 +148,7 @@
 			color: #808080;
 		}
 	}
-        
+
         ul{
             list-style:none;
             padding-left:0px;
@@ -164,7 +164,7 @@
 
 		a {
 			text-decoration: none;
-			font-size: 38px;
+			font-size: 34px;
 			font-weight: 600;
 		}
 	}
