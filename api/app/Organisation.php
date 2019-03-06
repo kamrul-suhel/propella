@@ -48,8 +48,8 @@ class Organisation extends Model
      */
     public function people(){
         return $this->hasMany('App\People', 'organisation_id')
-            ->whereIn('status', [1])
-            ->where('archive', 0);
+            ->whereIn('status', [1]);
+//            ->where('archive', 0);
     }
 
     /**

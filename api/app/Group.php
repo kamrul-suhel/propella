@@ -60,6 +60,16 @@ class Group extends Model
         return $this->hasMany('App\Organisation', 'group_id')
             ->select('organisations.*', 'wp_usermeta.meta_value AS profile_colour')
             ->leftJoin('wp_usermeta', 'organisations.rel_user_id', '=', DB::raw("wp_usermeta.user_id AND wp_usermeta.meta_key = 'profile_colour'"))
+            ->whereIn('status', [0, 1]);
+//            ->where('archive', 0);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function organisationsWithOutWPUser()
+    {
+        return $this->hasMany('App\Organisation', 'group_id')
             ->whereIn('status', [0, 1])
             ->where('archive', 0);
     }

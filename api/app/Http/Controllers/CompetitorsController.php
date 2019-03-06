@@ -19,6 +19,7 @@ class CompetitorsController extends PropellaBaseController
 
     /**
      * @param bool $create
+     * @throws \Illuminate\Validation\ValidationException
      */
     private function validateData($create = true){
         $this->validate($this->request, [
@@ -29,10 +30,6 @@ class CompetitorsController extends PropellaBaseController
         if($create){
             $this->validate($this->request, [
                 'group_id' => 'required|exists:groups,id'
-            ]);
-        }else{
-            $this->validate($this->request, [
-                'id' => 'required|exists:competitors,id'
             ]);
         }
     }
@@ -49,7 +46,7 @@ class CompetitorsController extends PropellaBaseController
     public function update($id){
 
         $this->validateData(false);
-        $competitors = $this->saveData();
+        $competitors = $this->saveData($id);
 
         return response()->json($competitors);
 
@@ -78,8 +75,8 @@ class CompetitorsController extends PropellaBaseController
     }
 
 
-    private function saveData(){
-        $competitors = $this->request->has('id') ? Competitor::findOrFail($this->request->id) : new Competitor();
+    private function saveData($id = null){
+        $competitors = !empty($id) ? Competitor::findOrFail($id) : new Competitor();
 
         // set title
         $competitors->title = $this->request->has('title') ? $this->request->title : $competitors->title;
