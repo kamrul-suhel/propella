@@ -81,6 +81,7 @@ class ProjectController extends PropellaBaseController
         // filter by project status if status is passed
         $projects = $this->status != null ? $projects->where('status', $this->status) : $projects->whereIn('status', [0, 1]);
         $projects = $projects->where('archive', 0);
+
         // Anyone in the team can view/edit projects created by a project manager
         $projects = $projects->whereIn('created_by', [$this->request->authUserId, $this->request->projectManagerId]);
         $projects = $projects->paginate($this->perPage);
@@ -93,7 +94,8 @@ class ProjectController extends PropellaBaseController
                 $ids = Project::getAllId($project->parent_id, $project->id);
                 $archives = Project::select([
                     'id',
-                    'updated_at'
+                    'updated_at',
+                    'archive'
                 ])
                     ->whereIn('id', $ids)
                     ->where('status', 1)
@@ -103,6 +105,10 @@ class ProjectController extends PropellaBaseController
 
                 $newArchives = [];
                 $archives->map(function ($archive) use (&$newArchives) {
+                    // Not include the active project
+                    if($archive->archive === 0){
+                        return;
+                    }
                     $newArchive['id'] = $archive->id;
                     $newArchive['updated_at'] = $archive->updated_at->format('l jS \of F, Y h:i:s A');
                     $newArchives[] = $newArchive;
@@ -247,10 +253,11 @@ class ProjectController extends PropellaBaseController
     public function archiveProject($id)
     {
         $project = Project::with([
-            'groups.organisations.people',
-            'groups.competitors'
+            'groupsWithoutUserMeta.organisationsWithOutWPUser.people',
+            'groupsWithoutUserMeta.competitors'
         ])
             ->findOrFail($id);
+
 
         $project->archive = 1;
         $project->save();
@@ -261,7 +268,7 @@ class ProjectController extends PropellaBaseController
         $newProject->save();
 
         // Loop groups coordinate, insert last record & update previous record status.
-        $project->groups->map(function ($group) use ($newProject) {
+        $project->groupsWithoutUserMeta->map(function ($group) use ($newProject) {
 
             // Check if it has status 1
             $group->archive = 1;
@@ -288,7 +295,7 @@ class ProjectController extends PropellaBaseController
             });
 
             // Archive organisations
-            $group->organisations->map(function ($organisation) use ($newGroup) {
+            $group->organisationsWithOutWPUser->map(function ($organisation) use ($newGroup) {
                 $organisation->archive = 1;
                 $organisation->save();
 
@@ -314,6 +321,6 @@ class ProjectController extends PropellaBaseController
             });
         });
 
-        return response()->json($project);
+        return response()->json($newProject);
     }
 }

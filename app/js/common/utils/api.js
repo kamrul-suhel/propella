@@ -80,6 +80,7 @@ export default {
 		data = _.assign({}, { method }, data);
 
 		const baseURL = process.env.RELEASE_STAGE === 'prod' ? 'http://api.propella.hostings.co.uk/v1' : 'http://api.propella.hostings.co.uk/v1';
+		// const baseURL = 'http://www.propella.test/v1';
 		axios.defaults.baseURL = baseURL;
 		// axios.defaults.headers = { Authorization: `Bearer ${token}` };
 		axios.defaults.withCredentials = true;

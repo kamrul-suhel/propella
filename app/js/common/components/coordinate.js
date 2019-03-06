@@ -7,6 +7,8 @@ export default class Coordinate extends React.PureComponent {
         let c = 0
         const container = fn.getContainer()
 
+        console.log("My coordinate container is :", container);
+
         if (nextCoordinate) {
             const cPositionX = container.width / 100 * currentCoordinate.positionX
             const cPositionY = container.height- (container.height / 100 * currentCoordinate.positionY)
@@ -23,6 +25,8 @@ export default class Coordinate extends React.PureComponent {
             c = Math.sqrt(a * a + b * b)
         }
 
+        console.log("Angle degree: ", angleDeg);
+
         return {
             degree: angleDeg,
             height: c
@@ -34,7 +38,7 @@ export default class Coordinate extends React.PureComponent {
 
         return (
             <div className="selected-group-wrapper first-coordinate progress-button"
-                 style={{transform: `translate(${container.width / 100 * group.positionX}px, ${container.height / 100 * group.positionY}px)`}}>
+                 style={{transform: `translate(${container.width / 100 * group.positionX}px, ${container.height - (container.height / 100 * group.positionY)}px)`}}>
                 <div className="connector" style={{
                     transform: `rotate(${position.degree ? position.degree : 0}deg)`,
                     width: `${position.height ? position.height : 0}px`
@@ -54,7 +58,7 @@ export default class Coordinate extends React.PureComponent {
                     <div key={coordinate.id}
                          id={coordinate.id}
                          className={`selected-group-wrapper progress-button coordinate-${index}`}
-                         style={{transform: `translate(${container.width / 100 * coordinate.positionX}px, ${container.height / 100 * coordinate.positionY}px)`}}>
+                         style={{transform: `translate(${container.width / 100 * coordinate.positionX}px, ${container.height - (container.height / 100 * coordinate.positionY)}px)`}}>
                         <div className="connector" style={{
                             transform: `rotate(${position.degree ? position.degree : 0}deg)`,
                             width: `${position.height ? position.height : 0}px`
@@ -68,8 +72,6 @@ export default class Coordinate extends React.PureComponent {
 
     render() {
         const {group} = this.props
-
-        console.log('Coordinate table : ', group);
 
         const firstCoordinate = group.coordinates[0] && group.coordinates[0]
         const rootConnector = this.getDegreeRotate(group, firstCoordinate)

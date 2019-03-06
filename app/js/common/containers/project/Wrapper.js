@@ -135,6 +135,8 @@ export default class ProjectWrapper extends React.PureComponent {
 
     render() {
         const {projects, project, params, container} = this.props
+
+        console.log("container is : ", container);
         const {updatedCoordinates, selectedDraggable, selectedGroupCoordinates, progressLabel} = this.state
 
         // dont load unless we have the container's dimensions

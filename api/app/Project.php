@@ -32,7 +32,6 @@ class Project extends Model
      * @var array
      */
     protected $hidden = [
-        'archive'
     ];
 
 
@@ -43,8 +42,17 @@ class Project extends Model
         return $this->hasMany('App\Group', 'project_id')
             ->select('groups.*', 'wp_usermeta.meta_value AS profile_colour')
             ->leftJoin('wp_usermeta', 'groups.rel_user_id', '=', DB::raw("wp_usermeta.user_id AND wp_usermeta.meta_key = 'profile_colour'"))
-            ->whereIn('status', [0,1])
-            ->where('archive', 0);
+            ->whereIn('status', [0,1]);
+//            ->where('archive', 0);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function groupsWithoutUserMeta(){
+        return $this->hasMany('App\Group', 'project_id')
+            ->whereIn('status', [0,1]);
+//            ->where('archive', 0);
     }
 
     /**
