@@ -37,7 +37,7 @@ export default class Coordinate extends React.PureComponent {
         const container = fn.getContainer()
 
         return (
-            <div className="selected-group-wrapper first-coordinate progress-button"
+            <div className={`selected-group-wrapper first-coordinate progress-button size-${group.icon_size}`}
                  style={{transform: `translate(${container.width / 100 * group.positionX}px, ${container.height - (container.height / 100 * group.positionY)}px)`}}>
                 <div className="connector" style={{
                     transform: `rotate(${position.degree ? position.degree : 0}deg)`,

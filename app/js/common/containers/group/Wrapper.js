@@ -181,7 +181,7 @@ export default class GroupWrapper extends React.PureComponent {
                                     <div className="competitor-tooltip-header">{item.title}</div>
                                     <div className="competitor-tooltip-inner">
                                         <Link
-                                            to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.competitors}`}>Edit</Link>
+                                            to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.competitors}/${item.id}`}>Edit</Link>
                                     </div>
                                 </div>
                                 }

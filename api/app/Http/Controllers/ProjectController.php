@@ -130,8 +130,12 @@ class ProjectController extends PropellaBaseController
             ->whereIn('created_by', [$this->request->authUserId, $this->request->projectManagerId])
             ->findOrFail($id);
 
-        $project->groups->map(function ($group) {
+        $project->groups->map(function ($group) use ($id) {
+            // add all parent associated project ids
             $ids = Group::getAllId($group->parent_id);
+            print_r($ids);die;
+            // add itself to to the list
+            $ids[] = $id;
             $groups = Group::select([
                 'id',
                 'positionX',

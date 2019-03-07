@@ -168,7 +168,7 @@ export default class ProjectWrapper extends React.PureComponent {
                             scale={1}
                             bounds=".gridwrapper-inner-section-wrapper"
                             onStop={this.onDraggableEventHandler}
-                            disabled={selectedDraggable === item.id || project.archive === 1}
+                            disabled={selectedDraggable === item.id}
                         >
                             <div handleid={item.id}
                                  className={
