@@ -9,6 +9,7 @@ use App\People;
 use App\Project;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class ProjectController extends PropellaBaseController
 {
@@ -132,6 +133,7 @@ class ProjectController extends PropellaBaseController
 
         $project->groups->map(function ($group) {
             $ids = Group::getAllId($group->parent_id);
+            $stringIds = implode(",", $ids);
             $groups = Group::select([
                 'id',
                 'positionX',
@@ -140,8 +142,10 @@ class ProjectController extends PropellaBaseController
                 'icon_path'
             ])
                 ->whereIn('id', $ids)
+                ->orderByRaw(DB::raw("FIELD(id, $stringIds)"))
                 ->get();
             $group->coordinates = $groups;
+            $group->string = $stringIds;
         });
 
         return response()->json($project);

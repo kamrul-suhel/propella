@@ -148,6 +148,7 @@ class Group extends Model
             $newGroup = self::findOrFail($parent_id);
             $ids[] = self::getAllIdAsString($newGroup->parent_id, $count);
         }
+
         $ids[] = $parent_id;
         return implode($ids,',');
     }
