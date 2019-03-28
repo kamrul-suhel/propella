@@ -4483,7 +4483,8 @@ li.rc-time-picker-panel-select-option-disabled:hover {
     background-repeat: no-repeat;
     position: absolute;
     background-position: center;
-    background-size: contain; }
+    background-size: contain;
+    margin-top: -39px; }
     .gridwrapper .progress-button img {
       width: 100%;
       height: auto;
@@ -4500,7 +4501,12 @@ li.rc-time-picker-panel-select-option-disabled:hover {
       transform-origin: right;
       z-index: 1; }
   .gridwrapper .first-coordinate.progress-button {
-    background: none; }
+    background: none;
+    margin-top: -24px; }
+    .gridwrapper .first-coordinate.progress-button.size-m {
+      margin-top: -39px; }
+    .gridwrapper .first-coordinate.progress-button.size-l {
+      margin-top: -47px; }
 
 .competitor {
   height: 51px;

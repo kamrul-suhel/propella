@@ -8,7 +8,7 @@
     "build-core": "npm run copy-files && npm run build:css && npm run build:css-editor && npm run build:webpack",
     "build-dev": "cross-env RELEASE_STAGE=dev npm run build-core",
     "build-prod": "cross-env RELEASE_STAGE=prod npm run build-core",
-    "copy-files": "mkdirp build && cp index.html build/ && cp -R images build/ && cp -R fonts build/",
+    "copy-files": "mkdirp build && cp index.html build/ && cp -R images build/ && cp -R fonts build/ && cp manifest.json build/",
     "dev": "cross-env NODE_ENV=development npm start",
     "kill-win-node": "taskkill /f /im node.exe",
     "start": "node ./js/server.js"

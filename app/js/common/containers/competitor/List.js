@@ -116,8 +116,6 @@ export default class List extends React.PureComponent {
   render() {
     const { competitors, params, projects, group } = this.props;
 
-    console.log(projects)
-
     return (
       <ProjectWrapper {...this.props}>
         <ContentLoader
@@ -129,7 +127,7 @@ export default class List extends React.PureComponent {
             closePath={`/${url.projects}/${this.props.params.id}`}
             buttons={
               <React.Fragment>
-                {!_.isEmpty(competitors.collection) &&
+                {!_.isEmpty(competitors.currentCollection) && competitors.currentCollection.length < 3 &&
                   <Link to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.competitors}/add`} className="button">
                     Add competitor
                   </Link>
@@ -149,6 +147,9 @@ export default class List extends React.PureComponent {
                 <FancyList>
                   {_.map(competitors.currentCollection, (id) => {
                     const item  = competitors.collection[id]
+                    if(!item){
+                      return
+                    }
                     return this.renderItem(item)
                   })}
                 </FancyList>

@@ -1,5 +1,5 @@
-.gridwrapper {		
-    height: 100%;       
+.gridwrapper {
+    height: 100%;
     position: relative;
     overflow:hidden;
     .gridwrapper-save {
@@ -94,7 +94,7 @@
         .react-draggable {
             height: 48px;
             width: 41px;
-            position: absolute;            
+            position: absolute;
             background-size:100% 100%;
             background-position:center;
             display: flex;
@@ -115,24 +115,24 @@
                     display:block;
                     width:6px;
                     height:6px;
-                    position:absolute;              
+                    position:absolute;
                     border-radius:50%;
-                }              
+                }
                 img.react-draggable-handle-icon{
                     -webkit-user-drag: none;
                     width:75%;
                     height:75%;
                     object-fit:cover;
-                    border-radius:50%;                
+                    border-radius:50%;
                 }
                 .react-draggable-handle-title{
                     text-transform:uppercase;
                 }
-                .person-icon{                    
+                .person-icon{
                         height: 31px;
                         margin-top: -9px;
                         font-size: 31px;
-                }                    
+                }
             }
             .react-draggable-title{
                 position: absolute;
@@ -144,7 +144,7 @@
                 color: white;
                 width: 70px;
                 text-align: center;
-            }      
+            }
             .react-draggable-actions {
                 position: absolute;
                 left: 50%;
@@ -197,15 +197,15 @@
                         top: -10px;
                         left: 75px;
                     }
-                }          
-            }      
+                }
+            }
 
             &.size-m {
                 padding:1px 1px 15px 1px;
                 .react-draggable-handle{
                     .user-colour-dot{
                         bottom:14px;
-                    }              
+                    }
                 }
                 .button-round {
                     &.first {
@@ -227,7 +227,7 @@
                         top: -10px;
                         left: 65px;
                     }
-                }          
+                }
             }
 
             &.size-s {
@@ -259,7 +259,7 @@
                         top: -12px;
                         left: 55px;
                     }
-                }                
+                }
             }
             &.is-selected{
                 background-image: url(../images/marker-medium-black.svg)!important;
@@ -276,7 +276,7 @@
                 .person-icon{
                     &:before{
                         color:white;
-                    }                    
+                    }
                 }
             }
 
@@ -293,7 +293,7 @@
                         border-style: solid;
                         border-width: 0 9px 9px 0;
                         border-color: transparent #ffffff transparent transparent;
-                    } 
+                    }
                 }
             }
             &.trajectory-down{
@@ -309,13 +309,13 @@
                         border-style: solid;
                         border-width: 9px 0px 0px 9px;
                         border-color: transparent transparent transparent #ffffff;
-                    } 
+                    }
                 }
-            }    
+            }
         }
 
-        .react-draggable.size-s {            
-            margin-top:-24px;                
+        .react-draggable.size-s {
+            margin-top:-24px;
         }
 
         .react-draggable.size-m {
@@ -323,7 +323,7 @@
             width: 64px;
             margin-top:-39px;
             background-image: url(../images/marker-medium.svg);
-            font-size: 14px;      
+            font-size: 14px;
         }
 
         .react-draggable.size-l {
@@ -332,7 +332,7 @@
             margin-top:-47px;
             background-image: url(../images/marker-large.svg);
             font-size: 14px;
-        }        
+        }
 
         .react-draggable.disabled{
             opacity:.5;
@@ -508,7 +508,7 @@
         height: calc(100% - 40px);
         display: flex;
         justify-content: space-between;
-        font-size: 16px;        
+        font-size: 16px;
 
         .axis-image {
             position: absolute;
@@ -561,7 +561,7 @@
 
         .axis-label {
             position: absolute;
-            top: calc(50% - 16px);            
+            top: calc(50% - 16px);
             transform: rotate(-90deg);
             font-size: 18px;
             left: -15px;
@@ -581,6 +581,8 @@
         position: absolute;
         background-position: center;
         background-size: contain;
+        margin-top: -39px;
+        
         img {
             width: 100%;
             height: auto;
@@ -602,6 +604,15 @@
 
     .first-coordinate.progress-button {
         background:none;
+        margin-top: -24px;
+
+        &.size-m {
+            margin-top: -39px;
+        }
+
+        &.size-l {
+            margin-top: -47px;
+        }
     }
 }
 
@@ -657,7 +668,7 @@
             line-height: 17px;
             font-weight:500;
             a{
-                text-decoration:none;                
+                text-decoration:none;
             }
         }
         &:before{
@@ -669,7 +680,7 @@
             border-color: transparent #000000 transparent transparent;
             position: absolute;
             left: -14px;
-            top: 18px;       
+            top: 18px;
         }
     }
     &.undefined{
@@ -678,12 +689,12 @@
     &.left{
     top:6%;
     left:-42px;
-    animation: side-pirate 31s infinite linear,  side-bob 3s infinite linear,  side-rock 7s infinite linear;   
+    animation: side-pirate 31s infinite linear,  side-bob 3s infinite linear,  side-rock 7s infinite linear;
     }
     &.right{
     top:50%;
     right:-42px;
-    animation: side-pirate 29s infinite linear,  side-bob 2.5s infinite linear,  side-rock 5s infinite linear;   
+    animation: side-pirate 29s infinite linear,  side-bob 2.5s infinite linear,  side-rock 5s infinite linear;
         .competitor-tooltip{
             right:calc(100% + 13px);
             left:unset;
@@ -698,7 +709,7 @@
     &.bottom{
     bottom:-42px;
     left:5%;
-    animation: bottom-pirate 33s infinite linear,  bottom-bob 2s infinite linear,  bottom-rock 7s infinite linear;   
+    animation: bottom-pirate 33s infinite linear,  bottom-bob 2s infinite linear,  bottom-rock 7s infinite linear;
     .competitor-tooltip{
         top:-117px;
         left:-44px;
@@ -742,14 +753,14 @@
 }
 
 @keyframes left-rock{
-    0% {margin-top: 0px} 
+    0% {margin-top: 0px}
     25% {margin-top: 10px}
     75% {margin-top: -10px}
     100% {margin-top: 0px}
 }
 
 @keyframes bottom-rock{
-    0% {margin-left: 0px} 
+    0% {margin-left: 0px}
     25% {margin-left: 10px}
     75% {margin-left: -10px}
     100% {margin-left: 0px}

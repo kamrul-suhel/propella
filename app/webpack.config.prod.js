@@ -27,7 +27,7 @@ module.exports = {
 			'react-draft-wysiwyg': '@xanda/react-components/lib/NoResults.js',
 			'react-google-maps': '@xanda/react-components/lib/NoResults.js',
 			'react-tinymce': '@xanda/react-components/lib/NoResults.js',
-			'react-slider': '@xanda/react-components/lib/NoResults.js',
+			//'react-slider': '@xanda/react-components/lib/NoResults.js',
 		},
 	},
 	optimization: {

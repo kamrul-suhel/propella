@@ -39,7 +39,7 @@ export default class Edit extends React.PureComponent {
     formData.append("description", description);
 
     let response
-    if('add' !== params.id) {
+    if(params.id && 'add' !== params.id) {
       response = await api.put(`/projects/${params.id}`, formData);
     } else {
       response = await api.post(`/projects`, formData);
