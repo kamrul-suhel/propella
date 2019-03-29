@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Group;
 use App\Organisation;
 use Illuminate\Http\Request;
+use DB;
+use Illuminate\Support\Facades\Mail;
 
 class OrganisationController extends PropellaBaseController
 {
@@ -102,6 +104,26 @@ class OrganisationController extends PropellaBaseController
 
                 $organisation->save();
 
+                // Send email if position X & Y more then 50
+                if(isset($updateOrganisation['positionX']) &&
+                    isset($updateOrganisation['positionX']) &&
+                    $updateOrganisation['positionX'] >= 50 &&
+                    $updateOrganisation['positionY'] >= 50
+                ){
+                    // Sending email to
+                    // Get User email from table.
+                    $groupUser = DB::table('wp_users')
+                        ->select('user_email')
+                        ->where('ID', $organisation['created_by'])
+                        ->first();
+
+                    Mail::send('email.notification.notification', ['data' => $organisation->toArray()], function($message) use($groupUser) {
+                        $message->to($groupUser->user_email, 'VIP user')
+                            ->subject('VIP user');
+                        $message->from(env('MAIL_FROM_ADDRESS'));
+                    });
+                }
+
                 $result[] = $organisations;
             }
         }
@@ -171,6 +193,9 @@ class OrganisationController extends PropellaBaseController
     {
         // Create new Group.
         $organisation = $create ? new Organisation() : Organisation::findOrFail($id);
+        $existingPositionX = $organisation->positionX;
+        $existingPositionY = $organisation->positionY;
+
         $this->request->has('rel_user_id') ? $organisation->rel_user_id = $this->request->rel_user_id : '';
         $this->request->has('title') ? $organisation->title = $this->request->title : '';
         $this->request->has('description') ? $organisation->description = $this->request->description : '';
@@ -202,6 +227,30 @@ class OrganisationController extends PropellaBaseController
         }
 
         $organisation->save();
+
+        // Send email if position X & Y more then 50
+        if($this->request->has('positionX') &&
+            $this->request->has('positionY') &&
+            $this->request->positionX >= 50 &&
+            $this->request->positionY >= 50 &&
+            $existingPositionX < 50 &&
+            $existingPositionY < 50 &&
+            !$create
+        ){
+            // Send email if update
+
+            // Get User email from table.
+            $groupUser = DB::table('wp_users')
+                ->select('user_email')
+                ->where('ID', $organisation->created_by)
+                ->first();
+
+            Mail::send('email.notification.notification', ['data' => $organisation->toArray()], function($message) use($groupUser) {
+                $message->to($groupUser->user_email, 'VIP user')
+                    ->subject('VIP user');
+                $message->from(env('MAIL_FROM_ADDRESS'));
+            });
+        }
 
         return $organisation;
     }

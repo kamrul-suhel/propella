@@ -8,6 +8,7 @@ use App\Organisation;
 use App\People;
 use Illuminate\Http\Request;
 use DB;
+use Illuminate\Support\Facades\Mail;
 
 class GroupController extends PropellaBaseController
 {
@@ -75,6 +76,9 @@ class GroupController extends PropellaBaseController
         foreach ($groups as $group) {
             if (isset($group['id'])) {
                 $updateGroup = Group::findOrFail($group['id']);
+                $existingPositionX = $updateGroup->positionX;
+                $existingPositionY = $updateGroup->positionY;
+
                 isset($group['rel_user_id']) ? $updateGroup->rel_user_id = $group['rel_user_id'] : '';
                 isset($group['title']) ? $updateGroup->title = $group['title'] : '';
                 isset($group['description']) ? $updateGroup->description = $group['description'] : '';
@@ -91,6 +95,28 @@ class GroupController extends PropellaBaseController
                 }
 
                 $updateGroup->save();
+
+                // Send email if position X & Y more then 50
+                if(isset($group['positionX']) &&
+                    isset($group['positionX']) &&
+                    $group['positionX'] >= 50 &&
+                    $group['positionY'] >= 50 &&
+                    $existingPositionX < 50 &&
+                    $existingPositionY < 50
+                ){
+                    // Sending email to
+                    // Get User email from table.
+                    $groupUser = DB::table('wp_users')
+                        ->select('user_email')
+                        ->where('ID', $updateGroup['created_by'])
+                        ->first();
+
+                    Mail::send('email.notification.notification', ['data' => $updateGroup->toArray()], function($message) use($groupUser) {
+                        $message->to($groupUser->user_email, 'VIP user')
+                            ->subject('VIP user');
+                        $message->from(env('MAIL_FROM_ADDRESS'));
+                    });
+                }
 
                 $result[] = $updateGroup;
             }
@@ -339,6 +365,28 @@ class GroupController extends PropellaBaseController
         }
 
         $group->save();
+
+        // Send email if position X & Y more then 50
+        if($this->request->has('positionX') &&
+            $this->request->has('positionY') &&
+            $this->request->positionX >= 50 &&
+            $this->request->positionY >= 50 &&
+            !$create
+        ){
+            // Send email if update
+
+            // Get User email from table.
+            $groupUser = DB::table('wp_users')
+                ->select('user_email')
+                ->where('ID', $group->created_by)
+                ->first();
+
+            Mail::send('email.notification.notification', ['data' => $group->toArray()], function($message) use($groupUser) {
+                $message->to($groupUser->user_email, 'VIP user')
+                    ->subject('VIP user');
+                $message->from(env('MAIL_FROM_ADDRESS'));
+            });
+        }
 
         // Create, update or delete competitors
         if ($this->request->has('competitors')) {

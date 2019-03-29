@@ -256,6 +256,13 @@ class ProjectController extends PropellaBaseController
      */
     public function archiveProject($id)
     {
+        // Check if project Id already archive or not.
+        $archiveProject = Project::where('parent_id', $id)
+            ->first();
+        if($archiveProject){
+            return response()->json('Project already archived', 406);
+        }
+
         $project = Project::with([
             'groupsWithoutUserMeta.organisationsWithOutWPUser.people',
             'groupsWithoutUserMeta.competitors'
