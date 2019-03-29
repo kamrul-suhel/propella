@@ -16,7 +16,7 @@ class PropellaBaseController extends BaseController
     public function __construct(Request $request)
     {
         $this->request = $request;
-//        $this->middleware('auth');
+        $this->middleware('auth');
 
         // Validate top laval status = active & inactive row.  & all = if you want all data without paginate.
         $this->validate($this->request, [

@@ -24,26 +24,44 @@ class ProjectController extends PropellaBaseController
     }
 
     /**
-     * @return mixed
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function create()
     {
+        // Check user project limit.
+        if ($this->request->has('project_limit')) {
+            // Get projects for this user.
+            $userLimit = $this->request->project_limit;
+            $projects = Project::where([
+                'archive' => 0,
+                'created_by' => $this->request->authUserId
+            ])->get()
+                ->count();
+
+            if ($projects > $userLimit) {
+                return response()->json('User rich there limit to create project.', 406);
+            }
+
+        }
+
         $this->validate($this->request, [
-            'title'         => 'required|string|min:1',
-            'description'   => 'required|string|min:1',
-            'status'        => 'integer|between:1,3'
+            'title' => 'required|string|min:1',
+            'description' => 'required|string|min:1',
+            'status' => 'integer|between:1,3'
         ]);
 
-        if(!$this->request->isPM){
+        if (!$this->request->isPM) {
             return response()->json("You are not a PM", 422);
         }
 
         // Create project.
         $project = new Project();
-        $project->title         = $this->request->title;
-        $project->description   = $this->request->description;
-        $project->status        = $this->request->has('status') ? $this->request->status : 1;
-        $project->created_by    = $this->request->authUserId;
+        $project->title = $this->request->title;
+        $project->description = $this->request->description;
+        $this->request->has('measurement') ? $project->measurement = $this->request->measurement : '';
+        $project->status = $this->request->has('status') ? $this->request->status : 1;
+        $project->created_by = $this->request->authUserId;
 
         // Save project.
         $project->save();
@@ -60,12 +78,13 @@ class ProjectController extends PropellaBaseController
         // Find project
         $project = Project::findOrFail($id);
 
-        if(!in_array($project->created_by,[$this->request->authUserId, $this->request->projectManagerId])){
+        if (!in_array($project->created_by, [$this->request->authUserId, $this->request->projectManagerId])) {
             return response()->json("You cannot update this project", 401);
         }
 
         $this->request->has('title') ? $project->title = $this->request->title : '';
         $this->request->has('description') ? $project->description = $this->request->description : '';
+        $this->request->has('measurement') ? $project->measurement = $this->request->measurement : '';
         $this->request->has('status') ? $project->status = $this->request->status : '';
         $project->save();
 
@@ -90,7 +109,9 @@ class ProjectController extends PropellaBaseController
         // If has parameter archives then add last 5 archive.
         if ($this->request->has('archives') && $this->request->archives == 1) {
             foreach ($projects->items() as $project) {
-                if(empty($project->parent_id)) {continue; }
+                if (empty($project->parent_id)) {
+                    continue;
+                }
 
                 $ids = Project::getAllId($project->parent_id, $project->id);
                 $archives = Project::select([
@@ -107,7 +128,7 @@ class ProjectController extends PropellaBaseController
                 $newArchives = [];
                 $archives->map(function ($archive) use (&$newArchives) {
                     // Not include the active project
-                    if($archive->archive === 0){
+                    if ($archive->archive === 0) {
                         return;
                     }
                     $newArchive['id'] = $archive->id;
@@ -256,10 +277,10 @@ class ProjectController extends PropellaBaseController
      */
     public function archiveProject($id)
     {
-        // Check if project Id already archive or not.
+        // Check if project already archive or not.
         $archiveProject = Project::where('parent_id', $id)
             ->first();
-        if($archiveProject){
+        if ($archiveProject) {
             return response()->json('Project already archived', 406);
         }
 

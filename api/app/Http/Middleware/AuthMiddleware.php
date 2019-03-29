@@ -44,7 +44,8 @@ class AuthMiddleware
                     "authUserId"        => $content->data->ID,
                     "authDisplayName"   => $content->data->display_name,
                     "projectManagerId"  => empty($content->data->project_manager) ? $content->data->ID : $content->data->project_manager,
-                    "isPM"              => empty($content->data->project_manager)
+                    "isPM"              => empty($content->data->project_manager),
+                    "project_limit"     => $content->data->project_limit
                 ));
 
                 return $next($request);

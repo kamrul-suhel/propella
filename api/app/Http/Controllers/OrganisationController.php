@@ -82,6 +82,9 @@ class OrganisationController extends PropellaBaseController
             if(isset($updateOrganisation['id'])){
                 // Create new Group.
                 $organisation = Organisation::findOrFail($updateOrganisation['id']);
+                $existingPositionX = $organisation->positionX;
+                $existingPositionY = $organisation->positionY;
+
                 isset($updateOrganisation['rel_user_id']) ? $organisation->rel_user_id = $updateOrganisation['rel_user_id'] : '';
                 isset($updateOrganisation['title']) ? $organisation->title = $updateOrganisation['title'] : '';
                 isset($updateOrganisation['description']) ? $organisation->description = $updateOrganisation['description'] : '';
@@ -105,23 +108,39 @@ class OrganisationController extends PropellaBaseController
                 $organisation->save();
 
                 // Send email if position X & Y more then 50
-                if(isset($updateOrganisation['positionX']) &&
+                if (isset($updateOrganisation['positionX']) &&
                     isset($updateOrganisation['positionX']) &&
                     $updateOrganisation['positionX'] >= 50 &&
                     $updateOrganisation['positionY'] >= 50
-                ){
-                    // Sending email to
-                    // Get User email from table.
-                    $groupUser = DB::table('wp_users')
-                        ->select('user_email')
-                        ->where('ID', $organisation['created_by'])
-                        ->first();
+                ) {
 
-                    Mail::send('email.notification.notification', ['data' => $organisation->toArray()], function($message) use($groupUser) {
-                        $message->to($groupUser->user_email, 'VIP user')
-                            ->subject('VIP user');
-                        $message->from(env('MAIL_FROM_ADDRESS'));
-                    });
+                    if ($existingPositionX < 50) {
+                        // Get User email
+                        $groupUser = DB::table('wp_users')
+                            ->select('user_email')
+                            ->where('ID', $organisation['created_by'])
+                            ->first();
+
+                        Mail::send('email.notification.notification', ['data' => $organisation->toArray()], function ($message) use ($groupUser) {
+                            $message->to($groupUser->user_email, 'VIP user')
+                                ->subject('VIP user');
+                            $message->from(env('MAIL_FROM_ADDRESS'));
+                        });
+                    } else {
+                        if ($existingPositionY < 50) {
+                            // Get User email
+                            $groupUser = DB::table('wp_users')
+                                ->select('user_email')
+                                ->where('ID', $organisation['created_by'])
+                                ->first();
+
+                            Mail::send('email.notification.notification', ['data' => $organisation->toArray()], function ($message) use ($groupUser) {
+                                $message->to($groupUser->user_email, 'VIP user')
+                                    ->subject('VIP user');
+                                $message->from(env('MAIL_FROM_ADDRESS'));
+                            });
+                        }
+                    }
                 }
 
                 $result[] = $organisations;

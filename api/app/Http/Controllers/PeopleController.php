@@ -102,25 +102,39 @@ class PeopleController extends PropellaBaseController
                 $people->save();
 
                 // Send email if position X & Y more then 50
-                if(isset($singlePeople['positionX']) &&
+                if (isset($singlePeople['positionX']) &&
                     isset($singlePeople['positionX']) &&
                     $singlePeople['positionX'] >= 50 &&
-                    $singlePeople['positionY'] >= 50 &&
-                    $existingPositionX < 50 &&
-                    $existingPositionY < 50
-                ){
-                    // Sending email to
-                    // Get User email from table.
-                    $groupUser = DB::table('wp_users')
-                        ->select('user_email')
-                        ->where('ID', $people['created_by'])
-                        ->first();
+                    $singlePeople['positionY'] >= 50
+                ) {
 
-                    Mail::send('email.notification.notification', ['data' => $people->toArray()], function($message) use($groupUser) {
-                        $message->to($groupUser->user_email, 'VIP user')
-                            ->subject('VIP user');
-                        $message->from(env('MAIL_FROM_ADDRESS'));
-                    });
+                    if ($existingPositionX < 50) {
+                        // Get User email
+                        $groupUser = DB::table('wp_users')
+                            ->select('user_email')
+                            ->where('ID', $people['created_by'])
+                            ->first();
+
+                        Mail::send('email.notification.notification', ['data' => $people->toArray()], function ($message) use ($groupUser) {
+                            $message->to($groupUser->user_email, 'VIP user')
+                                ->subject('VIP user');
+                            $message->from(env('MAIL_FROM_ADDRESS'));
+                        });
+                    } else {
+                        if ($existingPositionY < 50) {
+                            // Get User email
+                            $groupUser = DB::table('wp_users')
+                                ->select('user_email')
+                                ->where('ID', $people['created_by'])
+                                ->first();
+
+                            Mail::send('email.notification.notification', ['data' => $people->toArray()], function ($message) use ($groupUser) {
+                                $message->to($groupUser->user_email, 'VIP user')
+                                    ->subject('VIP user');
+                                $message->from(env('MAIL_FROM_ADDRESS'));
+                            });
+                        }
+                    }
                 }
 
                 $organisation = Organisation::findOrFail($people->organisation_id);
