@@ -188,6 +188,7 @@ export default class Edit extends React.PureComponent {
     }
 
     render() {
+        console.log("Porps is : ", this.props);
         const {organisation, popup, params} = this.props
         const {step} = this.state
 

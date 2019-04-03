@@ -184,6 +184,7 @@ class OrganisationController extends PropellaBaseController
             'rel_user_id'
         ])
             ->whereIn('id', $ids)
+            ->orderBy('id','DESC')
             ->get();
         $organisation->coordinates = $coordinates;
 

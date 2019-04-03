@@ -193,6 +193,7 @@ export default class GroupWrapper extends React.PureComponent {
                         if (item.status < 1) {
                             return
                         }
+
                         const trajectoryClass = (item.trajectory === 1) ? 'up' : 'down'
 
                         return (
@@ -238,8 +239,8 @@ export default class GroupWrapper extends React.PureComponent {
 
                                         {item.coordinates && item.coordinates.length > 0 ? (
                                         <span className="clickable button-round second"
-                                              onClick={(event) => this.getGroupCoordinate(event, item.id)}>
-                                            <span className="button-round-inside icon-chain"/>{_.isEmpty(selectedGroupCoordinates) ? 'Progress' : 'Hide Progress'}
+                                              onClick={(event) => this.getCoordinate(event, item.id)}>
+                                            <span className="button-round-inside icon-chain"/>{_.isEmpty(selectedOrganisation) ? 'Progress' : 'Hide Progress'}
                                         </span>
                                         ) : (
                                         <span className="button-round second progress-hide">

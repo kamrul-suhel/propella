@@ -49,6 +49,12 @@ export default class List extends React.PureComponent {
 
   handleSnapshotProject = async projectId => {
     const response = await api.get(`projects/${projectId}/archives`)
+
+    if(!api.error(response)){
+      console.log("Project archive :", response);
+
+      this.fetchData();
+    }
   }
 
   handleDeleteProject = async projectId => {
@@ -97,7 +103,8 @@ export default class List extends React.PureComponent {
                   </a>
                 </div>
 
-                {_.map(projects.collection, item => {
+                {_.map(projects.currentCollection, itemId => {
+                  const item = projects.collection[itemId]
                   if (!item) return;
 
                   return (

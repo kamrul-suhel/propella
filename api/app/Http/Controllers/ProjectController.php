@@ -104,6 +104,7 @@ class ProjectController extends PropellaBaseController
 
         // Anyone in the team can view/edit projects created by a project manager
         $projects = $projects->whereIn('created_by', [$this->request->authUserId, $this->request->projectManagerId]);
+        $projects = $projects->orderBy('title');
         $projects = $projects->paginate($this->perPage);
 
         // If has parameter archives then add last 5 archive.
@@ -163,8 +164,9 @@ class ProjectController extends PropellaBaseController
                 'icon_path'
             ])
                 ->whereIn('id', $ids)
-                ->orderByRaw(DB::raw("FIELD(id, $stringIds)"))
+                ->orderBy('id', 'DESC')
                 ->get();
+
             $group->coordinates = $groups;
             $group->string = $stringIds;
         });
@@ -289,7 +291,6 @@ class ProjectController extends PropellaBaseController
             'groupsWithoutUserMeta.competitors'
         ])
             ->findOrFail($id);
-
 
         $project->archive = 1;
         $project->save();

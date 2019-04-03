@@ -31,7 +31,6 @@ export default class Edit extends React.PureComponent {
 
   componentDidUpdate(prevProps) {
       const {competitor, popup} = this.props
-      console.log(this.state)
       if (popup.id != (competitor || {}).id) {
           this.props.dispatch({type: 'POPUP_UPDATED', payload: competitor})
       }

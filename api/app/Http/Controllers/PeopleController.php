@@ -179,6 +179,7 @@ class PeopleController extends PropellaBaseController
             'icon_path'
         ])
             ->whereIn('id', $ids)
+            ->orderBy('id', 'DESC')
             ->get();
         $people->coordinates = $coordinates;
 

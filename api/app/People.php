@@ -92,8 +92,8 @@ class People extends Model
                 return;
             }
             $count++;
-            $newGroup = self::findOrFail($parent_id);
-            $ids[] = self::getAllIdAsString($newGroup->parent_id, $count);
+            $newPeople = self::findOrFail($parent_id);
+            $ids[] = self::getAllIdAsString($newPeople->parent_id, $count);
         }
         $ids[] = $parent_id;
         return implode($ids,',');

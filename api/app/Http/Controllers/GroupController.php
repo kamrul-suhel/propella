@@ -220,6 +220,22 @@ class GroupController extends PropellaBaseController
             ->get();
         $group->coordinates = $coordinates;
 
+        // Get all coordinate for organisations
+        $group->organisations->map(function($organisation){
+            $ids = Organisation::getAllId($organisation->parent_id);
+            $coordinates = Organisation::select([
+                'id',
+                'positionX',
+                'positionY',
+                'icon_size',
+                'icon_path',
+                'rel_user_id'
+            ])
+                ->whereIn('id', $ids)
+                ->get();
+            $organisation->coordinates = $coordinates;
+        });
+
         // Get people by group
         $people = People::select([
             'people.id',

@@ -7,8 +7,6 @@ export default class Coordinate extends React.PureComponent {
         let c = 0
         const container = fn.getContainer()
 
-        console.log("My coordinate container is :", container);
-
         if (nextCoordinate) {
             const cPositionX = container.width / 100 * currentCoordinate.positionX
             const cPositionY = container.height- (container.height / 100 * currentCoordinate.positionY)
@@ -24,8 +22,6 @@ export default class Coordinate extends React.PureComponent {
 
             c = Math.sqrt(a * a + b * b)
         }
-
-        console.log("Angle degree: ", angleDeg);
 
         return {
             degree: angleDeg,

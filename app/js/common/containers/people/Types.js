@@ -63,8 +63,6 @@ export default class List extends React.PureComponent {
     const {peopleTypes}
     = this.props
 
-    console.log(this.state)
-
     return (
       <React.Fragment>
         <Nav {...this.props} />

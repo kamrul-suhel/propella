@@ -5257,7 +5257,7 @@ li.rc-time-picker-panel-select-option-disabled:hover {
     padding: 40px 0;
     margin-top: 30px; }
     .project.centering .page-wrap .grid {
-      margin-top: 30px; }
+      margin-top: 0; }
     .project.centering .page-wrap h1 {
       font-size: 1.875rem;
       margin-bottom: 20px;
@@ -5286,7 +5286,7 @@ li.rc-time-picker-panel-select-option-disabled:hover {
         box-shadow: none;
         text-align: left; }
       .project.centering .page-wrap .form-wrapper .form-group textarea {
-        height: 230px; }
+        height: 130px; }
     .project.centering .page-wrap.no-padding {
       padding: 0px; }
 
