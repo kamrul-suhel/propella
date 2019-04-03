@@ -29,7 +29,7 @@ class ProjectController extends PropellaBaseController
      */
     public function create()
     {
-        // Check user project limit.
+        // Check user project limit
         if ($this->request->has('project_limit')) {
             // Get projects for this user.
             $userLimit = $this->request->project_limit;

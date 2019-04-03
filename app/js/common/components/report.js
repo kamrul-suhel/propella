@@ -31,6 +31,8 @@ export default class ReportList extends React.Component {
 
         const collections = reportType === 'organisations' ? data.organisations : data.people;
 
+        console.log("Report type: ", reportType);
+
         return (
             <div className="report-component">
                 <ContentLoader

@@ -75,7 +75,10 @@ export default class Report extends React.PureComponent {
               </ContentLoader>
 
               <div className="report-action">
-                  <button onClick={() => fn.downloadAttachment(`groups/${this.props.params.groupId}/people?format_type=csv`, 'export-people.csv')}>Create report</button>
+                  <button onClick={() =>
+                      fn.downloadAttachment(`groups/${this.props.params.groupId}/people?format_type=csv`, 'export-people.csv')}>Create report
+                  </button>
+
                   <button onClick={fn.handleReportPrint}>Print</button>
               </div>
           </div>

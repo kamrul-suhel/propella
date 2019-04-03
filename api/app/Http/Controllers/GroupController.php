@@ -167,9 +167,14 @@ class GroupController extends PropellaBaseController
      */
     public function single($id)
     {
-        // If format_type param pass, we need to download organisations as csv
+        // If format_type param pass, download organisations as csv
         if ($this->request->has('format_type')) {
             $organisations = Organisation::where('group_id', $id)->get();
+            
+            if($organisations->isEmpty()){
+                return response()->json('', 406);
+            }
+
             $organisations->map(function ($organisation) {
                 if ($organisation->positionX > 50) {
                     if ($organisation->positionY > 50) {
@@ -385,7 +390,7 @@ class GroupController extends PropellaBaseController
             $this->request->has('positionY') &&
             $this->request->positionX >= 50 &&
             $this->request->positionY >= 50 &&
-            !$create
+            $create
         ) {
             // Send email if update
 

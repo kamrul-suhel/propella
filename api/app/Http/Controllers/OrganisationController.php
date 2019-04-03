@@ -113,7 +113,6 @@ class OrganisationController extends PropellaBaseController
                     $updateOrganisation['positionX'] >= 50 &&
                     $updateOrganisation['positionY'] >= 50
                 ) {
-
                     if ($existingPositionX < 50) {
                         // Get User email
                         $groupUser = DB::table('wp_users')

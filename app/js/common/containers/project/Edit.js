@@ -97,7 +97,7 @@ export default class Edit extends React.PureComponent {
 
                       <div className="form-field-row">
                         <TextInput
-                            label="Measurement"
+                            label="Project Measurement"
                             name="measurement"
                             textarea
                             validation="required"
