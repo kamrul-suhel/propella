@@ -32,11 +32,13 @@ export default class Edit extends React.PureComponent {
 
   handleSubmit = async () => {
     const { params } = this.props;
-    const { title, description } = this.state;
+    const { title, description, measurement } = this.state;
     const formData = new FormData();
 
     formData.append("title", title);
     formData.append("description", description);
+    formData.append("measurement", measurement);
+
 
     let response
     if(params.id && 'add' !== params.id) {
@@ -90,6 +92,17 @@ export default class Edit extends React.PureComponent {
                           validation="required"
                           onChange={this.handleInputChange}
                           value={project.description}
+                        />
+                      </div>
+
+                      <div className="form-field-row">
+                        <TextInput
+                            label="Measurement"
+                            name="measurement"
+                            textarea
+                            validation="required"
+                            onChange={this.handleInputChange}
+                            value={project.measurement}
                         />
                       </div>
                     </div>
