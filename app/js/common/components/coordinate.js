@@ -21,6 +21,20 @@ export default class Coordinate extends React.PureComponent {
             let b = cPositionY - nPositionY
 
             c = Math.sqrt(a * a + b * b)
+
+            switch(nextCoordinate.icon_size){
+                case 's':
+                    c = c - 20;
+                    break;
+                case 'm':
+                    c = c -20;
+                    break;
+                case 'l':
+                    c = c;
+                    break;
+                default:
+                    c;
+            }
         }
 
         return {
@@ -53,7 +67,7 @@ export default class Coordinate extends React.PureComponent {
                 return (
                     <div key={coordinate.id}
                          id={coordinate.id}
-                         className={`selected-group-wrapper progress-button coordinate-${index}`}
+                         className={`selected-group-wrapper progress-button coordinate size-${coordinate.icon_size} coordinate-${index}`}
                          style={{transform: `translate(${container.width / 100 * coordinate.positionX}px, ${container.height - (container.height / 100 * coordinate.positionY)}px)`}}>
                         <div className="connector" style={{
                             transform: `rotate(${position.degree ? position.degree : 0}deg)`,

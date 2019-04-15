@@ -202,6 +202,8 @@
 
             &.size-m {
                 padding:1px 1px 15px 1px;
+                margin:-78px 0 0 -32px;
+
                 .react-draggable-handle{
                     .user-colour-dot{
                         bottom:14px;
@@ -315,13 +317,12 @@
         }
 
         .react-draggable.size-s {
-            margin-top:-24px;
+            margin:-48px 0 0 -21px;
         }
 
         .react-draggable.size-m {
             height: 78px;
             width: 64px;
-            margin-top:-39px;
             background-image: url(../images/marker-medium.svg);
             font-size: 14px;
         }
@@ -329,7 +330,7 @@
         .react-draggable.size-l {
             height: 95px;
             width: 82px;
-            margin-top:-47px;
+            margin:-95px 0 0 -41px;
             background-image: url(../images/marker-large.svg);
             font-size: 14px;
         }
@@ -581,7 +582,6 @@
         position: absolute;
         background-position: center;
         background-size: contain;
-        margin-top: -39px;
         
         img {
             width: 100%;
@@ -601,20 +601,36 @@
             z-index:1;
         }
 
-        &.coordinate-0{
+        &.coordinate{
+            &.size-s{
+                margin:-48px 0 0 -21px;
+            }
+
+            &.size-m{
+                margin:-78px 0 0 -32px;
+            }
+
+            &.size-l{
+                margin:-78px 0 0 -32px;
+            }
         }
     }
 
     .first-coordinate.progress-button {
         background:none;
-        margin-top: -24px;
+
+        &.size-s {
+            margin:-48px 0 0 -21px;
+        }
 
         &.size-m {
-            margin-top: -39px;
+            margin:-78px 0 0 -32px;
         }
 
         &.size-l {
-            margin-top: -47px;
+            width:82px;
+            height:95px;
+            margin:-95px 0 0 -41px;
         }
     }
 }

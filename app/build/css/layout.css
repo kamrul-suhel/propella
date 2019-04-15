@@ -4209,7 +4209,8 @@ li.rc-time-picker-panel-select-option-disabled:hover {
           top: -10px;
           left: 75px; }
       .gridwrapper .gridwrapper-inner .react-draggable.size-m {
-        padding: 1px 1px 15px 1px; }
+        padding: 1px 1px 15px 1px;
+        margin: -78px 0 0 -32px; }
         .gridwrapper .gridwrapper-inner .react-draggable.size-m .react-draggable-handle .user-colour-dot {
           bottom: 14px; }
         .gridwrapper .gridwrapper-inner .react-draggable.size-m .button-round.first {
@@ -4276,17 +4277,16 @@ li.rc-time-picker-panel-select-option-disabled:hover {
         border-width: 9px 0px 0px 9px;
         border-color: transparent transparent transparent #ffffff; }
     .gridwrapper .gridwrapper-inner .react-draggable.size-s {
-      margin-top: -24px; }
+      margin: -48px 0 0 -21px; }
     .gridwrapper .gridwrapper-inner .react-draggable.size-m {
       height: 78px;
       width: 64px;
-      margin-top: -39px;
       background-image: url(../images/marker-medium.svg);
       font-size: 14px; }
     .gridwrapper .gridwrapper-inner .react-draggable.size-l {
       height: 95px;
       width: 82px;
-      margin-top: -47px;
+      margin: -95px 0 0 -41px;
       background-image: url(../images/marker-large.svg);
       font-size: 14px; }
     .gridwrapper .gridwrapper-inner .react-draggable.disabled {
@@ -4483,8 +4483,7 @@ li.rc-time-picker-panel-select-option-disabled:hover {
     background-repeat: no-repeat;
     position: absolute;
     background-position: center;
-    background-size: contain;
-    margin-top: -39px; }
+    background-size: contain; }
     .gridwrapper .progress-button img {
       width: 100%;
       height: auto;
@@ -4500,13 +4499,22 @@ li.rc-time-picker-panel-select-option-disabled:hover {
       background-color: #1C1C1C;
       transform-origin: right;
       z-index: 1; }
+    .gridwrapper .progress-button.coordinate.size-s {
+      margin: -48px 0 0 -21px; }
+    .gridwrapper .progress-button.coordinate.size-m {
+      margin: -78px 0 0 -32px; }
+    .gridwrapper .progress-button.coordinate.size-l {
+      margin: -78px 0 0 -32px; }
   .gridwrapper .first-coordinate.progress-button {
-    background: none;
-    margin-top: -24px; }
+    background: none; }
+    .gridwrapper .first-coordinate.progress-button.size-s {
+      margin: -48px 0 0 -21px; }
     .gridwrapper .first-coordinate.progress-button.size-m {
-      margin-top: -39px; }
+      margin: -78px 0 0 -32px; }
     .gridwrapper .first-coordinate.progress-button.size-l {
-      margin-top: -47px; }
+      width: 82px;
+      height: 95px;
+      margin: -95px 0 0 -41px; }
 
 .competitor {
   height: 51px;
