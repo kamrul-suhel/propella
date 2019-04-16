@@ -84,8 +84,8 @@ class PeopleController extends PropellaBaseController
                 isset($singlePeople['type_id']) ? $people->type_id = (int)$singlePeople['type_id'] : '';
                 isset($singlePeople['organisation_id']) ? $people->organisation_id = (int) $singlePeople['organisation_id'] : '';
                 isset($singlePeople['abbreviation']) ? $people->abbreviation = ucwords($singlePeople['abbreviation']) : '';
-                isset($singlePeople['positionX']) ? $people->positionX = $singlePeople['positionX'] : '';
-                isset($singlePeople['positionY']) ? $people->positionY = $singlePeople['positionY'] : '';
+                isset($singlePeople['positionX']) ? $people->positionX = getPosition($singlePeople['positionX']) : '';
+                isset($singlePeople['positionY']) ? $people->positionY = getPosition($singlePeople['positionY']) : '';
                 isset($singlePeople['trajectory']) ? $people->trajectory = $singlePeople['trajectory'] : '';
                 isset($singlePeople['character_id']) ? $people->character_id = $singlePeople['character_id'] : '';
                 isset($singlePeople['icon_size']) ? $people->icon_size = $singlePeople['icon_size'] : '';
@@ -213,8 +213,8 @@ class PeopleController extends PropellaBaseController
         $this->request->has('type_id') ? $people->type_id = (int)$this->request->type_id : '';
         $this->request->has('organisation_id') ? $people->organisation_id = (int)$this->request->organisation_id : '';
         $this->request->has('abbreviation') ? $people->abbreviation = ucwords($this->request->abbreviation) : '';
-        $this->request->has('positionX') ? $people->positionX = $this->request->positionX : '';
-        $this->request->has('positionY') ? $people->positionY = $this->request->positionY : '';
+        $this->request->has('positionX') ? $people->positionX = getPosition($this->request->positionX) : '';
+        $this->request->has('positionY') ? $people->positionY = getPosition($this->request->positionY) : '';
         $this->request->has('trajectory') ? $people->trajectory = $this->request->trajectory : '';
         $this->request->has('character_id') ? $people->character_id = $this->request->character_id : '';
         $this->request->has('icon_size') ? $people->icon_size = $this->request->icon_size : '';

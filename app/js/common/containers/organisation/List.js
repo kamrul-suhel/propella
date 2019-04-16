@@ -122,7 +122,7 @@ export default class List extends React.PureComponent {
                     }
                   </React.Fragment>
                 }
-                additionalClass="organisations window-large"
+                additionalClass="organisations window-large wide"
             >
                 <ContentLoader
                     data={groups.collection}

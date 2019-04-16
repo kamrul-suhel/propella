@@ -3,7 +3,7 @@ import {url} from 'app/constants';
 import {fetchData} from 'app/actions';
 import {connect} from 'react-redux';
 import Draggable from 'react-draggable';
-import {api} from 'app/utils';
+import {api,fn} from 'app/utils';
 import * as selector from './selector';
 import {makeGetProject, makeGetProjects} from 'app/containers/project/selector';
 import {Link} from "react-router";
@@ -125,9 +125,14 @@ export default class GroupWrapper extends React.PureComponent {
         }
     }
 
-    handleSetTrajectory = async (organisationId, newTrajectory) => {
+    handleSetTrajectory = async (organisation) => {
         const {params} = this.props
-        const response = await api.put(`organisations/${organisationId}`, {trajectory: newTrajectory});
+
+        const newTrajectory = fn.getTrajectory(organisation.trajectory);
+        console.log(newTrajectory);
+
+        const response = await api.put(`organisations/${organisation.id}`, {trajectory: newTrajectory});
+
         this.props.dispatch(
             {
                 type: 'GROUP_ORGANISATION_UPDATED',
@@ -255,10 +260,7 @@ export default class GroupWrapper extends React.PureComponent {
                                         </Link>
 
                                         <span className="button-round fourth clickable"
-                                              onClick={() => {
-                                                  const newTrajectory = (item.trajectory == 0) ? 1 : 0
-                                                  this.handleSetTrajectory(item.id, newTrajectory)
-                                              }}
+                                              onClick={() => { this.handleSetTrajectory(item) }}
                                         >
                                             <span className="button-round-inside icon-compass"/>
                                             Choose<br/>Trajectory
