@@ -14,7 +14,8 @@ import { makeGetMenu } from "app/reducers/menu";
   return {
     group: getGroup(state, ownProps.params.groupId),
     me: state.me,
-    menu: getMenu(state)
+    menu: getMenu(state),
+    project: state.project
   };
 })
 export default class Nav extends React.PureComponent {
@@ -97,7 +98,9 @@ export default class Nav extends React.PureComponent {
   }
 
   render() {
-    const { project, location, group, groups, params, menu } = this.props;
+    const { project, location, group, groups, params, menu } = this.props
+    const currentProject = project.collection[params.id] && project.collection[params.id]
+
     const user = fn.getUser();
 
     // check if already on a report page
@@ -108,6 +111,9 @@ export default class Nav extends React.PureComponent {
     return (
       <div className="nav">
         <img className="nav-logo" src="/../../../images/logo.svg" />
+
+        <div className="project-title">{currentProject && currentProject.title}</div>
+
         {params.id &&
           <React.Fragment>
           {params.groupId && location.pathname.match(/(\/organisations|\/people|\/\groups\/[0-9]+)/) ? (
