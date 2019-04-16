@@ -3,10 +3,10 @@ import {url} from 'app/constants';
 import {fetchData} from 'app/actions';
 import {connect} from 'react-redux';
 import Draggable from 'react-draggable';
-import { fn, api } from 'app/utils';
+import {fn, api} from 'app/utils';
 import * as selector from 'app/containers/group/selector';
-import { makeGetPeople } from './selector';
-import { Link } from "react-router";
+import {makeGetPeople} from './selector';
+import {Link} from "react-router";
 import Coordinate from 'app/components/coordinate';
 
 @connect((state, ownProps) => {
@@ -32,11 +32,11 @@ export default class PeopleWrapper extends React.PureComponent {
     }
 
     componentWillMount() {
-      document.addEventListener('mousedown', this.handleClick, false)
+        document.addEventListener('mousedown', this.handleClick, false)
     }
 
     componentWillUnmount() {
-      document.removeEventListener('mousedown', this.handleClick, false)
+        document.removeEventListener('mousedown', this.handleClick, false)
     }
 
     componentDidMount() {
@@ -53,35 +53,35 @@ export default class PeopleWrapper extends React.PureComponent {
     }
 
     onDraggableEventHandler = (event, data) => {
-      const { container } = this.props
-      // find the id we're moving
-      const organisationId = Number(_.find(data.node.attributes, {name: 'handleid'}).value)
+        const {container} = this.props
+        // find the id we're moving
+        const organisationId = Number(_.find(data.node.attributes, {name: 'handleid'}).value)
 
-      if (Math.abs(data.deltaX) === 0 && Math.abs(data.deltaY) === 0) {
-          this.setState({'selectedDraggable': organisationId})
-      } else {
-          // get the wrapper dimensions
-          const maxWidth = container.width
-          const maxHeight = container.height
+        if (Math.abs(data.deltaX) === 0 && Math.abs(data.deltaY) === 0) {
+            this.setState({'selectedDraggable': organisationId})
+        } else {
+            // get the wrapper dimensions
+            const maxWidth = container.width
+            const maxHeight = container.height
 
-          const newY = 100 - _.round((data.y / maxHeight) * 100, 4)
-          const newX = _.round((data.x / maxWidth) * 100, 4)
+            const newY = 100 - _.round((data.y / maxHeight) * 100, 4)
+            const newX = _.round((data.x / maxWidth) * 100, 4)
 
-          this.setState({
-              updatedCoordinates: {
-                  ...this.state.updatedCoordinates,
-                  [organisationId]: {id: organisationId, positionX: newX, positionY: newY}
-              }
-          })
-      }
+            this.setState({
+                updatedCoordinates: {
+                    ...this.state.updatedCoordinates,
+                    [organisationId]: {id: organisationId, positionX: newX, positionY: newY}
+                }
+            })
+        }
     }
 
     handleClick = (e) => {
-      if(this.node){
-        if(!this.node.contains(e.target)){
-          this.setState({selectedDraggable: 0, selectedPeople: {}})
+        if (this.node) {
+            if (!this.node.contains(e.target)) {
+                this.setState({selectedDraggable: 0, selectedPeople: {}})
+            }
         }
-      }
     }
 
     handleSaveChanges = async () => {
@@ -95,27 +95,27 @@ export default class PeopleWrapper extends React.PureComponent {
     }
 
     handleHideOrganisation = async (id) => {
-      const response = await api.put(`organisations/${id}`, {status: 0})
-      if (!api.error(response)) {
-        this.fetchData();
-      }
+        const response = await api.put(`organisations/${id}`, {status: 0})
+        if (!api.error(response)) {
+            this.fetchData();
+        }
     }
 
     getCoordinate = async (event, peopleId) => {
-        const {selectedPeople,updatedCoordinates} = this.state;
+        const {selectedPeople, updatedCoordinates} = this.state;
 
-        if(!_.isEmpty(selectedPeople)){
+        if (!_.isEmpty(selectedPeople)) {
             this.setState({selectedPeople: {}})
         } else {
             // Stop other event
             event.stopPropagation();
             // Get the data from server
-            const data = await api.get('people/'+peopleId);
+            const data = await api.get('people/' + peopleId);
 
             let selectedPeople = {...data.data};
 
             _.map(updatedCoordinates, (updatedCoordinate) => {
-                if(updatedCoordinate.id === selectedPeople.id){
+                if (updatedCoordinate.id === selectedPeople.id) {
                     selectedPeople.positionX = updatedCoordinate.positionX;
                     selectedPeople.positionY = updatedCoordinate.positionY;
                 }
@@ -133,47 +133,51 @@ export default class PeopleWrapper extends React.PureComponent {
         this.setState({updatedCoordinates: []}, this.fetchData())
     }
 
-    handleSetTrajectory = async (peopleId, newTrajectory) => {
-      const { params } = this.props
-      const response = await api.put(`people/${peopleId}`, {trajectory: newTrajectory});
-      this.props.dispatch(
-  			{
-  				type: 'GROUP_PEOPLE_UPDATED',
-          payload: {
-  					'groupId': params.groupId,
-  					'personId': response.data.id,
-            'person': response.data
-  				}
-  			}
-  		)
+    handleSetTrajectory = async (people) => {
+        const {params} = this.props
+        const newTrajectory = fn.getTrajectory(people.trajectory)
+        const response = await api.put(`people/${people.id}`, {trajectory: newTrajectory})
+        this.props.dispatch(
+            {
+                type: 'GROUP_PEOPLE_UPDATED',
+                payload: {
+                    'groupId': params.groupId,
+                    'personId': response.data.id,
+                    'person': response.data
+                }
+            }
+        )
     }
 
     render() {
         const {groups, group, params, container, people} = this.props
         const {updatedCoordinates, selectedDraggable, progressLabel, selectedPeople, showCharacters} = this.state
 
-        if(!container){
-          return null
+        if (!container) {
+            return null
         }
 
         // get the id's of the active organisations
-        const activeOrganisationIds = _.map(group.organisations, (item) => {if(item.status === 1) return item.id})
+        const activeOrganisationIds = _.map(group.organisations, (item) => {
+            if (item.status === 1) return item.id
+        })
 
         return (
             <div ref={node => this.node = node}>
                 <ul className="gridwrapper-inner-categories filter">
-                  {_.map(group.organisations, (item) => {
-                    if (item.status < 1) {
-                        return
-                    }
+                    {_.map(group.organisations, (item) => {
+                        if (item.status < 1) {
+                            return
+                        }
 
-                    return (
-                      <li className="filter">
-                        {item.title}
-                        <span className="clickable icon-x-small" onClick={() => this.handleHideOrganisation(item.id)} />
-                      </li>
-                    )
-                  })}
+                        return (
+                            <li className="filter">
+                                {item.title}
+                                <span className="clickable icon-x-small"
+                                      onClick={() => this.handleHideOrganisation(item.id)}/>
+                            </li>
+                        )
+                    })}
                 </ul>
                 {!_.isEmpty(updatedCoordinates) &&
                 <React.Fragment>
@@ -186,7 +190,7 @@ export default class PeopleWrapper extends React.PureComponent {
                         return
                     }
 
-                    const trajectoryClass = (item.trajectory === 1) ? 'up': 'down'
+                    const trajectoryClass = (item.trajectory === 1) ? 'up' : 'down'
                     return (
                         <Draggable
                             key={item.id}
@@ -212,46 +216,46 @@ export default class PeopleWrapper extends React.PureComponent {
                                  }
                             >
                                 <div className="react-draggable-handle">
-                                  {people.showCharacters && item.character_id !== 0 ? (
-                                    <span className={`person-icon avatar-${fn.getAvatarClass(item.size)}`}></span>
-                                  ) : (
-                                    <span className={`person-icon ${fn.getPeopleCharacter(item.character_id)['iconImage']}`}></span>
-                                  )}
-                                  <span className="person-abbr">{item.abbreviation}</span>
-                                  {selectedDraggable === item.id &&
+                                    {people.showCharacters && item.character_id !== 0 ? (
+                                        <span className={`person-icon avatar-${fn.getAvatarClass(item.size)}`}></span>
+                                    ) : (
+                                        <span
+                                            className={`person-icon ${fn.getPeopleCharacter(item.character_id)['iconImage']}`}></span>
+                                    )}
+                                    <span className="person-abbr">{item.abbreviation}</span>
+                                    {selectedDraggable === item.id &&
                                     <span className="react-draggable-title">{item.organisation_title}</span>
-                                  }
+                                    }
                                 </div>
 
                                 {selectedDraggable === item.id &&
-                                    <div className="react-draggable-actions">
-                                        <Link className="button-round first"
-                                              to={`/${url.projects}/${params.id}/groups/${group.id}/${url.people}/${item.id}/${url.characters}`}>
-                                            <span className="button-round-inside icon-masks"/>
-                                            Assign<br/>Character
-                                        </Link>
+                                <div className="react-draggable-actions">
+                                    <Link className="button-round first"
+                                          to={`/${url.projects}/${params.id}/groups/${group.id}/${url.people}/${item.id}/${url.characters}`}>
+                                        <span className="button-round-inside icon-masks"/>
+                                        Assign<br/>Character
+                                    </Link>
 
-                                        <span className="clickable button-round second"
-                                              onClick={(event) => this.getCoordinate(event, item.id)}>
+                                    <span className="clickable button-round second"
+                                          onClick={(event) => this.getCoordinate(event, item.id)}>
                                             <span className="button-round-inside icon-chain"/>Progess
                                         </span>
 
-                                        <Link className="button-round third"
-                                              to={`/${url.projects}/${params.id}/groups/${group.id}/${url.people}/${item.id}`}>
-                                            <span className="button-round-inside icon-pencil"/>
-                                            Edit
-                                        </Link>
+                                    <Link className="button-round third"
+                                          to={`/${url.projects}/${params.id}/groups/${group.id}/${url.people}/${item.id}`}>
+                                        <span className="button-round-inside icon-pencil"/>
+                                        Edit
+                                    </Link>
 
-                                        <span className="button-round fourth clickable"
+                                    <span className="button-round fourth clickable"
                                           onClick={() => {
-                                            const newTrajectory = (item.trajectory == 0) ? 1 : 0
-                                            this.handleSetTrajectory(item.id, newTrajectory)
+                                              this.handleSetTrajectory(item)
                                           }}
-                                        >
+                                    >
                                             <span className="button-round-inside icon-compass"/>
                                             Choose<br/>Trajectory
                                         </span>
-                                    </div>
+                                </div>
                                 }
                             </div>
                         </Draggable>

@@ -571,5 +571,31 @@ export default {
     }
 
     return this.saveCookie('showCharacters', showCharacters, {path: '/'})
+  },
+
+  getTrajectory(currentTrajectory){
+		let newTrajectory = null;
+	  switch(currentTrajectory){
+		  case 0:
+			  newTrajectory = 1;
+			  break;
+
+		  case 1:
+			  newTrajectory = 2;
+			  break;
+
+		  case 2:
+			  newTrajectory = 3;
+			  break;
+
+		  case 3:
+			  newTrajectory = 4;
+			  break;
+
+		  case 4:
+		  	newTrajectory = 0
+	  }
+
+	  return newTrajectory;
   }
 };
