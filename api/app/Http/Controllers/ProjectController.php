@@ -42,7 +42,6 @@ class ProjectController extends PropellaBaseController
             if ($projects > $userLimit) {
                 return response()->json('User rich there limit to create project.', 406);
             }
-
         }
 
         $this->validate($this->request, [

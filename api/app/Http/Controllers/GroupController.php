@@ -85,8 +85,8 @@ class GroupController extends PropellaBaseController
                 isset($group['abbreviation']) ? $updateGroup->abbreviation = ucwords($group['abbreviation']) : '';
                 isset($group['project_id']) ? $updateGroup->project_id = (int)$group['project_id'] : '';
                 isset($group['status']) ? $updateGroup->status = $group['status'] : '';
-                isset($group['positionX']) ? $updateGroup->positionX = $group['positionX'] : '';
-                isset($group['positionY']) ? $updateGroup->positionY = $group['positionY'] : '';
+                isset($group['positionX']) ? $updateGroup->positionX = getPosition($group['positionX']) : '';
+                isset($group['positionY']) ? $updateGroup->positionY = getPosition($group['positionY']) : '';
                 isset($group['icon_size']) ? $updateGroup->icon_size = $group['icon_size'] : '';
                 // Upload file, if file exists & it is update
                 if (isset($group['icon_path']) && is_file($group['icon_path'])) {
@@ -170,8 +170,8 @@ class GroupController extends PropellaBaseController
         // If format_type param pass, download organisations as csv
         if ($this->request->has('format_type')) {
             $organisations = Organisation::where('group_id', $id)->get();
-            
-            if($organisations->isEmpty()){
+
+            if ($organisations->isEmpty()) {
                 return response()->json('', 406);
             }
 
@@ -221,7 +221,7 @@ class GroupController extends PropellaBaseController
         $group->coordinates = $coordinates;
 
         // Get all coordinate for organisations
-        $group->organisations->map(function($organisation){
+        $group->organisations->map(function ($organisation) {
             $ids = Organisation::getAllId($organisation->parent_id);
             $coordinates = Organisation::select([
                 'id',
@@ -376,8 +376,8 @@ class GroupController extends PropellaBaseController
             $group->created_by = $this->request->authUserId;
         }
 
-        $this->request->has('positionX') ? $group->positionX = $this->request->positionX : '';
-        $this->request->has('positionY') ? $group->positionY = $this->request->positionY : '';
+        $this->request->has('positionX') ? $group->positionX = getPosition($this->request->positionX) : '';
+        $this->request->has('positionY') ? $group->positionY = getPosition($this->request->positionY) : '';
         $this->request->has('icon_size') ? $group->icon_size = $this->request->icon_size : '';
 
         // Upload file, if file exists & it is update

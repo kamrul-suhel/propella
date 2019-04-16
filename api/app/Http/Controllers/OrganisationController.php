@@ -92,8 +92,8 @@ class OrganisationController extends PropellaBaseController
                 isset($updateOrganisation['group_id']) ? $organisation->group_id = (int) $updateOrganisation['group_id'] : '';
                 isset($updateOrganisation['status']) ? $organisation->status =  $updateOrganisation['status'] : '';
                 isset($updateOrganisation['type_id']) ? $organisation->type_id = $updateOrganisation['type_id'] : '';
-                isset($updateOrganisation['positionX']) ? $organisation->positionX = $updateOrganisation['positionX'] : '';
-                isset($updateOrganisation['positionY']) ? $organisation->positionY = $updateOrganisation['positionY'] : '';
+                isset($updateOrganisation['positionX']) ? $organisation->positionX = getPosition($updateOrganisation['positionX']) : '';
+                isset($updateOrganisation['positionY']) ? $organisation->positionY = getPositon($updateOrganisation['positionY']) : '';
                 isset($updateOrganisation['trajectory']) ? $organisation->trajectory =  $updateOrganisation['trajectory'] : '';
                 isset($updateOrganisation['icon_size']) ? $organisation->icon_size = $updateOrganisation['icon_size'] : '';
 
@@ -160,7 +160,6 @@ class OrganisationController extends PropellaBaseController
         $organisations = $organisations->where('archive', 0);
         $organisations = $this->allData ? $organisations->get() : $organisations->paginate($this->perPage);
 
-
         return response()->json($organisations);
     }
 
@@ -222,8 +221,8 @@ class OrganisationController extends PropellaBaseController
         $this->request->has('group_id') ? $organisation->group_id = (int) $this->request->group_id : '';
         $this->request->has('status') ? $organisation->status =  $this->request->status : '';
         $this->request->has('type_id') ? $organisation->type_id = $this->request->type_id : '';
-        $this->request->has('positionX') ? $organisation->positionX = $this->request->positionX : '';
-        $this->request->has('positionY') ? $organisation->positionY = $this->request->positionY : '';
+        $this->request->has('positionX') ? $organisation->positionX = getPosition($this->request->positionX) : '';
+        $this->request->has('positionY') ? $organisation->positionY = getPosition($this->request->positionY) : '';
         $this->request->has('trajectory') ? $organisation->trajectory =  $this->request->trajectory : '';
         $this->request->has('icon_size') ? $organisation->icon_size = $this->request->icon_size : '';
 
