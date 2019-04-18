@@ -4269,7 +4269,7 @@ li.rc-time-picker-panel-select-option-disabled:hover {
           color: white !important; }
         .gridwrapper .gridwrapper-inner .react-draggable.is-selected .person-icon:before {
           color: white; }
-      .gridwrapper .gridwrapper-inner .react-draggable.trajectory-up .react-draggable-handle:before {
+      .gridwrapper .gridwrapper-inner .react-draggable.trajectory-top-right .react-draggable-handle:before {
         content: "";
         display: block;
         position: absolute;
@@ -4280,7 +4280,7 @@ li.rc-time-picker-panel-select-option-disabled:hover {
         border-style: solid;
         border-width: 0 9px 9px 0;
         border-color: transparent #ffffff transparent transparent; }
-      .gridwrapper .gridwrapper-inner .react-draggable.trajectory-down .react-draggable-handle:before {
+      .gridwrapper .gridwrapper-inner .react-draggable.trajectory-bottom-left .react-draggable-handle:before {
         content: "";
         display: block;
         position: absolute;

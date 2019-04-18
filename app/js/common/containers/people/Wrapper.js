@@ -192,7 +192,7 @@ export default class PeopleWrapper extends React.PureComponent {
                     }
                     const position = fn.getPosition(item, location);
 
-                    const trajectoryClass = (item.trajectory === 1) ? 'up' : 'down'
+                    const trajectoryClass = fn.getTrajectoryClass(item.trajectory);
                     return (
                         <Draggable
                             key={item.id}
