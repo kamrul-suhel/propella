@@ -89,6 +89,31 @@
                     right: 12px;
                 }
             }
+
+            &.zoom{
+                width:100%;
+                height:100%;
+
+                &.light-cyan{
+                    background: #48b9b9;
+                    color: #3bacac;
+                }
+
+                &.blue{
+                    background: #004b9b;
+                    color: #003d8b;
+                }
+
+                &.orange{
+                    background: #e84f35;
+                    color: #e3412a;
+                }
+
+                &.sky-blue{
+                    background: #9cd6f0;
+                    color: #8dcded;
+                }
+            }
         }
 
         .react-draggable {

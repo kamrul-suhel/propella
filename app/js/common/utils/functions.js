@@ -597,5 +597,9 @@ export default {
 	  }
 
 	  return newTrajectory;
-  }
+  },
+
+	isCoordinateShow(coordinate){
+
+	}
 };
