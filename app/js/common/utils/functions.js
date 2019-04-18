@@ -599,7 +599,43 @@ export default {
 	  return newTrajectory;
   },
 
-	isCoordinateShow(coordinate){
+	isItemShow(item, routeLocation){
+		const zoom = routeLocation.query.zoom && routeLocation.query.zoom ? routeLocation.query.zoom  : null;
+		const positionX = item.positionX;
+		const positionY = item.positionY;
+
+		if(zoom === null){
+			return true;
+		}
+		switch(zoom){
+			case 'nf':
+				if(positionX <= 50 && positionY <= 50){
+					return true;
+				}
+				break;
+			case 'std':
+				if(positionX >= 50 && positionY <=50){
+					return true;
+				}
+				break;
+
+			case 'up':
+				if(positionX <=50 && positionY >=50){
+					return true;
+				}
+				break;
+
+			case 'vip':
+				if(positionX >=50 && positionY >= 50){
+					return true;
+				}
+				break;
+		}
+
+		return false;
+	},
+
+	getPosition(){
 
 	}
 };

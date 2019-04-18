@@ -4,7 +4,7 @@ import {fetchData} from 'app/actions';
 import {connect} from 'react-redux';
 import Draggable from 'react-draggable';
 import {url} from 'app/constants';
-import {api} from 'app/utils';
+import {api, fn} from 'app/utils';
 import {makeGetProject, makeGetProjects} from 'app/containers/project/selector';
 import Coordinate from 'app/components/coordinate'
 import {ContentLoader} from '@xanda/react-components';
@@ -134,7 +134,7 @@ export default class ProjectWrapper extends React.PureComponent {
 
 
     render() {
-        const {projects, project, params, container} = this.props
+        const {projects, project, params, container,location} = this.props
         const {updatedCoordinates, selectedDraggable, selectedGroupCoordinates, progressLabel} = this.state
 
         // dont load unless we have the container's dimensions
@@ -151,6 +151,11 @@ export default class ProjectWrapper extends React.PureComponent {
                 {_.map(project.groups, (item) => {
                     if (item.status < 1) {
                         return
+                    }
+
+                    const isShow = fn.isItemShow(item, location);
+                    if(!isShow){
+                        return;
                     }
 
                     return (

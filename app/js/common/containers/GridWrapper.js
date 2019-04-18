@@ -34,7 +34,6 @@ export default class GridWrapper extends React.PureComponent {
         const {location} = this.props;
         const zoom = location.query.zoom && location.query.zoom;
 
-        console.log("Props is : ", this.props)
         const childrenWithProps = React.Children.map(this.props.children, child =>
             React.cloneElement(child, {...this.props, container: this.state.container})
         );
