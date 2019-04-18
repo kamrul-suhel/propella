@@ -768,5 +768,28 @@ export default {
 
     isZoom(routeLocation){
         return routeLocation.query.zoom && routeLocation.query.zoom ? true : false;
+    },
+
+    getTrajectoryClass(trajectory){
+        switch(trajectory){
+            case 1:
+                return 'up';
+                break;
+
+            case 2:
+                return 'down';
+                break;
+
+            case 3:
+                return 'top-left';
+                break;
+
+            case 4:
+                return 'bottom-right';
+                break;
+            default:
+                return '';
+
+        }
     }
 };

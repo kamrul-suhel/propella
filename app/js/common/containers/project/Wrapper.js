@@ -134,7 +134,6 @@ export default class ProjectWrapper extends React.PureComponent {
     }
 
     render() {
-        console.log("Project render : ", this.props);
         const {projects, project, params, container, location} = this.props
         const {updatedCoordinates, selectedDraggable, selectedGroupCoordinates, progressLabel} = this.state
 
@@ -160,7 +159,6 @@ export default class ProjectWrapper extends React.PureComponent {
                         }
 
                         const position = fn.getPosition(item, location);
-                        console.log("Position; ", position)
 
                         return (
                             <Draggable

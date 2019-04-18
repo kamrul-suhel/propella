@@ -4291,6 +4291,29 @@ li.rc-time-picker-panel-select-option-disabled:hover {
         border-style: solid;
         border-width: 9px 0px 0px 9px;
         border-color: transparent transparent transparent #ffffff; }
+      .gridwrapper .gridwrapper-inner .react-draggable.trajectory-bottom-right .react-draggable-handle:before {
+        content: "";
+        display: block;
+        position: absolute;
+        bottom: 7px;
+        right: 0;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0 0 9px 9px;
+        border-color: transparent transparent transparent #ffffff;
+        transform: rotate(190deg); }
+      .gridwrapper .gridwrapper-inner .react-draggable.trajectory-top-left .react-draggable-handle:before {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 7px;
+        left: 0;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0 0 9px 9px;
+        border-color: transparent transparent transparent #ffffff; }
     .gridwrapper .gridwrapper-inner .react-draggable.size-s {
       margin: -48px 0 0 -21px; }
     .gridwrapper .gridwrapper-inner .react-draggable.size-m {

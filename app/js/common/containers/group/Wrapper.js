@@ -205,7 +205,9 @@ export default class GroupWrapper extends React.PureComponent {
 
                         const position = fn.getPosition(item, location);
 
-                        const trajectoryClass = (item.trajectory === 1) ? 'up' : 'down'
+                        const trajectoryClass = fn.getTrajectoryClass(item.trajectory);
+
+                        console.log("trajectory : ", item.trajectory);
 
                         return (
                             <Draggable

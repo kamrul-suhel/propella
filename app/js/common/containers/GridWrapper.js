@@ -43,8 +43,6 @@ export default class GridWrapper extends React.PureComponent {
         e.persist();
         const doubleTouch = this.isDblTouchTap(e);
         if (doubleTouch) {
-            console.log("event is : ", e);
-
             const zoomLabel = fn.getZoomLabel(e.touches[0]);
             let url = location.pathname;
             if (fn.isZoom(location)) {
@@ -78,7 +76,6 @@ export default class GridWrapper extends React.PureComponent {
         const {location} = this.props;
         const zoom = location.query.zoom && location.query.zoom;
         const url = location.pathname;
-        console.log("Url change: ", url+zoom);
 
         const childrenWithProps = React.Children.map(this.props.children, child =>
             React.cloneElement(child, {...this.props, container: this.state.container, key: url})

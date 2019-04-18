@@ -339,6 +339,41 @@
                     }
                 }
             }
+
+            &.trajectory-bottom-right{
+                .react-draggable-handle{
+                    &:before{
+                        content:"";
+                        display:block;
+                        position:absolute;
+                        bottom:7px;
+                        right:0;
+                        width: 0;
+                        height: 0;
+                        border-style: solid;
+                        border-width: 0 0 9px 9px;
+                        border-color: transparent transparent transparent #ffffff;
+                        transform:rotate(190deg);
+                    }
+                }
+            }
+
+            &.trajectory-top-left{
+                .react-draggable-handle{
+                    &:before{
+                        content:"";
+                        display:block;
+                        position:absolute;
+                        top:7px;
+                        left:0;
+                        width: 0;
+                        height: 0;
+                        border-style: solid;
+                        border-width: 0 0 9px 9px;
+                        border-color: transparent transparent transparent #ffffff;
+                    }
+                }
+            }
         }
 
         .react-draggable.size-s {
