@@ -49,7 +49,7 @@ export default class ProjectWrapper extends React.PureComponent {
     }
 
     onDraggableEventHandler = (event, data) => {
-        const { container } = this.props
+        const { container, location } = this.props
 
         // find the id we're moving
         const groupId = Number(_.find(data.node.attributes, {name: 'handleid'}).value)
@@ -59,16 +59,16 @@ export default class ProjectWrapper extends React.PureComponent {
             this.setState({'selectedDraggable': groupId})
         } else {
             // get the wrapper dimensions
-            const maxWidth = container.width
-            const maxHeight = container.height
-
-            const newY = 100 - _.round((data.y / maxHeight) * 100, 4)
-            const newX = _.round((data.x / maxWidth) * 100, 4)
+            const position = fn.getPositionForSave(data, location)
 
             this.setState({
                 updatedCoordinates: {
                     ...this.state.updatedCoordinates,
-                    [groupId]: {id: groupId, positionX: newX, positionY: newY}
+                    [groupId]: {
+                        id: groupId,
+                        positionX: position.positionX,
+                        positionY: position.positionY
+                    }
                 }
             })
         }
@@ -158,14 +158,16 @@ export default class ProjectWrapper extends React.PureComponent {
                         return;
                     }
 
+                    const position = fn.getPosition(item, location);
+
                     return (
                         <Draggable
                             key={item.id}
                             axis="both"
                             handle=".react-draggable-handle"
                             defaultPosition={{
-                                x: container.width / 100 * item.positionX,
-                                y: container.height - (container.height / 100 * item.positionY)
+                                x: position.positionX,
+                                y: position.positionY
                             }}
                             grid={[10, 10]}
                             scale={1}
