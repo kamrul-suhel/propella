@@ -36,17 +36,17 @@ export default class Description extends React.PureComponent {
                 />
 
                 <ContentLoader
-                  data={peopleTypes.collection}
-                  isLoading={peopleTypes.isLoading}
+                    data={peopleTypes.collection}
+                    isLoading={peopleTypes.isLoading}
                 >
-                  <Select
-                      name="type_id"
-                      value={type_id}
-                      onChange={handleInputChange}
-                      label="Type of Stakeholder"
-                      options={_.values(peopleTypes.collection)}
-                      validation="required"
-                  />
+                    <Select
+                        name="type_id"
+                        value={type_id}
+                        onChange={handleInputChange}
+                        label="Type of Stakeholder"
+                        options={_.values(peopleTypes.collection)}
+                        validation="required"
+                    />
                 </ContentLoader>
 
                 <Select
@@ -62,7 +62,8 @@ export default class Description extends React.PureComponent {
 
                     <div className="grid-xs-7">
                         <div className="form-group form-group-wide group-half-size">
-                            <span className="form-label">Choose Icon or Set Abbreviation <Tooltip icon="i" message="Upload a custom icon or enter an abbreviation"/></span>
+                            <span className="form-label">Choose Icon or Set Abbreviation <Tooltip icon="i"
+                                                                                                  message="Upload a custom icon or enter an abbreviation"/></span>
 
                             <FileUpload
                                 name="icon"
@@ -76,10 +77,10 @@ export default class Description extends React.PureComponent {
                             </FileUpload>
 
                             <TextInput
-                                    name="abbreviation"
-                                    value={abbreviation}
-                                    onChange={handleInputChange}
-                                />
+                                name="abbreviation"
+                                value={abbreviation}
+                                onChange={handleInputChange}
+                            />
                         </div>
                     </div>
 

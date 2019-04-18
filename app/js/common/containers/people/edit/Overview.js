@@ -11,7 +11,7 @@ export default class Overview extends React.PureComponent {
         return (
             <div className="overview">
                 <div className="ov-message">
-                    <p>Great, you're ready to add group!</p>
+                    <p>Great, you're ready to add person!</p>
                 </div>
 
                 <p className="ov-title h2">
