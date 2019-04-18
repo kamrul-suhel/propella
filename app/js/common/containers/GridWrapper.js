@@ -8,13 +8,22 @@ import {
     clearAllBodyScrollLocks
 } from "body-scroll-lock";
 
+const dblTouchTapMaxDelay = 300
+let latestTouchTap = {
+    time: 0,
+    target: null,
+}
+
 export default class GridWrapper extends React.PureComponent {
+
     constructor(props) {
         super(props);
 
         this.state = {
             container: null,
         };
+
+        this._onTouchStart = this._onTouchStart.bind(this);
     }
 
     componentDidMount() {
@@ -29,31 +38,50 @@ export default class GridWrapper extends React.PureComponent {
         });
     }
 
-    handleZoomInOut = (event) => {
-        const { router, location } = this.props;
-        event.persist();
-        
-        // Check is zoom or normal
-        let url = location.pathname;
-        if(fn.isZoom(location)){
-            // zoom out
-            console.log("Push router: ", router)
-            router.push(url);
-        }else{
-            // Zoom in
-            const zoomLabel = fn.getZoomLabel(event);
-            url = `${url}?zoom=${zoomLabel}`
-            router.push(url);
+    _onTouchStart(e) {
+        const {location, router} = this.props;
+        e.persist();
+        const doubleTouch = this.isDblTouchTap(e);
+        if (doubleTouch) {
+            console.log("event is : ", e);
+
+            const zoomLabel = fn.getZoomLabel(e.touches[0]);
+            let url = location.pathname;
+            if (fn.isZoom(location)) {
+                const replace = `/zoom`
+                url = _.replace(url, replace, '');
+                // zoom out
+                router.push(url);
+            } else {
+                // Zoom in
+                url = `${url}/zoom?zoom=${zoomLabel}`
+                router.push(url);
+            }
         }
+    }
+
+    isDblTouchTap(event) {
+        const touchTap = {
+            time: new Date().getTime(),
+            target: event.currentTarget,
+        }
+        const isFastDblTouchTap = (
+            touchTap.target === latestTouchTap.target &&
+            touchTap.time - latestTouchTap.time < dblTouchTapMaxDelay
+        )
+        latestTouchTap = touchTap
+        return isFastDblTouchTap
     }
 
     render() {
         const {container} = this.state;
         const {location} = this.props;
         const zoom = location.query.zoom && location.query.zoom;
+        const url = location.pathname;
+        console.log("Url change: ", url+zoom);
 
         const childrenWithProps = React.Children.map(this.props.children, child =>
-            React.cloneElement(child, {...this.props, container: this.state.container})
+            React.cloneElement(child, {...this.props, container: this.state.container, key: url})
         );
 
         return (
@@ -74,10 +102,10 @@ export default class GridWrapper extends React.PureComponent {
                     </div>
                     <div id="gridwrapper-inner"
                          className="gridwrapper-inner"
-                         onDoubleClick={(event)=> this.handleZoomInOut(event)}
+                         onTouchStart={this._onTouchStart}
                          ref={el => (this.container = el)}>
                         {location.query.zoom ?
-                            <div className="gridwrapper-inner-section-wrapper" >
+                            <div className="gridwrapper-inner-section-wrapper">
                                 {zoom === 'up' ?
                                     <span className="gridwrapper-inner-section zoom light-blue">Upgraders</span> : null}
                                 {zoom === 'vip' ?
@@ -95,7 +123,9 @@ export default class GridWrapper extends React.PureComponent {
                                 <span className="gridwrapper-inner-section">Standard</span>
                             </div>
                         }
+
                         {childrenWithProps}
+
                     </div>
                     <div className="gridwrapper-x">
                         <span className="axis-image"/>

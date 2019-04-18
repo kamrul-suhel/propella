@@ -676,6 +676,7 @@ export default {
                     break;
 
                 case 'vip':
+                    console.log("Vip called : ", positionY)
                     positionY = (positionY - 50) * 2;
                     positionX = (positionX - 50) * 2;
                     break;
@@ -761,6 +762,7 @@ export default {
         if(positionX > 50 && positionY > 50){
             return 'vip'
         }
+
         return null;
     },
 

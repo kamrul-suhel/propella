@@ -42,6 +42,7 @@ export default class ProjectWrapper extends React.PureComponent {
     }
 
     fetchData = () => {
+
         this.props.dispatch(fetchData({
             type: 'PROJECT',
             url: `/projects/${this.props.params.id}`,
@@ -132,8 +133,8 @@ export default class ProjectWrapper extends React.PureComponent {
         this.setState({updatedCoordinates: []}, this.fetchData())
     }
 
-
     render() {
+        console.log("Project render : ", this.props);
         const {projects, project, params, container, location} = this.props
         const {updatedCoordinates, selectedDraggable, selectedGroupCoordinates, progressLabel} = this.state
 
@@ -159,6 +160,7 @@ export default class ProjectWrapper extends React.PureComponent {
                         }
 
                         const position = fn.getPosition(item, location);
+                        console.log("Position; ", position)
 
                         return (
                             <Draggable
@@ -197,18 +199,17 @@ export default class ProjectWrapper extends React.PureComponent {
 
                                         {item.coordinates && item.coordinates.length > 0 ? (
                                             <span className="clickable button-round second"
-                                                  onClick={(event) => this.getGroupCoordinate(event, item.id)}>
-                                        <span
-                                            className="button-round-inside icon-chain"/>{_.isEmpty(selectedGroupCoordinates) ? 'Progress' : 'Hide Progress'}
-                                    </span>
+                                                  onClick={(event) => fn.isZoom(location) ? null : this.getGroupCoordinate(event, item.id)}>
+                                            <span className="button-round-inside icon-chain"/>
+                                                {_.isEmpty(selectedGroupCoordinates) ? 'Progress' : 'Hide Progress'}
+                                            </span>
                                         ) : (
                                             <span className="button-round second progress-hide">
-                                        <span className="button-round-inside icon-chain"/>Progress
-                                    </span>
+                                            <span className="button-round-inside icon-chain"/>Progress</span>
                                         )}
 
                                         <Link className="button-round third"
-                                              to={`/${url.projects}/${params.id}/groups/${item.id}/`}>
+                                              to={`/${url.projects}/${params.id}/groups/${item.id}`}>
                                             <span className="button-round-inside icon-add-organisation"/>
                                             Organisations
                                         </Link>

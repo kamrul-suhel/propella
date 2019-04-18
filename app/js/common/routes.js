@@ -31,11 +31,13 @@ const Routes = (
       <Route path=":id/edit" component={Project.Edit} />
       <Route path=":id" component={C.GridWrapper}>
           <IndexRoute component={Project.View}/>
+          <Route path={`${url.zoom}`} component={Project.View}/>
           <Route path={url.groups}>
             <IndexRoute component={Group.List} />
             <Route path="add" component={Group.Edit} type="add" activeNav/>
             <Route path=":groupId">
               <IndexRoute component={Group.View}/>
+              <Route path={`${url.zoom}`} component={Group.View}/>
                 <Route path="edit" component={Group.Edit} type="edit" activeNav />
                 <Route path="competitors" activeNav>
                   <IndexRoute component={Competitor.List} />
@@ -44,12 +46,13 @@ const Routes = (
                 <Route path={url.organisations}>
                   <IndexRoute component={Organisation.List}/>
                   <Route path={url.people} component={People.PeopleWrapper} />
+                  <Route path={`${url.people}/${url.zoom}`} component={People.PeopleWrapper}/>
                   <Route path=":organisationId" component={Organisation.Edit} activeNav />
                   <Route path={url.organisations} component={Organisation.Edit} activeNav />
                 </Route>
                 <Route path={url.people}>
                     <IndexRoute component={People.List}/>
-                    <Route path=":personId" >
+                    <Route path=":personId">
                       <IndexRoute component={People.Edit} />
                       <Route path={url.characters} component={People.Character} activeNav />
                     </Route>

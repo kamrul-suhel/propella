@@ -11,4 +11,5 @@ export const url = {
     archives: 'archives',
     wordpress: 'http://propella.hostings.co.uk',
     login: 'login',
+    zoom: 'zoom'
 };
