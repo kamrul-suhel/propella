@@ -773,19 +773,19 @@ export default {
     getTrajectoryClass(trajectory){
         switch(trajectory){
             case 1:
-                return 'up';
+                return 'top-right';
                 break;
 
             case 2:
-                return 'down';
+                return 'bottom-right';
                 break;
 
             case 3:
-                return 'top-left';
+                return 'bottom-left';
                 break;
 
             case 4:
-                return 'bottom-right';
+                return 'top-left';
                 break;
             default:
                 return '';

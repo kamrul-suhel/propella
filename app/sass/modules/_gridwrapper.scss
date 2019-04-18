@@ -307,7 +307,7 @@
                 }
             }
 
-            &.trajectory-up{
+            &.trajectory-top-right{
                 .react-draggable-handle{
                     &:before{
                         content:"";
@@ -323,7 +323,7 @@
                     }
                 }
             }
-            &.trajectory-down{
+            &.trajectory-bottom-left{
                 .react-draggable-handle{
                     &:before{
                         content:"";
