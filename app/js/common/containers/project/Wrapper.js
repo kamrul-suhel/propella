@@ -30,11 +30,11 @@ export default class ProjectWrapper extends React.PureComponent {
     }
 
     componentWillMount() {
-      document.addEventListener('mousedown', this.handleClick, false)
+        document.addEventListener('mousedown', this.handleClick, false)
     }
 
     componentWillUnmount() {
-      document.removeEventListener('mousedown', this.handleClick, false)
+        document.removeEventListener('mousedown', this.handleClick, false)
     }
 
     componentDidMount() {
@@ -49,7 +49,7 @@ export default class ProjectWrapper extends React.PureComponent {
     }
 
     onDraggableEventHandler = (event, data) => {
-        const { container, location } = this.props
+        const {container, location} = this.props
 
         // find the id we're moving
         const groupId = Number(_.find(data.node.attributes, {name: 'handleid'}).value)
@@ -79,18 +79,18 @@ export default class ProjectWrapper extends React.PureComponent {
 
         const response = await api.put(`/groups`, {groups: _.values(updatedCoordinates)})
         if (!api.error(response)) {
-            // if successfull remove from pending updates
+            // if success remove from pending updates
             this.setState({'updatedCoordinates': {}})
             this.fetchData()
         }
     }
 
     handleClick = (e) => {
-      if(this.node){
-        if(!this.node.contains(e.target)){
-          this.setState({selectedDraggable: 0, selectedGroupCoordinates: {}})
+        if (this.node) {
+            if (!this.node.contains(e.target)) {
+                this.setState({selectedDraggable: 0, selectedGroupCoordinates: {}})
+            }
         }
-      }
     }
 
     getGroupCoordinate = (event, groupId) => {
@@ -98,34 +98,34 @@ export default class ProjectWrapper extends React.PureComponent {
         const {project} = this.props;
         const {selectedGroupCoordinates, updatedCoordinates} = this.state;
 
-        if(!_.isEmpty(selectedGroupCoordinates)){
-          this.setState({selectedGroupCoordinates: {}})
+        if (!_.isEmpty(selectedGroupCoordinates)) {
+            this.setState({selectedGroupCoordinates: {}})
         } else {
-          // Stop other event
-          event.stopPropagation();
-          let selectedGroup = _.find(project.groups, (group) => group.id === groupId)
+            // Stop other event
+            event.stopPropagation();
+            let selectedGroup = _.find(project.groups, (group) => group.id === groupId)
 
             _.map(updatedCoordinates, (updatedCoordinate) => {
-                if(updatedCoordinate.id === selectedGroup.id){
+                if (updatedCoordinate.id === selectedGroup.id) {
                     selectedGroup.positionX = updatedCoordinate.positionX;
                     selectedGroup.positionY = updatedCoordinate.positionY;
                 }
             });
 
-          if (selectedGroup) {
-              this.setState({
-                  selectedGroupCoordinates: selectedGroup
-              })
-          }
+            if (selectedGroup) {
+                this.setState({
+                    selectedGroupCoordinates: selectedGroup
+                })
+            }
         }
     }
 
     handleDraggableClick = (e) => {
-      const { selectedDraggable } = this.state
-      const groupId = Number(_.find(e.node.attributes, {name: 'handleid'}).value)
-      if(selectedDraggable === groupId){
-        this.setState({'selectedDraggable': 0})
-      }
+        const {selectedDraggable} = this.state
+        const groupId = Number(_.find(e.node.attributes, {name: 'handleid'}).value)
+        if (selectedDraggable === groupId) {
+            this.setState({'selectedDraggable': 0})
+        }
     }
 
     handleResetChanges = () => {
@@ -134,115 +134,118 @@ export default class ProjectWrapper extends React.PureComponent {
 
 
     render() {
-        const {projects, project, params, container,location} = this.props
+        const {projects, project, params, container, location} = this.props
         const {updatedCoordinates, selectedDraggable, selectedGroupCoordinates, progressLabel} = this.state
 
         // dont load unless we have the container's dimensions
-        if(!container){
-          return null
+        if (!container) {
+            return null
         }
 
         return (
             <div className="gridwrapper-inner-" ref={node => this.node = node}>
-              <ContentLoader
-                data={projects.collection}
-                isLoading={projects.isLoading}
+                <ContentLoader
+                    data={projects.collection}
+                    isLoading={projects.isLoading}
                 >
-                {_.map(project.groups, (item) => {
-                    if (item.status < 1) {
-                        return
-                    }
+                    {_.map(project.groups, (item) => {
+                        if (item.status < 1) {
+                            return
+                        }
 
-                    const isShow = fn.isItemShow(item, location);
-                    if(!isShow){
-                        return;
-                    }
+                        const isShow = fn.isItemShow(item, location);
+                        if (!isShow) {
+                            return;
+                        }
 
-                    const position = fn.getPosition(item, location);
+                        const position = fn.getPosition(item, location);
 
-                    return (
-                        <Draggable
-                            key={item.id}
-                            axis="both"
-                            handle=".react-draggable-handle"
-                            defaultPosition={{
-                                x: position.positionX,
-                                y: position.positionY
-                            }}
-                            grid={[10, 10]}
-                            scale={1}
-                            bounds=".gridwrapper-inner-section-wrapper"
-                            onStop={this.onDraggableEventHandler}
-                            disabled={selectedDraggable === item.id}
-                        >
-                            <div handleid={item.id}
-                                 className={
-                                     [
-                                         `size-${item.icon_size}`,
-                                         (selectedDraggable && selectedDraggable !== item.id ? 'disabled' : ''),
-                                         (selectedDraggable === item.id ? 'is-selected' : ''),
-                                         item
-                                     ]
-                                 }
-                                 onClick={this.handleDraggableClick}
-                                 >
+                        return (
+                            <Draggable
+                                key={item.id}
+                                axis="both"
+                                handle=".react-draggable-handle"
+                                defaultPosition={{
+                                    x: position.positionX,
+                                    y: position.positionY
+                                }}
+                                grid={[10, 10]}
+                                scale={1}
+                                bounds=".gridwrapper-inner-section-wrapper"
+                                onStop={this.onDraggableEventHandler}
+                                disabled={selectedDraggable === item.id}
+                            >
+                                <div handleid={item.id}
+                                     className={
+                                         [
+                                             `size-${item.icon_size}`,
+                                             (selectedDraggable && selectedDraggable !== item.id ? 'disabled' : ''),
+                                             (selectedDraggable === item.id ? 'is-selected' : ''),
+                                             item
+                                         ]
+                                     }
+                                     onClick={this.handleDraggableClick}
+                                >
 
-                                {selectedDraggable === item.id &&
-                                <div className="react-draggable-actions">
-                                    <Link className="button-round first"
-                                          to={`/${url.projects}/${params.id}/groups/${item.id}/edit`}>
-                                        <span className="button-round-inside icon-pencil"/>
-                                        Edit
-                                    </Link>
+                                    {selectedDraggable === item.id &&
+                                    <div className="react-draggable-actions">
+                                        <Link className="button-round first"
+                                              to={`/${url.projects}/${params.id}/groups/${item.id}/edit`}>
+                                            <span className="button-round-inside icon-pencil"/>
+                                            Edit
+                                        </Link>
 
-                                    {item.coordinates && item.coordinates.length > 0 ? (
-                                    <span className="clickable button-round second"
-                                          onClick={(event) => this.getGroupCoordinate(event, item.id)}>
-                                        <span className="button-round-inside icon-chain"/>{_.isEmpty(selectedGroupCoordinates) ? 'Progress' : 'Hide Progress'}
+                                        {item.coordinates && item.coordinates.length > 0 ? (
+                                            <span className="clickable button-round second"
+                                                  onClick={(event) => this.getGroupCoordinate(event, item.id)}>
+                                        <span
+                                            className="button-round-inside icon-chain"/>{_.isEmpty(selectedGroupCoordinates) ? 'Progress' : 'Hide Progress'}
                                     </span>
-                                    ) : (
-                                    <span className="button-round second progress-hide">
+                                        ) : (
+                                            <span className="button-round second progress-hide">
                                         <span className="button-round-inside icon-chain"/>Progress
                                     </span>
-                                    )}
+                                        )}
 
-                                    <Link className="button-round third"
-                                          to={`/${url.projects}/${params.id}/groups/${item.id}/`}>
-                                        <span className="button-round-inside icon-add-organisation"/>
-                                        Organisations
-                                    </Link>
+                                        <Link className="button-round third"
+                                              to={`/${url.projects}/${params.id}/groups/${item.id}/`}>
+                                            <span className="button-round-inside icon-add-organisation"/>
+                                            Organisations
+                                        </Link>
 
-                                    <Link className="button-round fourth"
-                                          to={`/${url.projects}/${params.id}/groups/${item.id}/competitors`}>
-                                        <span className="button-round-inside icon-character-pirate"></span>
-                                        Competitors
-                                    </Link>
+                                        <Link className="button-round fourth"
+                                              to={`/${url.projects}/${params.id}/groups/${item.id}/competitors`}>
+                                            <span className="button-round-inside icon-character-pirate"></span>
+                                            Competitors
+                                        </Link>
+                                    </div>
+                                    }
+                                    <div className="react-draggable-handle">
+                                        {item.icon_path ? (
+                                            <img className="react-draggable-handle-icon" src={`${item.icon_path}`}/>
+                                        ) : (
+                                            <div className="react-draggable-handle-title">{item.abbreviation}</div>
+                                        )}
+                                        <span className="user-colour-dot"
+                                              style={{backgroundColor: item.profile_colour}}></span>
+                                    </div>
+                                    {selectedDraggable === item.id &&
+                                    <span className="react-draggable-title">{item.title}</span>
+                                    }
                                 </div>
-                                }
-                                <div className="react-draggable-handle">
-                                    {item.icon_path ? (
-                                      <img className="react-draggable-handle-icon" src={`${item.icon_path}`} />
-                                    ) : (
-                                      <div className="react-draggable-handle-title">{item.abbreviation}</div>
-                                    )}
-                                <span className="user-colour-dot" style={{backgroundColor: item.profile_colour}}></span>
-                                </div>
-                                {selectedDraggable === item.id &&
-                                  <span className="react-draggable-title">{item.title}</span>
-                                }
-                            </div>
-                        </Draggable>
-                    )
-                })
-                }
-                {this.props.children}
+                            </Draggable>
+                        )
+                    })
+                    }
+                    {this.props.children}
 
-                {selectedGroupCoordinates.coordinates ? <Coordinate group={selectedGroupCoordinates}/> : ''}
-                 {!_.isEmpty(updatedCoordinates) &&
-                <React.Fragment>
-                    <button className="button gridwrapper-save" onClick={this.handleSaveChanges}>Save Changes</button>
-                </React.Fragment>
-                }
+                    {selectedGroupCoordinates.coordinates ? <Coordinate group={selectedGroupCoordinates}/> : ''}
+                    {!_.isEmpty(updatedCoordinates) &&
+                    <React.Fragment>
+                        <button className="button gridwrapper-save" onClick={this.handleSaveChanges}>Save Changes
+                        </button>
+                    </React.Fragment>
+                    }
                 </ContentLoader>
             </div>
         )

@@ -573,6 +573,11 @@ export default {
         return this.saveCookie('showCharacters', showCharacters, {path: '/'})
     },
 
+    /**
+     *
+     * @param currentTrajectory
+     * @returns {null}
+     */
     getTrajectory(currentTrajectory) {
         let newTrajectory = null;
         switch (currentTrajectory) {
@@ -726,5 +731,40 @@ export default {
             positionX: positionX,
             positionY: positionY
         }
+    },
+
+    /**
+     *
+     * @param event
+     * @returns {string|null}
+     */
+    getZoomLabel(event){
+        const container = this.getContainer();
+        let positionX = event.clientX - 40;
+        let positionY = event.clientY - 40;
+        // convert PX to %
+        positionY = 100 - _.round((positionY / container.height) * 100, 4)
+        positionX = _.round((positionX / container.width) * 100, 4)
+
+        if(positionX < 50 && positionY < 50){
+            return 'nf';
+        }
+
+        if(positionX < 50 && positionY > 50){
+            return 'up';
+        }
+
+        if(positionX > 50 && positionY < 50){
+            return 'std';
+        }
+
+        if(positionX > 50 && positionY > 50){
+            return 'vip'
+        }
+        return null;
+    },
+
+    isZoom(routeLocation){
+        return routeLocation.query.zoom && routeLocation.query.zoom ? true : false;
     }
 };

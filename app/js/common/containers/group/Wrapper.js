@@ -61,7 +61,7 @@ export default class GroupWrapper extends React.PureComponent {
     }
 
     onDraggableEventHandler = (event, data) => {
-        const { container } = this.props
+        const { container, location } = this.props
 
         // find the id we're moving
         const organisationId = Number(_.find(data.node.attributes, {name: 'handleid'}).value)
@@ -69,13 +69,12 @@ export default class GroupWrapper extends React.PureComponent {
         if (Math.abs(data.deltaX) === 0 && Math.abs(data.deltaY) === 0) {
             this.setState({'selectedDraggable': organisationId})
         } else {
-            const newY = 100 - _.round((data.y / container.height) * 100, 4)
-            const newX = _.round((data.x / container.width) * 100, 4)
+            const position = fn.getPositionForSave(data, location)
 
             this.setState({
                 updatedCoordinates: {
                     ...this.state.updatedCoordinates,
-                    [organisationId]: {id: organisationId, positionX: newX, positionY: newY}
+                    [organisationId]: {id: organisationId, positionX: position.positionX, positionY: position.positionY}
                 }
             })
         }
@@ -151,7 +150,7 @@ export default class GroupWrapper extends React.PureComponent {
     handleSelectCompetitor = (id) => this.setState({selectedCompetitor: id})
 
     render() {
-        const {groups, group, params, container} = this.props
+        const {groups, group, params, container, location} = this.props
         const {updatedCoordinates, selectedDraggable, progressLabel, selectedOrganisation, selectedCompetitor} = this.state
 
         // dont load unless we have the container's dimensions
@@ -199,6 +198,13 @@ export default class GroupWrapper extends React.PureComponent {
                             return
                         }
 
+                        const isShow = fn.isItemShow(item, location);
+                        if(!isShow){
+                            return;
+                        }
+
+                        const position = fn.getPosition(item, location);
+
                         const trajectoryClass = (item.trajectory === 1) ? 'up' : 'down'
 
                         return (
@@ -207,8 +213,8 @@ export default class GroupWrapper extends React.PureComponent {
                                 axis="both"
                                 handle=".react-draggable-handle"
                                 defaultPosition={{
-                                    x: container.width / 100 * item.positionX,
-                                    y: container.height - (container.height / 100 * item.positionY)
+                                    x: position.positionX,
+                                    y: position.positionY
                                 }}
                                 grid={[10, 10]}
                                 scale={1}

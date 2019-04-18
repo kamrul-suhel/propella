@@ -29,6 +29,24 @@ export default class GridWrapper extends React.PureComponent {
         });
     }
 
+    handleZoomInOut = (event) => {
+        const { router, location } = this.props;
+        event.persist();
+        
+        // Check is zoom or normal
+        let url = location.pathname;
+        if(fn.isZoom(location)){
+            // zoom out
+            console.log("Push router: ", router)
+            router.push(url);
+        }else{
+            // Zoom in
+            const zoomLabel = fn.getZoomLabel(event);
+            url = `${url}?zoom=${zoomLabel}`
+            router.push(url);
+        }
+    }
+
     render() {
         const {container} = this.state;
         const {location} = this.props;
@@ -54,9 +72,12 @@ export default class GridWrapper extends React.PureComponent {
                         </div>
                         <p className="axis-label">Royalty</p>
                     </div>
-                    <div id="gridwrapper-inner" className="gridwrapper-inner" ref={el => (this.container = el)}>
+                    <div id="gridwrapper-inner"
+                         className="gridwrapper-inner"
+                         onDoubleClick={(event)=> this.handleZoomInOut(event)}
+                         ref={el => (this.container = el)}>
                         {location.query.zoom ?
-                            <div className="gridwrapper-inner-section-wrapper">
+                            <div className="gridwrapper-inner-section-wrapper" >
                                 {zoom === 'up' ?
                                     <span className="gridwrapper-inner-section zoom light-blue">Upgraders</span> : null}
                                 {zoom === 'vip' ?

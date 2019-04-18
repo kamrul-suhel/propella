@@ -53,7 +53,7 @@ export default class PeopleWrapper extends React.PureComponent {
     }
 
     onDraggableEventHandler = (event, data) => {
-        const {container} = this.props
+        const {location} = this.props
         // find the id we're moving
         const organisationId = Number(_.find(data.node.attributes, {name: 'handleid'}).value)
 
@@ -61,16 +61,12 @@ export default class PeopleWrapper extends React.PureComponent {
             this.setState({'selectedDraggable': organisationId})
         } else {
             // get the wrapper dimensions
-            const maxWidth = container.width
-            const maxHeight = container.height
-
-            const newY = 100 - _.round((data.y / maxHeight) * 100, 4)
-            const newX = _.round((data.x / maxWidth) * 100, 4)
+            const position = fn.getPositionForSave(data, location)
 
             this.setState({
                 updatedCoordinates: {
                     ...this.state.updatedCoordinates,
-                    [organisationId]: {id: organisationId, positionX: newX, positionY: newY}
+                    [organisationId]: {id: organisationId, positionX: position.positionX, positionY: position.positionY}
                 }
             })
         }
@@ -150,7 +146,7 @@ export default class PeopleWrapper extends React.PureComponent {
     }
 
     render() {
-        const {groups, group, params, container, people} = this.props
+        const {groups, group, params, container, people, location} = this.props
         const {updatedCoordinates, selectedDraggable, progressLabel, selectedPeople, showCharacters} = this.state
 
         if (!container) {
@@ -190,6 +186,12 @@ export default class PeopleWrapper extends React.PureComponent {
                         return
                     }
 
+                    const isShow = fn.isItemShow(item, location);
+                    if (!isShow) {
+                        return;
+                    }
+                    const position = fn.getPosition(item, location);
+
                     const trajectoryClass = (item.trajectory === 1) ? 'up' : 'down'
                     return (
                         <Draggable
@@ -197,8 +199,8 @@ export default class PeopleWrapper extends React.PureComponent {
                             axis="both"
                             handle=".react-draggable-handle"
                             defaultPosition={{
-                                x: container.width / 100 * item.positionX,
-                                y: container.height - (container.height / 100 * item.positionY)
+                                x: position.positionX,
+                                y: position.positionY
                             }}
                             grid={[10, 10]}
                             scale={1}
