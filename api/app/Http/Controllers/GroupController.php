@@ -25,20 +25,19 @@ class GroupController extends PropellaBaseController
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Illuminate\Validation\ValidationException
+     * @return mixed
      */
     public function create()
     {
         // validate data
         $this->validate($this->request, [
-            'positionX' => 'required|integer|min:1',
+            'positionX' => 'required|integer|min:0',
+            'positionY' => 'required|integer|min:0',
             'status' => 'integer|between:0,2',
             'title' => 'required|string|min:1',
             'description' => 'required|string|min:1',
             'abbreviation' => 'string|min:1',
             'icon_path' => 'file|mimes:jpeg,jpg,png,svg,gif',
-            'positionY' => 'required|integer|min:1',
             'icon_size' => 'required|in:s,m,l',
         ]);
 
@@ -60,8 +59,7 @@ class GroupController extends PropellaBaseController
 
 
     /**
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Illuminate\Validation\ValidationException
+     * @return mixed
      */
     public function updateMultiple()
     {
