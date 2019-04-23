@@ -238,7 +238,8 @@ export default class ProjectWrapper extends React.PureComponent {
                     }
                     {this.props.children}
 
-                    {selectedGroupCoordinates.coordinates ? <Coordinate group={selectedGroupCoordinates}/> : ''}
+                    {selectedGroupCoordinates.coordinates && !fn.isZoom(location) ? <Coordinate group={selectedGroupCoordinates}/> : ''}
+
                     {!_.isEmpty(updatedCoordinates) &&
                     <React.Fragment>
                         <button className="button gridwrapper-save" onClick={this.handleSaveChanges}>Save Changes

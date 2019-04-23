@@ -766,10 +766,20 @@ export default {
         return null;
     },
 
+    /**
+     *
+     * @param routeLocation
+     * @returns {boolean}
+     */
     isZoom(routeLocation){
         return routeLocation.query.zoom && routeLocation.query.zoom ? true : false;
     },
 
+    /**
+     *
+     * @param trajectory
+     * @returns {string}
+     */
     getTrajectoryClass(trajectory){
         switch(trajectory){
             case 1:
@@ -791,5 +801,14 @@ export default {
                 return '';
 
         }
+    },
+
+    /**
+     *
+     * @param value
+     * @returns {number}
+     */
+    convertFloatToInt(value){
+        return value | 0;
     }
 };

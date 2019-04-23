@@ -266,7 +266,7 @@ export default class PeopleWrapper extends React.PureComponent {
                 }
                 {this.props.children}
 
-                {selectedPeople.coordinates ? <Coordinate group={selectedPeople}/> : ''}
+                {selectedPeople.coordinates && !fn.isZoom(location) ? <Coordinate group={selectedPeople}/> : ''}
             </div>
         )
     }

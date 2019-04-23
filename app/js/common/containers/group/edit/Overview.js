@@ -1,16 +1,14 @@
 import React from 'react';
-import {Link} from 'react-router';
-import {Slider} from '@xanda/react-components';
 
 export default class Overview extends React.PureComponent {
 
     render() {
-        const {positionX, positionY, icon, title, icon_path, icon_size, abbreviation} = this.props
+        const {positionX, positionY, icon, title, icon_path, icon_size, abbreviation, id} = this.props
 
         return (
             <div className="overview">
                 <div className="ov-message">
-                    <p>Great, you're ready to add group!</p>
+                    <p>Great, you're ready to {id && id ? `update ${title}` : 'add a' } group!</p>
                 </div>
 
                 <p className="ov-title h2">

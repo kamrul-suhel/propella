@@ -5,14 +5,13 @@ import {Form, Slider} from '@xanda/react-components';
 export default class Overview extends React.PureComponent {
 
     render() {
-        const {positionX, positionY, icon, title, icon_path, icon_size, abbreviation} = this.props
+        const {positionX, positionY, icon, title, icon_path, icon_size, abbreviation, id} = this.props
 
         return (
             <div className="overview">
                 <div className="ov-message">
-                    <p>Great, you're ready to add the organisation!</p>
+                    <p>Great, you're ready to {id ? `update ${title}` : `add a`} organisation!</p>
                 </div>
-
                 <p className="ov-title h2">
                     {title}
                 </p>

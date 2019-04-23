@@ -227,7 +227,7 @@
 
             &.size-m {
                 padding:1px 1px 15px 1px;
-                margin:-78px 0 0 -32px;
+                margin:-72px 0 0 -32px;
 
                 .react-draggable-handle{
                     .user-colour-dot{
@@ -364,7 +364,7 @@
                         content:"";
                         display:block;
                         position:absolute;
-                        top:7px;
+                        top:0;
                         left:0;
                         width: 0;
                         height: 0;
@@ -377,7 +377,7 @@
         }
 
         .react-draggable.size-s {
-            margin:-48px 0 0 -21px;
+            margin:-45px 0 0 -20px;
         }
 
         .react-draggable.size-m {
@@ -388,9 +388,9 @@
         }
 
         .react-draggable.size-l {
+            margin:-90px 0 0 -40px;
             height: 95px;
             width: 82px;
-            margin:-95px 0 0 -41px;
             background-image: url(../images/marker-large.svg);
             font-size: 14px;
         }

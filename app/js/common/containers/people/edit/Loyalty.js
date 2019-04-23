@@ -1,6 +1,6 @@
 import React from 'react';
-import {Link} from 'react-router';
 import {Form, Slider} from '@xanda/react-components';
+import { fn } from 'app/utils'
 
 export default class Loyalty extends React.PureComponent {
 
@@ -11,6 +11,8 @@ export default class Loyalty extends React.PureComponent {
             setFormRef,
             positionX
         } = this.props
+
+        const intPositionX = fn.convertFloatToInt(positionX);
 
         return (
             <Form onSubmit={handleSubmit} ref={setFormRef} className="loyalty-form">
@@ -29,12 +31,12 @@ export default class Loyalty extends React.PureComponent {
                     label="Set your Loyalty score:"
                     min={0}
                     max={100}
-                    value={positionX}
+                    value={intPositionX}
                     onChange={handleInputChange}
                     validation="required"
                     wide
                 />
-                <span className="counter">{_.round(positionX, 0)}</span>
+                <span className="counter">{ intPositionX }</span>
             </Form>
         );
     }

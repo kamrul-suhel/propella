@@ -3,7 +3,7 @@ import {url} from 'app/constants';
 import {fetchData} from 'app/actions';
 import {connect} from 'react-redux';
 import Draggable from 'react-draggable';
-import {api,fn} from 'app/utils';
+import {api, fn} from 'app/utils';
 import * as selector from './selector';
 import {makeGetProject, makeGetProjects} from 'app/containers/project/selector';
 import {Link} from "react-router";
@@ -61,7 +61,7 @@ export default class GroupWrapper extends React.PureComponent {
     }
 
     onDraggableEventHandler = (event, data) => {
-        const { container, location } = this.props
+        const {container, location} = this.props
 
         // find the id we're moving
         const organisationId = Number(_.find(data.node.attributes, {name: 'handleid'}).value)
@@ -107,11 +107,11 @@ export default class GroupWrapper extends React.PureComponent {
     }
 
     handleClick = (e) => {
-      if(this.node){
-        if (!this.node.contains(e.target)) {
-            this.setState({selectedDraggable: 0, selectedOrganisation: {}, selectedCompetitor: 0})
+        if (this.node) {
+            if (!this.node.contains(e.target)) {
+                this.setState({selectedDraggable: 0, selectedOrganisation: {}, selectedCompetitor: 0})
+            }
         }
-      }
     }
 
     handleSaveChanges = async () => {
@@ -154,8 +154,8 @@ export default class GroupWrapper extends React.PureComponent {
         const {updatedCoordinates, selectedDraggable, progressLabel, selectedOrganisation, selectedCompetitor} = this.state
 
         // dont load unless we have the container's dimensions
-        if(!container){
-          return null
+        if (!container) {
+            return null
         }
 
         return (
@@ -199,7 +199,7 @@ export default class GroupWrapper extends React.PureComponent {
                         }
 
                         const isShow = fn.isItemShow(item, location);
-                        if(!isShow){
+                        if (!isShow) {
                             return;
                         }
 
@@ -248,12 +248,13 @@ export default class GroupWrapper extends React.PureComponent {
                                         </Link>
 
                                         {item.coordinates && item.coordinates.length > 0 ? (
-                                        <span className="clickable button-round second"
-                                              onClick={(event) => this.getCoordinate(event, item.id)}>
-                                            <span className="button-round-inside icon-chain"/>{_.isEmpty(selectedOrganisation) ? 'Progress' : 'Hide Progress'}
+                                            <span className="clickable button-round second"
+                                                  onClick={(event) => this.getCoordinate(event, item.id)}>
+                                            <span
+                                                className="button-round-inside icon-chain"/>{_.isEmpty(selectedOrganisation) ? 'Progress' : 'Hide Progress'}
                                         </span>
                                         ) : (
-                                        <span className="button-round second progress-hide">
+                                            <span className="button-round second progress-hide">
                                             <span className="button-round-inside icon-chain"/>Progress
                                         </span>
                                         )}
@@ -265,7 +266,9 @@ export default class GroupWrapper extends React.PureComponent {
                                         </Link>
 
                                         <span className="button-round fourth clickable"
-                                              onClick={() => { this.handleSetTrajectory(item) }}
+                                              onClick={() => {
+                                                  this.handleSetTrajectory(item)
+                                              }}
                                         >
                                             <span className="button-round-inside icon-compass"/>
                                             Choose<br/>Trajectory
@@ -280,7 +283,7 @@ export default class GroupWrapper extends React.PureComponent {
                     }
                     {this.props.children}
 
-                    {selectedOrganisation.coordinates ? <Coordinate group={selectedOrganisation}/> : ''}
+                    {selectedOrganisation.coordinates && !fn.isZoom(location) ? <Coordinate group={selectedOrganisation}/> : ''}
 
                     {!_.isEmpty(updatedCoordinates) &&
                     <React.Fragment>
