@@ -58,6 +58,23 @@ export default class GridWrapper extends React.PureComponent {
         }
     }
 
+    onHandleDoubleClick = (event) => {
+        event.persist();
+        const {location, router} = this.props;
+        const zoomLabel = fn.getZoomLabel(event);
+        let url = location.pathname;
+        if (fn.isZoom(location)) {
+            const replace = `/zoom`
+            url = _.replace(url, replace, '');
+            // zoom out
+            router.push(url);
+        } else {
+            // Zoom in
+            url = `${url}/zoom?zoom=${zoomLabel}`
+            router.push(url);
+        }
+    }
+
     isDblTouchTap(event) {
         const touchTap = {
             time: new Date().getTime(),
@@ -100,6 +117,7 @@ export default class GridWrapper extends React.PureComponent {
                     <div id="gridwrapper-inner"
                          className="gridwrapper-inner"
                          onTouchStart={this._onTouchStart}
+                         onDoubleClick={this.onHandleDoubleClick}
                          ref={el => (this.container = el)}>
                         {location.query.zoom ?
                             <div className="gridwrapper-inner-section-wrapper">
@@ -120,10 +138,9 @@ export default class GridWrapper extends React.PureComponent {
                                 <span className="gridwrapper-inner-section">Standard</span>
                             </div>
                         }
-
                         {childrenWithProps}
-
                     </div>
+
                     <div className="gridwrapper-x">
                         <span className="axis-image"/>
                         <div className="left-icon">

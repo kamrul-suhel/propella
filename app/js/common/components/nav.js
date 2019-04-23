@@ -112,7 +112,7 @@ export default class Nav extends React.PureComponent {
       <div className="nav">
         <img className="nav-logo" src="/../../../images/logo.svg" />
 
-        <div className="project-title">{currentProject && currentProject.title}</div>
+        <h2 className="project-title">{currentProject && currentProject.title}</h2>
 
         {params.id &&
           <React.Fragment>
