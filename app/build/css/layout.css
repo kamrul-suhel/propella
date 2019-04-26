@@ -4224,8 +4224,7 @@ li.rc-time-picker-panel-select-option-disabled:hover {
           top: -10px;
           left: 75px; }
       .gridwrapper .gridwrapper-inner .react-draggable.size-m {
-        padding: 1px 1px 15px 1px;
-        margin: -72px 0 0 -32px; }
+        padding: 1px 1px 15px 1px; }
         .gridwrapper .gridwrapper-inner .react-draggable.size-m .react-draggable-handle .user-colour-dot {
           bottom: 14px; }
         .gridwrapper .gridwrapper-inner .react-draggable.size-m .button-round.first {
@@ -4273,8 +4272,8 @@ li.rc-time-picker-panel-select-option-disabled:hover {
         content: "";
         display: block;
         position: absolute;
-        top: 0px;
-        right: 0px;
+        top: 0;
+        right: 0;
         width: 0;
         height: 0;
         border-style: solid;
@@ -4284,8 +4283,8 @@ li.rc-time-picker-panel-select-option-disabled:hover {
         content: "";
         display: block;
         position: absolute;
-        bottom: 7px;
-        left: 0px;
+        bottom: 12px;
+        left: 0;
         width: 0;
         height: 0;
         border-style: solid;
@@ -4295,8 +4294,8 @@ li.rc-time-picker-panel-select-option-disabled:hover {
         content: "";
         display: block;
         position: absolute;
-        bottom: 7px;
-        right: 0;
+        bottom: 10px;
+        right: 4px;
         width: 0;
         height: 0;
         border-style: solid;
@@ -4314,15 +4313,12 @@ li.rc-time-picker-panel-select-option-disabled:hover {
         border-style: solid;
         border-width: 0 0 9px 9px;
         border-color: transparent transparent transparent #ffffff; }
-    .gridwrapper .gridwrapper-inner .react-draggable.size-s {
-      margin: -45px 0 0 -20px; }
     .gridwrapper .gridwrapper-inner .react-draggable.size-m {
       height: 78px;
       width: 64px;
       background-image: url(../images/marker-medium.svg);
       font-size: 14px; }
     .gridwrapper .gridwrapper-inner .react-draggable.size-l {
-      margin: -90px 0 0 -40px;
       height: 95px;
       width: 82px;
       background-image: url(../images/marker-large.svg);
@@ -5132,7 +5128,7 @@ li.rc-time-picker-panel-select-option-disabled:hover {
     top: 11px;
     left: 150px;
     font-size: 14px;
-    font-weight: normal; }
+    font-weight: 500; }
   .nav [class*="icon-"] {
     font-size: 24px;
     line-height: 24px;

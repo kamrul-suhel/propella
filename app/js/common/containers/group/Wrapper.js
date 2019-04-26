@@ -31,7 +31,8 @@ export default class GroupWrapper extends React.PureComponent {
             updatedCoordinates: {},
             selectedDraggable: 0,
             selectedCompetitor: 0,
-            selectedOrganisation: {}
+            selectedOrganisation: {},
+            actionPositionClass:''
         }
     }
 
@@ -61,15 +62,20 @@ export default class GroupWrapper extends React.PureComponent {
     }
 
     onDraggableEventHandler = (event, data) => {
-        const {container, location} = this.props
+        const {container, location, group} = this.props
 
         // find the id we're moving
         const organisationId = Number(_.find(data.node.attributes, {name: 'handleid'}).value)
 
         if (Math.abs(data.deltaX) === 0 && Math.abs(data.deltaY) === 0) {
-            this.setState({'selectedDraggable': organisationId})
+            const actionPositionClass = fn.getDraggableActionClass({positionX: data.x, positionY: data.y})
+            console.log("Action class is : ", actionPositionClass)
+            this.setState({'selectedDraggable': organisationId, actionPositionClass: actionPositionClass})
         } else {
-            const position = fn.getPositionForSave(data, location)
+            const organisation = _.find(group.organisations, (organisation)=>{
+                return organisation.id === organisationId
+            })
+            const position = fn.getPositionForSave(data, location, organisation.icon_size)
 
             this.setState({
                 updatedCoordinates: {
@@ -150,8 +156,21 @@ export default class GroupWrapper extends React.PureComponent {
     handleSelectCompetitor = (id) => this.setState({selectedCompetitor: id})
 
     render() {
-        const {groups, group, params, container, location} = this.props
-        const {updatedCoordinates, selectedDraggable, progressLabel, selectedOrganisation, selectedCompetitor} = this.state
+        const {
+            groups,
+            group,
+            params,
+            container,
+            location
+        } = this.props
+        const {
+            updatedCoordinates,
+            selectedDraggable,
+            progressLabel,
+            selectedOrganisation,
+            selectedCompetitor,
+            actionPositionClass
+        } = this.state
 
         // dont load unless we have the container's dimensions
         if (!container) {
@@ -240,7 +259,7 @@ export default class GroupWrapper extends React.PureComponent {
                                     }
 
                                     {selectedDraggable === item.id &&
-                                    <div className="react-draggable-actions">
+                                    <div className={`react-draggable-actions ${actionPositionClass}`}>
                                         <Link className="button-round first"
                                               to={`/${url.projects}/${params.id}/groups/${group.id}/${url.organisations}/${item.id}`}>
                                             <span className="button-round-inside icon-pencil"/>

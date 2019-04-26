@@ -27,7 +27,8 @@ export default class PeopleWrapper extends React.PureComponent {
         this.state = {
             updatedCoordinates: {},
             selectedDraggable: 0,
-            selectedPeople: {}
+            selectedPeople: {},
+            actionPositionClass:''
         }
     }
 
@@ -53,20 +54,24 @@ export default class PeopleWrapper extends React.PureComponent {
     }
 
     onDraggableEventHandler = (event, data) => {
-        const {location} = this.props
+        const {location, group} = this.props
         // find the id we're moving
-        const organisationId = Number(_.find(data.node.attributes, {name: 'handleid'}).value)
+        const peopleId = Number(_.find(data.node.attributes, {name: 'handleid'}).value)
 
         if (Math.abs(data.deltaX) === 0 && Math.abs(data.deltaY) === 0) {
-            this.setState({'selectedDraggable': organisationId})
+            const actionPositionClass = fn.getDraggableActionClass({positionX: data.x, positionY: data.y})
+            this.setState({'selectedDraggable': peopleId,actionPositionClass: actionPositionClass})
         } else {
+            const people = _.find(group.people, (people)=>{
+                return people.id === peopleId
+            })
             // get the wrapper dimensions
-            const position = fn.getPositionForSave(data, location)
+            const position = fn.getPositionForSave(data, location, people.icon_size)
 
             this.setState({
                 updatedCoordinates: {
                     ...this.state.updatedCoordinates,
-                    [organisationId]: {id: organisationId, positionX: position.positionX, positionY: position.positionY}
+                    [peopleId]: {id: peopleId, positionX: position.positionX, positionY: position.positionY}
                 }
             })
         }
@@ -146,8 +151,22 @@ export default class PeopleWrapper extends React.PureComponent {
     }
 
     render() {
-        const {groups, group, params, container, people, location} = this.props
-        const {updatedCoordinates, selectedDraggable, progressLabel, selectedPeople, showCharacters} = this.state
+        const {
+            groups,
+            group,
+            params,
+            container,
+            people,
+            location
+        } = this.props
+        const {
+            updatedCoordinates,
+            selectedDraggable,
+            progressLabel,
+            selectedPeople,
+            showCharacters,
+            actionPositionClass
+        } = this.state
 
         if (!container) {
             return null
@@ -231,7 +250,7 @@ export default class PeopleWrapper extends React.PureComponent {
                                 </div>
 
                                 {selectedDraggable === item.id &&
-                                <div className="react-draggable-actions">
+                                <div className={`react-draggable-actions ${actionPositionClass}`}>
                                     <Link className="button-round first"
                                           to={`/${url.projects}/${params.id}/groups/${group.id}/${url.people}/${item.id}/${url.characters}`}>
                                         <span className="button-round-inside icon-masks"/>

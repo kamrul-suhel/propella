@@ -33,7 +33,6 @@ export default class Loyalty extends React.PureComponent {
                     max={100}
                     value={intPositionX}
                     onChange={handleInputChange}
-                    validation="required"
                     wide
                 />
                 <span className="counter">{ intPositionX }</span>

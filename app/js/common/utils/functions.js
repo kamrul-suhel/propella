@@ -1,13 +1,13 @@
-import React from 'react';
-import {browserHistory} from 'react-router';
-import Cookie from 'universal-cookie';
-import moment from 'moment';
-import Store from 'app/store';
-import {fetchData, hideAlert, showAlert, storeToken} from 'app/actions';
-import {storageUrl, url} from 'app/constants';
-import {api} from 'app/utils';
+import React from 'react'
+import {browserHistory} from 'react-router'
+import Cookie from 'universal-cookie'
+import moment from 'moment'
+import Store from 'app/store'
+import {fetchData, hideAlert, showAlert, storeToken} from 'app/actions'
+import {storageUrl, url} from 'app/constants'
+import {api} from 'app/utils'
 
-const cookie = new Cookie();
+const cookie = new Cookie()
 
 export default {
 
@@ -21,8 +21,8 @@ export default {
      * @param   {array}   type        Type (success, warning, error)
      */
     showAlert(alerts, type) {
-        alerts = typeof alerts === 'string' ? [alerts] : alerts;
-        Store.dispatch(showAlert({alerts, type}));
+        alerts = typeof alerts === 'string' ? [alerts] : alerts
+        Store.dispatch(showAlert({alerts, type}))
     },
 
     /**
@@ -34,15 +34,15 @@ export default {
      * @return  {object}    Redux object
      */
     hideAlert() {
-        Store.dispatch(hideAlert());
+        Store.dispatch(hideAlert())
     },
 
     escapeUrl(string) {
         if (!string.match(/^[a-zA-Z]+:\/\//)) {
-            return `http://${string}`;
+            return `http://${string}`
         }
 
-        return string;
+        return string
     },
 
     /**
@@ -54,7 +54,7 @@ export default {
      * @param   {string}   key    Stored cookie key
      */
     deleteCookie(key) {
-        return cookie.remove(key, {path: '/'});
+        return cookie.remove(key, {path: '/'})
     },
 
     /**
@@ -67,7 +67,7 @@ export default {
      * @return  {string}        Value of the cookie
      */
     getCookie(key) {
-        return cookie.get(key);
+        return cookie.get(key)
     },
 
     /**
@@ -81,7 +81,7 @@ export default {
      * @param   {object}   options    Options such as path, age, etc.
      */
     saveCookie(key, value, options) {
-        return cookie.set(key, value, options);
+        return cookie.set(key, value, options)
     },
 
     /**
@@ -94,9 +94,9 @@ export default {
      * @return  {string}        Token value
      */
     getToken(key) {
-        const value = this.getCookie(key);
-        Store.dispatch(storeToken(this.parseToken(value)));
-        return this.parseToken(value);
+        const value = this.getCookie(key)
+        Store.dispatch(storeToken(this.parseToken(value)))
+        return this.parseToken(value)
     },
 
     /**
@@ -110,11 +110,11 @@ export default {
      */
     parseToken(token = '') {
         if (!token) {
-            return '';
+            return ''
         }
-        const base64Url = token.split('.')[1];
-        const base64 = base64Url.replace('-', '+').replace('_', '/');
-        return JSON.parse(window.atob(base64));
+        const base64Url = token.split('.')[1]
+        const base64 = base64Url.replace('-', '+').replace('_', '/')
+        return JSON.parse(window.atob(base64))
     },
 
     async downloadAttachment(fileUrl, fileName = 'filename') {
@@ -123,15 +123,15 @@ export default {
             headers: new Headers({
                 Authorization: `Bearer ${this.getCookie('token')}`,
             }),
-        });
+        })
 
-        const linkUrl = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = linkUrl;
-        link.setAttribute('download', `${fileName}${Date.now()}.csv`);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        const linkUrl = window.URL.createObjectURL(new Blob([response.data]))
+        const link = document.createElement('a')
+        link.href = linkUrl
+        link.setAttribute('download', `${fileName}${Date.now()}.csv`)
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
     },
 
     /**
@@ -143,27 +143,27 @@ export default {
      */
     buildUrlQuery(params = {}, start = '&') {
         if (_.isEmpty(params)) {
-            return '';
+            return ''
         }
 
-        let queryString = start;
+        let queryString = start
 
         _.map(params, (value, key) => {
             if (key && value && value !== 'all') {
                 // check if value is an array and split
                 if (_.isArray(value)) {
-                    value = value.join(',');
+                    value = value.join(',')
 
                     if (!value) {
-                        return false;
+                        return false
                     }
                 }
 
-                queryString = `${queryString}${key}=${value}&`;
+                queryString = `${queryString}${key}=${value}&`
             }
-        });
+        })
 
-        return queryString.replace(/\&$/, '');
+        return queryString.replace(/\&$/, '')
     },
 
     /**
@@ -178,11 +178,11 @@ export default {
      */
     formatDate(date, format = 'D MMM YYYY') {
         if (!date || date === '0000-00-00 00:00:00') {
-            return null;
+            return null
         }
 
-        const newDate = date !== 'now' ? date : null;
-        return moment(newDate, 'YYYY-MM-DD hh:mm:ss').format(format);
+        const newDate = date !== 'now' ? date : null
+        return moment(newDate, 'YYYY-MM-DD hh:mm:ss').format(format)
     },
 
     /**
@@ -194,7 +194,7 @@ export default {
      * @return  {boolean}        True if production, false if development
      */
     isProduction() {
-        return process.env.NODE_ENV && process.env.NODE_ENV === 'production';
+        return process.env.NODE_ENV && process.env.NODE_ENV === 'production'
     },
 
     /**
@@ -207,11 +207,11 @@ export default {
     navigate(to) {
         // if to is goBack then go back to the previous page
         if (to === 'goBack') {
-            browserHistory.goBack();
-            return;
+            browserHistory.goBack()
+            return
         }
 
-        browserHistory.push(to);
+        browserHistory.push(to)
     },
 
     /**
@@ -222,9 +222,9 @@ export default {
      * @since   2017-07-21
      */
     logOut() {
-        this.user = '';
-        this.deleteCookie('token');
-        Store.dispatch({type: 'USER_LOGOUT'});
+        this.user = ''
+        this.deleteCookie('token')
+        Store.dispatch({type: 'USER_LOGOUT'})
     },
 
     /**
@@ -238,10 +238,10 @@ export default {
     isLoggedIn() {
 
         if (this.getUser().id) {
-            return true;
+            return true
         }
 
-        return false;
+        return false
     },
 
     /**
@@ -255,17 +255,17 @@ export default {
     getUser() {
 
         // get global store
-        const store = Store.getState();
+        const store = Store.getState()
 
         // check if user is fetched and has role
         if (store.me.isLoading || !store.me.data) {
-            return false;
+            return false
         }
 
         // cache user role
-        this.user = store.me.data;
+        this.user = store.me.data
 
-        return this.user;
+        return this.user
     },
 
     /**
@@ -278,10 +278,10 @@ export default {
      */
     isAdmin() {
         if (this.getUser().role !== 'admin') {
-            return false;
+            return false
         }
 
-        return true;
+        return true
     },
 
     /**
@@ -294,10 +294,10 @@ export default {
      */
     isUser() {
         if (this.getUser().role !== 'user') {
-            return false;
+            return false
         }
 
-        return true;
+        return true
     },
 
     /**
@@ -310,10 +310,10 @@ export default {
      */
     isMe(id) {
         if (this.getUser().id !== id) {
-            return false;
+            return false
         }
 
-        return true;
+        return true
     },
 
     /**
@@ -327,10 +327,10 @@ export default {
     nGetText(single, plural, number) {
         // if number is 1, then return the single text
         if (number === 1) {
-            return single;
+            return single
         }
 
-        return plural;
+        return plural
     },
 
     /**
@@ -345,18 +345,18 @@ export default {
             if (typeof type !== 'function') {
                 return new Error(
                     `Invalid prop type supplied to ${componentName}. Validation failed`
-                );
+                )
             }
 
             if (typeof condition !== 'function') {
                 return new Error(
                     `Invalid condition supplied to ${componentName}. Validation failed`
-                );
+                )
             }
 
-            const test = condition(props) ? type.isRequired : type;
-            return test.apply(this, arguments);
-        };
+            const test = condition(props) ? type.isRequired : type
+            return test.apply(this, arguments)
+        }
     },
 
     /**
@@ -370,48 +370,48 @@ export default {
      */
     formatMoney(amount, decimalCount = 2, decimal = '.', thousands = ',') {
 
-        const currencySign = '$';
+        const currencySign = '$'
         try {
 
-            const dc = Number.isNaN(Math.abs(decimalCount)) ? 2 : decimalCount;
+            const dc = Number.isNaN(Math.abs(decimalCount)) ? 2 : decimalCount
 
-            const negativeSign = amount < 0 ? '-' : '';
-            let a;
-            const i = parseInt(a = Math.abs(Number(amount) || 0).toFixed(dc), 10).toString();
-            const j = (i.length > 3) ? i.length % 3 : 0;
+            const negativeSign = amount < 0 ? '-' : ''
+            let a
+            const i = parseInt(a = Math.abs(Number(amount) || 0).toFixed(dc), 10).toString()
+            const j = (i.length > 3) ? i.length % 3 : 0
 
-            return negativeSign + currencySign + (j ? i.substr(0, j) + thousands : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, `$1${thousands}`) + (decimalCount ? decimal + Math.abs(a - i).toFixed(decimalCount).slice(2) : '');
+            return negativeSign + currencySign + (j ? i.substr(0, j) + thousands : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, `$1${thousands}`) + (decimalCount ? decimal + Math.abs(a - i).toFixed(decimalCount).slice(2) : '')
         } catch (e) {
-            return console.error(e);
+            return console.error(e)
         }
     },
 
     // get time delay in days between 2 dates
     timeSince(date, to = Date.now()) {
-        const dateNow = new Date(date);
-        const dateThen = new Date(to);
-        return Math.floor((Date.UTC(dateThen.getFullYear(), dateThen.getMonth(), dateThen.getDate()) - Date.UTC(dateNow.getFullYear(), dateNow.getMonth(), dateNow.getDate())) / (1000 * 60 * 60 * 24));
+        const dateNow = new Date(date)
+        const dateThen = new Date(to)
+        return Math.floor((Date.UTC(dateThen.getFullYear(), dateThen.getMonth(), dateThen.getDate()) - Date.UTC(dateNow.getFullYear(), dateNow.getMonth(), dateNow.getDate())) / (1000 * 60 * 60 * 24))
     },
 
     // Extract the filename including extension from a pull path
     getFilenameFromPath(url) {
-        return url.substring(url.lastIndexOf('/') + 1);
+        return url.substring(url.lastIndexOf('/') + 1)
     },
 
     activeMaintenanceMode(settings) {
-        const {setting, me} = Store.getState();
+        const {setting, me} = Store.getState()
 
         // check if maintenance mode is set to enabled
         if (setting.maintenanceMode && me.data.role !== 'admin') {
-            return true;
+            return true
         }
 
-        return false;
+        return false
     },
 
     getImage(filename) {
-        const imageDir = '../../../images';
-        return `${imageDir}/${filename}`;
+        const imageDir = '../../../images'
+        return `${imageDir}/${filename}`
     },
 
     getContainer() {
@@ -526,7 +526,7 @@ export default {
         if (id === 0) {
             return {}
         }
-        const totalArray = this.getPeopleCharacters().length;
+        const totalArray = this.getPeopleCharacters().length
         if (totalArray < id) {
             return _.find(this.getPeopleCharacters(), {id: 1})
         }
@@ -534,7 +534,7 @@ export default {
     },
 
     handleReportPrint() {
-        window.print();
+        window.print()
     },
 
     getQuadrant(x, y) {
@@ -554,16 +554,16 @@ export default {
     },
 
     shouldDisplayCharacters() {
-        const value = this.getCookie('showCharacters');
+        const value = this.getCookie('showCharacters')
         if (value && value == 1) {
             return true
         }
-        return false;
+        return false
     },
 
     toggleDisplayCharacters() {
-        const value = this.getCookie('showCharacters');
-        let showCharacters;
+        const value = this.getCookie('showCharacters')
+        let showCharacters
         if (value && value == 1) {
             showCharacters = 0
         } else {
@@ -579,29 +579,29 @@ export default {
      * @returns {null}
      */
     getTrajectory(currentTrajectory) {
-        let newTrajectory = null;
+        let newTrajectory = null
         switch (currentTrajectory) {
             case 0:
-                newTrajectory = 1;
-                break;
+                newTrajectory = 1
+                break
 
             case 1:
-                newTrajectory = 2;
-                break;
+                newTrajectory = 2
+                break
 
             case 2:
-                newTrajectory = 3;
-                break;
+                newTrajectory = 3
+                break
 
             case 3:
-                newTrajectory = 4;
-                break;
+                newTrajectory = 4
+                break
 
             case 4:
                 newTrajectory = 0
         }
 
-        return newTrajectory;
+        return newTrajectory
     },
 
     /**
@@ -611,39 +611,39 @@ export default {
      * @returns {boolean}
      */
     isItemShow(item, routeLocation) {
-        const zoom = routeLocation.query.zoom && routeLocation.query.zoom ? routeLocation.query.zoom : null;
-        const positionX = item.positionX;
-        const positionY = item.positionY;
+        const zoom = routeLocation.query.zoom && routeLocation.query.zoom ? routeLocation.query.zoom : null
+        const positionX = item.positionX
+        const positionY = item.positionY
 
         if (zoom === null) {
-            return true;
+            return true
         }
         switch (zoom) {
             case 'nf':
                 if (positionX <= 50 && positionY <= 50) {
-                    return true;
+                    return true
                 }
-                break;
+                break
             case 'std':
                 if (positionX >= 50 && positionY <= 50) {
-                    return true;
+                    return true
                 }
-                break;
+                break
 
             case 'up':
                 if (positionX <= 50 && positionY >= 50) {
-                    return true;
+                    return true
                 }
-                break;
+                break
 
             case 'vip':
                 if (positionX >= 50 && positionY >= 50) {
-                    return true;
+                    return true
                 }
-                break;
+                break
         }
 
-        return false;
+        return false
     },
 
     /**
@@ -653,44 +653,118 @@ export default {
      * @returns {{positionY: number, positionX: number}}
      */
     getPosition(item, routeLocation) {
-        const zoom = routeLocation.query.zoom && routeLocation.query.zoom ? routeLocation.query.zoom : null;
-        const container = this.getContainer();
-        let positionX = item.positionX;
-        let positionY = item.positionY;
+        const zoom = routeLocation.query.zoom && routeLocation.query.zoom ? routeLocation.query.zoom : null
+        const container = this.getContainer()
+        let positionX = item.positionX
+        let positionY = item.positionY
 
         if (zoom !== null) {
             switch (zoom) {
                 case 'nf':
-                    positionX = positionX * 2;
-                    positionY = positionY * 2;
-                    break;
+                    positionX = positionX * 2
+                    positionY = positionY * 2
+                    break
 
                 case 'std':
-                    positionX = (positionX - 50) * 2;
-                    positionY = positionY * 2;
-                    break;
+                    positionX = (positionX - 50) * 2
+                    positionY = positionY * 2
+                    break
 
                 case 'up':
-                    positionX = positionX * 2;
-                    positionY = (positionY - 50) * 2;
-                    break;
+                    positionX = positionX * 2
+                    positionY = (positionY - 50) * 2
+                    break
 
                 case 'vip':
-                    console.log("Vip called : ", positionY)
-                    positionY = (positionY - 50) * 2;
-                    positionX = (positionX - 50) * 2;
-                    break;
+                    positionY = (positionY - 50) * 2
+                    positionX = (positionX - 50) * 2
+                    break
             }
         }
 
         positionX = container.width / 100 * positionX
         positionY = container.height - (container.height / 100 * positionY)
 
+        // Decrease position x, y base on icon_size
+        switch (item.icon_size) {
+            case 's':
+                positionX = positionX - 20
+                positionY = positionY - 48
+
+                // Add shadow
+                positionY = positionY + 3
+
+                if (positionX >= container.width - 40) {
+                    positionX = container.width - 40
+                }
+
+                if (positionX <= 0) {
+                    positionX = 0
+                }
+
+                if (positionY <= 0) {
+                    positionY = 0
+                }
+
+                if (positionY >= container.height - 48) {
+                    positionY = container.height - 48
+                }
+                break
+
+            case 'm':
+            case 'f':
+                positionX = positionX - 32
+                positionY = positionY - 78
+
+                // Add shadow
+                positionY = positionY + 5
+
+                if (positionX >= container.width - 64) {
+                    positionX = container.width - 64
+                }
+
+                if (positionX < 0) {
+                    positionX = 0
+                }
+
+                if (positionY >= container.height - 78) {
+                    positionY = container.height - 78
+                }
+
+                if (positionY < 0) {
+                    positionY = 0
+                }
+                break
+
+            case 'l':
+                positionX = positionX - 41
+                positionY = positionY - 95
+
+                // Add shadow
+                positionY = positionY + 4
+
+                if (positionX >= container.width - 82) {
+                    positionX = container.width - 82
+                }
+
+                if (positionX < 0) {
+                    positionX = 0
+                }
+
+                if (positionY < 0) {
+                    positionY = 0
+                }
+
+                if (positionY >= container.height - 95) {
+                    positionY = container.height - 95
+                }
+                break
+        }
+
         return {
             positionX: positionX,
             positionY: positionY
         }
-
     },
 
     /**
@@ -699,29 +773,57 @@ export default {
      * @param routeLocation
      * @returns {{positionY: number, positionX: *}}
      */
-    getPositionForSave(item, routeLocation) {
-        const zoom = routeLocation.query.zoom && routeLocation.query.zoom ? routeLocation.query.zoom : null;
-        const container = this.getContainer();
-        let positionX = item.x;
-        let positionY = item.y;
+    getPositionForSave(item, routeLocation, iconSize = null) {
+        const zoom = routeLocation.query.zoom && routeLocation.query.zoom ? routeLocation.query.zoom : null
+        const container = this.getContainer()
+        let positionX = item.x
+        let positionY = item.y
+
+        // Increase  position x, y base on icon_size
+        switch (iconSize) {
+            case 's':
+                positionX = positionX + 20
+                positionY = positionY + 45
+
+                //Remove shadow 
+                positionY = positionY - 3
+                break
+
+            case 'm':
+            case 'f':
+                positionX = positionX + 32
+                positionY = positionY + 78
+
+                // Remove shadow 
+                positionY = positionY - 5
+                break
+
+            case 'l':
+                positionX = positionX + 42
+                positionY = positionY + 95
+
+                // Remove shadow
+                positionY = positionY - 4
+                break
+        }
 
         if (zoom !== null) {
             switch (zoom) {
                 case 'nf':
-                    positionX = positionX / 2;
-                    positionY = (container.height / 2) + (positionY / 2);
-                    break;
+                    positionX = positionX / 2
+                    positionY = (container.height / 2) + (positionY / 2)
+                    break
                 case 'std':
-                    positionX = (container.width / 2) + positionX / 2;
-                    positionY = (container.height / 2) + (positionY / 2);
-                    break;
+                    positionX = (container.width / 2) + positionX / 2
+                    positionY = (container.height / 2) + (positionY / 2)
+                    break
                 case 'up':
-                    positionX = positionX / 2;
-                    positionY = positionY / 2;
-                    break;
+                    positionX = positionX / 2
+                    positionY = positionY / 2
+                    break
                 case 'vip':
-                    positionY = positionY / 2;
-                    positionX = (container.width / 2) + (positionX / 2);
+                    positionY = positionY / 2
+                    positionX = (container.width / 2) + (positionX / 2)
             }
         }
 
@@ -739,31 +841,31 @@ export default {
      * @param event
      * @returns {string|null}
      */
-    getZoomLabel(event){
-        const container = this.getContainer();
-        let positionX = event.clientX - 40;
-        let positionY = event.clientY - 40;
+    getZoomLabel(event) {
+        const container = this.getContainer()
+        let positionX = event.clientX - 40
+        let positionY = event.clientY - 40
         // convert PX to %
         positionY = 100 - _.round((positionY / container.height) * 100, 4)
         positionX = _.round((positionX / container.width) * 100, 4)
 
-        if(positionX < 50 && positionY < 50){
-            return 'nf';
+        if (positionX < 50 && positionY < 50) {
+            return 'nf'
         }
 
-        if(positionX < 50 && positionY > 50){
-            return 'up';
+        if (positionX < 50 && positionY > 50) {
+            return 'up'
         }
 
-        if(positionX > 50 && positionY < 50){
-            return 'std';
+        if (positionX > 50 && positionY < 50) {
+            return 'std'
         }
 
-        if(positionX > 50 && positionY > 50){
+        if (positionX > 50 && positionY > 50) {
             return 'vip'
         }
 
-        return null;
+        return null
     },
 
     /**
@@ -771,8 +873,8 @@ export default {
      * @param routeLocation
      * @returns {boolean}
      */
-    isZoom(routeLocation){
-        return routeLocation.query.zoom && routeLocation.query.zoom ? true : false;
+    isZoom(routeLocation) {
+        return routeLocation.query.zoom && routeLocation.query.zoom ? true : false
     },
 
     /**
@@ -780,25 +882,25 @@ export default {
      * @param trajectory
      * @returns {string}
      */
-    getTrajectoryClass(trajectory){
-        switch(trajectory){
+    getTrajectoryClass(trajectory) {
+        switch (trajectory) {
             case 1:
-                return 'top-right';
-                break;
+                return 'top-right'
+                break
 
             case 2:
-                return 'bottom-right';
-                break;
+                return 'bottom-right'
+                break
 
             case 3:
-                return 'bottom-left';
-                break;
+                return 'bottom-left'
+                break
 
             case 4:
-                return 'top-left';
-                break;
+                return 'top-left'
+                break
             default:
-                return '';
+                return ''
 
         }
     },
@@ -808,7 +910,39 @@ export default {
      * @param value
      * @returns {number}
      */
-    convertFloatToInt(value){
-        return value | 0;
+    convertFloatToInt(value) {
+        return value | 0
+    },
+
+    /**
+     *
+     * @param item
+     * @returns {string}
+     */
+    getDraggableActionClass(item) {
+        const container = this.getContainer();
+        const width = container.width;
+        const height = container.height;
+        const positionX = item.positionX;
+        const positionY = item.positionY;
+        if (positionX < 74) {
+            return 'action-right'
+        }else{
+            if(positionX < width / 2 - 74 && positionY < 74){
+                return 'action-right'
+            }
+
+            if (positionY < 80) {
+                return 'action-left'
+            }
+        }
+
+        if (positionX > width - 148) {
+            if (positionY < 80 || positionY > 500) {
+                return 'action-left'
+            }
+            return 'action-left'
+        }
+        return '';
     }
-};
+}

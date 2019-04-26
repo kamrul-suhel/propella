@@ -225,9 +225,61 @@
                 }
             }
 
+            // large, medium, small icon for left & right corner action
+            &.size-l, &.size-m, &.size-s{
+                .action-left{
+                    .button-round {
+                        &.first {
+                            top: -10px;
+                            left: -75px;
+                        }
+
+                        &.second {
+                            top: -10px;
+                            left: -150px;
+                        }
+
+                        &.third {
+                            top: -10px;
+                            left: -225px;
+                        }
+
+                        &.fourth {
+                            top: -10px;
+                            left: -300px;
+                        }
+                    }
+                }
+
+                .action-right{
+                    .button-round {
+                        &.first {
+                            top: -10px;
+                            left: 75px;
+                        }
+
+                        &.second {
+                            top: -10px;
+                            left: 150px;
+                        }
+
+                        &.third {
+                            top: -10px;
+                            left: 225px;
+                        }
+
+                        &.fourth {
+                            top: -10px;
+                            left: 300px;
+                        }
+                    }
+                }
+            }
+
+            // End large icon left corner position
+
             &.size-m {
                 padding:1px 1px 15px 1px;
-                margin:-72px 0 0 -32px;
 
                 .react-draggable-handle{
                     .user-colour-dot{
@@ -313,8 +365,8 @@
                         content:"";
                         display:block;
                         position:absolute;
-                        top:0px;
-                        right:0px;
+                        top:0;
+                        right:0;
                         width: 0;
                         height: 0;
                         border-style: solid;
@@ -329,8 +381,8 @@
                         content:"";
                         display:block;
                         position:absolute;
-                        bottom:7px;
-                        left:0px;
+                        bottom:12px;
+                        left:0;
                         width: 0;
                         height: 0;
                         border-style: solid;
@@ -346,8 +398,8 @@
                         content:"";
                         display:block;
                         position:absolute;
-                        bottom:7px;
-                        right:0;
+                        bottom: 10px;
+                        right: 4px;
                         width: 0;
                         height: 0;
                         border-style: solid;
@@ -377,7 +429,7 @@
         }
 
         .react-draggable.size-s {
-            margin:-45px 0 0 -20px;
+            //margin:-45px 0 0 -20px;
         }
 
         .react-draggable.size-m {
@@ -388,7 +440,6 @@
         }
 
         .react-draggable.size-l {
-            margin:-90px 0 0 -40px;
             height: 95px;
             width: 82px;
             background-image: url(../images/marker-large.svg);

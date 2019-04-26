@@ -33,7 +33,6 @@ export default class Royalty extends React.PureComponent {
                     max={100}
                     value={intPositionY}
                     onChange={handleInputChange}
-                    validation="required"
                     wide
                 />
                 <span className="counter">{intPositionY}</span>

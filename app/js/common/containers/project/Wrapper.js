@@ -25,7 +25,8 @@ export default class ProjectWrapper extends React.PureComponent {
             updatedCoordinates: {},
             selectedDraggable: 0,
             selectedProgress: 0,
-            selectedGroupCoordinates: {}
+            selectedGroupCoordinates: {},
+            actionPositionClass:''
         }
     }
 
@@ -50,17 +51,21 @@ export default class ProjectWrapper extends React.PureComponent {
     }
 
     onDraggableEventHandler = (event, data) => {
-        const {container, location} = this.props
+        const { location, project } = this.props
 
         // find the id we're moving
         const groupId = Number(_.find(data.node.attributes, {name: 'handleid'}).value)
 
         // if we haven't moved assume its a click
         if (Math.abs(data.deltaX) === 0 && Math.abs(data.deltaY) === 0) {
-            this.setState({'selectedDraggable': groupId})
+            const actionPositionClass = fn.getDraggableActionClass({positionX: data.x, positionY: data.y})
+            this.setState({'selectedDraggable': groupId, actionPositionClass: actionPositionClass})
         } else {
+            const group = _.find(project.groups, (group)=>{
+                return group.id === groupId
+            })
             // get the wrapper dimensions
-            const position = fn.getPositionForSave(data, location)
+            const position = fn.getPositionForSave(data, location, group.icon_size)
 
             this.setState({
                 updatedCoordinates: {
@@ -134,8 +139,21 @@ export default class ProjectWrapper extends React.PureComponent {
     }
 
     render() {
-        const {projects, project, params, container, location} = this.props
-        const {updatedCoordinates, selectedDraggable, selectedGroupCoordinates, progressLabel} = this.state
+        const {
+            projects,
+            project,
+            params,
+            container,
+            location
+        } = this.props
+
+        const {
+            updatedCoordinates,
+            selectedDraggable,
+            selectedGroupCoordinates,
+            progressLabel,
+            actionPositionClass
+        } = this.state
 
         // dont load unless we have the container's dimensions
         if (!container) {
@@ -173,8 +191,8 @@ export default class ProjectWrapper extends React.PureComponent {
                                 scale={1}
                                 bounds=".gridwrapper-inner-section-wrapper"
                                 onStop={this.onDraggableEventHandler}
-                                disabled={selectedDraggable === item.id}
-                            >
+                                disabled={selectedDraggable === item.id}>
+
                                 <div handleid={item.id}
                                      className={
                                          [
@@ -188,7 +206,7 @@ export default class ProjectWrapper extends React.PureComponent {
                                 >
 
                                     {selectedDraggable === item.id &&
-                                    <div className="react-draggable-actions">
+                                    <div className={`react-draggable-actions ${actionPositionClass}`}>
                                         <Link className="button-round first"
                                               to={`/${url.projects}/${params.id}/groups/${item.id}/edit`}>
                                             <span className="button-round-inside icon-pencil"/>
