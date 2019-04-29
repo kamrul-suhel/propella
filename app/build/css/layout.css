@@ -4557,22 +4557,11 @@ li.rc-time-picker-panel-select-option-disabled:hover {
       background-color: #1C1C1C;
       transform-origin: right;
       z-index: 1; }
-    .gridwrapper .progress-button.coordinate.size-s {
-      margin: -48px 0 0 -21px; }
-    .gridwrapper .progress-button.coordinate.size-m {
-      margin: -78px 0 0 -32px; }
-    .gridwrapper .progress-button.coordinate.size-l {
-      margin: -78px 0 0 -32px; }
   .gridwrapper .first-coordinate.progress-button {
     background: none; }
-    .gridwrapper .first-coordinate.progress-button.size-s {
-      margin: -48px 0 0 -21px; }
-    .gridwrapper .first-coordinate.progress-button.size-m {
-      margin: -78px 0 0 -32px; }
     .gridwrapper .first-coordinate.progress-button.size-l {
       width: 82px;
-      height: 95px;
-      margin: -95px 0 0 -41px; }
+      height: 95px; }
 
 .competitor {
   height: 51px;

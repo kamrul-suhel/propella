@@ -206,7 +206,8 @@ export default class PeopleWrapper extends React.PureComponent {
                         }
 
                         return (
-                            <li className="filter">
+                            <li className="filter"
+                                key={item.id}>
                                 {item.title}
                                 <span className="clickable icon-x-small"
                                       onClick={() => this.handleHideOrganisation(item.id)}/>
