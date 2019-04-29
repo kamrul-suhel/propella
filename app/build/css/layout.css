@@ -4223,6 +4223,30 @@ li.rc-time-picker-panel-select-option-disabled:hover {
         .gridwrapper .gridwrapper-inner .react-draggable.size-l .button-round.fourth {
           top: -10px;
           left: 75px; }
+      .gridwrapper .gridwrapper-inner .react-draggable.size-l .action-left .button-round.first, .gridwrapper .gridwrapper-inner .react-draggable.size-m .action-left .button-round.first, .gridwrapper .gridwrapper-inner .react-draggable.size-s .action-left .button-round.first {
+        top: -10px;
+        left: -75px; }
+      .gridwrapper .gridwrapper-inner .react-draggable.size-l .action-left .button-round.second, .gridwrapper .gridwrapper-inner .react-draggable.size-m .action-left .button-round.second, .gridwrapper .gridwrapper-inner .react-draggable.size-s .action-left .button-round.second {
+        top: -10px;
+        left: -150px; }
+      .gridwrapper .gridwrapper-inner .react-draggable.size-l .action-left .button-round.third, .gridwrapper .gridwrapper-inner .react-draggable.size-m .action-left .button-round.third, .gridwrapper .gridwrapper-inner .react-draggable.size-s .action-left .button-round.third {
+        top: -10px;
+        left: -225px; }
+      .gridwrapper .gridwrapper-inner .react-draggable.size-l .action-left .button-round.fourth, .gridwrapper .gridwrapper-inner .react-draggable.size-m .action-left .button-round.fourth, .gridwrapper .gridwrapper-inner .react-draggable.size-s .action-left .button-round.fourth {
+        top: -10px;
+        left: -300px; }
+      .gridwrapper .gridwrapper-inner .react-draggable.size-l .action-right .button-round.first, .gridwrapper .gridwrapper-inner .react-draggable.size-m .action-right .button-round.first, .gridwrapper .gridwrapper-inner .react-draggable.size-s .action-right .button-round.first {
+        top: -10px;
+        left: 75px; }
+      .gridwrapper .gridwrapper-inner .react-draggable.size-l .action-right .button-round.second, .gridwrapper .gridwrapper-inner .react-draggable.size-m .action-right .button-round.second, .gridwrapper .gridwrapper-inner .react-draggable.size-s .action-right .button-round.second {
+        top: -10px;
+        left: 150px; }
+      .gridwrapper .gridwrapper-inner .react-draggable.size-l .action-right .button-round.third, .gridwrapper .gridwrapper-inner .react-draggable.size-m .action-right .button-round.third, .gridwrapper .gridwrapper-inner .react-draggable.size-s .action-right .button-round.third {
+        top: -10px;
+        left: 225px; }
+      .gridwrapper .gridwrapper-inner .react-draggable.size-l .action-right .button-round.fourth, .gridwrapper .gridwrapper-inner .react-draggable.size-m .action-right .button-round.fourth, .gridwrapper .gridwrapper-inner .react-draggable.size-s .action-right .button-round.fourth {
+        top: -10px;
+        left: 300px; }
       .gridwrapper .gridwrapper-inner .react-draggable.size-m {
         padding: 1px 1px 15px 1px; }
         .gridwrapper .gridwrapper-inner .react-draggable.size-m .react-draggable-handle .user-colour-dot {

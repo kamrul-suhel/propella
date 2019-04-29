@@ -127,3 +127,32 @@ export default function group(state = defaultState, action) {
         }
     }
 }
+
+const defaultDraggedState = {
+    organisations: [],
+    updateOrganisation: false
+
+}
+export function draggedOrganisations(state = defaultDraggedState, action){
+    switch(action.type){
+        case 'DRAGGED_ORGANISATION_UPDATE':
+            return {
+                ...state,
+                organisations: [...action.payload],
+                updatedOrganisation: true
+            }
+            break;
+
+        case 'DRAGGED_ORGANISATION_CLEAR':
+            return {
+                ...state,
+                organisations: [],
+                updatedOrganisation: false
+            }
+
+        default:
+            return {
+                ...state
+            }
+    }
+}

@@ -783,7 +783,7 @@ export default {
         switch (iconSize) {
             case 's':
                 positionX = positionX + 20
-                positionY = positionY + 45
+                positionY = positionY + 48
 
                 //Remove shadow 
                 positionY = positionY - 3
@@ -944,5 +944,26 @@ export default {
             return 'action-left'
         }
         return '';
+    },
+
+
+    /**
+     *
+     * @param items
+     * @param draggedItems
+     * @returns {Array}
+     */
+    getAllSortedItem(items, draggedItems) {
+        let result = []
+        _.map(items, (item) => {
+            let foundItem = {...item};
+            _.map(draggedItems, (draggedItem) => {
+                if(draggedItem.id === item.id){
+                    foundItem = {...draggedItem}
+                }
+            })
+            result.push(foundItem)
+        })
+        return result
     }
 }

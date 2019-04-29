@@ -3,22 +3,22 @@ import {fn} from 'app/utils';
 
 export default class Coordinate extends React.PureComponent {
     getDegreeRotate(currentCoordinate, nextCoordinate) {
+        const { location } = this.props
+
         let angleDeg = 0
         let c = 0
-        const container = fn.getContainer()
 
         if (nextCoordinate) {
-            const cPositionX = container.width / 100 * currentCoordinate.positionX
-            const cPositionY = container.height- (container.height / 100 * currentCoordinate.positionY)
-            const nPositionX = container.width / 100 * nextCoordinate.positionX
-            const nPositionY = container.height - (container.height / 100 * nextCoordinate.positionY)
+
+            const cPosition = fn.getPosition(currentCoordinate, location)
+            const nPosition = fn.getPosition(nextCoordinate, location)
 
             // angle in degrees
-            angleDeg = Math.atan2(cPositionY - nPositionY, cPositionX - nPositionX) * 180 / Math.PI
+            angleDeg = Math.atan2(cPosition.positionY - nPosition.positionY, cPosition.positionX - nPosition.positionX) * 180 / Math.PI
 
             // Distance between 2 points
-            let a = cPositionX - nPositionX
-            let b = cPositionY - nPositionY
+            let a = cPosition.positionX - nPosition.positionX
+            let b = cPosition.positionY - nPosition.positionY
 
             c = Math.sqrt(a * a + b * b)
 
@@ -44,11 +44,13 @@ export default class Coordinate extends React.PureComponent {
     }
 
     renderRootCoordinate(group, position) {
-        const container = fn.getContainer()
+        const { location } = this.props
+
+        const itemPosition = fn.getPosition(group, location)
 
         return (
             <div className={`selected-group-wrapper first-coordinate progress-button size-${group.icon_size}`}
-                 style={{transform: `translate(${container.width / 100 * group.positionX}px, ${container.height - (container.height / 100 * group.positionY)}px)`}}>
+                 style={{transform: `translate(${itemPosition.positionX}px, ${itemPosition.positionY}px)`}}>
                 <div className="connector" style={{
                     transform: `rotate(${position.degree ? position.degree : 0}deg)`,
                     width: `${position.height ? position.height : 0}px`
@@ -58,17 +60,18 @@ export default class Coordinate extends React.PureComponent {
     }
 
     renderCoordinate(group) {
-        const container = fn.getContainer();
+        const { location } = this.props
         return (
             group.coordinates && _.map(group.coordinates, (coordinate, index) => {
                 // Next coordinate
                 const nextCoordinate = group.coordinates[index + 1] && group.coordinates[index + 1]
                 const position = this.getDegreeRotate(coordinate, nextCoordinate)
+                const itemPosition = fn.getPosition(coordinate, location)
                 return (
                     <div key={coordinate.id}
                          id={coordinate.id}
                          className={`selected-group-wrapper progress-button coordinate size-${coordinate.icon_size} coordinate-${index}`}
-                         style={{transform: `translate(${container.width / 100 * coordinate.positionX}px, ${container.height - (container.height / 100 * coordinate.positionY)}px)`}}>
+                         style={{transform: `translate(${itemPosition.positionX}px, ${itemPosition.positionY}px)`}}>
                         <div className="connector" style={{
                             transform: `rotate(${position.degree ? position.degree : 0}deg)`,
                             width: `${position.height ? position.height : 0}px`

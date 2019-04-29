@@ -15,6 +15,7 @@ import {ContentLoader} from '@xanda/react-components';
     return {
         projects: getProjects(state),
         project: getProject(state, ownProps.params.id),
+        draggedGroups: state.draggedGroup
     };
 })
 export default class ProjectWrapper extends React.PureComponent {
@@ -22,7 +23,6 @@ export default class ProjectWrapper extends React.PureComponent {
         super(props)
 
         this.state = {
-            updatedCoordinates: {},
             selectedDraggable: 0,
             selectedProgress: 0,
             selectedGroupCoordinates: {},
@@ -43,7 +43,6 @@ export default class ProjectWrapper extends React.PureComponent {
     }
 
     fetchData = () => {
-
         this.props.dispatch(fetchData({
             type: 'PROJECT',
             url: `/projects/${this.props.params.id}`,
@@ -51,7 +50,7 @@ export default class ProjectWrapper extends React.PureComponent {
     }
 
     onDraggableEventHandler = (event, data) => {
-        const { location, project } = this.props
+        const { location, project, draggedGroups, dispatch } = this.props
 
         // find the id we're moving
         const groupId = Number(_.find(data.node.attributes, {name: 'handleid'}).value)
@@ -64,29 +63,39 @@ export default class ProjectWrapper extends React.PureComponent {
             const group = _.find(project.groups, (group)=>{
                 return group.id === groupId
             })
+
             // get the wrapper dimensions
             const position = fn.getPositionForSave(data, location, group.icon_size)
 
-            this.setState({
-                updatedCoordinates: {
-                    ...this.state.updatedCoordinates,
-                    [groupId]: {
-                        id: groupId,
-                        positionX: position.positionX,
-                        positionY: position.positionY
-                    }
-                }
+            // put dragged item into store
+            let selectedDraggedGroup =  [...draggedGroups.groups]
+            let selectedGroup = {...group}
+
+            _.remove(selectedDraggedGroup, (group)=> group.id === selectedGroup.id)
+            selectedGroup.positionX = position.positionX
+            selectedGroup.positionY = position.positionY
+            selectedDraggedGroup.push(selectedGroup);
+            dispatch({
+                type:'DRAGGED_GROUP_UPDATE',
+                payload:selectedDraggedGroup
             })
         }
     }
 
     handleSaveChanges = async () => {
-        const {updatedCoordinates} = this.state
+        const {
+            dispatch,
+            draggedGroups
+        } = this.props
+        const saveGroups = [...draggedGroups.groups];
+        const response = await api.put(`/groups`, {groups: saveGroups})
 
-        const response = await api.put(`/groups`, {groups: _.values(updatedCoordinates)})
         if (!api.error(response)) {
-            // if success remove from pending updates
-            this.setState({'updatedCoordinates': {}})
+            // Clear dragged group
+            dispatch({
+                type:'DRAGGED_GROUP_CLEAR'
+            });
+
             this.fetchData()
         }
     }
@@ -101,8 +110,8 @@ export default class ProjectWrapper extends React.PureComponent {
 
     getGroupCoordinate = (event, groupId) => {
 
-        const {project} = this.props;
-        const {selectedGroupCoordinates, updatedCoordinates} = this.state;
+        const { project, draggedGroups } = this.props;
+        const { selectedGroupCoordinates } = this.state;
 
         if (!_.isEmpty(selectedGroupCoordinates)) {
             this.setState({selectedGroupCoordinates: {}})
@@ -111,7 +120,7 @@ export default class ProjectWrapper extends React.PureComponent {
             event.stopPropagation();
             let selectedGroup = _.find(project.groups, (group) => group.id === groupId)
 
-            _.map(updatedCoordinates, (updatedCoordinate) => {
+            _.map(draggedGroups.groups, (updatedCoordinate) => {
                 if (updatedCoordinate.id === selectedGroup.id) {
                     selectedGroup.positionX = updatedCoordinate.positionX;
                     selectedGroup.positionY = updatedCoordinate.positionY;
@@ -126,16 +135,8 @@ export default class ProjectWrapper extends React.PureComponent {
         }
     }
 
-    handleDraggableClick = (e) => {
-        const {selectedDraggable} = this.state
-        const groupId = Number(_.find(e.node.attributes, {name: 'handleid'}).value)
-        if (selectedDraggable === groupId) {
-            this.setState({'selectedDraggable': 0})
-        }
-    }
-
     handleResetChanges = () => {
-        this.setState({updatedCoordinates: []}, this.fetchData())
+        this.fetchData()
     }
 
     render() {
@@ -144,16 +145,18 @@ export default class ProjectWrapper extends React.PureComponent {
             project,
             params,
             container,
-            location
+            location,
+            draggedGroups
         } = this.props
 
         const {
-            updatedCoordinates,
             selectedDraggable,
             selectedGroupCoordinates,
             progressLabel,
             actionPositionClass
         } = this.state
+
+        const groups = fn.getAllSortedItem(project.groups, draggedGroups.groups)
 
         // dont load unless we have the container's dimensions
         if (!container) {
@@ -166,7 +169,7 @@ export default class ProjectWrapper extends React.PureComponent {
                     data={projects.collection}
                     isLoading={projects.isLoading}
                 >
-                    {_.map(project.groups, (item) => {
+                    {_.map(groups, (item) => {
                         if (item.status < 1) {
                             return
                         }
@@ -202,7 +205,6 @@ export default class ProjectWrapper extends React.PureComponent {
                                              item
                                          ]
                                      }
-                                     onClick={this.handleDraggableClick}
                                 >
 
                                     {selectedDraggable === item.id &&
@@ -256,11 +258,12 @@ export default class ProjectWrapper extends React.PureComponent {
                     }
                     {this.props.children}
 
-                    {selectedGroupCoordinates.coordinates && !fn.isZoom(location) ? <Coordinate group={selectedGroupCoordinates}/> : ''}
+                    {selectedGroupCoordinates.coordinates && !fn.isZoom(location) ? <Coordinate group={selectedGroupCoordinates} {...this.props}/> : ''}
 
-                    {!_.isEmpty(updatedCoordinates) &&
+                    {draggedGroups.updatedGroup &&
                     <React.Fragment>
-                        <button className="button gridwrapper-save" onClick={this.handleSaveChanges}>Save Changes
+                        <button className="button gridwrapper-save"
+                                onClick={this.handleSaveChanges}>Save Changes
                         </button>
                     </React.Fragment>
                     }

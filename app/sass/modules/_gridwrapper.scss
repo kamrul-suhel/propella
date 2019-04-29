@@ -713,35 +713,15 @@
         }
 
         &.coordinate{
-            &.size-s{
-                margin:-48px 0 0 -21px;
-            }
-
-            &.size-m{
-                margin:-78px 0 0 -32px;
-            }
-
-            &.size-l{
-                margin:-78px 0 0 -32px;
-            }
         }
     }
 
     .first-coordinate.progress-button {
         background:none;
 
-        &.size-s {
-            margin:-48px 0 0 -21px;
-        }
-
-        &.size-m {
-            margin:-78px 0 0 -32px;
-        }
-
         &.size-l {
             width:82px;
             height:95px;
-            margin:-95px 0 0 -41px;
         }
     }
 }

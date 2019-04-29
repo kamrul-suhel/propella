@@ -18,6 +18,7 @@ import Coordinate from 'app/components/coordinate';
         people: getPeople(state),
         groups: getGroups(state),
         group: getGroup(state, ownProps.params.groupId),
+        draggedPeople: state.draggedPeople
     };
 })
 export default class PeopleWrapper extends React.PureComponent {
@@ -25,10 +26,9 @@ export default class PeopleWrapper extends React.PureComponent {
         super(props)
 
         this.state = {
-            updatedCoordinates: {},
             selectedDraggable: 0,
             selectedPeople: {},
-            actionPositionClass:''
+            actionPositionClass: ''
         }
     }
 
@@ -54,26 +54,56 @@ export default class PeopleWrapper extends React.PureComponent {
     }
 
     onDraggableEventHandler = (event, data) => {
-        const {location, group} = this.props
+        const {
+            dispatch,
+            location,
+            group,
+            draggedPeople
+        } = this.props
+
         // find the id we're moving
         const peopleId = Number(_.find(data.node.attributes, {name: 'handleid'}).value)
 
         if (Math.abs(data.deltaX) === 0 && Math.abs(data.deltaY) === 0) {
             const actionPositionClass = fn.getDraggableActionClass({positionX: data.x, positionY: data.y})
-            this.setState({'selectedDraggable': peopleId,actionPositionClass: actionPositionClass})
+            this.setState({'selectedDraggable': peopleId, actionPositionClass: actionPositionClass})
         } else {
-            const people = _.find(group.people, (people)=>{
+            let people = _.find(group.people, (people) => {
                 return people.id === peopleId
             })
             // get the wrapper dimensions
             const position = fn.getPositionForSave(data, location, people.icon_size)
 
-            this.setState({
-                updatedCoordinates: {
-                    ...this.state.updatedCoordinates,
-                    [peopleId]: {id: peopleId, positionX: position.positionX, positionY: position.positionY}
-                }
+            // put dragged item into store
+            let selectedPeople =  [...draggedPeople.people]
+
+            _.remove(selectedPeople, (currPeople)=> currPeople.id === people.id)
+            people.positionX = position.positionX
+            people.positionY = position.positionY
+            selectedPeople.push(people);
+            dispatch({
+                type:'DRAGGED_PEOPLE_UPDATE',
+                payload:selectedPeople
             })
+        }
+    }
+
+    handleSaveChanges = async () => {
+        const {
+            dispatch,
+            draggedPeople
+        } = this.props
+
+        const savePeople = draggedPeople.people
+
+        const response = await api.put(`/people`, {people: savePeople})
+        if (!api.error(response)) {
+            // if success full remove from pending updates
+            dispatch({
+                type:'DRAGGED_PEOPLE_CLEAR'
+            });
+
+            this.fetchData()
         }
     }
 
@@ -82,16 +112,6 @@ export default class PeopleWrapper extends React.PureComponent {
             if (!this.node.contains(e.target)) {
                 this.setState({selectedDraggable: 0, selectedPeople: {}})
             }
-        }
-    }
-
-    handleSaveChanges = async () => {
-        const {updatedCoordinates} = this.state
-
-        const response = await api.put(`/people`, {people: _.values(updatedCoordinates)})
-        if (!api.error(response)) {
-            // if successfull remove from pending updates
-            this.setState({'updatedCoordinates': {}})
         }
     }
 
@@ -152,21 +172,21 @@ export default class PeopleWrapper extends React.PureComponent {
 
     render() {
         const {
-            groups,
             group,
             params,
             container,
             people,
-            location
+            location,
+            draggedPeople
         } = this.props
+
         const {
-            updatedCoordinates,
             selectedDraggable,
-            progressLabel,
             selectedPeople,
-            showCharacters,
             actionPositionClass
         } = this.state
+
+        const sortedPeople = fn.getAllSortedItem(group.people, draggedPeople.people)
 
         if (!container) {
             return null
@@ -194,24 +214,25 @@ export default class PeopleWrapper extends React.PureComponent {
                         )
                     })}
                 </ul>
-                {!_.isEmpty(updatedCoordinates) &&
-                <React.Fragment>
-                    <button className="button gridwrapper-save" onClick={this.handleSaveChanges}>Save Changes</button>
-                </React.Fragment>
+
+                { draggedPeople.draggedPeople &&
+                    <button className="button gridwrapper-save"
+                            onClick={this.handleSaveChanges}>Save Changes
+                    </button>
                 }
-                {_.map(group.people, (item) => {
+
+                {_.map(sortedPeople, (item) => {
                     // only display people belonging to an active organisation
                     if (item.status < 1 || !_.includes(activeOrganisationIds, item.organisation_id)) {
                         return
                     }
-
                     const isShow = fn.isItemShow(item, location);
                     if (!isShow) {
                         return;
                     }
                     const position = fn.getPosition(item, location);
-
                     const trajectoryClass = fn.getTrajectoryClass(item.trajectory);
+
                     return (
                         <Draggable
                             key={item.id}
@@ -257,10 +278,16 @@ export default class PeopleWrapper extends React.PureComponent {
                                         Assign<br/>Character
                                     </Link>
 
-                                    <span className="clickable button-round second"
-                                          onClick={(event) => this.getCoordinate(event, item.id)}>
-                                            <span className="button-round-inside icon-chain"/>Progess
-                                        </span>
+                                    {item.coordinates && item.coordinates.length > 0 ? (
+                                        <span className="clickable button-round second"
+                                              onClick={(event) => fn.isZoom(location) ? null : this.getCoordinate(event, item.id)}>
+                                            <span className="button-round-inside icon-chain"/>
+                                            {_.isEmpty(selectedPeople) ? 'Progress' : 'Hide Progress'}
+                                            </span>
+                                    ) : (
+                                        <span className="button-round second progress-hide">
+                                            <span className="button-round-inside icon-chain"/>Progress</span>
+                                    )}
 
                                     <Link className="button-round third"
                                           to={`/${url.projects}/${params.id}/groups/${group.id}/${url.people}/${item.id}`}>
@@ -285,7 +312,7 @@ export default class PeopleWrapper extends React.PureComponent {
                 }
                 {this.props.children}
 
-                {selectedPeople.coordinates && !fn.isZoom(location) ? <Coordinate group={selectedPeople}/> : ''}
+                {selectedPeople.coordinates && !fn.isZoom(location) ? <Coordinate {...this.props} group={selectedPeople}/> : ''}
             </div>
         )
     }
