@@ -220,6 +220,7 @@ export default class GroupWrapper extends React.PureComponent {
                         }
                         return (
                             <div className={`competitor ${positionClass}`}
+                                 key={item.id}
                                  onClick={() => this.handleSelectCompetitor(item.id)}>
                                 {selectedCompetitor === item.id &&
                                 <div className="competitor-tooltip">
@@ -309,8 +310,7 @@ export default class GroupWrapper extends React.PureComponent {
                                         <span className="button-round fourth clickable"
                                               onClick={() => {
                                                   this.handleSetTrajectory(item)
-                                              }}
-                                        >
+                                              }}>
                                             <span className="button-round-inside icon-compass"/>
                                             Choose<br/>Trajectory
                                         </span>
@@ -322,15 +322,15 @@ export default class GroupWrapper extends React.PureComponent {
                         )
                     })
                     }
+
                     {this.props.children}
 
                     {selectedOrganisation.coordinates && !fn.isZoom(location) ? <Coordinate {...this.props} group={selectedOrganisation}/> : ''}
 
                     { draggedOrganisations.updatedOrganisation &&
-                    <React.Fragment>
-                        <button className="button gridwrapper-save" onClick={this.handleSaveChanges}>Save Changes
+                        <button className="button gridwrapper-save"
+                                onClick={this.handleSaveChanges}>Save Changes
                         </button>
-                    </React.Fragment>
                     }
                 </ContentLoader>
             </div>

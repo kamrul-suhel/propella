@@ -64,20 +64,20 @@ export default class ProjectWrapper extends React.PureComponent {
                 return group.id === groupId
             })
 
-            // get the wrapper dimensions
+            // get position
             const position = fn.getPositionForSave(data, location, group.icon_size)
 
             // put dragged item into store
-            let selectedDraggedGroup =  [...draggedGroups.groups]
+            let selectedDraggedGroups =  [...draggedGroups.groups]
             let selectedGroup = {...group}
 
-            _.remove(selectedDraggedGroup, (group)=> group.id === selectedGroup.id)
+            _.remove(selectedDraggedGroups, (group)=> group.id === selectedGroup.id)
             selectedGroup.positionX = position.positionX
             selectedGroup.positionY = position.positionY
-            selectedDraggedGroup.push(selectedGroup);
+            selectedDraggedGroups.push(selectedGroup);
             dispatch({
                 type:'DRAGGED_GROUP_UPDATE',
-                payload:selectedDraggedGroup
+                payload:selectedDraggedGroups
             })
         }
     }
