@@ -126,7 +126,7 @@
             align-items: center;
             justify-content: center;
             font-size: 11px;
-            padding: 0px 1px 15px 1px;
+            padding: 0 1px 15px 1px;
             font-weight: 500;
             .react-draggable-handle{
                 width: 100%;
@@ -279,7 +279,6 @@
             }
 
             // End large icon left corner position
-
             &.size-m {
                 padding:1px 1px 15px 1px;
 
@@ -341,6 +340,32 @@
                     &.fourth {
                         top: -12px;
                         left: 55px;
+                    }
+                }
+
+                &.trajectory-top-right{
+                    .react-draggable-handle:before{
+                        right:-4px;
+                    }
+                }
+                &.trajectory-bottom-right{
+                    .react-draggable-handle:before{
+                        bottom:-4px;
+                    }
+                }
+
+                &.trajectory-bottom-left{
+                    .react-draggable-handle:before{
+                        bottom:-4px;
+                        left:-4px;
+                    }
+                }
+
+                &.trajectory-top-left{
+                    .react-draggable-handle:before{
+                        bottom: 0;
+                        left: -7px;
+                        transform: rotate(-6deg);
                     }
                 }
             }
