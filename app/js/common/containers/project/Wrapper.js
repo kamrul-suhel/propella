@@ -32,10 +32,12 @@ export default class ProjectWrapper extends React.PureComponent {
 
     componentWillMount() {
         document.addEventListener('mousedown', this.handleClick, false)
+        document.addEventListener('touchstart', this.handleClick, false)
     }
 
     componentWillUnmount() {
         document.removeEventListener('mousedown', this.handleClick, false)
+        document.removeEventListener('touchstart', this.handleClick, false)
     }
 
     componentDidMount() {

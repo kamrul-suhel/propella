@@ -34,10 +34,12 @@ export default class PeopleWrapper extends React.PureComponent {
 
     componentWillMount() {
         document.addEventListener('mousedown', this.handleClick, false)
+        document.addEventListener('touchstart', this.handleClick, false)
     }
 
     componentWillUnmount() {
         document.removeEventListener('mousedown', this.handleClick, false)
+        document.removeEventListener('touchstart', this.handleClick, false)
     }
 
     componentDidMount() {
@@ -155,9 +157,19 @@ export default class PeopleWrapper extends React.PureComponent {
     }
 
     handleSetTrajectory = async (people) => {
-        const {params} = this.props
+        const {params, draggedPeople} = this.props
         const newTrajectory = fn.getTrajectory(people.trajectory)
+        _.map(draggedPeople.people, (draggedPeople) => {
+            if(draggedPeople.id === people.id){
+                people = {...draggedPeople}
+            }
+        })
         const response = await api.put(`people/${people.id}`, {trajectory: newTrajectory})
+
+        this.props.dispatch({
+            type: 'DRAGGED_PEOPLE_CLEAR'
+        })
+
         this.props.dispatch(
             {
                 type: 'GROUP_PEOPLE_UPDATED',

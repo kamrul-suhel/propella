@@ -38,10 +38,12 @@ export default class GroupWrapper extends React.PureComponent {
 
     componentWillMount() {
         document.addEventListener('mousedown', this.handleClick, false)
+        document.addEventListener('touchstart', this.handleClick, false)
     }
 
     componentWillUnmount() {
         document.removeEventListener('mousedown', this.handleClick, false)
+        document.removeEventListener('touchstart', this.handleClick, false)
     }
 
     componentDidMount() {
@@ -154,9 +156,20 @@ export default class GroupWrapper extends React.PureComponent {
     }
 
     handleSetTrajectory = async (organisation) => {
-        const {params} = this.props
+        const {params, draggedOrganisations} = this.props
         const newTrajectory = fn.getTrajectory(organisation.trajectory);
+        _.map(draggedOrganisations.organisations, (draggedOrganisation) => {
+            if(draggedOrganisation.id === organisation.id){
+                organisation = {...draggedOrganisation}
+            }
+        })
         const response = await api.put(`organisations/${organisation.id}`, {trajectory: newTrajectory});
+
+        this.props.dispatch(
+            {
+                type: 'DRAGGED_ORGANISATION_CLEAR'
+            }
+        )
 
         this.props.dispatch(
             {

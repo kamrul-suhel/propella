@@ -285,6 +285,13 @@ class ProjectController extends PropellaBaseController
             return response()->json('Project already archived', 406);
         }
 
+        // Check limit shapshot
+        $project = Project::findOrFail($id);
+        $ids = Project::getAllId($project->parent_id, $project->id);
+        if(count($ids) > 5){
+            return response()->json('Project snapshot limit reach.', 406);
+        }
+
         $project = Project::with([
             'groupsWithoutUserMeta.organisationsWithOutWPUser.people',
             'groupsWithoutUserMeta.competitors'

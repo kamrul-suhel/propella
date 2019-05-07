@@ -28,6 +28,8 @@ export default class GridWrapper extends React.PureComponent {
 
     componentDidMount() {
         const html = document.getElementsByTagName('html')
+        // let containerHeight = document.getElementById('app');
+        // containerHeight.style.height = window.innerHeight - 40 + 'px';
         disableBodyScroll(html)
 
         this.setState({

@@ -3581,6 +3581,7 @@ li.rc-time-picker-panel-select-option-disabled:hover {
       visibility: visible;
       position: absolute;
       left: 50%;
+      top: 24px;
       transform: translateX(-50%); }
   .form .form-type-radio.form-styled .form-options {
     padding-bottom: 10px; }
@@ -4056,9 +4057,9 @@ li.rc-time-picker-panel-select-option-disabled:hover {
     display: none !important; }
   .gridwrapper .gridwrapper-y {
     display: none !important; }
-  .gridwrapper .gridwrapper-inner .react-draggable {
+  .gridwrapper .gridwrapper-inner .react-draggable, .gridwrapper .gridwrapper-inner- .react-draggable {
     display: none !important; }
-  .gridwrapper .gridwrapper-inner .gridwrapper-inner-section-wrapper {
+  .gridwrapper .gridwrapper-inner .gridwrapper-inner-section-wrapper, .gridwrapper .gridwrapper-inner- .gridwrapper-inner-section-wrapper {
     display: none !important; }
   .report-component {
     padding: 0px;
@@ -4166,7 +4167,8 @@ li.rc-time-picker-panel-select-option-disabled:hover {
         display: flex;
         align-items: center;
         justify-content: center;
-        flex-direction: column; }
+        flex-direction: column;
+        position: relative; }
         .gridwrapper .gridwrapper-inner .react-draggable .react-draggable-handle .user-colour-dot {
           content: "";
           display: block;
@@ -4208,7 +4210,8 @@ li.rc-time-picker-panel-select-option-disabled:hover {
       .gridwrapper .gridwrapper-inner .react-draggable .button-round.fourth span:before {
         color: black; }
       .gridwrapper .gridwrapper-inner .react-draggable.size-l .react-draggable-handle .user-colour-dot {
-        bottom: 14px; }
+        bottom: 4px;
+        left: 36px; }
       .gridwrapper .gridwrapper-inner .react-draggable.size-l .button-round {
         transition: all ease-in-out .3s; }
         .gridwrapper .gridwrapper-inner .react-draggable.size-l .button-round.first {
@@ -4250,7 +4253,8 @@ li.rc-time-picker-panel-select-option-disabled:hover {
       .gridwrapper .gridwrapper-inner .react-draggable.size-m {
         padding: 1px 1px 15px 1px; }
         .gridwrapper .gridwrapper-inner .react-draggable.size-m .react-draggable-handle .user-colour-dot {
-          bottom: 14px; }
+          bottom: 4px;
+          left: 27px; }
         .gridwrapper .gridwrapper-inner .react-draggable.size-m .button-round.first {
           top: -10px;
           left: -65px; }
@@ -4267,7 +4271,8 @@ li.rc-time-picker-panel-select-option-disabled:hover {
         padding: 0px 2px 11px 2px;
         background-image: url(../images/marker-medium.svg); }
         .gridwrapper .gridwrapper-inner .react-draggable.size-s .react-draggable-handle .user-colour-dot {
-          bottom: 9px;
+          bottom: 2px;
+          left: 16px;
           margin-left: -1px; }
         .gridwrapper .gridwrapper-inner .react-draggable.size-s .button-round.first {
           top: -12px;
@@ -4307,8 +4312,8 @@ li.rc-time-picker-panel-select-option-disabled:hover {
         content: "";
         display: block;
         position: absolute;
-        bottom: 12px;
-        left: 0;
+        bottom: 0;
+        left: -2px;
         width: 0;
         height: 0;
         border-style: solid;
@@ -4318,14 +4323,14 @@ li.rc-time-picker-panel-select-option-disabled:hover {
         content: "";
         display: block;
         position: absolute;
-        bottom: 10px;
-        right: 4px;
+        bottom: 0px;
+        right: -4px;
         width: 0;
         height: 0;
         border-style: solid;
         border-width: 0 0 9px 9px;
         border-color: transparent transparent transparent #ffffff;
-        transform: rotate(190deg); }
+        transform: rotate(180deg); }
       .gridwrapper .gridwrapper-inner .react-draggable.trajectory-top-left .react-draggable-handle:before {
         content: "";
         display: block;
@@ -4905,7 +4910,8 @@ li.rc-time-picker-panel-select-option-disabled:hover {
         border-bottom-left-radius: 5px; }
       .popup .popup-inner-buttons .button:last-child, .popup .popup-inner-buttons .form button:last-child, .form .popup .popup-inner-buttons button:last-child {
         border-bottom-right-radius: 5px;
-        border-right: 0px; }
+        border-right: 0px;
+        display: block; }
   .popup.wide {
     max-width: 550px; }
   .popup.organisations .fancylist .fancylist-item .fancylist-item-title {
