@@ -7,6 +7,7 @@ const defaultState = {
     isLoading: true,
     misc: {},
     pager: {},
+    updatedGroups: []
 };
 
 export function project(state = defaultState, action) {
@@ -39,6 +40,7 @@ export function project(state = defaultState, action) {
                 collection: _.pickBy(state.collection, (o) => o.id !== action.payload.id)
             };
         }
+
         case 'GROUP_DELETED': {
             return {
                 ...state,
@@ -52,6 +54,31 @@ export function project(state = defaultState, action) {
                 }
             };
         }
+
+        case 'GROUP_UPDATE': {
+            const groupIndex = _.findIndex(state.collection[action.payload.project_id].groups,
+                (o) => o.id === action.payload.group.id);
+            state.collection[action.payload.project_id].groups[groupIndex] = action.payload.group
+
+            // Put group id
+            let updatedGroups = [...state.updatedGroups];
+            _.remove(updatedGroups, (g)=> {return g === action.payload.group.id})
+            updatedGroups.push(action.payload.group.id)
+
+            return {
+                ...state,
+                updatedGroups:[...updatedGroups],
+                isLoading: false,
+                collection: state.collection
+            }
+        }
+        case 'CLEAR_UPDATED_GROUP': {
+            return {
+                ...state,
+                updatedGroups: []
+            }
+        }
+
         default: {
             return state;
         }
@@ -75,6 +102,7 @@ export function projectUser(state = defaultProjectUserState, action) {
                 isLoading: true,
             };
         }
+
         case 'PROJECT_USER_REJECTED': {
             return {
                 ...state,
@@ -82,6 +110,7 @@ export function projectUser(state = defaultProjectUserState, action) {
                 error: action.payload.data,
             };
         }
+
         case 'PROJECT_USER_FULFILLED': {
             return {
                 ...state,
@@ -89,35 +118,6 @@ export function projectUser(state = defaultProjectUserState, action) {
                 collection: action.payload.data,
             };
         }
-        default: {
-            return state;
-        }
-    }
-}
-
-const defaultDraggedState = {
-    groups: [],
-    updatedGroup: false
-
-}
-
-export function dragedGroup(state = defaultDraggedState, action) {
-    switch (action.type) {
-        case 'DRAGGED_GROUP_UPDATE':
-            return {
-                ...state,
-                groups: [...action.payload],
-                updatedGroup: true
-            }
-            break;
-
-        case 'DRAGGED_GROUP_CLEAR':
-            return {
-                ...state,
-                groups: [],
-                updatedGroup: false
-            }
-            break;
 
         default: {
             return state;

@@ -6,7 +6,9 @@ const defaultState = {
     error: null,
     isLoading: true,
     misc: {},
-    pager: {}
+    pager: {},
+    updatedOrganisations: [],
+    updatedPeople: []
 };
 
 export default function group(state = defaultState, action) {
@@ -79,7 +81,6 @@ export default function group(state = defaultState, action) {
         }
 
         case 'GROUP_ORGANISATION_UPDATED': {
-            console.log(state.collection[action.payload.groupId])
             return {
                 ...state,
                 isLoading: false,
@@ -95,6 +96,31 @@ export default function group(state = defaultState, action) {
             };
         }
 
+        case 'DRAGGED_ORGANISATION_UPDATE': {
+            // Put organisation id into updatedGroups
+            let updatedOrganisations = [...state.updatedOrganisations];
+            _.remove(updatedOrganisations, (o)=> {return o === action.payload.organisation.id})
+            updatedOrganisations.push(action.payload.organisation.id)
+
+            // Update organisation
+            const organisationIndex = _.findIndex(state.collection[action.payload.groupId].organisations,
+                (o) => o.id === action.payload.organisation.id);
+            state.collection[action.payload.groupId].organisations[organisationIndex] = action.payload.organisation
+
+            return {
+                ...state,
+                updatedOrganisations:[...updatedOrganisations],
+                collection: state.collection
+            }
+        }
+
+        case 'DRAGGED_ORGANISATION_CLEAR': {
+            return {
+                ...state,
+                updatedOrganisations:[],
+            }
+        }
+
         case 'GROUP_PEOPLE_DELETED': {
             return {
                 ...state,
@@ -107,6 +133,30 @@ export default function group(state = defaultState, action) {
                     }
                 }
             };
+        }
+
+        case 'UPDATE_DRAGGED_PEOPLE': {
+            let updatedPeople = [...state.updatedPeople];
+            _.remove(updatedPeople, (o)=> {return o === action.payload.people.id})
+            updatedPeople.push(action.payload.people.id)
+
+            // Update organisation
+            const peopleIndex = _.findIndex(state.collection[action.payload.groupId].people,
+                (p) => p.id === action.payload.people.id);
+            state.collection[action.payload.groupId].people[peopleIndex] = action.payload.people
+
+            return {
+                ...state,
+                updatedPeople: [...updatedPeople],
+                collection: {...state.collection}
+            };
+        }
+
+        case 'CLEAR_DRAGGED_PEOPLE': {
+            return {
+                ...state,
+                updatedPeople: []
+            }
         }
 
         case 'GROUP_ORGANISATION_DELETED': {
@@ -125,34 +175,5 @@ export default function group(state = defaultState, action) {
         default: {
             return state;
         }
-    }
-}
-
-const defaultDraggedState = {
-    organisations: [],
-    updateOrganisation: false
-
-}
-export function draggedOrganisations(state = defaultDraggedState, action){
-    switch(action.type){
-        case 'DRAGGED_ORGANISATION_UPDATE':
-            return {
-                ...state,
-                organisations: [...action.payload],
-                updatedOrganisation: true
-            }
-            break;
-
-        case 'DRAGGED_ORGANISATION_CLEAR':
-            return {
-                ...state,
-                organisations: [],
-                updatedOrganisation: false
-            }
-
-        default:
-            return {
-                ...state
-            }
     }
 }

@@ -28,8 +28,8 @@ export default class GridWrapper extends React.PureComponent {
 
     componentDidMount() {
         const html = document.getElementsByTagName('html')
-        // let containerHeight = document.getElementById('app');
-        // containerHeight.style.height = window.innerHeight - 40 + 'px';
+        let containerHeight = document.getElementById('app');
+        containerHeight.style.height = window.innerHeight - 40 + 'px';
         disableBodyScroll(html)
 
         this.setState({
@@ -51,6 +51,7 @@ export default class GridWrapper extends React.PureComponent {
                 const replace = `/zoom`
                 url = _.replace(url, replace, '');
                 // zoom out
+                url = url+'?zoomOut=true'
                 router.push(url);
             } else {
                 // Zoom in
@@ -68,7 +69,9 @@ export default class GridWrapper extends React.PureComponent {
         if (fn.isZoom(location)) {
             const replace = `/zoom`
             url = _.replace(url, replace, '');
+            console.log("Double click happen: ", url)
             // zoom out
+            url = url+'?zoomOut=true'
             router.push(url);
         } else {
             // Zoom in

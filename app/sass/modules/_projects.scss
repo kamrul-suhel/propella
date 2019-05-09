@@ -57,6 +57,13 @@
     .page-header {
         min-height: 100px;
         padding-bottom: 5px;
+        position:relative;
+
+        .remain-project{
+            position:absolute;
+            right:0;
+            top:8px;
+        }
     }
 
     .page-title{

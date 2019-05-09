@@ -9,13 +9,14 @@ import {makeGetProject, makeGetProjects} from 'app/containers/project/selector';
 import Coordinate from 'app/components/coordinate'
 import {ContentLoader} from '@xanda/react-components';
 
+import clustering from 'density-clustering'
+
 @connect((state, ownProps) => {
     const getProjects = makeGetProjects();
     const getProject = makeGetProject();
     return {
         projects: getProjects(state),
-        project: getProject(state, ownProps.params.id),
-        draggedGroups: state.draggedGroup
+        project: getProject(state, ownProps.params.id)
     };
 })
 export default class ProjectWrapper extends React.PureComponent {
@@ -26,7 +27,9 @@ export default class ProjectWrapper extends React.PureComponent {
             selectedDraggable: 0,
             selectedProgress: 0,
             selectedGroupCoordinates: {},
-            actionPositionClass:''
+            actionPositionClass: '',
+            selectedCluster: [],
+            showSelectedClusterItem: null
         }
     }
 
@@ -41,7 +44,8 @@ export default class ProjectWrapper extends React.PureComponent {
     }
 
     componentDidMount() {
-        this.fetchData();
+        const {location} = this.props
+        !location.query.zoom && !location.query.zoomOut ? this.fetchData() : null;
     }
 
     fetchData = () => {
@@ -52,52 +56,132 @@ export default class ProjectWrapper extends React.PureComponent {
     }
 
     onDraggableEventHandler = (event, data) => {
-        const { location, project, draggedGroups, dispatch } = this.props
+        const {location, params, project, dispatch} = this.props
+        const projectId = params.id
 
         // find the id we're moving
         const groupId = Number(_.find(data.node.attributes, {name: 'handleid'}).value)
-
         // if we haven't moved assume its a click
         if (Math.abs(data.deltaX) === 0 && Math.abs(data.deltaY) === 0) {
             const actionPositionClass = fn.getDraggableActionClass({positionX: data.x, positionY: data.y})
-            this.setState({'selectedDraggable': groupId, actionPositionClass: actionPositionClass})
+            this.setState({
+                selectedDraggable: groupId,
+                actionPositionClass: actionPositionClass
+            })
         } else {
-            const group = _.find(project.groups, (group)=>{
+            const group = _.find(project.groups, (group) => {
                 return group.id === groupId
             })
 
             // get position
             const position = fn.getPositionForSave(data, location, group.icon_size)
+            // Update position
+            group.positionX = position.positionX
+            group.positionY = position.positionY
 
-            // put dragged item into store
-            let selectedDraggedGroups =  [...draggedGroups.groups]
-            let selectedGroup = {...group}
-
-            _.remove(selectedDraggedGroups, (group)=> group.id === selectedGroup.id)
-            selectedGroup.positionX = position.positionX
-            selectedGroup.positionY = position.positionY
-            selectedDraggedGroups.push(selectedGroup);
             dispatch({
-                type:'DRAGGED_GROUP_UPDATE',
-                payload:selectedDraggedGroups
+                type: 'GROUP_UPDATE',
+                payload: {
+                    project_id: projectId,
+                    group
+                }
             })
         }
     }
 
+    onClusterEventHandler = (event, data) => {
+        const {params} = this.props
+        // find the id we're moving
+        const clusterIds = _.split(_.find(data.node.attributes, {name: 'handleid'}).value, ',')
+
+        this.setState({
+            selectedCluster: clusterIds,
+            showSelectedClusterItem: null
+        })
+    }
+
+    handleClusterItem = (group) => {
+        this.setState({
+            selectedCluster: [],
+            showSelectedClusterItem: group.id,
+            selectedDraggable: group.id
+        })
+    }
+
+    renderCurrentClusterItems = (ids) => {
+        const {project} = this.props
+
+        //get all groups
+        let currentGroups = [];
+        _.map(ids, (id) => {
+            _.map(project.groups, (group) => {
+                if (parseInt(id) === group.id) {
+                    currentGroups.push(group)
+                }
+            })
+        })
+
+        return (
+            <div className={`cluster-items`}>
+                <div className={'cluster-body'}>
+                    <div className={'cluster-body-inner'}>
+                        {
+                            _.map(currentGroups, (group) => {
+                                return (
+                                    <div
+                                        key={group.id}
+                                        className="size-m icon_size"
+                                        onClick={() => this.handleClusterItem(group)}
+                                    >
+                                        <div className="react-draggable-handle">
+                                            {group.icon_path ? (
+                                                <img className="react-draggable-handle-icon"
+                                                     src={`${group.icon_path}`}/>
+                                            ) : (
+                                                <div className="react-draggable-handle-title">{group.abbreviation}</div>
+                                            )}
+                                            <span className="user-colour-dot"
+                                                  style={{backgroundColor: group.profile_colour}}></span>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
     handleSaveChanges = async () => {
-        const {
-            dispatch,
-            draggedGroups
-        } = this.props
-        const saveGroups = [...draggedGroups.groups];
-        const response = await api.put(`/groups`, {groups: saveGroups})
+        const {projects, project, dispatch} = this.props
+        const updatedGroupIds = [...projects.updatedGroups];
+
+        // Find the group
+        let selectedGroups = [];
+        _.map(updatedGroupIds, (id) => {
+            const group = _.find(project.groups, (g) => {
+                if (g.id === id) {
+                    return g;
+                }
+            })
+
+            let newGroup = {
+                id: group.id,
+                positionX: group.positionX,
+                positionY: group.positionY
+            }
+
+            selectedGroups.push(newGroup)
+        })
+
+        const response = await api.put(`/groups`, {groups: selectedGroups})
 
         if (!api.error(response)) {
             // Clear dragged group
             dispatch({
-                type:'DRAGGED_GROUP_CLEAR'
-            });
-
+                type: 'CLEAR_UPDATED_GROUP'
+            })
             this.fetchData()
         }
     }
@@ -105,15 +189,19 @@ export default class ProjectWrapper extends React.PureComponent {
     handleClick = (e) => {
         if (this.node) {
             if (!this.node.contains(e.target)) {
-                this.setState({selectedDraggable: 0, selectedGroupCoordinates: {}})
+                this.setState({
+                    selectedDraggable: 0,
+                    selectedGroupCoordinates: {},
+                    selectedCluster: [],
+                    showSelectedClusterItem: null
+                })
             }
         }
     }
 
     getGroupCoordinate = (event, groupId) => {
-
-        const { project, draggedGroups } = this.props;
-        const { selectedGroupCoordinates } = this.state;
+        const {project} = this.props;
+        const {selectedGroupCoordinates} = this.state;
 
         if (!_.isEmpty(selectedGroupCoordinates)) {
             this.setState({selectedGroupCoordinates: {}})
@@ -121,13 +209,6 @@ export default class ProjectWrapper extends React.PureComponent {
             // Stop other event
             event.stopPropagation();
             let selectedGroup = _.find(project.groups, (group) => group.id === groupId)
-
-            _.map(draggedGroups.groups, (updatedCoordinate) => {
-                if (updatedCoordinate.id === selectedGroup.id) {
-                    selectedGroup.positionX = updatedCoordinate.positionX;
-                    selectedGroup.positionY = updatedCoordinate.positionY;
-                }
-            });
 
             if (selectedGroup) {
                 this.setState({
@@ -147,35 +228,62 @@ export default class ProjectWrapper extends React.PureComponent {
             project,
             params,
             container,
-            location,
-            draggedGroups
+            location
         } = this.props
 
         const {
             selectedDraggable,
             selectedGroupCoordinates,
-            progressLabel,
-            actionPositionClass
+            actionPositionClass,
+            selectedCluster,
+            showSelectedClusterItem
         } = this.state
-
-        const groups = fn.getAllSortedItem(project.groups, draggedGroups.groups)
 
         // dont load unless we have the container's dimensions
         if (!container) {
             return null
         }
 
+        let dataSet = [];
+        _.map(project.groups, (group) => {
+            let currGroup = [
+                group.positionX,
+                group.positionY
+            ]
+            dataSet.push(currGroup)
+        })
+        let clusters = []
+        const projectGroupIndexes = project.groups && Object.keys(projects.collection[this.props.params.id].groups)
+        if (dataSet.length > 0) {
+            let dataScan = new clustering.DBSCAN()
+            clusters = dataScan.run(dataSet, 2)
+        }
+
         return (
-            <div className="gridwrapper-inner-" ref={node => this.node = node}>
+            <div ref={node => this.node = node}>
                 <ContentLoader
                     data={projects.collection}
                     isLoading={projects.isLoading}
                 >
-                    {_.map(groups, (item) => {
+                    {_.map(project.groups, (item, i) => {
                         if (item.status < 1) {
                             return
                         }
 
+                        // If it is on cluster, add 'cluster-item' class
+                        let clusterGroup = _.flattenDeep(clusters)
+                        let clusterItemClass = null
+                        let clusterItemShow = null
+                        if (_.includes(clusterGroup, i)) {
+                            clusterItemClass = 'cluster-item'
+                        }
+
+                        // If item selected from cluster then add this class
+                        if (showSelectedClusterItem && showSelectedClusterItem === item.id) {
+                            clusterItemShow = 'cluster-show'
+                        }
+
+                        // does this item show in zoom in view
                         const isShow = fn.isItemShow(item, location);
                         if (!isShow) {
                             return;
@@ -201,6 +309,8 @@ export default class ProjectWrapper extends React.PureComponent {
                                 <div handleid={item.id}
                                      className={
                                          [
+                                             clusterItemClass,
+                                             clusterItemShow,
                                              `size-${item.icon_size}`,
                                              (selectedDraggable && selectedDraggable !== item.id ? 'disabled' : ''),
                                              (selectedDraggable === item.id ? 'is-selected' : ''),
@@ -258,11 +368,78 @@ export default class ProjectWrapper extends React.PureComponent {
                         )
                     })
                     }
+
+                    {_.map(clusters, (cluster, i) => {
+                            const clusterIds = _.map(cluster, (index) =>
+                                (projects.collection[this.props.params.id].groups[projectGroupIndexes[index]] || {}).id)
+
+                            // get first group for cluster icon
+                            let group = _.find(project.groups, (group) => {
+                                return group.id === clusterIds[0]
+                            })
+
+                            if (showSelectedClusterItem && clusterIds.includes(showSelectedClusterItem)) {
+                                return;
+                            }
+
+                            const isShow = fn.isItemShow(group, location);
+                            if (!isShow) {
+                                return;
+                            }
+                            const position = fn.getPosition(group, location);
+
+                            return (
+                                <Draggable
+                                    key={group.id}
+                                    axis="none"
+                                    handle=".react-draggable-handle"
+                                    defaultPosition={{
+                                        x: position.positionX,
+                                        y: position.positionY
+                                    }}
+                                    grid={[10, 10]}
+                                    scale={1}
+                                    bounds=".gridwrapper-inner-section-wrapper"
+                                    onStop={this.onClusterEventHandler}
+                                >
+
+                                    <div handleid={clusterIds}
+                                         className={
+                                             [
+                                                 `size-${group.icon_size}`,
+                                                 (selectedDraggable && selectedDraggable !== group.id ? 'disabled' : ''),
+                                                 (selectedDraggable === group.id ? 'is-selected' : ''),
+                                                 group
+                                             ]
+                                         }
+                                    >
+                                        <div className="react-draggable-handle">
+                                            {group.icon_path ? (
+                                                <img className="react-draggable-handle-icon"
+                                                     src={`${group.icon_path}`}/>
+                                            ) : (
+                                                <div className="react-draggable-handle-title">CTI</div>
+                                            )}
+                                            <span className="user-colour-dot"
+                                                  style={{backgroundColor: group.profile_colour}}></span>
+                                        </div>
+                                        <span className="react-draggable-title">Cluster</span>
+
+                                        {_.join(selectedCluster, ',') === _.join(clusterIds, ',') &&
+                                            this.renderCurrentClusterItems(clusterIds)
+                                        }
+                                    </div>
+                                </Draggable>
+                            )
+                        }
+                    )}
+
                     {this.props.children}
 
-                    {selectedGroupCoordinates.coordinates && !fn.isZoom(location) ? <Coordinate group={selectedGroupCoordinates} {...this.props}/> : ''}
+                    {selectedGroupCoordinates.coordinates && !fn.isZoom(location) ?
+                        <Coordinate group={selectedGroupCoordinates} {...this.props}/> : ''}
 
-                    {draggedGroups.updatedGroup &&
+                    {projects.updatedGroups.length > 0 &&
                     <React.Fragment>
                         <button className="button gridwrapper-save"
                                 onClick={this.handleSaveChanges}>Save Changes

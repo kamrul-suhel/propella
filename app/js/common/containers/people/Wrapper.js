@@ -60,7 +60,8 @@ export default class PeopleWrapper extends React.PureComponent {
             dispatch,
             location,
             group,
-            draggedPeople
+            draggedPeople,
+            params
         } = this.props
 
         // find the id we're moving
@@ -82,27 +83,46 @@ export default class PeopleWrapper extends React.PureComponent {
             _.remove(selectedPeople, (currPeople)=> currPeople.id === people.id)
             people.positionX = position.positionX
             people.positionY = position.positionY
-            selectedPeople.push(people);
+
             dispatch({
-                type:'DRAGGED_PEOPLE_UPDATE',
-                payload:selectedPeople
+                type:'UPDATE_DRAGGED_PEOPLE',
+                payload:{
+                    groupId: params.groupId,
+                    people
+                }
             })
         }
     }
 
     handleSaveChanges = async () => {
         const {
+            groups,
+            group,
             dispatch,
-            draggedPeople
         } = this.props
 
-        const savePeople = draggedPeople.people
+        const draggedPeopleIds = [...groups.updatedPeople];
+        let draggedPeople  = [];
+        _.map(draggedPeopleIds, (id) => {
+            const people = _.find(group.people, (p) => {
+                if(p.id === id){
+                    return p;
+                }
+            })
 
-        const response = await api.put(`/people`, {people: savePeople})
+            let updatedPeople = {
+                id: people.id,
+                positionX: people.positionX,
+                positionY: people.positionY
+            }
+
+            draggedPeople.push(updatedPeople)
+        })
+
+        const response = await api.put(`/people`, {people: draggedPeople})
         if (!api.error(response)) {
-            // if success full remove from pending updates
             dispatch({
-                type:'DRAGGED_PEOPLE_CLEAR'
+                type:'CLEAR_DRAGGED_PEOPLE'
             });
 
             this.fetchData()
@@ -189,7 +209,8 @@ export default class PeopleWrapper extends React.PureComponent {
             container,
             people,
             location,
-            draggedPeople
+            draggedPeople,
+            groups
         } = this.props
 
         const {
@@ -228,7 +249,7 @@ export default class PeopleWrapper extends React.PureComponent {
                     })}
                 </ul>
 
-                { draggedPeople.draggedPeople &&
+                { groups.updatedPeople && groups.updatedPeople.length > 0 &&
                     <button className="button gridwrapper-save"
                             onClick={this.handleSaveChanges}>Save Changes
                     </button>

@@ -66,6 +66,7 @@ class UserController extends PropellaBaseController
             'display_name' => $this->request->authDisplayName,
             'projectManagerId' => $this->request->projectManagerId,
             'isPM' => $this->request->isPM,
+            'limit' => $this->request->project_limit
         );
         return response()->json($user);
     }

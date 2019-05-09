@@ -39,7 +39,7 @@ class ProjectController extends PropellaBaseController
             ])->get()
                 ->count();
 
-            if ($projects > $userLimit) {
+            if ($projects >= $userLimit) {
                 return response()->json('User rich there limit to create project.', 406);
             }
         }
@@ -139,6 +139,7 @@ class ProjectController extends PropellaBaseController
                 $project->archives = $newArchives;
             }
         }
+
         return response()->json($projects);
     }
 

@@ -4159,7 +4159,7 @@ li.rc-time-picker-panel-select-option-disabled:hover {
       align-items: center;
       justify-content: center;
       font-size: 11px;
-      padding: 0px 1px 15px 1px;
+      padding: 0 1px 15px 1px;
       font-weight: 500; }
       .gridwrapper .gridwrapper-inner .react-draggable .react-draggable-handle {
         width: 100%;
@@ -4286,6 +4286,17 @@ li.rc-time-picker-panel-select-option-disabled:hover {
         .gridwrapper .gridwrapper-inner .react-draggable.size-s .button-round.fourth {
           top: -12px;
           left: 55px; }
+        .gridwrapper .gridwrapper-inner .react-draggable.size-s.trajectory-top-right .react-draggable-handle:before {
+          right: -4px; }
+        .gridwrapper .gridwrapper-inner .react-draggable.size-s.trajectory-bottom-right .react-draggable-handle:before {
+          bottom: -4px; }
+        .gridwrapper .gridwrapper-inner .react-draggable.size-s.trajectory-bottom-left .react-draggable-handle:before {
+          bottom: -4px;
+          left: -4px; }
+        .gridwrapper .gridwrapper-inner .react-draggable.size-s.trajectory-top-left .react-draggable-handle:before {
+          bottom: 0;
+          left: -7px;
+          transform: rotate(-6deg); }
       .gridwrapper .gridwrapper-inner .react-draggable.is-selected {
         background-image: url(../images/marker-medium-black.svg) !important;
         z-index: 1; }
@@ -5359,7 +5370,12 @@ li.rc-time-picker-panel-select-option-disabled:hover {
 
 .project .page-header {
   min-height: 100px;
-  padding-bottom: 5px; }
+  padding-bottom: 5px;
+  position: relative; }
+  .project .page-header .remain-project {
+    position: absolute;
+    right: 0;
+    top: 8px; }
 
 .project .page-title {
   font-size: 38px;
@@ -5518,8 +5534,7 @@ body {
   letter-spacing: -0.25px; }
 
 #app {
-  margin-top: 40px;
-  height: calc(100vh - 40px); }
+  margin-top: 40px; }
 
 * {
   box-sizing: border-box; }

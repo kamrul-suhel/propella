@@ -6,7 +6,7 @@ import alert from "./alert";
 import me from "./me";
 import popup from "./popup";
 import { menu } from "./menu";
-import { project, projectUser, dragedGroup } from "app/containers/project/reducer";
+import { project, projectUser } from "app/containers/project/reducer";
 import group from "app/containers/group/reducer";
 import { draggedOrganisations } from "app/containers/group/reducer";
 import competitor from "app/containers/competitor/reducer";
@@ -25,7 +25,6 @@ const appReducer = combineReducers({
   people: people,
   peopleType: peopleType,
   group: group,
-  draggedGroup: dragedGroup,
   draggedOrganisations,
   draggedPeople,
   projectUser: projectUser,

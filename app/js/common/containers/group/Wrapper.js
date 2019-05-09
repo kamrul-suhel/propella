@@ -20,8 +20,7 @@ import {ContentLoader} from '@xanda/react-components';
         groups: getGroups(state),
         group: getGroup(state, ownProps.params.groupId),
         projects: getProjects(state),
-        project: getProject(state, ownProps.params.id),
-        draggedOrganisations: state.draggedOrganisations
+        project: getProject(state, ownProps.params.id)
     };
 })
 export default class GroupWrapper extends React.PureComponent {
@@ -67,8 +66,8 @@ export default class GroupWrapper extends React.PureComponent {
         const {
             location,
             group,
-            draggedOrganisations,
-            dispatch
+            dispatch,
+            params
         } = this.props
 
         // find the id we're moving
@@ -78,21 +77,21 @@ export default class GroupWrapper extends React.PureComponent {
             const actionPositionClass = fn.getDraggableActionClass({positionX: data.x, positionY: data.y})
             this.setState({'selectedDraggable': organisationId, actionPositionClass: actionPositionClass})
         } else {
+            // find the organisation
             let organisation = _.find(group.organisations, (organisation)=>{
                 return organisation.id === organisationId
             })
             const position = fn.getPositionForSave(data, location, organisation.icon_size)
 
             // put dragged item into store
-            let selectedOrganisations =  [...draggedOrganisations.organisations]
-
-            _.remove(selectedOrganisations, (curOrganisation)=> curOrganisation.id === organisation.id)
             organisation.positionX = position.positionX
             organisation.positionY = position.positionY
-            selectedOrganisations.push(organisation);
             dispatch({
                 type:'DRAGGED_ORGANISATION_UPDATE',
-                payload:selectedOrganisations
+                payload:{
+                    groupId: params.groupId,
+                    organisation: organisation
+                }
             })
         }
     }
@@ -100,17 +99,33 @@ export default class GroupWrapper extends React.PureComponent {
     handleSaveChanges = async () => {
         const {
             dispatch,
-            draggedOrganisations
+            groups,
+            group
         } = this.props
 
-        const saveOrganisations = [...draggedOrganisations.organisations]
+        const updatedOrganisationIds = [...groups.updatedOrganisations];
+        let selectedOrganisations  = [];
+        _.map(updatedOrganisationIds, (id) => {
+            const organisation = _.find(group.organisations, (o) => {
+                if(o.id === id){
+                    return o;
+                }
+            })
 
-        const response = await api.put(`/organisations`, {organisations: saveOrganisations})
+            let newOrganisation = {
+                id: organisation.id,
+                positionX: organisation.positionX,
+                positionY: organisation.positionY
+            }
+
+            selectedOrganisations.push(newOrganisation)
+        })
+
+        const response = await api.put(`/organisations`, {organisations: selectedOrganisations})
         if (!api.error(response)) {
-
             this.fetchData();
 
-            // Clear dragged group
+            // Clear dragged organisation
             dispatch({
                 type:'DRAGGED_ORGANISATION_CLEAR'
             });
@@ -122,7 +137,7 @@ export default class GroupWrapper extends React.PureComponent {
             selectedOrganisation
         } = this.state
 
-        const { draggedOrganisations } = this.props
+        const { group } = this.props
 
         if (!_.isEmpty(selectedOrganisation)) {
             this.setState({selectedOrganisation: {}})
@@ -132,7 +147,7 @@ export default class GroupWrapper extends React.PureComponent {
             // Get the data from server
             const data = await api.get('organisations/' + organisationId);
             let selectedOrganisation = {...data.data};
-            _.map(draggedOrganisations.organisations, (updatedCoordinate) => {
+            _.map(group.organisations, (updatedCoordinate) => {
                 if (updatedCoordinate.id === selectedOrganisation.id) {
                     selectedOrganisation.positionX = updatedCoordinate.positionX;
                     selectedOrganisation.positionY = updatedCoordinate.positionY;
@@ -194,8 +209,7 @@ export default class GroupWrapper extends React.PureComponent {
             group,
             params,
             container,
-            location,
-            draggedOrganisations
+            location
         } = this.props
         const {
             selectedDraggable,
@@ -204,8 +218,6 @@ export default class GroupWrapper extends React.PureComponent {
             actionPositionClass,
 
         } = this.state
-
-        const organisations = fn.getAllSortedItem(group.organisations, draggedOrganisations.organisations);
 
         // dont load unless we have the container's dimensions
         if (!container) {
@@ -248,7 +260,7 @@ export default class GroupWrapper extends React.PureComponent {
                         )
                     })}
 
-                    {_.map(organisations, (item) => {
+                    {_.map(group.organisations, (item) => {
                         if (item.status < 1) {
                             return
                         }
@@ -340,7 +352,7 @@ export default class GroupWrapper extends React.PureComponent {
 
                     {selectedOrganisation.coordinates && !fn.isZoom(location) ? <Coordinate {...this.props} group={selectedOrganisation}/> : ''}
 
-                    { draggedOrganisations.updatedOrganisation &&
+                    { groups.updatedOrganisations && groups.updatedOrganisations.length > 0 &&
                         <button className="button gridwrapper-save"
                                 onClick={this.handleSaveChanges}>Save Changes
                         </button>

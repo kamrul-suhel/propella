@@ -7,7 +7,8 @@ const defaultState = {
     isLoading: true,
     misc: {},
     pager: {},
-    showCharacters: fn.getCookie('showCharacters') == 1 ? true : false
+    showCharacters: fn.getCookie('showCharacters') == 1 ? true : false,
+    updatedPeople:[]
 };
 
 export function people(state = defaultState, action) {
@@ -41,6 +42,7 @@ export function people(state = defaultState, action) {
                 showCharacters
             };
         }
+
         default: {
             return state;
         }

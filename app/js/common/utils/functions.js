@@ -949,6 +949,7 @@ export default {
 
     /**
      *
+     *
      * @param items
      * @param draggedItems
      * @returns {Array}

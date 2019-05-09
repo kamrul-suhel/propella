@@ -455,6 +455,15 @@
                     }
                 }
             }
+
+            // Cluster item style
+            &.cluster-item{
+                display:none;
+
+                &.cluster-show{
+                    display:block;
+                }
+            }
         }
 
         .react-draggable.size-s {
@@ -753,6 +762,41 @@
             height:95px;
         }
     }
+
+    // Styling cluster item
+    .cluster-items{
+        position:relative;
+        top:-30px;
+
+        .cluster-body{
+            position:absolute;
+            width:400px;
+            height:auto;
+            top:0;
+            left:10px;
+
+            .cluster-body-inner{
+                display:flex;
+
+                .size-m{
+                    .react-draggable-handle{
+                        .user-colour-dot{
+                            bottom: 12px;
+                            left: 24px;
+                        }
+                    }
+                }
+            }
+        }
+        .size-m{
+            height: 66px;
+            width: 55px;
+            background-image: url(../images/marker-medium.svg);
+            font-size: 14px;
+            margin-right:10px;
+        }
+    }
+
 }
 
 .competitor{

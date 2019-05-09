@@ -11,7 +11,7 @@ export default class Popup extends React.PureComponent {
         const {title, closePath, beforeTitle, afterTitle, buttons, additionalClass} = this.props
 
         return (
-            <div className={`popup${(additionalClass ? ' '+ additionalClass : '')}`}>
+            <div id="popup" className={`popup${(additionalClass ? ' '+ additionalClass : '')}`}>
                 <div className="popup-header">
                     {beforeTitle &&
                     <div className="popup-header-tab">{beforeTitle}</div>
