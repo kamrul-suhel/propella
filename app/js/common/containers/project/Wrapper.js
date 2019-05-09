@@ -9,8 +9,6 @@ import {makeGetProject, makeGetProjects} from 'app/containers/project/selector';
 import Coordinate from 'app/components/coordinate'
 import {ContentLoader} from '@xanda/react-components';
 
-import clustering from 'density-clustering'
-
 @connect((state, ownProps) => {
     const getProjects = makeGetProjects();
     const getProject = makeGetProject();
