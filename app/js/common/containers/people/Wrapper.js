@@ -28,7 +28,9 @@ export default class PeopleWrapper extends React.PureComponent {
         this.state = {
             selectedDraggable: 0,
             selectedPeople: {},
-            actionPositionClass: ''
+            actionPositionClass: '',
+            showSelectedClusterItem: null,
+            selectedCluster: []
         }
     }
 
@@ -78,15 +80,15 @@ export default class PeopleWrapper extends React.PureComponent {
             const position = fn.getPositionForSave(data, location, people.icon_size)
 
             // put dragged item into store
-            let selectedPeople =  [...draggedPeople.people]
+            let selectedPeople = [...draggedPeople.people]
 
-            _.remove(selectedPeople, (currPeople)=> currPeople.id === people.id)
+            _.remove(selectedPeople, (currPeople) => currPeople.id === people.id)
             people.positionX = position.positionX
             people.positionY = position.positionY
 
             dispatch({
-                type:'UPDATE_DRAGGED_PEOPLE',
-                payload:{
+                type: 'UPDATE_DRAGGED_PEOPLE',
+                payload: {
                     groupId: params.groupId,
                     people
                 }
@@ -102,10 +104,10 @@ export default class PeopleWrapper extends React.PureComponent {
         } = this.props
 
         const draggedPeopleIds = [...groups.updatedPeople];
-        let draggedPeople  = [];
+        let draggedPeople = [];
         _.map(draggedPeopleIds, (id) => {
             const people = _.find(group.people, (p) => {
-                if(p.id === id){
+                if (p.id === id) {
                     return p;
                 }
             })
@@ -122,17 +124,87 @@ export default class PeopleWrapper extends React.PureComponent {
         const response = await api.put(`/people`, {people: draggedPeople})
         if (!api.error(response)) {
             dispatch({
-                type:'CLEAR_DRAGGED_PEOPLE'
+                type: 'CLEAR_DRAGGED_PEOPLE'
             });
 
             this.fetchData()
         }
     }
 
+    onHandleClusterEvent = (event, data) => {
+        const {params} = this.props
+        // find the id we're moving
+        const clusterIds = _.split(_.find(data.node.attributes, {name: 'handleid'}).value, ',')
+
+        this.setState({
+            selectedCluster: clusterIds,
+            showSelectedClusterItem: null
+        })
+    }
+
+    handleClusterItem = (people) => {
+        this.setState({
+            selectedCluster: [],
+            showSelectedClusterItem: people.id,
+            selectedDraggable: people.id
+        })
+    }
+
+    renderCurrentClusterItems = (ids) => {
+        const {group} = this.props
+
+        //get all groups
+        let currentPeople = [];
+        _.map(ids, (id) => {
+            _.map(group.people, (people) => {
+                if (parseInt(id) === people.id) {
+                    currentPeople.push(people)
+                }
+            })
+        })
+
+        return (
+            <div className={`cluster-items`}>
+                <div className={'cluster-body'}>
+                    <div className={'cluster-body-inner'}>
+                        {
+                            _.map(currentPeople, (people) => {
+                                return (
+                                    <div
+                                        key={people.id}
+                                        className="size-m icon_size"
+                                        onClick={() => this.handleClusterItem(people)}
+                                    >
+                                        <div className="react-draggable-handle">
+                                            {people.icon_path ? (
+                                                <img className="react-draggable-handle-icon"
+                                                     src={`${people.icon_path}`}/>
+                                            ) : (
+                                                <div
+                                                    className="react-draggable-handle-title">{people.abbreviation}</div>
+                                            )}
+                                            <span className="user-colour-dot"
+                                                  style={{backgroundColor: people.profile_colour}}></span>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
     handleClick = (e) => {
         if (this.node) {
             if (!this.node.contains(e.target)) {
-                this.setState({selectedDraggable: 0, selectedPeople: {}})
+                this.setState({
+                    selectedDraggable: 0,
+                    selectedPeople: {},
+                    selectedCluster: [],
+                    showSelectedClusterItem: null
+                })
             }
         }
     }
@@ -180,7 +252,7 @@ export default class PeopleWrapper extends React.PureComponent {
         const {params, draggedPeople} = this.props
         const newTrajectory = fn.getTrajectory(people.trajectory)
         _.map(draggedPeople.people, (draggedPeople) => {
-            if(draggedPeople.id === people.id){
+            if (draggedPeople.id === people.id) {
                 people = {...draggedPeople}
             }
         })
@@ -216,7 +288,9 @@ export default class PeopleWrapper extends React.PureComponent {
         const {
             selectedDraggable,
             selectedPeople,
-            actionPositionClass
+            actionPositionClass,
+            showSelectedClusterItem,
+            selectedCluster
         } = this.state
 
         const sortedPeople = fn.getAllSortedItem(group.people, draggedPeople.people)
@@ -224,6 +298,10 @@ export default class PeopleWrapper extends React.PureComponent {
         if (!container) {
             return null
         }
+
+        const clusters = fn.getClusterDataSet(group.people)
+        const peopleIndexes = groups.collection[params.groupId] && Object.keys(groups.collection[params.groupId].people)
+
 
         // get the id's of the active organisations
         const activeOrganisationIds = _.map(group.organisations, (item) => {
@@ -249,13 +327,13 @@ export default class PeopleWrapper extends React.PureComponent {
                     })}
                 </ul>
 
-                { groups.updatedPeople && groups.updatedPeople.length > 0 &&
-                    <button className="button gridwrapper-save"
-                            onClick={this.handleSaveChanges}>Save Changes
-                    </button>
+                {groups.updatedPeople && groups.updatedPeople.length > 0 &&
+                <button className="button gridwrapper-save"
+                        onClick={this.handleSaveChanges}>Save Changes
+                </button>
                 }
 
-                {_.map(sortedPeople, (item) => {
+                {_.map(sortedPeople, (item, i) => {
                     // only display people belonging to an active organisation
                     if (item.status < 1 || !_.includes(activeOrganisationIds, item.organisation_id)) {
                         return
@@ -266,6 +344,15 @@ export default class PeopleWrapper extends React.PureComponent {
                     }
                     const position = fn.getPosition(item, location);
                     const trajectoryClass = fn.getTrajectoryClass(item.trajectory);
+
+                    // If it is on cluster, add 'cluster-item' class
+                    let clusterItemClass = fn.getClusterItemClass(clusters, i)
+                    let clusterItemShow = null
+
+                    // If item selected from cluster then add this class
+                    if (showSelectedClusterItem && showSelectedClusterItem === item.id) {
+                        clusterItemShow = 'cluster-show'
+                    }
 
                     return (
                         <Draggable
@@ -284,6 +371,8 @@ export default class PeopleWrapper extends React.PureComponent {
                             <div handleid={item.id}
                                  className={
                                      [
+                                         clusterItemClass,
+                                         clusterItemShow,
                                          `size-m`,
                                          `trajectory-${trajectoryClass}`,
                                          (selectedDraggable && selectedDraggable !== item.id ? 'disabled' : ''),
@@ -344,9 +433,76 @@ export default class PeopleWrapper extends React.PureComponent {
                     )
                 })
                 }
+
+                {_.map(clusters, (cluster, i) => {
+                        const clusterIds = _.map(cluster, (index) =>
+                            (groups.collection[params.groupId].people[peopleIndexes[index]] || {}).id)
+
+                        // get first group for cluster icon
+                        let people = _.find(group.people, (people) => {
+                            return people.id === clusterIds[0]
+                        })
+
+                        if (showSelectedClusterItem && clusterIds.includes(showSelectedClusterItem)) {
+                            return;
+                        }
+
+                        const isShow = fn.isItemShow(people, location);
+                        if (!isShow) {
+                            return;
+                        }
+                        const position = fn.getPosition(people, location);
+
+                        return (
+                            <Draggable
+                                key={people.id}
+                                axis="none"
+                                handle=".react-draggable-handle"
+                                defaultPosition={{
+                                    x: position.positionX,
+                                    y: position.positionY
+                                }}
+                                grid={[10, 10]}
+                                scale={1}
+                                bounds=".gridwrapper-inner-section-wrapper"
+                                onStop={this.onHandleClusterEvent}
+                            >
+
+                                <div handleid={clusterIds}
+                                     className={
+                                         [
+                                             `size-${people.icon_size}`,
+                                             (selectedDraggable && selectedDraggable !== people.id ? 'disabled' : ''),
+                                             (selectedDraggable === people.id ? 'is-selected' : ''),
+                                             people
+                                         ]
+                                     }
+                                >
+                                    <div className="react-draggable-handle">
+                                        {people.icon_path ? (
+                                            <img className="react-draggable-handle-icon"
+                                                 src={`${people.icon_path}`}/>
+                                        ) : (
+                                            <div className="react-draggable-handle-title">CTI</div>
+                                        )}
+                                        <span className="user-colour-dot"
+                                              style={{backgroundColor: people.profile_colour}}></span>
+                                    </div>
+                                    <span className="react-draggable-title">Cluster</span>
+
+                                    {_.join(selectedCluster, ',') === _.join(clusterIds, ',') &&
+                                    this.renderCurrentClusterItems(clusterIds)
+                                    }
+                                </div>
+                            </Draggable>
+                        )
+                    }
+                )}
+
                 {this.props.children}
 
-                {selectedPeople.coordinates && !fn.isZoom(location) ? <Coordinate {...this.props} group={selectedPeople}/> : ''}
+                {selectedPeople.coordinates && !fn.isZoom(location) ?
+                    <Coordinate {...this.props} group={selectedPeople}/> : ''}
             </div>
         )
     }
