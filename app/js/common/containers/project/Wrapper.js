@@ -244,20 +244,8 @@ export default class ProjectWrapper extends React.PureComponent {
             return null
         }
 
-        let dataSet = [];
-        _.map(project.groups, (group) => {
-            let currGroup = [
-                group.positionX,
-                group.positionY
-            ]
-            dataSet.push(currGroup)
-        })
-        let clusters = []
         const projectGroupIndexes = project.groups && Object.keys(projects.collection[this.props.params.id].groups)
-        if (dataSet.length > 0) {
-            let dataScan = new clustering.DBSCAN()
-            clusters = dataScan.run(dataSet, 2)
-        }
+        const clusters = fn.getClusterDataSet(project.groups)
 
         return (
             <div ref={node => this.node = node}>
@@ -271,12 +259,8 @@ export default class ProjectWrapper extends React.PureComponent {
                         }
 
                         // If it is on cluster, add 'cluster-item' class
-                        let clusterGroup = _.flattenDeep(clusters)
-                        let clusterItemClass = null
+                        let clusterItemClass = fn.getClusterItemClass(clusters, i)
                         let clusterItemShow = null
-                        if (_.includes(clusterGroup, i)) {
-                            clusterItemClass = 'cluster-item'
-                        }
 
                         // If item selected from cluster then add this class
                         if (showSelectedClusterItem && showSelectedClusterItem === item.id) {

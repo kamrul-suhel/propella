@@ -51,7 +51,7 @@ export default class GridWrapper extends React.PureComponent {
                 const replace = `/zoom`
                 url = _.replace(url, replace, '');
                 // zoom out
-                url = url+'?zoomOut=true'
+                url = url + '?zoomOut=true'
                 router.push(url);
             } else {
                 // Zoom in
@@ -66,12 +66,12 @@ export default class GridWrapper extends React.PureComponent {
         const {location, router} = this.props;
         const zoomLabel = fn.getZoomLabel(event);
         let url = location.pathname;
+
         if (fn.isZoom(location)) {
             const replace = `/zoom`
             url = _.replace(url, replace, '');
-            console.log("Double click happen: ", url)
             // zoom out
-            url = url+'?zoomOut=true'
+            url = url + '?zoomOut=true'
             router.push(url);
         } else {
             // Zoom in

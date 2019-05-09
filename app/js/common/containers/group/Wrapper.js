@@ -31,7 +31,9 @@ export default class GroupWrapper extends React.PureComponent {
             selectedDraggable: 0,
             selectedCompetitor: 0,
             selectedOrganisation: {},
-            actionPositionClass:''
+            actionPositionClass:'',
+            showSelectedClusterItem: null,
+            selectedCluster: []
         }
     }
 
@@ -132,6 +134,70 @@ export default class GroupWrapper extends React.PureComponent {
         }
     }
 
+    onHandleClusterEvent = (event, data) => {
+        const {params} = this.props
+        // find the id we're moving
+        const clusterIds = _.split(_.find(data.node.attributes, {name: 'handleid'}).value, ',')
+
+        this.setState({
+            selectedCluster: clusterIds,
+            showSelectedClusterItem: null
+        })
+    }
+
+    handleClusterItem = (organisation) => {
+        this.setState({
+            selectedCluster: [],
+            showSelectedClusterItem: organisation.id,
+            selectedDraggable: organisation.id
+        })
+    }
+
+    renderCurrentClusterItems = (ids) => {
+        const {group} = this.props
+
+        //get all groups
+        let currentOrganisations = [];
+        _.map(ids, (id) => {
+            _.map(group.organisations, (organisation) => {
+                if (parseInt(id) === organisation.id) {
+                    currentOrganisations.push(organisation)
+                }
+            })
+        })
+
+        return (
+            <div className={`cluster-items`}>
+                <div className={'cluster-body'}>
+                    <div className={'cluster-body-inner'}>
+                        {
+                            _.map(currentOrganisations, (organisation) => {
+                                return (
+                                    <div
+                                        key={organisation.id}
+                                        className="size-m icon_size"
+                                        onClick={() => this.handleClusterItem(organisation)}
+                                    >
+                                        <div className="react-draggable-handle">
+                                            {organisation.icon_path ? (
+                                                <img className="react-draggable-handle-icon"
+                                                     src={`${organisation.icon_path}`}/>
+                                            ) : (
+                                                <div className="react-draggable-handle-title">{organisation.abbreviation}</div>
+                                            )}
+                                            <span className="user-colour-dot"
+                                                  style={{backgroundColor: organisation.profile_colour}}></span>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
     getCoordinate = async (event, organisationId) => {
         const {
             selectedOrganisation
@@ -165,26 +231,21 @@ export default class GroupWrapper extends React.PureComponent {
     handleClick = (e) => {
         if (this.node) {
             if (!this.node.contains(e.target)) {
-                this.setState({selectedDraggable: 0, selectedOrganisation: {}, selectedCompetitor: 0})
+                this.setState({
+                    selectedDraggable: 0,
+                    selectedOrganisation: {},
+                    selectedCompetitor: 0,
+                    selectedCluster: [],
+                    showSelectedClusterItem: null
+                })
             }
         }
     }
 
     handleSetTrajectory = async (organisation) => {
-        const {params, draggedOrganisations} = this.props
+        const {params} = this.props
         const newTrajectory = fn.getTrajectory(organisation.trajectory);
-        _.map(draggedOrganisations.organisations, (draggedOrganisation) => {
-            if(draggedOrganisation.id === organisation.id){
-                organisation = {...draggedOrganisation}
-            }
-        })
         const response = await api.put(`organisations/${organisation.id}`, {trajectory: newTrajectory});
-
-        this.props.dispatch(
-            {
-                type: 'DRAGGED_ORGANISATION_CLEAR'
-            }
-        )
 
         this.props.dispatch(
             {
@@ -211,18 +272,23 @@ export default class GroupWrapper extends React.PureComponent {
             container,
             location
         } = this.props
+
         const {
             selectedDraggable,
             selectedOrganisation,
             selectedCompetitor,
             actionPositionClass,
-
+            showSelectedClusterItem,
+            selectedCluster
         } = this.state
 
-        // dont load unless we have the container's dimensions
+        // don't load unless we have the container's dimensions
         if (!container) {
             return null
         }
+
+        const clusters = fn.getClusterDataSet(group.organisations)
+        const organisationIndexes = groups.collection[params.groupId] && Object.keys(groups.collection[params.groupId].organisations)
 
         return (
             <div ref={node => this.node = node}>
@@ -260,7 +326,7 @@ export default class GroupWrapper extends React.PureComponent {
                         )
                     })}
 
-                    {_.map(group.organisations, (item) => {
+                    {_.map(group.organisations, (item, i) => {
                         if (item.status < 1) {
                             return
                         }
@@ -268,6 +334,15 @@ export default class GroupWrapper extends React.PureComponent {
                         const isShow = fn.isItemShow(item, location);
                         if (!isShow) {
                             return;
+                        }
+
+                        // If it is on cluster, add 'cluster-item' class
+                        let clusterItemClass = fn.getClusterItemClass(clusters, i)
+                        let clusterItemShow = null
+
+                        // If item selected from cluster then add this class
+                        if (showSelectedClusterItem && showSelectedClusterItem === item.id) {
+                            clusterItemShow = 'cluster-show'
                         }
 
                         const position = fn.getPosition(item, location);
@@ -290,6 +365,8 @@ export default class GroupWrapper extends React.PureComponent {
                                 <div handleid={item.id}
                                      className={
                                          [
+                                             clusterItemClass,
+                                             clusterItemShow,
                                              `size-${item.icon_size}`,
                                              `trajectory-${trajectoryClass}`,
                                              (selectedDraggable && selectedDraggable !== item.id ? 'disabled' : ''),
@@ -347,6 +424,71 @@ export default class GroupWrapper extends React.PureComponent {
                         )
                     })
                     }
+
+                    {_.map(clusters, (cluster, i) => {
+                            const clusterIds = _.map(cluster, (index) =>
+                                (groups.collection[params.groupId].organisations[organisationIndexes[index]] || {}).id)
+
+                            // get first group for cluster icon
+                            let organisation = _.find(group.organisations, (organisation) => {
+                                return organisation.id === clusterIds[0]
+                            })
+
+                            if (showSelectedClusterItem && clusterIds.includes(showSelectedClusterItem)) {
+                                return;
+                            }
+
+                            const isShow = fn.isItemShow(organisation, location);
+                            if (!isShow) {
+                                return;
+                            }
+                            const position = fn.getPosition(organisation, location);
+
+                            return (
+                                <Draggable
+                                    key={organisation.id}
+                                    axis="none"
+                                    handle=".react-draggable-handle"
+                                    defaultPosition={{
+                                        x: position.positionX,
+                                        y: position.positionY
+                                    }}
+                                    grid={[10, 10]}
+                                    scale={1}
+                                    bounds=".gridwrapper-inner-section-wrapper"
+                                    onStop={this.onHandleClusterEvent}
+                                >
+
+                                    <div handleid={clusterIds}
+                                         className={
+                                             [
+                                                 `size-${organisation.icon_size}`,
+                                                 (selectedDraggable && selectedDraggable !== organisation.id ? 'disabled' : ''),
+                                                 (selectedDraggable === organisation.id ? 'is-selected' : ''),
+                                                 organisation
+                                             ]
+                                         }
+                                    >
+                                        <div className="react-draggable-handle">
+                                            {organisation.icon_path ? (
+                                                <img className="react-draggable-handle-icon"
+                                                     src={`${organisation.icon_path}`}/>
+                                            ) : (
+                                                <div className="react-draggable-handle-title">CTI</div>
+                                            )}
+                                            <span className="user-colour-dot"
+                                                  style={{backgroundColor: organisation.profile_colour}}></span>
+                                        </div>
+                                        <span className="react-draggable-title">Cluster</span>
+
+                                        {_.join(selectedCluster, ',') === _.join(clusterIds, ',') &&
+                                            this.renderCurrentClusterItems(clusterIds)
+                                        }
+                                    </div>
+                                </Draggable>
+                            )
+                        }
+                    )}
 
                     {this.props.children}
 

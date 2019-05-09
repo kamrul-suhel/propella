@@ -6,6 +6,7 @@ import Store from 'app/store'
 import {fetchData, hideAlert, showAlert, storeToken} from 'app/actions'
 import {storageUrl, url} from 'app/constants'
 import {api} from 'app/utils'
+import clustering from "density-clustering";
 
 const cookie = new Cookie()
 
@@ -537,22 +538,6 @@ export default {
         window.print()
     },
 
-    getQuadrant(x, y) {
-        if (x > 50) {
-            if (y > 50) {
-                return 'VIP'
-            } else {
-                return 'STA'
-            }
-        } else {
-            if (y > 50) {
-                return 'UP'
-            } else {
-                return 'NF'
-            }
-        }
-    },
-
     shouldDisplayCharacters() {
         const value = this.getCookie('showCharacters')
         if (value && value == 1) {
@@ -574,7 +559,7 @@ export default {
     },
 
     /**
-     *
+     * Changing the trajectory number
      * @param currentTrajectory
      * @returns {null}
      */
@@ -605,7 +590,7 @@ export default {
     },
 
     /**
-     *
+     * Zoom view it will detect, this item need to show or not
      * @param item
      * @param routeLocation
      * @returns {boolean}
@@ -618,6 +603,7 @@ export default {
         if (zoom === null) {
             return true
         }
+
         switch (zoom) {
             case 'nf':
                 if (positionX <= 50 && positionY <= 50) {
@@ -647,7 +633,7 @@ export default {
     },
 
     /**
-     *
+     * convert positionX, positionY percentage to pixcel
      * @param item
      * @param routeLocation
      * @returns {{positionY: number, positionX: number}}
@@ -768,7 +754,7 @@ export default {
     },
 
     /**
-     *
+     * Convert positionX, positionY pixel to percentage
      * @param item
      * @param routeLocation
      * @returns {{positionY: number, positionX: *}}
@@ -906,7 +892,7 @@ export default {
     },
 
     /**
-     *
+     * convert float to int
      * @param value
      * @returns {number}
      */
@@ -966,5 +952,36 @@ export default {
             result.push(foundItem)
         })
         return result
+    },
+
+    /**
+     *
+      * @param items
+     * @returns {Array}
+     */
+    getClusterDataSet(items){
+        let dataSet = [];
+        let clusters = []
+        _.map(items, (item) => {
+            let currGroup = [
+                item.positionX,
+                item.positionY
+            ]
+            dataSet.push(currGroup)
+        })
+
+        if (dataSet.length > 0) {
+            let dataScan = new clustering.DBSCAN()
+            clusters = dataScan.run(dataSet, 2)
+        }
+        return clusters;
+    },
+
+    getClusterItemClass(clusters, index){
+        let clusterGroup = _.flattenDeep(clusters)
+        if (_.includes(clusterGroup, index)) {
+            return 'cluster-item'
+        }
+        return null;
     }
 }
