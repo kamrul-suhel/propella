@@ -8,13 +8,12 @@ import popup from "./popup";
 import { menu } from "./menu";
 import { project, projectUser } from "app/containers/project/reducer";
 import group from "app/containers/group/reducer";
-import { draggedOrganisations } from "app/containers/group/reducer";
 import competitor from "app/containers/competitor/reducer";
 import {
   organisation,
   organisationType
 } from "app/containers/organisation/reducer";
-import { people, peopleType, draggedPeople } from "app/containers/people/reducer";
+import { people, peopleType } from "app/containers/people/reducer";
 
 const appReducer = combineReducers({
   alert: alert,
@@ -25,8 +24,6 @@ const appReducer = combineReducers({
   people: people,
   peopleType: peopleType,
   group: group,
-  draggedOrganisations,
-  draggedPeople,
   projectUser: projectUser,
   menu: menu,
   me: me,

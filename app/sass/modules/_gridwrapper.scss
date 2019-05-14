@@ -1,950 +1,1126 @@
 .gridwrapper {
-    height: 100%;
-    position: relative;
-    overflow:hidden;
-    .gridwrapper-save {
-		position: absolute;
-		top: 0px;
-		right: -1px;
-		background-color: rgba(255, 255, 255, .9);
-		border: 0px;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+
+  .gridwrapper-save {
+    position: absolute;
+    top: 0px;
+    right: -1px;
+    background-color: rgba(255, 255, 255, .9);
+    border: 0px;
+  }
+
+  .gridwrapper-inner {
+    position: absolute;
+    top: 0;
+    right: 40px;
+    bottom: 40px;
+    left: 40px;
+
+    .gridwrapper-inner-section-wrapper {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: -1;
     }
 
-    .gridwrapper-inner {
-        position: absolute;
-        top: 0;
-        right: 40px;
-        bottom: 40px;
-        left: 40px;
+    .gridwrapper-inner-section {
+      width: 50%;
+      height: 50%;
+      float: left;
+      font-size: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      user-select: none;
+      position: relative;
 
-        .gridwrapper-inner-section-wrapper {
+      &:after {
+        font-family: $icon-family-base;
+        content: "\68";
+        position: absolute;
+        font-size: 12px;
+        color: white;
+      }
+
+      &:nth-child(1) {
+        background: #48b9b9;
+        color: #3bacac;
+
+        &:after {
+          @extend .icon-chevron-top-left:before;
+          top: 12px;
+          left: 12px;
+        }
+      }
+
+      &:nth-child(2) {
+        background: #004b9b;
+        color: #003d8b;
+
+        &:after {
+          @extend .icon-chevron-top-right:before;
+          top: 12px;
+          right: 12px;
+        }
+      }
+
+      &:nth-child(3) {
+        background: #e84f35;
+        color: #e3412a;
+
+        &:after {
+          @extend .icon-chevron-bottom-left:before;
+          bottom: 12px;
+          left: 12px;
+        }
+      }
+
+      &:nth-child(4) {
+        background: #9cd6f0;
+        color: #8dcded;
+
+        &:after {
+          @extend .icon-chevron-bottom-right:before;
+          bottom: 12px;
+          right: 12px;
+        }
+      }
+
+      &.zoom {
+        width: 100%;
+        height: 100%;
+
+        &.light-cyan {
+          background: #48b9b9;
+          color: #3bacac;
+        }
+
+        &.blue {
+          background: #004b9b;
+          color: #003d8b;
+        }
+
+        &.orange {
+          background: #e84f35;
+          color: #e3412a;
+        }
+
+        &.sky-blue {
+          background: #9cd6f0;
+          color: #8dcded;
+        }
+      }
+    }
+
+    .react-draggable {
+      height: 48px;
+      width: 41px;
+      position: absolute;
+      background-size: 100% 100%;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      padding: 0 1px 15px 1px;
+      font-weight: 500;
+
+      .react-draggable-handle {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        position: relative;
+
+        .user-colour-dot {
+          content: "";
+          display: block;
+          width: 6px;
+          height: 6px;
+          position: absolute;
+          border-radius: 50%;
+        }
+
+        img.react-draggable-handle-icon {
+          -webkit-user-drag: none;
+          width: 75%;
+          height: 75%;
+          object-fit: cover;
+          border-radius: 50%;
+        }
+
+        .react-draggable-handle-title {
+          text-transform: uppercase;
+        }
+
+        .person-icon {
+          height: 31px;
+          margin-top: -9px;
+          font-size: 31px;
+        }
+      }
+
+      .react-draggable-title {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 14px;
+        font-weight: 500;
+        color: white;
+        width: 70px;
+        text-align: center;
+      }
+
+      .react-draggable-actions {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 100%;
+        height: 100%;
+        color: white;
+      }
+
+      .button-round {
+        &.second {
+          span {
+            &:before {
+              font-size: 32px;
+            }
+          }
+        }
+
+        &.fourth {
+          span {
+            &:before {
+              color: black;
+            }
+          }
+        }
+      }
+
+      &.size-l {
+        .react-draggable-handle {
+          .user-colour-dot {
+            bottom: 4px;
+            left: 36px;
+          }
+        }
+
+        .button-round {
+          transition: all ease-in-out .3s;
+
+          &.first {
+            top: -10px;
+            left: -75px;
+          }
+
+          &.second {
+            top: -91px;
+            left: -42px;
+          }
+
+          &.third {
+            top: -91px;
+            left: 42px;
+          }
+
+          &.fourth {
+            top: -10px;
+            left: 75px;
+          }
+        }
+      }
+
+      // large, medium, small icon for left & right corner action
+      &.size-l, &.size-m, &.size-s {
+        .action-left {
+          .button-round {
+            &.first {
+              top: -10px;
+              left: -75px;
+            }
+
+            &.second {
+              top: -10px;
+              left: -150px;
+            }
+
+            &.third {
+              top: -10px;
+              left: -225px;
+            }
+
+            &.fourth {
+              top: -10px;
+              left: -300px;
+            }
+          }
+        }
+
+        .action-right {
+          .button-round {
+            &.first {
+              top: -10px;
+              left: 75px;
+            }
+
+            &.second {
+              top: -10px;
+              left: 150px;
+            }
+
+            &.third {
+              top: -10px;
+              left: 225px;
+            }
+
+            &.fourth {
+              top: -10px;
+              left: 300px;
+            }
+          }
+        }
+      }
+
+      // End large icon left corner position
+      &.size-m {
+        padding: 1px 1px 15px 1px;
+
+        .react-draggable-handle {
+          .user-colour-dot {
+            bottom: 4px;
+            left: 27px;
+          }
+        }
+
+        .button-round {
+          &.first {
+            top: -10px;
+            left: -65px;
+          }
+
+          &.second {
+            top: -78px;
+            left: -35px;
+          }
+
+          &.third {
+            top: -78px;
+            left: 35px;
+          }
+
+          &.fourth {
+            top: -10px;
+            left: 65px;
+          }
+        }
+      }
+
+      &.size-s {
+        padding: 0px 2px 11px 2px;
+        background-image: url(../images/marker-medium.svg);
+
+        .react-draggable-handle {
+          .user-colour-dot {
+            bottom: 2px;
+            left: 16px;
+            margin-left: -1px;
+          }
+        }
+
+        .button-round {
+          &.first {
+            top: -12px;
+            left: -55px;
+          }
+
+          &.second {
+            top: -72px;
+            left: -35px;
+          }
+
+          &.third {
+            top: -72px;
+            left: 35px;
+          }
+
+          &.fourth {
+            top: -12px;
+            left: 55px;
+          }
+        }
+
+        &.trajectory-top-right {
+          .react-draggable-handle:before {
+            right: -4px;
+          }
+        }
+
+        &.trajectory-bottom-right {
+          .react-draggable-handle:before {
+            bottom: -4px;
+          }
+        }
+
+        &.trajectory-bottom-left {
+          .react-draggable-handle:before {
+            bottom: -4px;
+            left: -4px;
+          }
+        }
+
+        &.trajectory-top-left {
+          .react-draggable-handle:before {
+            bottom: 0;
+            left: -7px;
+            transform: rotate(-6deg);
+          }
+        }
+      }
+
+      &.is-selected {
+        background-image: url(../images/marker-medium-black.svg) !important;
+        z-index: 1;
+
+        .react-draggable-handle-icon {
+          background-color: white;
+        }
+
+        .react-draggable-handle-title {
+          color: white;
+        }
+
+        .person-abbr {
+          color: white !important;
+        }
+
+        .person-icon {
+          &:before {
+            color: white;
+          }
+        }
+      }
+
+      &.trajectory-top-right {
+        .react-draggable-handle {
+          &:before {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 9px 9px 0;
+            border-color: transparent #ffffff transparent transparent;
+          }
+        }
+      }
+
+      &.trajectory-bottom-left {
+        .react-draggable-handle {
+          &:before {
+            content: "";
+            display: block;
+            position: absolute;
+            bottom: 0;
+            left: -2px;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 9px 0 0 9px;
+            border-color: transparent transparent transparent #ffffff;
+          }
+        }
+      }
+
+      &.trajectory-bottom-right {
+        .react-draggable-handle {
+          &:before {
+            content: "";
+            display: block;
+            position: absolute;
+            bottom: 0px;
+            right: -4px;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 0 9px 9px;
+            border-color: transparent transparent transparent #ffffff;
+            transform: rotate(180deg);
+          }
+        }
+      }
+
+      &.trajectory-top-left {
+        .react-draggable-handle {
+          &:before {
+            content: "";
+            display: block;
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: -1;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 0 9px 9px;
+            border-color: transparent transparent transparent #ffffff;
+          }
         }
+      }
 
-        .gridwrapper-inner-section {
-            width: 50%;
-            height: 50%;
-            float: left;
-            font-size: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            pointer-events: none;
-            user-select: none;
-            position: relative;
+      // Cluster item style
+      &.cluster-item {
+        display: none;
 
-            &:after {
-                font-family: $icon-family-base;
-                content: "\68";
-                position: absolute;
-                font-size: 12px;
-                color: white;
-            }
-
-            &:nth-child(1) {
-                background: #48b9b9;
-                color: #3bacac;
-
-                &:after {
-                    @extend .icon-chevron-top-left:before;
-                    top: 12px;
-                    left: 12px;
-                }
-            }
-
-            &:nth-child(2) {
-                background: #004b9b;
-                color: #003d8b;
-
-                &:after {
-                    @extend .icon-chevron-top-right:before;
-                    top: 12px;
-                    right: 12px;
-                }
-            }
-
-            &:nth-child(3) {
-                background: #e84f35;
-                color: #e3412a;
-
-                &:after {
-                    @extend .icon-chevron-bottom-left:before;
-                    bottom: 12px;
-                    left: 12px;
-                }
-            }
-
-            &:nth-child(4) {
-                background: #9cd6f0;
-                color: #8dcded;
-
-                &:after {
-                    @extend .icon-chevron-bottom-right:before;
-                    bottom: 12px;
-                    right: 12px;
-                }
-            }
-
-            &.zoom{
-                width:100%;
-                height:100%;
-
-                &.light-cyan{
-                    background: #48b9b9;
-                    color: #3bacac;
-                }
-
-                &.blue{
-                    background: #004b9b;
-                    color: #003d8b;
-                }
-
-                &.orange{
-                    background: #e84f35;
-                    color: #e3412a;
-                }
-
-                &.sky-blue{
-                    background: #9cd6f0;
-                    color: #8dcded;
-                }
-            }
+        &.cluster-show {
+          display: block;
         }
-
-        .react-draggable {
-            height: 48px;
-            width: 41px;
-            position: absolute;
-            background-size:100% 100%;
-            background-position:center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-            padding: 0 1px 15px 1px;
-            font-weight: 500;
-            .react-draggable-handle{
-                width: 100%;
-                height: 100%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex-direction:column;
-                position:relative;
-                .user-colour-dot{
-                    content:"";
-                    display:block;
-                    width:6px;
-                    height:6px;
-                    position:absolute;
-                    border-radius:50%;
-                }
-                img.react-draggable-handle-icon{
-                    -webkit-user-drag: none;
-                    width:75%;
-                    height:75%;
-                    object-fit:cover;
-                    border-radius:50%;
-                }
-                .react-draggable-handle-title{
-                    text-transform:uppercase;
-                }
-                .person-icon{
-                        height: 31px;
-                        margin-top: -9px;
-                        font-size: 31px;
-                }
-            }
-            .react-draggable-title{
-                position: absolute;
-                top:100%;
-                left: 50%;
-                transform: translateX(-50%);
-                font-size: 14px;
-                font-weight: 500;
-                color: white;
-                width: 70px;
-                text-align: center;
-            }
-            .react-draggable-actions {
-                position: absolute;
-                left: 50%;
-                top: 50%;
-                width: 100%;
-                height: 100%;
-                color: white;
-            }
-            .button-round{
-                &.second{
-                    span{
-                        &:before{
-                            font-size:32px;
-                        }
-                    }
-                }
-                &.fourth{
-                    span{
-                        &:before{
-                            color:black;
-                        }
-                    }
-                }
-            }
-
-            &.size-l{
-                .react-draggable-handle{
-                    .user-colour-dot{
-                        bottom:4px;
-                        left: 36px;
-                    }
-                }
-                .button-round {
-                    transition: all ease-in-out .3s;
-                    &.first {
-                        top: -10px;
-                        left: -75px;
-                    }
-
-                    &.second {
-                        top: -91px;
-                        left: -42px;
-                    }
-
-                    &.third {
-                        top: -91px;
-                        left: 42px;
-                    }
-
-                    &.fourth {
-                        top: -10px;
-                        left: 75px;
-                    }
-                }
-            }
-
-            // large, medium, small icon for left & right corner action
-            &.size-l, &.size-m, &.size-s{
-                .action-left{
-                    .button-round {
-                        &.first {
-                            top: -10px;
-                            left: -75px;
-                        }
-
-                        &.second {
-                            top: -10px;
-                            left: -150px;
-                        }
-
-                        &.third {
-                            top: -10px;
-                            left: -225px;
-                        }
-
-                        &.fourth {
-                            top: -10px;
-                            left: -300px;
-                        }
-                    }
-                }
-
-                .action-right{
-                    .button-round {
-                        &.first {
-                            top: -10px;
-                            left: 75px;
-                        }
-
-                        &.second {
-                            top: -10px;
-                            left: 150px;
-                        }
-
-                        &.third {
-                            top: -10px;
-                            left: 225px;
-                        }
-
-                        &.fourth {
-                            top: -10px;
-                            left: 300px;
-                        }
-                    }
-                }
-            }
-
-            // End large icon left corner position
-            &.size-m {
-                padding:1px 1px 15px 1px;
-
-                .react-draggable-handle{
-                    .user-colour-dot{
-                        bottom:4px;
-                        left:27px;
-                    }
-                }
-                .button-round {
-                    &.first {
-                        top: -10px;
-                        left: -65px;
-                    }
-
-                    &.second {
-                        top: -78px;
-                        left: -35px;
-                    }
-
-                    &.third {
-                        top: -78px;
-                        left: 35px;
-                    }
-
-                    &.fourth {
-                        top: -10px;
-                        left: 65px;
-                    }
-                }
-            }
-
-            &.size-s {
-                padding:0px 2px 11px 2px;
-                background-image: url(../images/marker-medium.svg);
-                .react-draggable-handle{
-                    .user-colour-dot{
-                        bottom:2px;
-                        left:16px;
-                        margin-left:-1px;
-                    }
-                }
-                .button-round {
-                    &.first {
-                        top: -12px;
-                        left: -55px;
-                    }
-
-                    &.second {
-                        top: -72px;
-                        left: -35px;
-                    }
-
-                    &.third {
-                        top: -72px;
-                        left: 35px;
-                    }
-
-                    &.fourth {
-                        top: -12px;
-                        left: 55px;
-                    }
-                }
-
-                &.trajectory-top-right{
-                    .react-draggable-handle:before{
-                        right:-4px;
-                    }
-                }
-                &.trajectory-bottom-right{
-                    .react-draggable-handle:before{
-                        bottom:-4px;
-                    }
-                }
-
-                &.trajectory-bottom-left{
-                    .react-draggable-handle:before{
-                        bottom:-4px;
-                        left:-4px;
-                    }
-                }
-
-                &.trajectory-top-left{
-                    .react-draggable-handle:before{
-                        bottom: 0;
-                        left: -7px;
-                        transform: rotate(-6deg);
-                    }
-                }
-            }
-            &.is-selected{
-                background-image: url(../images/marker-medium-black.svg)!important;
-                z-index:1;
-                .react-draggable-handle-icon{
-                    background-color:white;
-                }
-                .react-draggable-handle-title{
-                    color:white;
-                }
-                .person-abbr{
-                    color:white!important;
-                }
-                .person-icon{
-                    &:before{
-                        color:white;
-                    }
-                }
-            }
-
-            &.trajectory-top-right{
-                .react-draggable-handle{
-                    &:before{
-                        content:"";
-                        display:block;
-                        position:absolute;
-                        top:0;
-                        right:0;
-                        width: 0;
-                        height: 0;
-                        border-style: solid;
-                        border-width: 0 9px 9px 0;
-                        border-color: transparent #ffffff transparent transparent;
-                    }
-                }
-            }
-            &.trajectory-bottom-left{
-                .react-draggable-handle{
-                    &:before{
-                        content:"";
-                        display:block;
-                        position:absolute;
-                        bottom:0;
-                        left:-2px;
-                        width: 0;
-                        height: 0;
-                        border-style: solid;
-                        border-width: 9px 0 0 9px;
-                        border-color: transparent transparent transparent #ffffff;
-                    }
-                }
-            }
-
-            &.trajectory-bottom-right{
-                .react-draggable-handle{
-                    &:before{
-                        content: "";
-                        display: block;
-                        position: absolute;
-                        bottom: 0px;
-                        right: -4px;
-                        width: 0;
-                        height: 0;
-                        border-style: solid;
-                        border-width: 0 0 9px 9px;
-                        border-color: transparent transparent transparent #ffffff;
-                        transform: rotate(180deg);
-                    }
-                }
-            }
-
-            &.trajectory-top-left{
-                .react-draggable-handle{
-                    &:before{
-                        content:"";
-                        display:block;
-                        position:absolute;
-                        top:0;
-                        left:0;
-                        width: 0;
-                        height: 0;
-                        border-style: solid;
-                        border-width: 0 0 9px 9px;
-                        border-color: transparent transparent transparent #ffffff;
-                    }
-                }
-            }
-
-            // Cluster item style
-            &.cluster-item{
-                display:none;
-
-                &.cluster-show{
-                    display:block;
-                }
-            }
-        }
-
-        .react-draggable.size-s {
-            //margin:-45px 0 0 -20px;
-        }
-
-        .react-draggable.size-m {
-            height: 78px;
-            width: 64px;
-            background-image: url(../images/marker-medium.svg);
-            font-size: 14px;
-        }
-
-        .react-draggable.size-l {
-            height: 95px;
-            width: 82px;
-            background-image: url(../images/marker-large.svg);
-            font-size: 14px;
-        }
-
-        .react-draggable.disabled{
-            opacity:.5;
-        }
-
-        .welcome-message {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            top:50%;
-            left:50%;
-            transform: translateX(-50%) translateY(-50%);
-            position:absolute;
-            .welcome-message-inner {
-                background-color: white;
-                padding: 14px;
-                text-align: center;
-                width: 100%;
-                max-width: 300px;
-                box-shadow: 1px 2px 4px 0 rgba(0, 0, 0, 0.50);
-                border-radius: 5px;
-
-                h2 {
-                    font-size: 38px;
-                    letter-spacing: -0.47px;
-                    line-height: 40px;
-                    margin-bottom: 30px;
-                }
-            }
-        }
-
-        .grid-tooltip-message{
-            position:absolute;
-            top:10px;
-            left:50%;
-            transform:translateX(-50%);
-            background-color:$brand-color-dark;
-            color:white;
-            padding:10px;
-            margin:0px;
-			font-size:10px;
-			border-radius:5px;
-            &:before{
-				content: "";
-				width: 0;
-				height: 0;
-				border-style: solid;
-				border-width: 0 5px 8px 5px;
-				border-color: transparent transparent $brand-color-dark transparent;
-				position: absolute;
-				top: -7px;
-				left: 50%;
-				transform: translateX(-50%);
-			}
-        }
-
-        .handle{
-            height: 100%;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .gridwrapper-inner-categories{
-            position:absolute;
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            width:100%;
-            top:0px;
-            left:0px;
-            list-style:none;
-            .filter{
-                background-color:white;
-                display:block;
-                margin:5px;
-                padding:5px 22px 5px 5px;
-                border-radius:5px;
-                box-shadow: 1px 2px 4px 0 rgba(0,0,0,0.50);
-                position:relative;
-                font-size:10px;
-                .clickable{
-                    position: absolute;
-                    right: 6px;
-                    top: 6px;
-                    font-size: 9px;
-                }
-            }
-        }
+      }
     }
 
-    .right-icon, .left-icon, .top-icon, .bottom-icon {
+    .react-draggable.size-s {
+      //margin:-45px 0 0 -20px;
+    }
+
+    .react-draggable.size-m {
+      height: 78px;
+      width: 64px;
+      background-image: url(../images/marker-medium.svg);
+      font-size: 14px;
+    }
+
+    .react-draggable.size-l {
+      height: 95px;
+      width: 82px;
+      background-image: url(../images/marker-large.svg);
+      font-size: 14px;
+    }
+
+    .react-draggable.disabled {
+      opacity: .5;
+    }
+
+    .welcome-message {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+      position: absolute;
+
+      .welcome-message-inner {
+        background-color: white;
+        padding: 14px;
+        text-align: center;
+        width: 100%;
+        max-width: 300px;
+        box-shadow: 1px 2px 4px 0 rgba(0, 0, 0, 0.50);
+        border-radius: 5px;
+
+        h2 {
+          font-size: 38px;
+          letter-spacing: -0.47px;
+          line-height: 40px;
+          margin-bottom: 30px;
+        }
+      }
+    }
+
+    .grid-tooltip-message {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: $brand-color-dark;
+      color: white;
+      padding: 10px;
+      margin: 0px;
+      font-size: 10px;
+      border-radius: 5px;
+
+      &:before {
+        content: "";
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0 5px 8px 5px;
+        border-color: transparent transparent $brand-color-dark transparent;
         position: absolute;
-        display: flex;
-        font-size: 18px;
+        top: -7px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
     }
 
-    .gridwrapper-x {
+    .handle {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .gridwrapper-inner-categories {
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      top: 0px;
+      left: 0px;
+      list-style: none;
+
+      .filter {
+        background-color: white;
+        display: block;
+        margin: 5px;
+        padding: 5px 22px 5px 5px;
+        border-radius: 5px;
+        box-shadow: 1px 2px 4px 0 rgba(0, 0, 0, 0.50);
+        position: relative;
+        font-size: 10px;
+
+        .clickable {
+          position: absolute;
+          right: 6px;
+          top: 6px;
+          font-size: 9px;
+        }
+      }
+    }
+  }
+
+  .right-icon, .left-icon, .top-icon, .bottom-icon {
+    position: absolute;
+    display: flex;
+    font-size: 18px;
+  }
+
+  .gridwrapper-x {
+    position: absolute;
+    bottom: 0;
+    left: 40px;
+    right: 0;
+    height: 40px;
+    width: calc(100% - 80px);
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+
+    .axis-label {
+      position: absolute;
+      top: 11px;
+      width: 100%;
+      text-align: center;
+      font-size: 18px;
+      left: 0px;
+      font-weight: bold;
+    }
+
+    .left-icon {
+      left: 0px;
+      position: absolute;
+      top: 12px;
+      width: auto;
+
+      p {
+        color: #E84F35;
+      }
+
+      span {
+        color: #E84F35;
+        margin-top: 4px;
+        margin-right: 5px;
+      }
+    }
+
+    .right-icon {
+      right: 0px;
+      position: absolute;
+      top: 12px;
+      width: auto;
+      display: flex;
+      font-size: 20px;
+
+      p {
+        color: #48B9B9;
+        margin: 0px;
+        margin-left: 5px;
+      }
+
+      span {
+        color: #48B9B9;
+        margin: 3px 0px 0px 5px;
+      }
+    }
+
+    .axis-image {
+      width: 100%;
+      height: 20px;
+      top: -1px;
+      right: 0px;
+      position: absolute;
+      background-image: url(../images/horizontal-axis.svg);
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      background-position: 0px -7px;
+    }
+  }
+
+  .gridwrapper-y {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 40px;
+    height: calc(100% - 40px);
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+
+    .axis-image {
+      position: absolute;
+      right: -1px;
+      top: 0px;
+      height: 100%;
+      width: 19px;
+      background-image: url(../images/vertical-axis.svg);
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      background-position: 7px 0px;
+    }
+
+    .top-icon {
+      position: absolute;
+      top: 0px;
+      left: -3px;
+      width: 100%;
+      text-align: center;
+      flex-direction: column;
+
+      p {
+        color: #48B9B9;
+        margin: 0px;
+      }
+
+      span {
+        color: #48B9B9;
+      }
+    }
+
+    .bottom-icon {
+      position: absolute;
+      left: -3px;
+      width: 100%;
+      text-align: center;
+      bottom: 0px;
+      flex-direction: column;
+
+      p {
+        color: #E84F35;
+        margin: 0px;
+        margin-bottom: 7px;
+      }
+
+      span {
+        color: #E84F35;
+      }
+    }
+
+    .axis-label {
+      position: absolute;
+      top: calc(50% - 16px);
+      transform: rotate(-90deg);
+      font-size: 18px;
+      left: -15px;
+      font-weight: bold;
+    }
+  }
+
+  .progress-button {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 61px;
+    background-image: url(../images/marker-medium-black.svg);
+    background-repeat: no-repeat;
+    position: absolute;
+    background-position: center;
+    background-size: contain;
+
+    img {
+      width: 100%;
+      height: auto;
+      border-radius: 100%;
+      z-index: 2;
+      margin-top: -8px;
+    }
+
+    .connector {
+      display: block;
+      height: $connector-height;
+      position: absolute;
+      bottom: 50%;
+      right: 50%;
+      background-color: $brand-color-dark;
+      transform-origin: right;
+      z-index: 1;
+    }
+
+    &.coordinate {
+    }
+  }
+
+  .first-coordinate.progress-button {
+    background: none;
+
+    &.size-l {
+      width: 82px;
+      height: 95px;
+    }
+  }
+
+  // Styling cluster item
+  #gridwrapper-inner {
+    .cluster {
+      height: 66px;
+      width: 55px;
+      padding: 1px 1px 15px 1px;
+      background-image: url(../images/icon-white-medium.png);
+
+      .cluster-handle {
+        position: relative;
+
+        .react-draggable-handle-title {
+          font-size: 18px;
+          position: absolute;
+          bottom: 13px;
+          left: 50%;
+          transform: translate(-50%);
+
+        }
+
+        .user-colour-dot {
+          width: 6px;
+          height: 6px;
+          background: #f46300;
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          transform: translate(-50%);
+          border-radius: 50%;
+        }
+      }
+    }
+  }
+
+
+  .cluster-items-right {
+    .cluster-items {
+      position: relative;
+      bottom: 30px;
+
+      .cluster-body {
         position: absolute;
-        bottom: 0;
-        left: 40px;
-        right: 0;
-        height: 40px;
-        width: calc(100% - 80px);
-        display: flex;
-        justify-content: space-between;
-        font-size: 16px;
-        .axis-label {
-            position: absolute;
-            top: 11px;
-            width: 100%;
-            text-align: center;
-            font-size: 18px;
-            left: 0px;
-            font-weight: bold;
-        }
+        width: 400px;
+        height: auto;
+        top: 0;
+        left: 10px;
 
-        .left-icon {
-            left: 0px;
-            position: absolute;
-            top: 12px;
-            width: auto;
-            p {
-                color: #E84F35;
-            }
+        .cluster-body-inner {
+          display: flex;
 
-            span {
-                color: #E84F35;
-                margin-top: 4px;
-                margin-right: 5px;
-            }
-        }
-
-        .right-icon {
-            right: 0px;
-            position: absolute;
-            top: 12px;
-            width: auto;
-            display: flex;
-            font-size: 20px;
-
-            p {
-                color: #48B9B9;
-                margin: 0px;
-                margin-left: 5px;
-            }
-
-            span {
-                color: #48B9B9;
-                margin: 3px 0px 0px 5px;
-            }
-        }
-
-        .axis-image {
-            width: 100%;
-            height: 20px;
-            top: -1px;
-            right: 0px;
-            position: absolute;
-            background-image: url(../images/horizontal-axis.svg);
-            background-size: 100% 100%;
-            background-repeat: no-repeat;
-            background-position: 0px -7px;
-        }
-    }
-
-    .gridwrapper-y {
-        position: absolute;
-        top: 0px;
-        left: 0px;
-        width: 40px;
-        height: calc(100% - 40px);
-        display: flex;
-        justify-content: space-between;
-        font-size: 16px;
-
-        .axis-image {
-            position: absolute;
-            right: -1px;
-            top: 0px;
-            height: 100%;
-            width: 19px;
-            background-image: url(../images/vertical-axis.svg);
-            background-size: 100% 100%;
-            background-repeat: no-repeat;
-            background-position: 7px 0px;
-        }
-
-        .top-icon {
-            position: absolute;
-            top: 0px;
-            left: -3px;
-            width: 100%;
-            text-align: center;
-            flex-direction: column;
-
-            p {
-                color: #48B9B9;
-                margin: 0px;
-            }
-
-            span {
-                color: #48B9B9;
-            }
-        }
-
-        .bottom-icon {
-            position: absolute;
-            left: -3px;
-            width: 100%;
-            text-align: center;
-            bottom: 0px;
-            flex-direction: column;
-
-            p {
-                color: #E84F35;
-                margin: 0px;
-                margin-bottom: 7px;
-            }
-
-            span {
-                color: #E84F35;
-            }
-        }
-
-        .axis-label {
-            position: absolute;
-            top: calc(50% - 16px);
-            transform: rotate(-90deg);
-            font-size: 18px;
-            left: -15px;
-            font-weight: bold;
-        }
-    }
-
-    .progress-button {
-        padding: 10px;
-        display: flex;
-        align-items:center;
-        justify-content:center;
-        width: 56px;
-        height: 61px;
-        background-image: url(../images/marker-medium-black.svg);
-        background-repeat: no-repeat;
-        position: absolute;
-        background-position: center;
-        background-size: contain;
-        
-        img {
-            width: 100%;
-            height: auto;
-            border-radius: 100%;
-            z-index: 2;
-            margin-top: -8px;
-        }
-        .connector {
-            display: block;
-            height: $connector-height;
-            position: absolute;
-            bottom: 50%;
-            right: 50%;
-            background-color: $brand-color-dark;
-            transform-origin: right;
-            z-index:1;
-        }
-
-        &.coordinate{
-        }
-    }
-
-    .first-coordinate.progress-button {
-        background:none;
-
-        &.size-l {
-            width:82px;
-            height:95px;
-        }
-    }
-
-    // Styling cluster item
-    .cluster-items{
-        position:relative;
-        top:-30px;
-
-        .cluster-body{
-            position:absolute;
-            width:400px;
-            height:auto;
-            top:0;
-            left:10px;
-
-            .cluster-body-inner{
-                display:flex;
-
-                .size-m{
-                    .react-draggable-handle{
-                        .user-colour-dot{
-                            bottom: 12px;
-                            left: 24px;
-                        }
-                    }
-                }
-            }
-        }
-        .size-m{
+          .size-m {
             height: 66px;
             width: 55px;
             background-image: url(../images/marker-medium.svg);
             font-size: 14px;
-            margin-right:10px;
+            margin-right: 10px;
+
+            .react-draggable-handle-title {
+              position: absolute;
+              bottom: 28px;
+              left: 50%;
+              transform: translate(-50%);
+            }
+
+            .react-draggable-handle {
+              .user-colour-dot {
+                bottom: 12px;
+                left: 24px;
+              }
+            }
+          }
         }
+      }
     }
+  }
+
+  .cluster-items-left {
+    .cluster-items {
+      position: relative;
+      top: -30px;
+
+      .cluster-body {
+        position: absolute;
+        width: 400px;
+        height: auto;
+        top: 0;
+        right: 55px;
+
+        .cluster-body-inner {
+          display: flex;
+          flex-direction: row-reverse;
+
+          .size-m {
+            height: 66px;
+            width: 55px;
+            background-image: url(../images/marker-medium.svg);
+            font-size: 14px;
+            margin-right: 10px;
+
+            .react-draggable-handle {
+              width:100%;
+              height:100%;
+              .react-draggable-handle-title {
+                position: absolute;
+                bottom: 28px;
+                left: 50%;
+                transform: translate(-50%);
+              }
+
+              .user-colour-dot {
+                bottom: 12px;
+                left: 24px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 
 }
 
-.competitor{
-    height: 51px;
-    width: 44px;
+.competitor {
+  height: 51px;
+  width: 44px;
+  position: absolute;
+  background-image: url(../images/marker-medium.svg);
+  background-size: 100% 100%;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  z-index: 99;
+  @extend .icon-character-pirate;
+  @extend [class^="icon-"];
+
+  &:before {
+    font-size: 28px;
+    margin-top: -7px;
+  }
+
+  .competitor-tooltip {
+    background-color: black;
     position: absolute;
-    background-image: url(../images/marker-medium.svg);
-    background-size:100% 100%;
-    background-position:center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 500;
-    z-index:99;
-    @extend .icon-character-pirate;
-    @extend [class^="icon-"];
-    &:before{
-        font-size: 28px;
-        margin-top: -7px;
+    left: calc(100% + 13px);
+    top: 0px;
+    border-radius: 5px;
+    width: 130px;
+    box-shadow: 1px 2px 4px 0 rgba(0, 0, 0, 0.5);
+
+    .competitor-tooltip-header {
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 1px;
+      font-size: 14px;
+      letter-spacing: -0.16px;
+      line-height: 17px;
+      min-height: 51px;
     }
-    .competitor-tooltip{
-        background-color:black;
-        position:absolute;
-        left:calc(100% + 13px);
-        top:0px;
-        border-radius:5px;
-        width:130px;
-        box-shadow:1px 2px 4px 0 rgba(0, 0, 0, 0.5);
-        .competitor-tooltip-header{
-            color:white;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            text-align:center;
-            padding:1px;
-            font-size: 14px;
-            letter-spacing: -0.16px;
-            line-height: 17px;
-            min-height:51px;
-        }
-        .competitor-tooltip-inner{
-            background-color:white;
-            border-radius:0px 0px 5px 5px;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            height:51px;
-            font-size: 14px;
-            color: #1C1C1C;
-            letter-spacing: -0.16px;
-            text-align: center;
-            line-height: 17px;
-            font-weight:500;
-            a{
-                text-decoration:none;
-            }
-        }
-        &:before{
-            content:"";
-            width: 0;
-            height: 0;
-            border-style: solid;
-            border-width: 7px 15px 7px 0;
-            border-color: transparent #000000 transparent transparent;
-            position: absolute;
-            left: -14px;
-            top: 18px;
-        }
+
+    .competitor-tooltip-inner {
+      background-color: white;
+      border-radius: 0px 0px 5px 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 51px;
+      font-size: 14px;
+      color: #1C1C1C;
+      letter-spacing: -0.16px;
+      text-align: center;
+      line-height: 17px;
+      font-weight: 500;
+
+      a {
+        text-decoration: none;
+      }
     }
-    &.undefined{
-        display:none;
+
+    &:before {
+      content: "";
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 7px 15px 7px 0;
+      border-color: transparent #000000 transparent transparent;
+      position: absolute;
+      left: -14px;
+      top: 18px;
     }
-    &.left{
-    top:6%;
-    left:-42px;
-    animation: side-pirate 31s infinite linear,  side-bob 3s infinite linear,  side-rock 7s infinite linear;
+  }
+
+  &.undefined {
+    display: none;
+  }
+
+  &.left {
+    top: 6%;
+    left: -42px;
+    animation: side-pirate 31s infinite linear, side-bob 3s infinite linear, side-rock 7s infinite linear;
+  }
+
+  &.right {
+    top: 50%;
+    right: -42px;
+    animation: side-pirate 29s infinite linear, side-bob 2.5s infinite linear, side-rock 5s infinite linear;
+
+    .competitor-tooltip {
+      right: calc(100% + 13px);
+      left: unset;
+
+      &:before {
+        right: -14px;
+        left: unset;
+        border-width: 7px 0 7px 15px;
+        border-color: transparent transparent transparent #000000;
+      }
     }
-    &.right{
-    top:50%;
-    right:-42px;
-    animation: side-pirate 29s infinite linear,  side-bob 2.5s infinite linear,  side-rock 5s infinite linear;
-        .competitor-tooltip{
-            right:calc(100% + 13px);
-            left:unset;
-            &:before{
-                right:-14px;
-                left:unset;
-                border-width: 7px 0 7px 15px;
-                border-color: transparent transparent transparent #000000;
-            }
-        }
+  }
+
+  &.bottom {
+    bottom: -42px;
+    left: 5%;
+    animation: bottom-pirate 33s infinite linear, bottom-bob 2s infinite linear, bottom-rock 7s infinite linear;
+
+    .competitor-tooltip {
+      top: -117px;
+      left: -44px;
+
+      &:before {
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: -15px;
+        top: unset;
+        border-width: 15px 7px 0 7px;
+        border-color: #000000 transparent transparent transparent;
+      }
     }
-    &.bottom{
-    bottom:-42px;
-    left:5%;
-    animation: bottom-pirate 33s infinite linear,  bottom-bob 2s infinite linear,  bottom-rock 7s infinite linear;
-    .competitor-tooltip{
-        top:-117px;
-        left:-44px;
-        &:before{
-            left: 50%;
-            transform:translateX(-50%);
-            bottom: -15px;
-            top: unset;
-            border-width: 15px 7px 0 7px;
-            border-color: #000000 transparent transparent transparent;
-        }
-    }
-    }
+  }
 }
 
 
 @keyframes side-pirate {
-  0%   {top: 6%;}
-  50%  {top: 89%;}
-  100% {top: 5%;}
+  0% {
+    top: 6%;
+  }
+  50% {
+    top: 89%;
+  }
+  100% {
+    top: 5%;
+  }
 }
 
 @keyframes bottom-pirate {
-   0%   {left: 5%;}
-  50%  {left: 98%;}
-  100% {left: 5%;}
+  0% {
+    left: 5%;
+  }
+  50% {
+    left: 98%;
+  }
+  100% {
+    left: 5%;
+  }
 }
 
-@keyframes side-bob{
-    0% {transform:translateX(0%)}
-    25% {transform:translateX(5%)}
-    75% {transform:translateX(-5%)}
-    100% {transform:translateX(0%)}
+@keyframes side-bob {
+  0% {
+    transform: translateX(0%)
+  }
+  25% {
+    transform: translateX(5%)
+  }
+  75% {
+    transform: translateX(-5%)
+  }
+  100% {
+    transform: translateX(0%)
+  }
 }
 
-@keyframes bottom-bob{
-    0% {transform:translateY(0%)}
-    25% {transform:translateY(10%)}
-    75% {transform:translateY(-10%)}
-    100 {transform:translateY(0%)}
+@keyframes bottom-bob {
+  0% {
+    transform: translateY(0%)
+  }
+  25% {
+    transform: translateY(10%)
+  }
+  75% {
+    transform: translateY(-10%)
+  }
+
+100
+{
+  transform: translateY(0%)
+}
 }
 
-@keyframes left-rock{
-    0% {margin-top: 0px}
-    25% {margin-top: 10px}
-    75% {margin-top: -10px}
-    100% {margin-top: 0px}
+@keyframes left-rock {
+  0% {
+    margin-top: 0px
+  }
+  25% {
+    margin-top: 10px
+  }
+  75% {
+    margin-top: -10px
+  }
+  100% {
+    margin-top: 0px
+  }
 }
 
-@keyframes bottom-rock{
-    0% {margin-left: 0px}
-    25% {margin-left: 10px}
-    75% {margin-left: -10px}
-    100% {margin-left: 0px}
+@keyframes bottom-rock {
+  0% {
+    margin-left: 0px
+  }
+  25% {
+    margin-left: 10px
+  }
+  75% {
+    margin-left: -10px
+  }
+  100% {
+    margin-left: 0px
+  }
 }

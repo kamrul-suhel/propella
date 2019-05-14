@@ -109,7 +109,7 @@ export default class Edit extends React.PureComponent {
         }
 
         if (!api.error(response)) {
-            this.fetchData();
+            // this.fetchData();
             fn.navigate(`/${url.projects}/${params.id}`)
         }
     }
@@ -122,30 +122,30 @@ export default class Edit extends React.PureComponent {
             case 1:
                 return (
                     [
-                        <Link to={`/${url.projects}/${this.props.params.id}/${url.groups}`}
+                        <Link key={'cancel'} to={`/${url.projects}/${this.props.params.id}/${url.groups}`}
                               className="button">Cancel</Link>,
-                        <button onClick={this.triggerSubmit} type="button" className="button">Next</button>
+                        <button key={'next'} onClick={this.triggerSubmit} type="button" className="button">Next</button>
                     ]
                 );
             case 2:
                 return (
                     [
-                        <button type="button" onClick={() => this.handleStepChange(1)} className="button">Back</button>,
-                        <button onClick={this.triggerSubmit} type="button" className="button">Next</button>
+                        <button key={'cancel'} type="button" onClick={() => this.handleStepChange(1)} className="button">Back</button>,
+                        <button key={'next'} onClick={this.triggerSubmit} type="button" className="button">Next</button>
                     ]
                 );
             case 3:
                 return (
                     [
-                        <button type="button" onClick={() => this.handleStepChange(2)} className="button">Back</button>,
-                        <button onClick={this.triggerSubmit} type="button" className="button">Next</button>
+                        <button key={'cancel'} type="button" onClick={() => this.handleStepChange(2)} className="button">Back</button>,
+                        <button key={'next'} onClick={this.triggerSubmit} type="button" className="button">Next</button>
                     ]
                 );
             case 4:
                 return (
                     [
-                        <button type="button" onClick={() => this.handleStepChange(1)} className="button">Edit</button>,
-                        <button onClick={this.handleSubmit} type="button" className="button">
+                        <button key={'cancel'} type="button" onClick={() => this.handleStepChange(1)} className="button">Edit</button>,
+                        <button key={'next'} onClick={this.handleSubmit} type="button" className="button">
                             {group && group.id ? 'Update' : 'Add to board'}
                         </button>
                     ]

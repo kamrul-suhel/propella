@@ -4353,6 +4353,10 @@ li.rc-time-picker-panel-select-option-disabled:hover {
         border-style: solid;
         border-width: 0 0 9px 9px;
         border-color: transparent transparent transparent #ffffff; }
+      .gridwrapper .gridwrapper-inner .react-draggable.cluster-item {
+        display: none; }
+        .gridwrapper .gridwrapper-inner .react-draggable.cluster-item.cluster-show {
+          display: block; }
     .gridwrapper .gridwrapper-inner .react-draggable.size-m {
       height: 78px;
       width: 64px;
@@ -4578,6 +4582,82 @@ li.rc-time-picker-panel-select-option-disabled:hover {
     .gridwrapper .first-coordinate.progress-button.size-l {
       width: 82px;
       height: 95px; }
+  .gridwrapper #gridwrapper-inner .cluster {
+    height: 66px;
+    width: 55px;
+    padding: 1px 1px 15px 1px;
+    background-image: url(../images/icon-white-medium.png); }
+    .gridwrapper #gridwrapper-inner .cluster .cluster-handle {
+      position: relative; }
+      .gridwrapper #gridwrapper-inner .cluster .cluster-handle .react-draggable-handle-title {
+        font-size: 18px;
+        position: absolute;
+        bottom: 13px;
+        left: 50%;
+        transform: translate(-50%); }
+      .gridwrapper #gridwrapper-inner .cluster .cluster-handle .user-colour-dot {
+        width: 6px;
+        height: 6px;
+        background: #f46300;
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translate(-50%);
+        border-radius: 50%; }
+  .gridwrapper .cluster-items-right .cluster-items {
+    position: relative;
+    bottom: 30px; }
+    .gridwrapper .cluster-items-right .cluster-items .cluster-body {
+      position: absolute;
+      width: 400px;
+      height: auto;
+      top: 0;
+      left: 10px; }
+      .gridwrapper .cluster-items-right .cluster-items .cluster-body .cluster-body-inner {
+        display: flex; }
+        .gridwrapper .cluster-items-right .cluster-items .cluster-body .cluster-body-inner .size-m {
+          height: 66px;
+          width: 55px;
+          background-image: url(../images/marker-medium.svg);
+          font-size: 14px;
+          margin-right: 10px; }
+          .gridwrapper .cluster-items-right .cluster-items .cluster-body .cluster-body-inner .size-m .react-draggable-handle-title {
+            position: absolute;
+            bottom: 28px;
+            left: 50%;
+            transform: translate(-50%); }
+          .gridwrapper .cluster-items-right .cluster-items .cluster-body .cluster-body-inner .size-m .react-draggable-handle .user-colour-dot {
+            bottom: 12px;
+            left: 24px; }
+  .gridwrapper .cluster-items-left .cluster-items {
+    position: relative;
+    top: -30px; }
+    .gridwrapper .cluster-items-left .cluster-items .cluster-body {
+      position: absolute;
+      width: 400px;
+      height: auto;
+      top: 0;
+      right: 55px; }
+      .gridwrapper .cluster-items-left .cluster-items .cluster-body .cluster-body-inner {
+        display: flex;
+        flex-direction: row-reverse; }
+        .gridwrapper .cluster-items-left .cluster-items .cluster-body .cluster-body-inner .size-m {
+          height: 66px;
+          width: 55px;
+          background-image: url(../images/marker-medium.svg);
+          font-size: 14px;
+          margin-right: 10px; }
+          .gridwrapper .cluster-items-left .cluster-items .cluster-body .cluster-body-inner .size-m .react-draggable-handle {
+            width: 100%;
+            height: 100%; }
+            .gridwrapper .cluster-items-left .cluster-items .cluster-body .cluster-body-inner .size-m .react-draggable-handle .react-draggable-handle-title {
+              position: absolute;
+              bottom: 28px;
+              left: 50%;
+              transform: translate(-50%); }
+            .gridwrapper .cluster-items-left .cluster-items .cluster-body .cluster-body-inner .size-m .react-draggable-handle .user-colour-dot {
+              bottom: 12px;
+              left: 24px; }
 
 .competitor {
   height: 51px;
@@ -4643,11 +4723,11 @@ li.rc-time-picker-panel-select-option-disabled:hover {
   .competitor.left {
     top: 6%;
     left: -42px;
-    animation: side-pirate 31s infinite linear,  side-bob 3s infinite linear,  side-rock 7s infinite linear; }
+    animation: side-pirate 31s infinite linear, side-bob 3s infinite linear, side-rock 7s infinite linear; }
   .competitor.right {
     top: 50%;
     right: -42px;
-    animation: side-pirate 29s infinite linear,  side-bob 2.5s infinite linear,  side-rock 5s infinite linear; }
+    animation: side-pirate 29s infinite linear, side-bob 2.5s infinite linear, side-rock 5s infinite linear; }
     .competitor.right .competitor-tooltip {
       right: calc(100% + 13px);
       left: unset; }
@@ -4659,7 +4739,7 @@ li.rc-time-picker-panel-select-option-disabled:hover {
   .competitor.bottom {
     bottom: -42px;
     left: 5%;
-    animation: bottom-pirate 33s infinite linear,  bottom-bob 2s infinite linear,  bottom-rock 7s infinite linear; }
+    animation: bottom-pirate 33s infinite linear, bottom-bob 2s infinite linear, bottom-rock 7s infinite linear; }
     .competitor.bottom .competitor-tooltip {
       top: -117px;
       left: -44px; }

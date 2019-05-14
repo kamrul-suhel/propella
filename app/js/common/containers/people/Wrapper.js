@@ -17,8 +17,7 @@ import Coordinate from 'app/components/coordinate';
     return {
         people: getPeople(state),
         groups: getGroups(state),
-        group: getGroup(state, ownProps.params.groupId),
-        draggedPeople: state.draggedPeople
+        group: getGroup(state, ownProps.params.groupId)
     };
 })
 export default class PeopleWrapper extends React.PureComponent {
@@ -79,10 +78,6 @@ export default class PeopleWrapper extends React.PureComponent {
             // get the wrapper dimensions
             const position = fn.getPositionForSave(data, location, people.icon_size)
 
-            // put dragged item into store
-            let selectedPeople = [...draggedPeople.people]
-
-            _.remove(selectedPeople, (currPeople) => currPeople.id === people.id)
             people.positionX = position.positionX
             people.positionY = position.positionY
 
@@ -135,10 +130,12 @@ export default class PeopleWrapper extends React.PureComponent {
         const {params} = this.props
         // find the id we're moving
         const clusterIds = _.split(_.find(data.node.attributes, {name: 'handleid'}).value, ',')
+        const actionPositionClass = fn.getClusterItemsPositionClass({positionX: data.x, positionY: data.y})
 
         this.setState({
             selectedCluster: clusterIds,
-            showSelectedClusterItem: null
+            showSelectedClusterItem: null,
+            actionPositionClass: actionPositionClass
         })
     }
 
@@ -281,7 +278,6 @@ export default class PeopleWrapper extends React.PureComponent {
             container,
             people,
             location,
-            draggedPeople,
             groups
         } = this.props
 
@@ -293,7 +289,6 @@ export default class PeopleWrapper extends React.PureComponent {
             selectedCluster
         } = this.state
 
-        const sortedPeople = fn.getAllSortedItem(group.people, draggedPeople.people)
 
         if (!container) {
             return null
@@ -333,7 +328,7 @@ export default class PeopleWrapper extends React.PureComponent {
                 </button>
                 }
 
-                {_.map(sortedPeople, (item, i) => {
+                {_.map(group.people, (item, i) => {
                     // only display people belonging to an active organisation
                     if (item.status < 1 || !_.includes(activeOrganisationIds, item.organisation_id)) {
                         return
@@ -471,24 +466,25 @@ export default class PeopleWrapper extends React.PureComponent {
                                 <div handleid={clusterIds}
                                      className={
                                          [
-                                             `size-${people.icon_size}`,
+                                             `cluster`,
+                                             actionPositionClass,
                                              (selectedDraggable && selectedDraggable !== people.id ? 'disabled' : ''),
                                              (selectedDraggable === people.id ? 'is-selected' : ''),
                                              people
                                          ]
                                      }
                                 >
-                                    <div className="react-draggable-handle">
+                                    <div className="react-draggable-handle cluster-handle">
                                         {people.icon_path ? (
                                             <img className="react-draggable-handle-icon"
                                                  src={`${people.icon_path}`}/>
                                         ) : (
-                                            <div className="react-draggable-handle-title">CTI</div>
+                                            <div className="react-draggable-handle-title">{_.size(clusterIds)}</div>
                                         )}
                                         <span className="user-colour-dot"
                                               style={{backgroundColor: people.profile_colour}}></span>
                                     </div>
-                                    <span className="react-draggable-title">Cluster</span>
+                                    <span className="react-draggable-title"></span>
 
                                     {_.join(selectedCluster, ',') === _.join(clusterIds, ',') &&
                                     this.renderCurrentClusterItems(clusterIds)

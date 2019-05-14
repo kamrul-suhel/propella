@@ -8,7 +8,14 @@ import {Alerts} from './';
 export default class Popup extends React.PureComponent {
 
     render() {
-        const {title, closePath, beforeTitle, afterTitle, buttons, additionalClass} = this.props
+        const {
+            title,
+            closePath,
+            beforeTitle,
+            afterTitle,
+            buttons,
+            additionalClass
+        } = this.props
 
         return (
             <div id="popup" className={`popup${(additionalClass ? ' '+ additionalClass : '')}`}>

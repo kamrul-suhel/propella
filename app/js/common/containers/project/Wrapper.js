@@ -1,13 +1,15 @@
-import React from 'react';
-import {Link} from 'react-router';
-import {fetchData} from 'app/actions';
-import {connect} from 'react-redux';
-import Draggable from 'react-draggable';
-import {url} from 'app/constants';
-import {api, fn} from 'app/utils';
-import {makeGetProject, makeGetProjects} from 'app/containers/project/selector';
+import React from 'react'
+import {Link} from 'react-router'
+import {fetchData} from 'app/actions'
+import {connect} from 'react-redux'
+import Draggable from 'react-draggable'
+import {url} from 'app/constants'
+import {api, fn} from 'app/utils'
+import {makeGetProject, makeGetProjects} from 'app/containers/project/selector'
 import Coordinate from 'app/components/coordinate'
-import {ContentLoader} from '@xanda/react-components';
+import { Cluster } from "app/components"
+
+import {ContentLoader} from '@xanda/react-components'
 
 @connect((state, ownProps) => {
     const getProjects = makeGetProjects();
@@ -54,7 +56,12 @@ export default class ProjectWrapper extends React.PureComponent {
     }
 
     onDraggableEventHandler = (event, data) => {
-        const {location, params, project, dispatch} = this.props
+        const {
+            location,
+            params,
+            project,
+            dispatch
+        } = this.props
         const projectId = params.id
 
         // find the id we're moving
@@ -88,13 +95,14 @@ export default class ProjectWrapper extends React.PureComponent {
     }
 
     onClusterEventHandler = (event, data) => {
-        const {params} = this.props
         // find the id we're moving
         const clusterIds = _.split(_.find(data.node.attributes, {name: 'handleid'}).value, ',')
+        const actionPositionClass = fn.getClusterItemsPositionClass({positionX: data.x, positionY: data.y})
 
         this.setState({
             selectedCluster: clusterIds,
-            showSelectedClusterItem: null
+            showSelectedClusterItem: null,
+            actionPositionClass: actionPositionClass
         })
     }
 
@@ -265,7 +273,7 @@ export default class ProjectWrapper extends React.PureComponent {
                             clusterItemShow = 'cluster-show'
                         }
 
-                        // does this item show in zoom in view
+                        // does this item show in zoom view
                         const isShow = fn.isItemShow(item, location);
                         if (!isShow) {
                             return;
@@ -286,7 +294,7 @@ export default class ProjectWrapper extends React.PureComponent {
                                 scale={1}
                                 bounds=".gridwrapper-inner-section-wrapper"
                                 onStop={this.onDraggableEventHandler}
-                                disabled={selectedDraggable === item.id}>
+                                disabled={selectedDraggable === item.id && clusterItemShow === null}>
 
                                 <div handleid={item.id}
                                      className={
@@ -364,54 +372,32 @@ export default class ProjectWrapper extends React.PureComponent {
                                 return;
                             }
 
+                            // Check is item need to show in zoom view.
                             const isShow = fn.isItemShow(group, location);
                             if (!isShow) {
                                 return;
                             }
-                            const position = fn.getPosition(group, location);
 
                             return (
-                                <Draggable
+                                <Cluster
                                     key={group.id}
-                                    axis="none"
-                                    handle=".react-draggable-handle"
-                                    defaultPosition={{
-                                        x: position.positionX,
-                                        y: position.positionY
-                                    }}
-                                    grid={[10, 10]}
-                                    scale={1}
-                                    bounds=".gridwrapper-inner-section-wrapper"
-                                    onStop={this.onClusterEventHandler}
-                                >
-
-                                    <div handleid={clusterIds}
-                                         className={
-                                             [
-                                                 `size-${group.icon_size}`,
-                                                 (selectedDraggable && selectedDraggable !== group.id ? 'disabled' : ''),
-                                                 (selectedDraggable === group.id ? 'is-selected' : ''),
-                                                 group
-                                             ]
-                                         }
-                                    >
-                                        <div className="react-draggable-handle">
-                                            {group.icon_path ? (
-                                                <img className="react-draggable-handle-icon"
-                                                     src={`${group.icon_path}`}/>
-                                            ) : (
-                                                <div className="react-draggable-handle-title">CTI</div>
-                                            )}
-                                            <span className="user-colour-dot"
-                                                  style={{backgroundColor: group.profile_colour}}></span>
-                                        </div>
-                                        <span className="react-draggable-title">Cluster</span>
-
-                                        {_.join(selectedCluster, ',') === _.join(clusterIds, ',') &&
-                                            this.renderCurrentClusterItems(clusterIds)
-                                        }
-                                    </div>
-                                </Draggable>
+                                    item={group}
+                                    classes={
+                                        [
+                                            `cluster`,
+                                            actionPositionClass,
+                                            (selectedDraggable && selectedDraggable !== group.id ? 'disabled' : ''),
+                                            (selectedDraggable === group.id ? 'is-selected' : ''),
+                                            group
+                                        ]
+                                    }
+                                    clusterIds={clusterIds}
+                                    selectedCluster={selectedCluster}
+                                    onClusterEventHandler={(event, item) => this.onClusterEventHandler(event, item)}
+                                    handleClusterItem={(item) => this.handleClusterItem(item)}
+                                    {...this.props}
+                                    type="project"
+                                />
                             )
                         }
                     )}

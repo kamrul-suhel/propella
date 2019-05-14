@@ -138,10 +138,12 @@ export default class GroupWrapper extends React.PureComponent {
         const {params} = this.props
         // find the id we're moving
         const clusterIds = _.split(_.find(data.node.attributes, {name: 'handleid'}).value, ',')
+        const actionPositionClass = fn.getClusterItemsPositionClass({positionX: data.x, positionY: data.y})
 
         this.setState({
             selectedCluster: clusterIds,
-            showSelectedClusterItem: null
+            showSelectedClusterItem: null,
+            actionPositionClass: actionPositionClass
         })
     }
 
@@ -462,24 +464,25 @@ export default class GroupWrapper extends React.PureComponent {
                                     <div handleid={clusterIds}
                                          className={
                                              [
-                                                 `size-${organisation.icon_size}`,
+                                                 `cluster`,
+                                                 actionPositionClass,
                                                  (selectedDraggable && selectedDraggable !== organisation.id ? 'disabled' : ''),
                                                  (selectedDraggable === organisation.id ? 'is-selected' : ''),
                                                  organisation
                                              ]
                                          }
                                     >
-                                        <div className="react-draggable-handle">
+                                        <div className="react-draggable-handle cluster-handle">
                                             {organisation.icon_path ? (
                                                 <img className="react-draggable-handle-icon"
                                                      src={`${organisation.icon_path}`}/>
                                             ) : (
-                                                <div className="react-draggable-handle-title">CTI</div>
+                                                <div className="react-draggable-handle-title">{_.size(clusterIds)}</div>
                                             )}
                                             <span className="user-colour-dot"
                                                   style={{backgroundColor: organisation.profile_colour}}></span>
                                         </div>
-                                        <span className="react-draggable-title">Cluster</span>
+                                        <span className="react-draggable-title"></span>
 
                                         {_.join(selectedCluster, ',') === _.join(clusterIds, ',') &&
                                             this.renderCurrentClusterItems(clusterIds)

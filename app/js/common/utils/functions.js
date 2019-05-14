@@ -931,6 +931,20 @@ export default {
         }
         return '';
     },
+    
+    getClusterItemsPositionClass(item){
+        const container = this.getContainer();
+        const width = container.width;
+        const positionX = item.positionX;
+
+        if(positionX < width / 2){
+            return 'cluster-items-right'
+        }
+        else{
+            return 'cluster-items-left'
+        }
+        return '';
+    },
 
 
     /**
@@ -972,7 +986,7 @@ export default {
 
         if (dataSet.length > 0) {
             let dataScan = new clustering.DBSCAN()
-            clusters = dataScan.run(dataSet, 2)
+            clusters = dataScan.run(dataSet, 4)
         }
         return clusters;
     },

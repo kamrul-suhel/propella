@@ -172,6 +172,7 @@ export default function group(state = defaultState, action) {
                 }
             };
         }
+
         default: {
             return state;
         }

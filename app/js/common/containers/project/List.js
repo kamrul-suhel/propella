@@ -72,6 +72,7 @@ export default class List extends React.PureComponent {
     const { selectedProject } = this.state;
     const remainingProject = _.parseInt(me.data.limit) - _.parseInt(projects.pager.total)
 
+
     return (
       <React.Fragment>
         <Nav {...this.props} />
@@ -83,7 +84,7 @@ export default class List extends React.PureComponent {
             <div className="page-wrap">
               <div className="page-header">
                 <h1 className="page-title">Your Propella Projects</h1>
-                <div className={"remain-project"}>You have {remainingProject} number remainder</div>
+                <div className={"remain-project"}>You have {remainingProject > 0 ? remainingProject : 0 } number remaining</div>
               </div>
 
               <div className="projects">
