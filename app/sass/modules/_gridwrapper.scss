@@ -158,6 +158,10 @@
 
         .react-draggable-handle-title {
           text-transform: uppercase;
+          width: 80%;
+          text-align: center;
+          word-wrap: break-word;
+          line-height:1;
         }
 
         .person-icon {
@@ -177,6 +181,8 @@
         color: white;
         width: 70px;
         text-align: center;
+        margin-top:5px;
+        word-wrap: break-word;
       }
 
       .react-draggable-actions {
@@ -852,9 +858,10 @@
 
             .react-draggable-handle-title {
               position: absolute;
-              bottom: 28px;
+              bottom: 24px;
               left: 50%;
               transform: translate(-50%);
+              line-height: 1;
             }
 
             .react-draggable-handle {

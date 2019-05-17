@@ -8,6 +8,7 @@ import {api, fn} from 'app/utils'
 import {makeGetProject, makeGetProjects} from 'app/containers/project/selector'
 import Coordinate from 'app/components/coordinate'
 import { Cluster } from "app/components"
+import ReactFitText from 'react-fittext'
 
 import {ContentLoader} from '@xanda/react-components'
 
@@ -107,10 +108,14 @@ export default class ProjectWrapper extends React.PureComponent {
     }
 
     handleClusterItem = (group) => {
+        const { location } = this.props
+        const selectedGroup = fn.getPosition(group, location)
+        const actionPositionClass = fn.getDraggableActionClass({positionX: selectedGroup.positionX, positionY: selectedGroup.positionY})
         this.setState({
             selectedCluster: [],
             showSelectedClusterItem: group.id,
-            selectedDraggable: group.id
+            selectedDraggable: group.id,
+            actionPositionClass: actionPositionClass
         })
     }
 
@@ -144,7 +149,9 @@ export default class ProjectWrapper extends React.PureComponent {
                                                 <img className="react-draggable-handle-icon"
                                                      src={`${group.icon_path}`}/>
                                             ) : (
-                                                <div className="react-draggable-handle-title">{group.abbreviation}</div>
+                                                <ReactFitText compressor={.6}>
+                                                    <div className="react-draggable-handle-title">{group.abbreviation}</div>
+                                                </ReactFitText>
                                             )}
                                             <span className="user-colour-dot"
                                                   style={{backgroundColor: group.profile_colour}}></span>
@@ -253,6 +260,7 @@ export default class ProjectWrapper extends React.PureComponent {
         const projectGroupIndexes = project.groups && Object.keys(projects.collection[this.props.params.id].groups)
         const clusters = fn.getClusterDataSet(project.groups)
 
+
         return (
             <div ref={node => this.node = node}>
                 <ContentLoader
@@ -279,6 +287,8 @@ export default class ProjectWrapper extends React.PureComponent {
                             return;
                         }
 
+                        // set fit text compress number
+                        const fitTextCompress = item.icon_size === 's' ? .3 : .5;
                         const position = fn.getPosition(item, location);
 
                         return (
@@ -345,13 +355,15 @@ export default class ProjectWrapper extends React.PureComponent {
                                         {item.icon_path ? (
                                             <img className="react-draggable-handle-icon" src={`${item.icon_path}`}/>
                                         ) : (
-                                            <div className="react-draggable-handle-title">{item.abbreviation}</div>
+                                            <ReactFitText compressor={fitTextCompress}>
+                                                <div className="react-draggable-handle-title">{item.abbreviation}</div>
+                                            </ReactFitText>
                                         )}
                                         <span className="user-colour-dot"
                                               style={{backgroundColor: item.profile_colour}}></span>
                                     </div>
                                     {selectedDraggable === item.id &&
-                                    <span className="react-draggable-title">{item.title}</span>
+                                        <span className="react-draggable-title">{item.title}</span>
                                     }
                                 </div>
                             </Draggable>

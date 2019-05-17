@@ -8,6 +8,7 @@ import * as selector from 'app/containers/group/selector';
 import {makeGetPeople} from './selector';
 import {Link} from "react-router";
 import Coordinate from 'app/components/coordinate';
+import ReactFitText from 'react-fittext'
 
 @connect((state, ownProps) => {
     const getGroups = selector.makeGetGroups();
@@ -140,10 +141,14 @@ export default class PeopleWrapper extends React.PureComponent {
     }
 
     handleClusterItem = (people) => {
+        const { location } = this.props
+        const selectedPeople = fn.getPosition(people, location)
+        const actionPositionClass = fn.getDraggableActionClass({positionX: selectedPeople.positionX, positionY: selectedPeople.positionY})
         this.setState({
             selectedCluster: [],
             showSelectedClusterItem: people.id,
-            selectedDraggable: people.id
+            selectedDraggable: people.id,
+            actionPositionClass: actionPositionClass
         })
     }
 
@@ -177,8 +182,9 @@ export default class PeopleWrapper extends React.PureComponent {
                                                 <img className="react-draggable-handle-icon"
                                                      src={`${people.icon_path}`}/>
                                             ) : (
-                                                <div
-                                                    className="react-draggable-handle-title">{people.abbreviation}</div>
+                                                <ReactFitText compressor={.4}>
+                                                    <div className="react-draggable-handle-title">{people.abbreviation}</div>
+                                                </ReactFitText>
                                             )}
                                             <span className="user-colour-dot"
                                                   style={{backgroundColor: people.profile_colour}}></span>
@@ -289,14 +295,12 @@ export default class PeopleWrapper extends React.PureComponent {
             selectedCluster
         } = this.state
 
-
         if (!container) {
             return null
         }
 
         const clusters = fn.getClusterDataSet(group.people)
         const peopleIndexes = groups.collection[params.groupId] && Object.keys(groups.collection[params.groupId].people)
-
 
         // get the id's of the active organisations
         const activeOrganisationIds = _.map(group.organisations, (item) => {
@@ -340,6 +344,9 @@ export default class PeopleWrapper extends React.PureComponent {
                     const position = fn.getPosition(item, location);
                     const trajectoryClass = fn.getTrajectoryClass(item.trajectory);
 
+                    // set fit text compress number
+                    const fitTextCompress = item.icon_size === 's' ? .3 : .5;
+
                     // If it is on cluster, add 'cluster-item' class
                     let clusterItemClass = fn.getClusterItemClass(clusters, i)
                     let clusterItemShow = null
@@ -379,12 +386,13 @@ export default class PeopleWrapper extends React.PureComponent {
                                     {people.showCharacters && item.character_id !== 0 ? (
                                         <span className={`person-icon avatar-${fn.getAvatarClass(item.size)}`}></span>
                                     ) : (
-                                        <span
-                                            className={`person-icon ${fn.getPeopleCharacter(item.character_id)['iconImage']}`}></span>
+                                        <span className={`person-icon ${fn.getPeopleCharacter(item.character_id)['iconImage']}`}></span>
                                     )}
                                     <span className="person-abbr">{item.abbreviation}</span>
                                     {selectedDraggable === item.id &&
-                                    <span className="react-draggable-title">{item.organisation_title}</span>
+                                        <ReactFitText compressor={fitTextCompress}>
+                                            <span className="react-draggable-title">{item.organisation_title}</span>
+                                        </ReactFitText>
                                     }
                                 </div>
 

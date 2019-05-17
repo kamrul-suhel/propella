@@ -913,8 +913,8 @@ export default {
         const positionY = item.positionY;
         if (positionX < 74) {
             return 'action-right'
-        }else{
-            if(positionX < width / 2 - 74 && positionY < 74){
+        } else {
+            if (positionX < width / 2 - 74 && positionY < 74) {
                 return 'action-right'
             }
 
@@ -931,16 +931,15 @@ export default {
         }
         return '';
     },
-    
-    getClusterItemsPositionClass(item){
+
+    getClusterItemsPositionClass(item) {
         const container = this.getContainer();
         const width = container.width;
         const positionX = item.positionX;
 
-        if(positionX < width / 2){
+        if (positionX < width / 2) {
             return 'cluster-items-right'
-        }
-        else{
+        } else {
             return 'cluster-items-left'
         }
         return '';
@@ -959,7 +958,7 @@ export default {
         _.map(items, (item) => {
             let foundItem = {...item};
             _.map(draggedItems, (draggedItem) => {
-                if(draggedItem.id === item.id){
+                if (draggedItem.id === item.id) {
                     foundItem = {...draggedItem}
                 }
             })
@@ -970,13 +969,14 @@ export default {
 
     /**
      *
-      * @param items
+     * @param items
      * @returns {Array}
      */
-    getClusterDataSet(items){
+    getClusterDataSet(items) {
         let dataSet = [];
         let clusters = []
         _.map(items, (item) => {
+
             let currGroup = [
                 item.positionX,
                 item.positionY
@@ -986,16 +986,71 @@ export default {
 
         if (dataSet.length > 0) {
             let dataScan = new clustering.DBSCAN()
-            clusters = dataScan.run(dataSet, 4)
+            clusters = dataScan.run(dataSet, 5)
         }
         return clusters;
     },
 
-    getClusterItemClass(clusters, index){
+    getClusterItemClass(clusters, index) {
         let clusterGroup = _.flattenDeep(clusters)
         if (_.includes(clusterGroup, index)) {
             return 'cluster-item'
         }
         return null;
+    },
+
+    /**
+     * return you the grid number for positionX min, max & positionY min, max
+     * @param zoomLabel
+     * @returns {{minY: number, minX: number, maxY: number, maxX: number}|{min: number, max: number}}
+     */
+    getZoomNumber(zoomLabel) {
+        switch (zoomLabel) {
+            case 'vip':
+                return {
+                    minX: 50,
+                    maxX: 100,
+                    minY:50,
+                    maxY:100
+                }
+
+            case 'nf':
+                return {
+                    minX: 0,
+                    maxX: 50,
+                    minY:0,
+                    maxY:50
+                }
+
+            case 'up':
+                return {
+                    minX: 0,
+                    maxX: 50,
+                    minY:50,
+                    maxY:100
+                }
+
+            case 'vip':
+                return {
+                    min: 50,
+                    max: 100
+                }
+
+            case 'std':
+                return {
+                    minX: 50,
+                    maxX: 100,
+                    minY:0,
+                    maxY:50
+                }
+
+            default:
+                return {
+                    minX: 0,
+                    maxX: 100,
+                    minY:0,
+                    maxY:100
+                }
+        }
     }
 }

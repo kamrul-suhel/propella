@@ -3,6 +3,7 @@ import Draggable from "react-draggable";
 import {connect} from 'react-redux'
 import {fn} from 'app/utils'
 import {makeGetProject, makeGetProjects} from 'app/containers/project/selector'
+import ReactFitText from 'react-fittext'
 
 @connect((state, ownProps) => {
     const getProject = makeGetProject();
@@ -47,7 +48,9 @@ export default class Cluster extends Component {
                                                 <img className="react-draggable-handle-icon"
                                                      src={`${item.icon_path}`}/>
                                             ) : (
-                                                <div className="react-draggable-handle-title">{item.abbreviation}</div>
+                                                <ReactFitText compressor={.4}>
+                                                    <div className="react-draggable-handle-title">{item.abbreviation}</div>
+                                                </ReactFitText>
                                             )}
                                             <span className="user-colour-dot"
                                                   style={{backgroundColor: item.profile_colour}}></span>

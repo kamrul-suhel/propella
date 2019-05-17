@@ -1,14 +1,15 @@
-import React from 'react';
-import {url} from 'app/constants';
-import {fetchData} from 'app/actions';
-import {connect} from 'react-redux';
-import Draggable from 'react-draggable';
-import {api, fn} from 'app/utils';
-import * as selector from './selector';
-import {makeGetProject, makeGetProjects} from 'app/containers/project/selector';
-import {Link} from "react-router";
+import React from 'react'
+import {url} from 'app/constants'
+import {fetchData} from 'app/actions'
+import {connect} from 'react-redux'
+import Draggable from 'react-draggable'
+import {api, fn} from 'app/utils'
+import * as selector from './selector'
+import {makeGetProject, makeGetProjects} from 'app/containers/project/selector'
+import {Link} from "react-router"
 import Coordinate from 'app/components/coordinate'
-import {ContentLoader} from '@xanda/react-components';
+import {ContentLoader} from '@xanda/react-components'
+import ReactFitText from 'react-fittext'
 
 @connect((state, ownProps) => {
     const getGroups = selector.makeGetGroups();
@@ -135,7 +136,6 @@ export default class GroupWrapper extends React.PureComponent {
     }
 
     onHandleClusterEvent = (event, data) => {
-        const {params} = this.props
         // find the id we're moving
         const clusterIds = _.split(_.find(data.node.attributes, {name: 'handleid'}).value, ',')
         const actionPositionClass = fn.getClusterItemsPositionClass({positionX: data.x, positionY: data.y})
@@ -148,10 +148,14 @@ export default class GroupWrapper extends React.PureComponent {
     }
 
     handleClusterItem = (organisation) => {
+        const { location } = this.props
+        const selectedOrganisation = fn.getPosition(organisation, location)
+        const actionPositionClass = fn.getDraggableActionClass({positionX: selectedOrganisation.positionX, positionY: selectedOrganisation.positionY})
         this.setState({
             selectedCluster: [],
             showSelectedClusterItem: organisation.id,
-            selectedDraggable: organisation.id
+            selectedDraggable: organisation.id,
+            actionPositionClass: actionPositionClass
         })
     }
 
@@ -185,7 +189,9 @@ export default class GroupWrapper extends React.PureComponent {
                                                 <img className="react-draggable-handle-icon"
                                                      src={`${organisation.icon_path}`}/>
                                             ) : (
-                                                <div className="react-draggable-handle-title">{organisation.abbreviation}</div>
+                                                <ReactFitText compressor={.6}>
+                                                    <div className="react-draggable-handle-title">{organisation.abbreviation}</div>
+                                                </ReactFitText>
                                             )}
                                             <span className="user-colour-dot"
                                                   style={{backgroundColor: organisation.profile_colour}}></span>
@@ -347,6 +353,9 @@ export default class GroupWrapper extends React.PureComponent {
                             clusterItemShow = 'cluster-show'
                         }
 
+                        // set fit text compress number
+                        const fitTextCompress = item.icon_size === 's' ? .3 : .5;
+
                         const position = fn.getPosition(item, location);
                         const trajectoryClass = fn.getTrajectoryClass(item.trajectory);
 
@@ -377,7 +386,10 @@ export default class GroupWrapper extends React.PureComponent {
                                      }
                                 >
                                     <div className="react-draggable-handle">
-                                        <div className="react-draggable-handle-title">{item.abbreviation}</div>
+                                        <ReactFitText compressor={fitTextCompress}>
+                                            <div className="react-draggable-handle-title">{item.abbreviation}</div>
+                                        </ReactFitText>
+
                                         <span className="user-colour-dot"
                                               style={{backgroundColor: item.profile_colour}}></span>
                                     </div>

@@ -4183,7 +4183,11 @@ li.rc-time-picker-panel-select-option-disabled:hover {
           object-fit: cover;
           border-radius: 50%; }
         .gridwrapper .gridwrapper-inner .react-draggable .react-draggable-handle .react-draggable-handle-title {
-          text-transform: uppercase; }
+          text-transform: uppercase;
+          width: 80%;
+          text-align: center;
+          word-wrap: break-word;
+          line-height: 1; }
         .gridwrapper .gridwrapper-inner .react-draggable .react-draggable-handle .person-icon {
           height: 31px;
           margin-top: -9px;
@@ -4197,7 +4201,9 @@ li.rc-time-picker-panel-select-option-disabled:hover {
         font-weight: 500;
         color: white;
         width: 70px;
-        text-align: center; }
+        text-align: center;
+        margin-top: 5px;
+        word-wrap: break-word; }
       .gridwrapper .gridwrapper-inner .react-draggable .react-draggable-actions {
         position: absolute;
         left: 50%;
@@ -4623,9 +4629,10 @@ li.rc-time-picker-panel-select-option-disabled:hover {
           margin-right: 10px; }
           .gridwrapper .cluster-items-right .cluster-items .cluster-body .cluster-body-inner .size-m .react-draggable-handle-title {
             position: absolute;
-            bottom: 28px;
+            bottom: 24px;
             left: 50%;
-            transform: translate(-50%); }
+            transform: translate(-50%);
+            line-height: 1; }
           .gridwrapper .cluster-items-right .cluster-items .cluster-body .cluster-body-inner .size-m .react-draggable-handle .user-colour-dot {
             bottom: 12px;
             left: 24px; }

@@ -20,7 +20,7 @@ export default class GridWrapper extends React.PureComponent {
         super(props);
 
         this.state = {
-            container: null,
+            container: null
         };
 
         this._onTouchStart = this._onTouchStart.bind(this);
@@ -98,6 +98,7 @@ export default class GridWrapper extends React.PureComponent {
         const {location} = this.props;
         const zoom = location.query.zoom && location.query.zoom;
         const url = location.pathname;
+        const number = fn.getZoomNumber(zoom);
 
         const childrenWithProps = React.Children.map(this.props.children, child =>
             React.cloneElement(child, {...this.props, container: this.state.container, key: url})
@@ -111,10 +112,10 @@ export default class GridWrapper extends React.PureComponent {
                         <span className="axis-image"/>
                         <div className="top-icon">
                             <span className="icon-slide-icon-crown"/>
-                            <p>100</p>
+                            <p>{number.maxY}</p>
                         </div>
                         <div className="bottom-icon">
-                            <p>0</p>
+                            <p>{number.minY}</p>
                             <span className="icon-slide-icon-jester"/>
                         </div>
                         <p className="axis-label">Royalty</p>
@@ -150,10 +151,10 @@ export default class GridWrapper extends React.PureComponent {
                         <span className="axis-image"/>
                         <div className="left-icon">
                             <span className="icon-slide-icon-hate"/>
-                            <p>0</p>
+                            <p>{number.minX}</p>
                         </div>
                         <div className="right-icon">
-                            <p>100</p>
+                            <p>{number.maxX}</p>
                             <span className="icon-slide-icon-love"/>
                         </div>
                         <p className="axis-label">Loyalty</p>
