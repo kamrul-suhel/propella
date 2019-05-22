@@ -27,6 +27,7 @@ export default class Description extends React.PureComponent {
         return (
             <Form onSubmit={handleSubmit} ref={setFormRef} className="new-person">
                 <TextInput
+                    autoComplete="off"
                     name="title"
                     label="Person's Name"
                     validation="required"
@@ -77,6 +78,7 @@ export default class Description extends React.PureComponent {
                             </FileUpload>
 
                             <TextInput
+                                autoComplete="off"
                                 name="abbreviation"
                                 value={abbreviation}
                                 onChange={handleInputChange}

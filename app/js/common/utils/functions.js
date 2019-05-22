@@ -459,7 +459,7 @@ export default {
             },
             {
                 id: 2,
-                title: 'The Beaver',
+                title: 'The Eager Beaver',
                 largeImage: 'Beaver.svg',
                 iconImage: 'icon-character-eager-beaver',
                 description: 'Coming up fast on royalty, ripe for moving up on loyalty.'
@@ -471,13 +471,13 @@ export default {
                 iconImage: 'icon-character-deadweight',
                 description: 'Low Royalty, low loyalty. Going nowhere.'
             },
-            {
-                id: 4,
-                title: 'The Pirate',
-                largeImage: 'Pirate_1.svg',
-                iconImage: 'icon-character-pirate',
-                description: 'Your competitors'
-            },
+            // {
+            //     id: 4,
+            //     title: 'The Pirate',
+            //     largeImage: 'Pirate_1.svg',
+            //     iconImage: 'icon-character-pirate',
+            //     description: 'Your competitors'
+            // },
             {
                 id: 5,
                 title: 'The Smiley',
@@ -583,10 +583,70 @@ export default {
                 break
 
             case 4:
+                newTrajectory = 5
+                break
+
+            case 5:
+                newTrajectory = 6
+                break
+
+            case 6:
+                newTrajectory = 7
+                break
+
+            case 7:
+                newTrajectory = 8
+                break
+
+            default:
                 newTrajectory = 0
         }
 
         return newTrajectory
+    },
+
+    /**
+     *
+     * @param trajectory
+     * @returns {string}
+     */
+    getTrajectoryClass(trajectory) {
+        switch (trajectory) {
+            case 1:
+                return 'trajectory-pos-12'
+                break
+
+            case 2:
+                return 'trajectory-pos-130'
+                break
+
+            case 3:
+                return 'trajectory-pos-3'
+                break
+
+            case 4:
+                return 'trajectory-pos-430'
+                break
+
+            case 5:
+                return 'trajectory-pos-6'
+                break
+
+            case 6:
+                return 'trajectory-pos-730'
+                break
+
+            case 7:
+                return 'trajectory-pos-9'
+                break
+
+            case 8:
+                return 'trajectory-pos-1030'
+                break
+
+            default:
+                return ''
+        }
     },
 
     /**
@@ -864,34 +924,6 @@ export default {
     },
 
     /**
-     *
-     * @param trajectory
-     * @returns {string}
-     */
-    getTrajectoryClass(trajectory) {
-        switch (trajectory) {
-            case 1:
-                return 'top-right'
-                break
-
-            case 2:
-                return 'bottom-right'
-                break
-
-            case 3:
-                return 'bottom-left'
-                break
-
-            case 4:
-                return 'top-left'
-                break
-            default:
-                return ''
-
-        }
-    },
-
-    /**
      * convert float to int
      * @param value
      * @returns {number}
@@ -976,7 +1008,6 @@ export default {
         let dataSet = [];
         let clusters = []
         _.map(items, (item) => {
-
             let currGroup = [
                 item.positionX,
                 item.positionY
@@ -1028,12 +1059,6 @@ export default {
                     maxX: 50,
                     minY:50,
                     maxY:100
-                }
-
-            case 'vip':
-                return {
-                    min: 50,
-                    max: 100
                 }
 
             case 'std':

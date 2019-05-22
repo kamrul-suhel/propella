@@ -46,9 +46,12 @@ export default class List extends React.PureComponent {
     }
 
     renderItem = (group) => {
+        const { location } = this.props
         if (!group) {
             return
         }
+        let editGroupUrl = `/${url.projects}/${this.props.params.id}/${url.groups}/${group.id}/edit`
+        editGroupUrl = location.query.zoom ? `${editGroupUrl}?zoom=${location.query.zoom}` : editGroupUrl
 
         return (
             <FancyListItem
@@ -72,7 +75,7 @@ export default class List extends React.PureComponent {
                             className="switch"
                         />
                         <Link
-                          to={`/${url.projects}/${this.props.params.id}/${url.groups}/${group.id}/edit`}
+                          to={editGroupUrl}
                           className="icon-pencil"
                         />
                         <span onClick={() => this.handleDelete(group.id)} className="clickable icon-bin"/>
@@ -90,16 +93,20 @@ export default class List extends React.PureComponent {
     }
 
     render() {
-        const {projects, project} = this.props
+        const {projects, project, location} = this.props
+        const closePath = location.query.zoom ? `/${url.projects}/${this.props.params.id}/${url.zoom}?zoom=${location.query.zoom}` : `/${url.projects}/${this.props.params.id}`
+        const addGroupLink = location.query.zoom ? `/${url.projects}/${this.props.params.id}/${url.groups}/add?zoom=${location.query.zoom}` : `/${url.projects}/${this.props.params.id}/${url.groups}/add`
 
         return (
             <ProjectWrapper {...this.props}>
               <Popup
                   additionalClass="groups"
                   title="Groups"
-                  closePath={`/${url.projects}/${this.props.params.id}`}
-                  buttons={_.isEmpty(project.groups) ? `` : <Link className="button" to={`/${url.projects}/${this.props.params.id}/${url.groups}/add`}>Add
-                          group</Link>}
+                  closePath={closePath}
+                  buttons={_.isEmpty(project.groups) ? `` :
+                      <Link className="button"
+                            to={addGroupLink}>Add group
+                      </Link>}
               >
                   <ContentLoader
                       data={projects.collection}

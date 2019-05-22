@@ -15,53 +15,57 @@ import * as Competitor from 'app/containers/competitor';
  * @param   {Object}    component        Components are imported from the containers folder
  */
 const Routes = (
-  <Route path="/" component={C.AppWrapper} >
-    <IndexRedirect to={`/${url.projects}`} />
-    // Manage Exports
-    <Route path={`${url.projects}/:id/${url.groups}/:groupId/${url.organisations}/${url.report}`} component={Organisation.Report} />
-    <Route path={`${url.projects}/:id/${url.groups}/:groupId/${url.people}/${url.report}`} component={People.Report} />
+    <Route path="/" component={C.AppWrapper}>
+        <IndexRedirect to={`/${url.projects}`}/>
+        // Manage Exports
+        <Route path={`${url.projects}/:id/${url.groups}/:groupId/${url.organisations}/${url.report}`}
+               component={Organisation.Report}/>
+        <Route path={`${url.projects}/:id/${url.groups}/:groupId/${url.people}/${url.report}`}
+               component={People.Report}/>
 
-    <Route path={url.organisationTypes} component={Organisation.Types} />
-    <Route path={url.peopleTypes} component={People.Types} />
+        <Route path={url.organisationTypes} component={Organisation.Types}/>
+        <Route path={url.peopleTypes} component={People.Types}/>
 
-    <Route path={url.projects}>
-      <IndexRoute component={Project.List} />
-      <Route path={`${url.archives}`} component={Project.Archive} />
-      <Route path="add" component={Project.Edit} />
-      <Route path=":id/edit" component={Project.Edit} />
-      <Route path=":id" component={C.GridWrapper}>
-          <IndexRoute component={Project.View}/>
-          <Route path={`${url.zoom}`} component={Project.View}/>
-          <Route path={url.groups}>
-            <IndexRoute component={Group.List} />
-            <Route path="add" component={Group.Edit} type="add" activeNav/>
-            <Route path=":groupId">
-              <IndexRoute component={Group.View}/>
-              <Route path={`${url.zoom}`} component={Group.View}/>
-                <Route path="edit" component={Group.Edit} type="edit" activeNav />
-                <Route path="competitors" activeNav>
-                  <IndexRoute component={Competitor.List} />
-                  <Route path=":competitorId" component={Competitor.Edit} activeNav />
-                </Route>
-                <Route path={url.organisations}>
-                  <IndexRoute component={Organisation.List}/>
-                  <Route path={url.people} component={People.PeopleWrapper} />
-                  <Route path={`${url.people}/${url.zoom}`} component={People.PeopleWrapper}/>
-                  <Route path=":organisationId" component={Organisation.Edit} activeNav />
-                  <Route path={url.organisations} component={Organisation.Edit} activeNav />
-                </Route>
-                <Route path={url.people}>
-                    <IndexRoute component={People.List}/>
-                    <Route path=":personId">
-                      <IndexRoute component={People.Edit} />
-                      <Route path={url.characters} component={People.Character} activeNav />
+        <Route path={url.projects}>
+            <IndexRoute component={Project.List}/>
+            <Route path={`${url.archives}`} component={Project.Archive}/>
+            <Route path="add" component={Project.Edit}/>
+            <Route path=":id/edit" component={Project.Edit}/>
+            <Route path=":id" component={C.GridWrapper}>
+                <IndexRoute component={Project.View}/>
+                <Route path={`${url.zoom}`} component={Project.View}/>
+                <Route path={url.groups}>
+                    <IndexRoute component={Group.List}/>
+                    <Route path="zoom" component={Group.List} type="add" activeNav/>
+                    <Route path="add" component={Group.Edit} type="add" activeNav/>
+                    <Route path=":groupId">
+                        <IndexRoute component={Group.View}/>
+                        <Route path={`${url.zoom}`} component={Group.View}/>
+                        <Route path="edit" component={Group.Edit} type="edit" activeNav/>
+                        <Route path="edit/zoom" component={Group.Edit} type="edit" activeNav/>
+                        <Route path="competitors" activeNav>
+                            <IndexRoute component={Competitor.List}/>
+                            <Route path=":competitorId" component={Competitor.Edit} activeNav/>
+                        </Route>
+                        <Route path={url.organisations}>
+                            <IndexRoute component={Organisation.List}/>
+                            <Route path={url.people} component={People.PeopleWrapper}/>
+                            <Route path={`${url.people}/${url.zoom}`} component={People.PeopleWrapper}/>
+                            <Route path=":organisationId" component={Organisation.Edit} activeNav/>
+                            <Route path={url.organisations} component={Organisation.Edit} activeNav/>
+                        </Route>
+                        <Route path={url.people}>
+                            <IndexRoute component={People.List}/>
+                            <Route path=":personId">
+                                <IndexRoute component={People.Edit}/>
+                                <Route path={url.characters} component={People.Character} activeNav/>
+                            </Route>
+                        </Route>
                     </Route>
                 </Route>
-              </Route>
-          </Route>
-      </Route>
+            </Route>
+        </Route>
     </Route>
-  </Route>
 );
 
 export default Routes;

@@ -363,33 +363,6 @@
             left: 55px;
           }
         }
-
-        &.trajectory-top-right {
-          .react-draggable-handle:before {
-            right: -4px;
-          }
-        }
-
-        &.trajectory-bottom-right {
-          .react-draggable-handle:before {
-            bottom: -4px;
-          }
-        }
-
-        &.trajectory-bottom-left {
-          .react-draggable-handle:before {
-            bottom: -4px;
-            left: -4px;
-          }
-        }
-
-        &.trajectory-top-left {
-          .react-draggable-handle:before {
-            bottom: 0;
-            left: -7px;
-            transform: rotate(-6deg);
-          }
-        }
       }
 
       &.is-selected {
@@ -415,48 +388,67 @@
         }
       }
 
-      &.trajectory-top-right {
+      &.trajectory-pos-12 {
         .react-draggable-handle {
           &:before {
             content: "";
             display: block;
             position: absolute;
-            top: 0;
-            right: 0;
+            top: -10px;
             width: 0;
             height: 0;
             border-style: solid;
             border-width: 0 9px 9px 0;
             border-color: transparent #ffffff transparent transparent;
+            transform:rotate(-45deg);
           }
         }
       }
 
-      &.trajectory-bottom-left {
+      &.trajectory-pos-130 {
         .react-draggable-handle {
           &:before {
             content: "";
             display: block;
             position: absolute;
-            bottom: 0;
-            left: -2px;
             width: 0;
+            top:0;
+            right:0;
             height: 0;
             border-style: solid;
             border-width: 9px 0 0 9px;
             border-color: transparent transparent transparent #ffffff;
+            transform:rotate(180deg);
           }
         }
       }
 
-      &.trajectory-bottom-right {
+      &.trajectory-pos-3 {
         .react-draggable-handle {
           &:before {
             content: "";
             display: block;
             position: absolute;
-            bottom: 0px;
-            right: -4px;
+            bottom: calc(50% - 9px);
+            right: -10px;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 0 9px 9px;
+            border-color: transparent transparent transparent #ffffff;
+            transform: rotate(135deg);
+          }
+        }
+      }
+
+      &.trajectory-pos-430 {
+        .react-draggable-handle {
+          &:before {
+            content: "";
+            display: block;
+            position: absolute;
+            bottom: -5px;
+            right: 0;
             width: 0;
             height: 0;
             border-style: solid;
@@ -467,7 +459,61 @@
         }
       }
 
-      &.trajectory-top-left {
+      &.trajectory-pos-6 {
+        .react-draggable-handle {
+          &:before {
+            content: "";
+            display: block;
+            position: absolute;
+            bottom: -24px;
+            left: calc(50% - 5px);
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 0 9px 9px;
+            border-color: transparent transparent transparent #ffffff;
+            transform: rotate(-135deg);
+          }
+        }
+      }
+
+      &.trajectory-pos-730 {
+        .react-draggable-handle {
+          &:before {
+            content: "";
+            display: block;
+            position: absolute;
+            bottom: 0;
+            left: -5px;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 0 9px 9px;
+            border-color: transparent transparent transparent #ffffff;
+            transform: rotate(-85deg);
+          }
+        }
+      }
+
+      &.trajectory-pos-9 {
+        .react-draggable-handle {
+          &:before {
+            content: "";
+            display: block;
+            position: absolute;
+            top: calc(50% - 2px);
+            left: -10px;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 0 9px 9px;
+            border-color: transparent transparent transparent #ffffff;
+            transform: rotate(-45deg);
+          }
+        }
+      }
+
+      &.trajectory-pos-1030 {
         .react-draggable-handle {
           &:before {
             content: "";
@@ -802,8 +848,8 @@
   // Styling cluster item
   #gridwrapper-inner {
     .cluster {
-      height: 66px;
-      width: 55px;
+      height: 70px;
+      width: 64px;
       padding: 1px 1px 15px 1px;
       background-image: url(../images/icon-white-medium.png);
 
@@ -813,7 +859,7 @@
         .react-draggable-handle-title {
           font-size: 18px;
           position: absolute;
-          bottom: 13px;
+          bottom: 15px;
           left: 50%;
           transform: translate(-50%);
 
@@ -848,6 +894,7 @@
 
         .cluster-body-inner {
           display: flex;
+          flex-flow:wrap;
 
           .size-m {
             height: 66px;
@@ -855,6 +902,7 @@
             background-image: url(../images/marker-medium.svg);
             font-size: 14px;
             margin-right: 10px;
+            margin-bottom:10px;
 
             .react-draggable-handle-title {
               position: absolute;

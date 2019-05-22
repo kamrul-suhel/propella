@@ -8,12 +8,12 @@ import {api, fn} from 'app/utils';
 import {connect} from 'react-redux';
 import {Form, TextInput, Radio, FileUpload} from '@xanda/react-components';
 import * as selector from './selector';
-import { makeGetProjectUsers } from 'app/containers/project/selector'
+import {makeGetProjectUsers} from 'app/containers/project/selector'
 import Description from './edit/Description';
 import Royalty from './edit/Royalty';
 import Loyalty from './edit/Loyalty';
 import Overview from './edit/Overview';
-import { GroupWrapper } from 'app/containers/group';
+import {GroupWrapper} from 'app/containers/group';
 
 @connect((state, ownProps) => {
     const getOrganisations = selector.makeGetOrganisations();
@@ -89,7 +89,7 @@ export default class Edit extends React.PureComponent {
     triggerSubmit = () => this.formRef.submit()
 
     handleSubmit = async () => {
-        const {popup, params, organisation} = this.props
+        const {popup, params, organisation, location} = this.props
         const {step} = this.state
 
         // submit an api call if your on the last step otherwise go to the next step
@@ -122,42 +122,67 @@ export default class Edit extends React.PureComponent {
         if (!api.error(response)) {
             this.fetchGroup()
             this.fetchData()
-            fn.navigate(`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.organisations}`)
+            const redirectUrl = location.query.zoom ? `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.zoom}?zoom=${location.query.zoom}` :
+                `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.organisations}`
+            fn.navigate(redirectUrl)
         }
     }
 
     popupActions = () => {
         const {step} = this.state
-        const {organisation, params} = this.props
+        const {organisation, params, location} = this.props
+        const cancelUrl = location.query.zoom ? `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.zoom}?zoom=${location.query.zoom}` :
+            `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.organisations}`
 
         switch (step) {
             case 1:
                 return (
                     [
-                        <Link to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.organisations}`}
-                              className="button">Cancel</Link>,
-                        <button onClick={this.triggerSubmit} type="button" className="button">Next</button>
+                        <Link to={cancelUrl}
+                              className="button">Cancel
+                        </Link>,
+                        <button onClick={this.triggerSubmit}
+                                type="button"
+                                className="button">Next
+                        </button>
                     ]
                 );
             case 2:
                 return (
                     [
-                        <button type="button" onClick={() => this.handleStepChange(1)} className="button">Back</button>,
-                        <button onClick={this.triggerSubmit} type="button" className="button">Next</button>
+                        <button type="button"
+                                onClick={() => this.handleStepChange(1)}
+                                className="button">Back
+                        </button>,
+                        <button onClick={this.triggerSubmit}
+                                type="button"
+                                className="button">Next
+                        </button>
                     ]
                 );
             case 3:
                 return (
                     [
-                        <button type="button" onClick={() => this.handleStepChange(2)} className="button">Back</button>,
-                        <button onClick={this.triggerSubmit} type="button" className="button">Next</button>
+                        <button type="button"
+                                onClick={() => this.handleStepChange(2)}
+                                className="button">Back
+                        </button>,
+                        <button onClick={this.triggerSubmit}
+                                type="button"
+                                className="button">Next
+                        </button>
                     ]
                 );
             case 4:
                 return (
                     [
-                        <button type="button" onClick={() => this.handleStepChange(1)} className="button">Edit</button>,
-                        <button onClick={this.handleSubmit} type="button" className="button">
+                        <button type="button"
+                                onClick={() => this.handleStepChange(1)}
+                                className="button">Edit
+                        </button>,
+                        <button onClick={this.handleSubmit}
+                                type="button"
+                                className="button">
                             {organisation.id ? 'Update' : 'Add to board'}
                         </button>
                     ]
@@ -188,20 +213,21 @@ export default class Edit extends React.PureComponent {
     }
 
     render() {
-        console.log("Porps is : ", this.props);
-        const {organisation, popup, params} = this.props
+        const { popup, params, location } = this.props
         const {step} = this.state
+        const closePath = location.query.zoom ? `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.zoom}?zoom=${location.query.zoom}` :
+            `/${url.projects}/${params.id}/${url.groups}/${params.groupId}`
 
         return (
             <GroupWrapper {...this.props}>
-              <Popup
-                  additionalClass={(step !== 4 ? `organisations wide` : 'organisations small-window')}
-                  title={popup.title ? `Organisation: ${popup.title}` : `New Organisation`}
-                  closePath={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}`}
-                  buttons={this.popupActions()}
-              >
-                  {this.editStep()}
-              </Popup>
+                <Popup
+                    additionalClass={(step !== 4 ? `organisations wide` : 'organisations small-window')}
+                    title={popup.title ? `Organisation: ${popup.title}` : `New Organisation`}
+                    closePath={closePath}
+                    buttons={this.popupActions()}
+                >
+                    {this.editStep()}
+                </Popup>
             </GroupWrapper>
         );
     }

@@ -45,32 +45,106 @@ export default class Nav extends React.PureComponent {
         /^\/projects\/[0-9]*\/groups\/[0-9]*\/organisations\/people/
       )
     ) {
-      return `/projects/${params.id}/groups/${params.groupId}/people`;
-    } else if (
+      let link = `/projects/${params.id}/groups/${params.groupId}/people`
+      return location.query.zoom ? `${link}/zoom?zoom=${location.query.zoom}` : link
+    }
+
+    else if (
       location.pathname.match(
         /^\/projects\/[0-9]*\/groups\/[0-9]*\/organisations/
       )
     ) {
-      return `/projects/${params.id}/groups/${params.groupId}`;
-    } else if (
+      let link = `/projects/${params.id}/groups/${params.groupId}`
+      return location.query.zoom ? `${link}/zoom?zoom=${location.query.zoom}` : link
+    }
+
+    else if (
       location.pathname.match(/^\/projects\/[0-9]*\/groups\/[0-9]*\/people/)
     ) {
-      return `/projects/${params.id}/groups/${
-        params.groupId
-      }/organisations/people`;
-    } else if (location.pathname.match(/^\/projects\/[0-9]*\/groups\/[0-9]/)) {
-      return `/projects/${params.id}/groups/${params.groupId}/organisations`;
-    } else if (location.pathname.match(/^\/projects\/[0-9]*\/groups/)) {
-      return `/projects/${params.id}`;
-    } else if (location.pathname.match(/^\/projects\/[0-9]*/)) {
-      return `/projects/${params.id}/groups`;
-    } else if (
+      let link = `/projects/${params.id}/groups/${params.groupId}/organisations/people`
+      return location.query.zoom ? `${link}/zoom?zoom=${location.query.zoom}` : link
+    }
+
+    else if (location.pathname.match(/^\/projects\/[0-9]*\/groups\/[0-9]/)) {
+      let link = `/projects/${params.id}/groups/${params.groupId}/organisations`
+      return location.query.zoom ? `${link}/zoom?zoom=${location.query.zoom}` : link;
+    }
+
+    else if (location.pathname.match(/^\/projects\/[0-9]*\/groups/)) {
+      let link = `/projects/${params.id}`
+      return location.query.zoom ? `${link}/zoom?zoom=${location.query.zoom}` : link
+    }
+
+    else if (location.pathname.match(/^\/projects\/[0-9]*/)) {
+      let link = `/projects/${params.id}/groups`
+      return location.query.zoom ? `${link}/zoom?zoom=${location.query.zoom}` : link;
+    }
+
+    else if (
       location.pathname.match(/^\/projects\/[0-9]*\/groups\/[0-9]\/edit/)
     ) {
     }
 
     return "/";
   };
+
+  previousLink = () => {
+    const { params, location } = this.props;
+
+    if(location.pathname.match(/^\/projects\/[0-9]*\/groups\/[0-9]*\/organisations\/people\/zoom/)){
+      return `/projects/${params.id}/groups/${params.groupId}/organisations/people`
+    }
+
+    else if (
+        location.pathname.match(
+            /^\/projects\/[0-9]*\/groups\/[0-9]*\/zoom/
+        )
+    ) {
+      return `/projects/${params.id}/groups/${params.groupId}`;
+    }
+
+    else if (
+        location.pathname.match(
+            /^\/projects\/[0-9]*\/groups\/[0-9]*\/organisations\/people/
+        )
+    ) {
+      return `/projects/${params.id}/groups/${params.groupId}`;
+    }
+
+    else if (
+        location.pathname.match(
+            /^\/projects\/[0-9]*\/groups\/[0-9]*\/organisations/
+        )
+    ) {
+      return `/projects/${params.id}/groups/${params.groupId}`;
+    }
+
+    else if (
+        location.pathname.match(/^\/projects\/[0-9]*\/groups\/[0-9]*\/people/)
+    ) {
+      return `/projects/${params.id}/groups/${params.groupId}`;
+    }
+
+    else if (location.pathname.match(/^\/projects\/[0-9]*\/groups\/[0-9]/)) {
+      return `/projects/${params.id}`;
+    }
+
+    else if (location.pathname.match(/^\/projects\/[0-9]*\/groups/)) {
+      return `/projects/${params.id}`;
+    }
+
+    else if (location.pathname.match(/^\/projects\/[0-9]*/)) {
+      return `/projects/${params.id}/groups`;
+    }
+
+    else if (
+        location.pathname.match(/^\/projects\/[0-9]*\/groups\/[0-9]\/edit/)
+    ) {
+    }
+
+    return "/";
+  }
+
 
   reportLink = () => {
     const { params, location } = this.props;
@@ -107,6 +181,7 @@ export default class Nav extends React.PureComponent {
     const activeReport = location.pathname.match(/(\/report)/);
     const menuClass = this.state.menuOpen ?'is-open-menu' : ''
     const burgerClass = this.state.menuOpen ?'is-active' : ''
+    const projectUrl = location.query.zoom ? `/${url.projects}/${params.id}` : `/${url.projects}/${params.id}`
 
     return (
       <div className="nav">
@@ -116,13 +191,13 @@ export default class Nav extends React.PureComponent {
 
         {params.id &&
           <React.Fragment>
-          {params.groupId && location.pathname.match(/(\/organisations|\/people|\/\groups\/[0-9]+)/) ? (
+          {group.title && params.groupId && location.pathname.match(/(\/organisations|\/people|\/\groups\/[0-9]+)/) ? (
             <React.Fragment>
               <Link to={this.nextLink} className="nav-link">
                 {group.title}
               </Link>
               <Link
-                to={`/${url.projects}/${params.id}`}
+                to={projectUrl}
                 className="nav-close icon-x-small"
                 title="Back to All Groups"
               />

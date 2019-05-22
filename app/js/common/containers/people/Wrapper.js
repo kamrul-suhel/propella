@@ -252,18 +252,10 @@ export default class PeopleWrapper extends React.PureComponent {
     }
 
     handleSetTrajectory = async (people) => {
-        const {params, draggedPeople} = this.props
+        const {params} = this.props
         const newTrajectory = fn.getTrajectory(people.trajectory)
-        _.map(draggedPeople.people, (draggedPeople) => {
-            if (draggedPeople.id === people.id) {
-                people = {...draggedPeople}
-            }
-        })
-        const response = await api.put(`people/${people.id}`, {trajectory: newTrajectory})
 
-        this.props.dispatch({
-            type: 'DRAGGED_PEOPLE_CLEAR'
-        })
+        const response = await api.put(`people/${people.id}`, {trajectory: newTrajectory})
 
         this.props.dispatch(
             {
@@ -333,6 +325,7 @@ export default class PeopleWrapper extends React.PureComponent {
                 }
 
                 {_.map(group.people, (item, i) => {
+
                     // only display people belonging to an active organisation
                     if (item.status < 1 || !_.includes(activeOrganisationIds, item.organisation_id)) {
                         return
@@ -356,6 +349,12 @@ export default class PeopleWrapper extends React.PureComponent {
                         clusterItemShow = 'cluster-show'
                     }
 
+                    let editPeopleLink = `/${url.projects}/${params.id}/groups/${group.id}/${url.people}/${item.id}`
+                    editPeopleLink = location.query.zoom ? `${editPeopleLink}?zoom=${location.query.zoom}` : editPeopleLink
+
+                    let assignCharacterLink = `/${url.projects}/${params.id}/groups/${group.id}/${url.people}/${item.id}/${url.characters}`
+                    assignCharacterLink = location.query.zoom ? `${assignCharacterLink}?zoom=${location.query.zoom}` : assignCharacterLink
+
                     return (
                         <Draggable
                             key={item.id}
@@ -376,7 +375,7 @@ export default class PeopleWrapper extends React.PureComponent {
                                          clusterItemClass,
                                          clusterItemShow,
                                          `size-m`,
-                                         `trajectory-${trajectoryClass}`,
+                                         `${trajectoryClass}`,
                                          (selectedDraggable && selectedDraggable !== item.id ? 'disabled' : ''),
                                          (selectedDraggable === item.id ? 'is-selected' : '')
                                      ]
@@ -399,7 +398,7 @@ export default class PeopleWrapper extends React.PureComponent {
                                 {selectedDraggable === item.id &&
                                 <div className={`react-draggable-actions ${actionPositionClass}`}>
                                     <Link className="button-round first"
-                                          to={`/${url.projects}/${params.id}/groups/${group.id}/${url.people}/${item.id}/${url.characters}`}>
+                                          to={assignCharacterLink}>
                                         <span className="button-round-inside icon-masks"/>
                                         Assign<br/>Character
                                     </Link>
@@ -416,7 +415,7 @@ export default class PeopleWrapper extends React.PureComponent {
                                     )}
 
                                     <Link className="button-round third"
-                                          to={`/${url.projects}/${params.id}/groups/${group.id}/${url.people}/${item.id}`}>
+                                          to={editPeopleLink}>
                                         <span className="button-round-inside icon-pencil"/>
                                         Edit
                                     </Link>

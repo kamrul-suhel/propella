@@ -1,19 +1,17 @@
 import React from 'react';
 import {Link} from 'react-router';
-import Draggable from 'react-draggable';
 import {Popup} from 'app/components';
 import {url} from 'app/constants';
 import {fetchData} from 'app/actions';
 import {api, fn} from 'app/utils';
 import {connect} from 'react-redux';
-import {Form, TextInput, Radio, FileUpload} from '@xanda/react-components';
-import { makeGetProjectUsers } from 'app/containers/project/selector';
+import {makeGetProjectUsers} from 'app/containers/project/selector';
 import * as selector from './selector';
 import Description from './edit/Description';
 import Royalty from './edit/Royalty';
 import Loyalty from './edit/Loyalty';
 import Overview from './edit/Overview';
-import { ProjectWrapper } from 'app/containers/project';
+import {ProjectWrapper} from 'app/containers/project';
 
 @connect((state, ownProps) => {
     const getGroups = selector.makeGetProjectGroups();
@@ -66,7 +64,7 @@ export default class Edit extends React.PureComponent {
 
     handleInputChange = (name, value) => {
         this.setState({
-            [name] : value
+            [name]: value
         });
         this.props.dispatch({type: 'POPUP_UPDATED', payload: {[name]: value}})
     }
@@ -78,7 +76,7 @@ export default class Edit extends React.PureComponent {
     triggerSubmit = () => this.formRef.submit()
 
     handleSubmit = async () => {
-        const {popup, params, group} = this.props
+        const {popup, params, group, location} = this.props
         const {step} = this.state
 
         // submit an api call if your on the last step otherwise go to the next step
@@ -109,43 +107,74 @@ export default class Edit extends React.PureComponent {
         }
 
         if (!api.error(response)) {
-            // this.fetchData();
-            fn.navigate(`/${url.projects}/${params.id}`)
+            this.fetchData()
+            const redirectUrl = location.query.zoom ? `/${url.projects}/${params.id}/${url.groups}/${url.zoom}?zoom=${location.query.zoom}` : `/${url.projects}/${params.id}/${url.groups}`
+            fn.navigate(redirectUrl)
         }
     }
 
     popupActions = () => {
         const {step} = this.state
-        const {group} = this.props
+        const {group, location} = this.props
+        const projectUrl = location.query.zoom ? `/${url.projects}/${this.props.params.id}/zoom?zoom=${location.query.zoom}` :
+            `/${url.projects}/${this.props.params.id}/${url.groups}`
 
         switch (step) {
             case 1:
                 return (
                     [
-                        <Link key={'cancel'} to={`/${url.projects}/${this.props.params.id}/${url.groups}`}
-                              className="button">Cancel</Link>,
-                        <button key={'next'} onClick={this.triggerSubmit} type="button" className="button">Next</button>
+                        <Link key={'cancel'}
+                              to={projectUrl}
+                              className="button">Cancel
+                        </Link>,
+                        <button key={'next'}
+                                onClick={this.triggerSubmit}
+                                type="button"
+                                className="button">Next
+                        </button>
                     ]
                 );
             case 2:
                 return (
                     [
-                        <button key={'cancel'} type="button" onClick={() => this.handleStepChange(1)} className="button">Back</button>,
-                        <button key={'next'} onClick={this.triggerSubmit} type="button" className="button">Next</button>
+                        <button key={'cancel'}
+                                type="button"
+                                onClick={() => this.handleStepChange(1)}
+                                className="button">Back
+                        </button>,
+                        <button key={'next'}
+                                onClick={this.triggerSubmit}
+                                type="button"
+                                className="button">Next
+                        </button>
                     ]
                 );
             case 3:
                 return (
                     [
-                        <button key={'cancel'} type="button" onClick={() => this.handleStepChange(2)} className="button">Back</button>,
-                        <button key={'next'} onClick={this.triggerSubmit} type="button" className="button">Next</button>
+                        <button key={'cancel'}
+                                type="button"
+                                onClick={() => this.handleStepChange(2)}
+                                className="button">Back
+                        </button>,
+                        <button key={'next'}
+                                onClick={this.triggerSubmit}
+                                type="button"
+                                className="button">Next
+                        </button>
                     ]
                 );
             case 4:
                 return (
                     [
-                        <button key={'cancel'} type="button" onClick={() => this.handleStepChange(1)} className="button">Edit</button>,
-                        <button key={'next'} onClick={this.handleSubmit} type="button" className="button">
+                        <button key={'cancel'}
+                                type="button" onClick={() => this.handleStepChange(1)}
+                                className="button">Edit
+                        </button>,
+                        <button key={'next'}
+                                onClick={this.handleSubmit}
+                                type="button"
+                                className="button">
                             {group && group.id ? 'Update' : 'Add to board'}
                         </button>
                     ]
@@ -176,21 +205,22 @@ export default class Edit extends React.PureComponent {
     }
 
     render() {
-        const {group, popup, params} = this.props
+        const {popup, params, location} = this.props
         const {step} = this.state;
+        const closePath = location.query.zoom ? `/${url.projects}/${params.id}/zoom?zoom=${location.query.zoom}` : `/${url.projects}/${params.id}`
 
         return (
             <ProjectWrapper {...this.props}>
-              <Popup
-                  additionalClass={(step !== 4 ? `groups wide` : 'groups small-window')}
-                  title={popup.title ? `Group: ${popup.title}` : `New Group`}
-                  closePath={`/${url.projects}/${params.id}`}
-                  buttons={this.popupActions()}
-              >
-                  <div>
-                      {this.editStep()}
-                  </div>
-              </Popup>
+                <Popup
+                    additionalClass={(step !== 4 ? `groups wide` : 'groups small-window')}
+                    title={popup.title ? `Group: ${popup.title}` : `New Group`}
+                    closePath={closePath}
+                    buttons={this.popupActions()}
+                >
+                    <div>
+                        {this.editStep()}
+                    </div>
+                </Popup>
             </ProjectWrapper>
         );
     }

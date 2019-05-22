@@ -258,7 +258,7 @@ export default class ProjectWrapper extends React.PureComponent {
         }
 
         const projectGroupIndexes = project.groups && Object.keys(projects.collection[this.props.params.id].groups)
-        const clusters = fn.getClusterDataSet(project.groups)
+        const clusters = fn.getClusterDataSet(project.groups, location)
 
 
         return (
@@ -291,6 +291,13 @@ export default class ProjectWrapper extends React.PureComponent {
                         const fitTextCompress = item.icon_size === 's' ? .3 : .5;
                         const position = fn.getPosition(item, location);
 
+                        // to edit project in zoom and normal mode
+                        const projectEditUrl = location.query.zoom ? `/${url.projects}/${params.id}/groups/${item.id}/edit?zoom=${location.query.zoom}`
+                            :
+                            `/${url.projects}/${params.id}/groups/${item.id}/edit`
+
+                        const organisationUrl = `/${url.projects}/${params.id}/groups/${item.id}`
+
                         return (
                             <Draggable
                                 key={item.id}
@@ -322,7 +329,7 @@ export default class ProjectWrapper extends React.PureComponent {
                                     {selectedDraggable === item.id &&
                                     <div className={`react-draggable-actions ${actionPositionClass}`}>
                                         <Link className="button-round first"
-                                              to={`/${url.projects}/${params.id}/groups/${item.id}/edit`}>
+                                              to={projectEditUrl}>
                                             <span className="button-round-inside icon-pencil"/>
                                             Edit
                                         </Link>
@@ -339,7 +346,7 @@ export default class ProjectWrapper extends React.PureComponent {
                                         )}
 
                                         <Link className="button-round third"
-                                              to={`/${url.projects}/${params.id}/groups/${item.id}`}>
+                                              to={organisationUrl}>
                                             <span className="button-round-inside icon-add-organisation"/>
                                             Organisations
                                         </Link>

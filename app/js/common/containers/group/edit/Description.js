@@ -35,6 +35,7 @@ export default class Description extends React.PureComponent {
         return (
             <Form onSubmit={handleSubmit} ref={setFormRef}>
                 <TextInput
+                    autoComplete="off"
                     name="title"
                     label="Name Your Group"
                     validation="required"
@@ -105,6 +106,7 @@ export default class Description extends React.PureComponent {
                 />
 
                 <TextInput
+                    autoComplete="off"
                     name="description"
                     label="What is this Group About?"
                     textarea

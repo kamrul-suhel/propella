@@ -85,13 +85,16 @@ export default class List extends React.PureComponent {
     }
 
     render() {
-        const {groups, group, params, people} = this.props
+        const {groups, group, params, people } = this.props
+        let organisationUrl = `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.organisations}`
+
+        let addPeopleLink = `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}/add`
 
         return (
             <PeopleWrapper {...this.props}>
                 <Popup
                     beforeTitle={<Link
-                        to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.organisations}`}>Organisations</Link>}
+                        to={organisationUrl}>Organisations</Link>}
                     title="People"
                     buttons={
                         <React.Fragment>
@@ -99,7 +102,7 @@ export default class List extends React.PureComponent {
                             <React.Fragment>
                                 <Link
                                     className="button"
-                                    to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}/add`}
+                                    to={addPeopleLink}
                                 >Add Person</Link>
                                 <span
                                     className="button"

@@ -87,12 +87,9 @@ export default class Cluster extends Component {
                 grid={[10, 10]}
                 scale={1}
                 bounds=".gridwrapper-inner-section-wrapper"
-                onStop={this.props.onClusterEventHandler}
-            >
-
+                onStop={this.props.onClusterEventHandler}>
                 <div handleid={clusterIds}
-                     className={classes}
-                >
+                     className={classes}>
                     <div className="react-draggable-handle cluster-handle">
                         {item.icon_path ? (
                             <img className="react-draggable-handle-icon"

@@ -358,6 +358,10 @@ export default class GroupWrapper extends React.PureComponent {
 
                         const position = fn.getPosition(item, location);
                         const trajectoryClass = fn.getTrajectoryClass(item.trajectory);
+                        const groupEditUrl = location.query.zoom ? `/${url.projects}/${params.id}/groups/${group.id}/${url.organisations}/${item.id}?zoom=${location.query.zoom}` :
+                            `/${url.projects}/${params.id}/groups/${group.id}/${url.organisations}/${item.id}`
+
+                        const peopleUrl = `/${url.projects}/${params.id}/groups/${group.id}/${url.organisations}/${url.people}`
 
                         return (
                             <Draggable
@@ -379,7 +383,7 @@ export default class GroupWrapper extends React.PureComponent {
                                              clusterItemClass,
                                              clusterItemShow,
                                              `size-${item.icon_size}`,
-                                             `trajectory-${trajectoryClass}`,
+                                             `${trajectoryClass}`,
                                              (selectedDraggable && selectedDraggable !== item.id ? 'disabled' : ''),
                                              (selectedDraggable === item.id ? 'is-selected' : '')
                                          ]
@@ -400,7 +404,7 @@ export default class GroupWrapper extends React.PureComponent {
                                     {selectedDraggable === item.id &&
                                     <div className={`react-draggable-actions ${actionPositionClass}`}>
                                         <Link className="button-round first"
-                                              to={`/${url.projects}/${params.id}/groups/${group.id}/${url.organisations}/${item.id}`}>
+                                              to={groupEditUrl}>
                                             <span className="button-round-inside icon-pencil"/>
                                             Edit
                                         </Link>
@@ -418,7 +422,7 @@ export default class GroupWrapper extends React.PureComponent {
                                         )}
 
                                         <Link className="button-round third"
-                                              to={`/${url.projects}/${params.id}/groups/${group.id}/${url.organisations}/${url.people}`}>
+                                              to={peopleUrl}>
                                             <span className="button-round-inside icon-add-organisation"/>
                                             People
                                         </Link>

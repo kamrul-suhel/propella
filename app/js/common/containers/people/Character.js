@@ -64,23 +64,21 @@ export default class Edit extends React.PureComponent {
   };
 
   handleSubmit = async () => {
-    const { params } = this.props;
+    const { params, location } = this.props;
     const { activeSlide } = this.state;
     const response = await api.put(`/people/${params.personId}`, {
       character_id: activeSlide + 1
     });
     if (!api.error(response)) {
       this.fetchGroup();
-      fn.navigate(
-        `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${
-          url.people
-        }`
-      );
+      let redirectUrl = `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}`
+      redirectUrl = location.query.zoom ? `${redirectUrl}?zoom=${location.query.zoom}` : redirectUrl
+      fn.navigate(redirectUrl);
     }
   };
 
   render() {
-    const { person, popup, params, location } = this.props;
+    const { popup, params, location } = this.props;
     const { step } = this.state;
     const characters = fn.getPeopleCharacters();
 
@@ -94,6 +92,9 @@ export default class Edit extends React.PureComponent {
       initialSlide: (location.query.character) ? (location.query.character - 1) : 0
     };
 
+    let cancelCharacterLink = `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.organisations}/${url.people}`
+    cancelCharacterLink = location.query.zoom ? `${cancelCharacterLink}?zoom=${location.query.zoom}` : cancelCharacterLink
+
     return (
       <PeopleWrapper {...this.props}>
         <Popup
@@ -105,9 +106,7 @@ export default class Edit extends React.PureComponent {
           buttons={
             <React.Fragment>
               <Link
-                to={`/${url.projects}/${params.id}/${url.groups}/${
-                  params.groupId
-                }/${url.organisations}/${url.people}`}
+                to={cancelCharacterLink}
                 className="button"
               >
                 Cancel

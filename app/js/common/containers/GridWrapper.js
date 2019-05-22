@@ -1,11 +1,8 @@
 import React from "react";
-import Draggable from "react-draggable";
 import {Nav} from "app/components";
 import {fn} from "app/utils";
 import {
-    disableBodyScroll,
-    enableBodyScroll,
-    clearAllBodyScrollLocks
+    disableBodyScroll
 } from "body-scroll-lock";
 
 const dblTouchTapMaxDelay = 300
@@ -62,7 +59,6 @@ export default class GridWrapper extends React.PureComponent {
     }
 
     onHandleDoubleClick = (event) => {
-        event.persist();
         const {location, router} = this.props;
         const zoomLabel = fn.getZoomLabel(event);
         let url = location.pathname;
@@ -94,7 +90,6 @@ export default class GridWrapper extends React.PureComponent {
     }
 
     render() {
-        const {container} = this.state;
         const {location} = this.props;
         const zoom = location.query.zoom && location.query.zoom;
         const url = location.pathname;
