@@ -25,7 +25,8 @@ import {GroupWrapper} from 'app/containers/group';
         organisation: getOrganisation(state, ownProps.params.organisationId),
         organisationTypes: getOrganisationTypes(state),
         projectUsers: getProjectUsers(state),
-        popup: state.popup
+        popup: state.popup,
+        group: state.group
     };
 })
 export default class Edit extends React.PureComponent {
@@ -46,16 +47,29 @@ export default class Edit extends React.PureComponent {
     }
 
     componentDidUpdate(prevProps) {
-        const {organisation, popup, route} = this.props
+        const {organisation, popup, route, group, params} = this.props
+        const organisationId = +params.organisationId
+        const updateOrganisations = [...group.updatedOrganisations]
+        const groupId = params.groupId
+
         if (popup.id != organisation.id) {
-            this.props.dispatch({type: 'POPUP_UPDATED', payload: organisation})
+            if (_.includes(updateOrganisations, organisationId)) {
+                _.map(group.collection[groupId].organisations, (organisation) => {
+                    if (organisation.id === organisationId) {
+                        this.props.dispatch({type: 'POPUP_UPDATED', payload: organisation})
+                    }
+                })
+            } else {
+                this.props.dispatch({type: 'POPUP_UPDATED', payload: organisation})
+            }
         }
     }
 
     fetchData = () => {
+        const {params} = this.props
         this.props.dispatch(fetchData({
             type: 'ORGANISATION',
-            url: `/organisations/${this.props.params.organisationId}`,
+            url: `/organisations/${params.organisationId}`
         }));
     }
 
@@ -63,6 +77,7 @@ export default class Edit extends React.PureComponent {
         this.props.dispatch(fetchData({
             type: 'GROUP',
             url: `/groups/${this.props.params.groupId}`,
+            groupId: this.props.params.groupId
         }));
     }
 
@@ -89,7 +104,13 @@ export default class Edit extends React.PureComponent {
     triggerSubmit = () => this.formRef.submit()
 
     handleSubmit = async () => {
-        const {popup, params, organisation, location} = this.props
+        const {
+            popup,
+            params,
+            organisation,
+            location,
+            dispatch
+        } = this.props
         const {step} = this.state
 
         // submit an api call if your on the last step otherwise go to the next step
@@ -120,6 +141,14 @@ export default class Edit extends React.PureComponent {
         }
 
         if (!api.error(response)) {
+            dispatch({
+                type: 'DRAGGED_ORGANISATION_UPDATE',
+                payload: {
+                    organisation: response.data,
+                    groupId: this.props.params.groupId,
+                    save: true
+                }
+            })
             this.fetchGroup()
             this.fetchData()
             const redirectUrl = location.query.zoom ? `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.zoom}?zoom=${location.query.zoom}` :
@@ -213,7 +242,8 @@ export default class Edit extends React.PureComponent {
     }
 
     render() {
-        const { popup, params, location } = this.props
+        const {popup, params, location} = this.props
+        console.log("Popup is: ", popup)
         const {step} = this.state
         const closePath = location.query.zoom ? `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.zoom}?zoom=${location.query.zoom}` :
             `/${url.projects}/${params.id}/${url.groups}/${params.groupId}`

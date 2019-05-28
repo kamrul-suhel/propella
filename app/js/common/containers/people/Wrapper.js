@@ -54,6 +54,7 @@ export default class PeopleWrapper extends React.PureComponent {
         this.props.dispatch(fetchData({
             type: 'GROUP',
             url: `/groups/${this.props.params.groupId}`,
+            groupId: this.props.params.groupId
         }));
     }
 
@@ -62,7 +63,6 @@ export default class PeopleWrapper extends React.PureComponent {
             dispatch,
             location,
             group,
-            draggedPeople,
             params
         } = this.props
 
@@ -141,9 +141,12 @@ export default class PeopleWrapper extends React.PureComponent {
     }
 
     handleClusterItem = (people) => {
-        const { location } = this.props
+        const {location} = this.props
         const selectedPeople = fn.getPosition(people, location)
-        const actionPositionClass = fn.getDraggableActionClass({positionX: selectedPeople.positionX, positionY: selectedPeople.positionY})
+        const actionPositionClass = fn.getDraggableActionClass({
+            positionX: selectedPeople.positionX,
+            positionY: selectedPeople.positionY
+        })
         this.setState({
             selectedCluster: [],
             showSelectedClusterItem: people.id,
@@ -178,14 +181,11 @@ export default class PeopleWrapper extends React.PureComponent {
                                         onClick={() => this.handleClusterItem(people)}
                                     >
                                         <div className="react-draggable-handle">
-                                            {people.icon_path ? (
-                                                <img className="react-draggable-handle-icon"
-                                                     src={`${people.icon_path}`}/>
-                                            ) : (
-                                                <ReactFitText compressor={.4}>
-                                                    <div className="react-draggable-handle-title">{people.abbreviation}</div>
-                                                </ReactFitText>
-                                            )}
+                                            <ReactFitText compressor={.4}>
+                                                <div
+                                                    className="react-draggable-handle-title">{people.abbreviation}</div>
+                                            </ReactFitText>
+
                                             <span className="user-colour-dot"
                                                   style={{backgroundColor: people.profile_colour}}></span>
                                         </div>
@@ -382,16 +382,13 @@ export default class PeopleWrapper extends React.PureComponent {
                                  }
                             >
                                 <div className="react-draggable-handle">
-                                    {people.showCharacters && item.character_id !== 0 ? (
-                                        <span className={`person-icon avatar-${fn.getAvatarClass(item.size)}`}></span>
-                                    ) : (
-                                        <span className={`person-icon ${fn.getPeopleCharacter(item.character_id)['iconImage']}`}></span>
-                                    )}
+                                    <span className={`person-icon avatar-${fn.getAvatarClass(item.icon_size)}`}></span>
+
                                     <span className="person-abbr">{item.abbreviation}</span>
                                     {selectedDraggable === item.id &&
-                                        <ReactFitText compressor={fitTextCompress}>
-                                            <span className="react-draggable-title">{item.organisation_title}</span>
-                                        </ReactFitText>
+                                    <ReactFitText compressor={fitTextCompress}>
+                                        <span className="react-draggable-title">{item.organisation_title}</span>
+                                    </ReactFitText>
                                     }
                                 </div>
 
@@ -482,12 +479,7 @@ export default class PeopleWrapper extends React.PureComponent {
                                      }
                                 >
                                     <div className="react-draggable-handle cluster-handle">
-                                        {people.icon_path ? (
-                                            <img className="react-draggable-handle-icon"
-                                                 src={`${people.icon_path}`}/>
-                                        ) : (
-                                            <div className="react-draggable-handle-title">{_.size(clusterIds)}</div>
-                                        )}
+                                        <div className="react-draggable-handle-title">{_.size(clusterIds)}</div>
                                         <span className="user-colour-dot"
                                               style={{backgroundColor: people.profile_colour}}></span>
                                     </div>

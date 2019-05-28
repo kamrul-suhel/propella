@@ -1,11 +1,41 @@
 import React from 'react';
 import {Link} from 'react-router';
-import {connect} from 'react-redux';
-import {Tab} from '@xanda/react-components';
 import {fn} from 'app/utils';
 import {Alerts} from './';
+import { withRouter } from "react-router";
 
-export default class Popup extends React.PureComponent {
+import { enableBodyScroll } from "body-scroll-lock";
+
+class Popup extends React.PureComponent {
+
+    componentDidMount(){
+        const popupElement = document.getElementById('popup')
+        enableBodyScroll(popupElement)
+    }
+
+    componentWillMount() {
+        document.addEventListener('mousedown', this.handleClick, false)
+        document.addEventListener('touchstart', this.handleClick, false)
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('mousedown', this.handleClick, false)
+        document.removeEventListener('touchstart', this.handleClick, false)
+    }
+
+    handleClick = (event) => {
+        const { router, location, params } = this.props
+        const element = document.getElementById('popup')
+        const navElement = document.getElementById('nav')
+        if(!element.contains(event.target)){
+            if(navElement.contains(event.target)){
+               return;
+            }
+
+            const url = fn.previousLink(params, location)
+            router.push(url)
+        }
+    }
 
     render() {
         const {
@@ -46,3 +76,4 @@ export default class Popup extends React.PureComponent {
         );
     }
 }
+export default withRouter(Popup)

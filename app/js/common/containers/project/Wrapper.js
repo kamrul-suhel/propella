@@ -53,6 +53,7 @@ export default class ProjectWrapper extends React.PureComponent {
         this.props.dispatch(fetchData({
             type: 'PROJECT',
             url: `/projects/${this.props.params.id}`,
+            projectId: this.props.params.id
         }));
     }
 
@@ -292,9 +293,9 @@ export default class ProjectWrapper extends React.PureComponent {
                         const position = fn.getPosition(item, location);
 
                         // to edit project in zoom and normal mode
-                        const projectEditUrl = location.query.zoom ? `/${url.projects}/${params.id}/groups/${item.id}/edit?zoom=${location.query.zoom}`
+                        const projectEditUrl = location.query.zoom ? `/${url.projects}/${params.id}/groups/${item.id}/edit?zoom=${location.query.zoom}&fetch=true`
                             :
-                            `/${url.projects}/${params.id}/groups/${item.id}/edit`
+                            `/${url.projects}/${params.id}/groups/${item.id}/edit?fetch=true`
 
                         const organisationUrl = `/${url.projects}/${params.id}/groups/${item.id}`
 
@@ -359,13 +360,9 @@ export default class ProjectWrapper extends React.PureComponent {
                                     </div>
                                     }
                                     <div className="react-draggable-handle">
-                                        {item.icon_path ? (
-                                            <img className="react-draggable-handle-icon" src={`${item.icon_path}`}/>
-                                        ) : (
-                                            <ReactFitText compressor={fitTextCompress}>
-                                                <div className="react-draggable-handle-title">{item.abbreviation}</div>
-                                            </ReactFitText>
-                                        )}
+                                        <ReactFitText compressor={fitTextCompress}>
+                                            <div className="react-draggable-handle-title">{item.abbreviation}</div>
+                                        </ReactFitText>
                                         <span className="user-colour-dot"
                                               style={{backgroundColor: item.profile_colour}}></span>
                                     </div>

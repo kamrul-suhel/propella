@@ -1,11 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
-import { ReportList } from "app/components";
 import { fetchData } from "app/actions";
 import { makeGetGroup, makeGetGroups } from "app/containers/group/selector";
 import { Nav } from "app/components";
 import { fn } from "app/utils";
 import {ContentLoader, Table} from '@xanda/react-components';
+
+import {disableBodyScroll, enableBodyScroll} from "body-scroll-lock";
 
 @connect((state, ownProps) => {
   const getGroups = makeGetGroups();
@@ -16,8 +17,20 @@ import {ContentLoader, Table} from '@xanda/react-components';
   };
 })
 export default class Report extends React.PureComponent {
+
+  constructor(props){
+    super(props)
+  }
+
   componentDidMount() {
+    const html = fn.getRootElementForLock()
+    enableBodyScroll(html)
     this.fetchData();
+  }
+
+  componentWillUnmount() {
+    const html = fn.getRootElementForLock()
+    disableBodyScroll(html)
   }
 
   fetchData = () => {
@@ -40,11 +53,11 @@ export default class Report extends React.PureComponent {
       <React.Fragment>
         <Nav {...this.props} />
         {_.isEmpty(groups.collection) ? (
-          <div className="report-component">
+          <div className="report-component" id="report-component">
                <h1>No people found</h1>
            </div>
         ) : (
-          <div className="report-component">
+          <div className="report-component" id="report-component">
               <ContentLoader
                   data={groups.collection}
                   isLoading={groups.isLoading}
@@ -64,8 +77,8 @@ export default class Report extends React.PureComponent {
                               <tr key={collection.id}>
                                   <td>{collection.title}</td>
                                   <td>{collection.organisation_title}</td>
-                                  <td>{collection.positionX}</td>
-                                  <td>{collection.positionY}</td>
+                                  <td>{fn.convertFloatToInt(collection.positionX)}</td>
+                                  <td>{fn.convertFloatToInt(collection.positionY)}</td>
                                   <td>{fn.getQuadrant(collection.positionX, collection.positionY)}</td>
                                   <td>{character.title}</td>
                               </tr>

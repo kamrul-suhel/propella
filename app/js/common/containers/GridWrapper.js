@@ -1,9 +1,7 @@
 import React from "react";
 import {Nav} from "app/components";
 import {fn} from "app/utils";
-import {
-    disableBodyScroll
-} from "body-scroll-lock";
+import { disableBodyScroll } from "body-scroll-lock";
 
 const dblTouchTapMaxDelay = 300
 let latestTouchTap = {
@@ -19,7 +17,6 @@ export default class GridWrapper extends React.PureComponent {
         this.state = {
             container: null
         };
-
         this._onTouchStart = this._onTouchStart.bind(this);
     }
 
@@ -40,6 +37,12 @@ export default class GridWrapper extends React.PureComponent {
     _onTouchStart(e) {
         const {location, router} = this.props;
         e.persist();
+
+        const clickedClass = e.target.classList;
+        if(fn.isClickInside(clickedClass)){
+            return;
+        }
+
         const doubleTouch = this.isDblTouchTap(e);
         if (doubleTouch) {
             const zoomLabel = fn.getZoomLabel(e.touches[0]);
@@ -59,9 +62,16 @@ export default class GridWrapper extends React.PureComponent {
     }
 
     onHandleDoubleClick = (event) => {
+        event.persist();
         const {location, router} = this.props;
         const zoomLabel = fn.getZoomLabel(event);
         let url = location.pathname;
+
+
+        const clickedClass = event.target.classList;
+        if(fn.isClickInside(clickedClass)){
+            return;
+        }
 
         if (fn.isZoom(location)) {
             const replace = `/zoom`
@@ -77,6 +87,7 @@ export default class GridWrapper extends React.PureComponent {
     }
 
     isDblTouchTap(event) {
+
         const touchTap = {
             time: new Date().getTime(),
             target: event.currentTarget,
@@ -139,7 +150,9 @@ export default class GridWrapper extends React.PureComponent {
                                 <span className="gridwrapper-inner-section">Standard</span>
                             </div>
                         }
+                        <div style={{overflow:'auto'}}>
                         {childrenWithProps}
+                        </div>
                     </div>
 
                     <div className="gridwrapper-x">

@@ -22,7 +22,8 @@ import {ProjectWrapper} from 'app/containers/project';
         groups: getGroups(state, ownProps.params.id),
         group: getGroup(state, ownProps.params.id, ownProps.params.groupId),
         popup: state.popup,
-        projectUsers: getProjectUsers(state)
+        projectUsers: getProjectUsers(state),
+        project:state.project
     };
 })
 export default class Edit extends React.PureComponent {
@@ -52,6 +53,7 @@ export default class Edit extends React.PureComponent {
         this.props.dispatch(fetchData({
             type: 'PROJECT',
             url: `/projects/${this.props.params.id}`,
+            projectId: this.props.params.id
         }));
     }
 
@@ -76,7 +78,7 @@ export default class Edit extends React.PureComponent {
     triggerSubmit = () => this.formRef.submit()
 
     handleSubmit = async () => {
-        const {popup, params, group, location} = this.props
+        const {popup, params, group, location, dispatch} = this.props
         const {step} = this.state
 
         // submit an api call if your on the last step otherwise go to the next step
@@ -107,7 +109,16 @@ export default class Edit extends React.PureComponent {
         }
 
         if (!api.error(response)) {
-            this.fetchData()
+            const projectId = this.props.params.id
+            const group = {...response.data}
+            dispatch({
+                type: 'GROUP_UPDATE',
+                payload: {
+                    project_id: projectId,
+                    save:true,
+                    group
+                }
+            })
             const redirectUrl = location.query.zoom ? `/${url.projects}/${params.id}/${url.groups}/${url.zoom}?zoom=${location.query.zoom}` : `/${url.projects}/${params.id}/${url.groups}`
             fn.navigate(redirectUrl)
         }

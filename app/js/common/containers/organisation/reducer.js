@@ -6,7 +6,7 @@ const defaultState = {
 	error: null,
 	isLoading: true,
 	misc: {},
-	pager: {},
+	pager: {}
 };
 
 export function organisation(state = defaultState, action) {
@@ -32,6 +32,19 @@ export function organisation(state = defaultState, action) {
 				...normalizedData,
 			};
 		}
+
+		case 'ORGANISATION_UPDATE': {
+			// Update organisation
+			const organisationIndex = _.findIndex(state.collection[action.payload.groupId].organisations,
+				(o) => o.id === action.payload.organisation.id);
+			state.collection.organisations[organisationIndex] = action.payload.organisation
+
+			return {
+				...state,
+				collection: state.collection
+			}
+		}
+
 		default: {
 			return state;
 		}

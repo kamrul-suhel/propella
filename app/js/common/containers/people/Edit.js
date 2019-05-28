@@ -46,9 +46,23 @@ export default class Edit extends React.PureComponent {
     }
 
     componentDidUpdate(prevProps) {
-        const {person, popup, route} = this.props
+        const {person, popup, route, group, params, groups} = this.props
+        const updatedPeople = groups.updatedPeople
+        const personId = +params.personId
+
         if (popup.id != person.id) {
-            this.props.dispatch({type: 'POPUP_UPDATED', payload: person})
+            if (_.includes(updatedPeople, personId)) {
+                _.map(group.people, (people) => {
+                    if (people.id === personId) {
+                        let newPerson = {...person}
+                        newPerson.positionX = people.positionX
+                        newPerson.positionY = people.positionY
+                        this.props.dispatch({type: 'POPUP_UPDATED', payload: newPerson})
+                    }
+                })
+            } else {
+                this.props.dispatch({type: 'POPUP_UPDATED', payload: person})
+            }
         }
     }
 
@@ -63,6 +77,7 @@ export default class Edit extends React.PureComponent {
         this.props.dispatch(fetchData({
             type: 'GROUP',
             url: `/groups/${this.props.params.groupId}`,
+            groupId: this.props.params.groupId
         }));
     }
 
@@ -82,7 +97,7 @@ export default class Edit extends React.PureComponent {
     triggerSubmit = () => this.formRef.submit()
 
     handleSubmit = async () => {
-        const {popup, params, person, location} = this.props
+        const {popup, params, person, location, dispatch} = this.props
         const {step} = this.state
 
         // submit an api call if your on the last step otherwise go to the next step
@@ -112,8 +127,16 @@ export default class Edit extends React.PureComponent {
         }
 
         if (!api.error(response)) {
+            dispatch({
+                type:'UPDATE_DRAGGED_PEOPLE',
+                payload: {
+                    groupId: params.groupId,
+                    people: {...response.data},
+                    save:true
+                }
+            })
             this.fetchGroup()
-            let redirectUrl = `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.organisations}/${url.people}`
+            let redirectUrl = `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}`
             redirectUrl = location.query.zoom ? `${redirectUrl}/${url.zoom}?zoom=${location.query.zoom}` : redirectUrl
             fn.navigate(redirectUrl)
         }

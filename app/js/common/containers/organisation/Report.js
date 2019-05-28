@@ -6,6 +6,7 @@ import { makeGetGroup, makeGetGroups } from "app/containers/group/selector";
 import { Nav } from "app/components";
 import { fn } from "app/utils";
 import {ContentLoader, Table} from '@xanda/react-components';
+import {disableBodyScroll, enableBodyScroll} from "body-scroll-lock";
 
 @connect((state, ownProps) => {
   const getGroups = makeGetGroups();
@@ -17,7 +18,14 @@ import {ContentLoader, Table} from '@xanda/react-components';
 })
 export default class Report extends React.PureComponent {
   componentDidMount() {
+    const html = fn.getRootElementForLock()
+    enableBodyScroll(html)
     this.fetchData();
+  }
+
+  componentWillUnmount() {
+    const html = fn.getRootElementForLock()
+    disableBodyScroll(html)
   }
 
   fetchData = () => {
@@ -60,8 +68,8 @@ export default class Report extends React.PureComponent {
                           return (
                               <tr key={collection.id}>
                                   <td>{collection.title}</td>
-                                  <td>{collection.positionX}</td>
-                                  <td>{collection.positionY}</td>
+                                  <td>{fn.convertFloatToInt(collection.positionX)}</td>
+                                  <td>{fn.convertFloatToInt(collection.positionY)}</td>
                                   <td>{fn.getQuadrant(collection.positionX, collection.positionY)}</td>
                               </tr>
                           )

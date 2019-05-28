@@ -88,64 +88,6 @@ export default class Nav extends React.PureComponent {
     return "/";
   };
 
-  previousLink = () => {
-    const { params, location } = this.props;
-
-    if(location.pathname.match(/^\/projects\/[0-9]*\/groups\/[0-9]*\/organisations\/people\/zoom/)){
-      return `/projects/${params.id}/groups/${params.groupId}/organisations/people`
-    }
-
-    else if (
-        location.pathname.match(
-            /^\/projects\/[0-9]*\/groups\/[0-9]*\/zoom/
-        )
-    ) {
-      return `/projects/${params.id}/groups/${params.groupId}`;
-    }
-
-    else if (
-        location.pathname.match(
-            /^\/projects\/[0-9]*\/groups\/[0-9]*\/organisations\/people/
-        )
-    ) {
-      return `/projects/${params.id}/groups/${params.groupId}`;
-    }
-
-    else if (
-        location.pathname.match(
-            /^\/projects\/[0-9]*\/groups\/[0-9]*\/organisations/
-        )
-    ) {
-      return `/projects/${params.id}/groups/${params.groupId}`;
-    }
-
-    else if (
-        location.pathname.match(/^\/projects\/[0-9]*\/groups\/[0-9]*\/people/)
-    ) {
-      return `/projects/${params.id}/groups/${params.groupId}`;
-    }
-
-    else if (location.pathname.match(/^\/projects\/[0-9]*\/groups\/[0-9]/)) {
-      return `/projects/${params.id}`;
-    }
-
-    else if (location.pathname.match(/^\/projects\/[0-9]*\/groups/)) {
-      return `/projects/${params.id}`;
-    }
-
-    else if (location.pathname.match(/^\/projects\/[0-9]*/)) {
-      return `/projects/${params.id}/groups`;
-    }
-
-    else if (
-        location.pathname.match(/^\/projects\/[0-9]*\/groups\/[0-9]\/edit/)
-    ) {
-    }
-
-    return "/";
-  }
-
-
   reportLink = () => {
     const { params, location } = this.props;
 
@@ -184,7 +126,7 @@ export default class Nav extends React.PureComponent {
     const projectUrl = location.query.zoom ? `/${url.projects}/${params.id}` : `/${url.projects}/${params.id}`
 
     return (
-      <div className="nav">
+      <div className="nav" id="nav">
         <img className="nav-logo" src="/../../../images/logo.svg" />
 
         <h2 className="project-title">{currentProject && currentProject.title}</h2>

@@ -5,6 +5,7 @@
         height:100%;
         overflow-x:hidden;
         overflow-y:scroll;
+
         &.form-loading {
 		pointer-events: none;
 		&:before {

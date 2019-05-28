@@ -3457,9 +3457,10 @@ li.rc-time-picker-panel-select-option-disabled:hover {
   position: relative;
   height: calc(100vh - 100px);
   background: #fff;
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
   z-index: 100;
-  padding: 40px; }
+  padding: 40px;
+  overflow-y: scroll; }
 
 .form {
   display: block; }
@@ -4137,18 +4138,22 @@ li.rc-time-picker-panel-select-option-disabled:hover {
       .gridwrapper .gridwrapper-inner .gridwrapper-inner-section.zoom {
         width: 100%;
         height: 100%; }
-        .gridwrapper .gridwrapper-inner .gridwrapper-inner-section.zoom.light-cyan {
-          background: #48b9b9;
-          color: #3bacac; }
+        .gridwrapper .gridwrapper-inner .gridwrapper-inner-section.zoom.light-blue {
+          background: url("../images/green_horizontal.png") center center repeat-x, url("../images/green_vertical.png") center center repeat-y, #48b9b9;
+          color: #3bacac;
+          background-size: auto; }
         .gridwrapper .gridwrapper-inner .gridwrapper-inner-section.zoom.blue {
-          background: #004b9b;
-          color: #003d8b; }
+          background: url("../images/blue_horizontal.png") center center repeat-x, url("../images/blue_vertical.png") center center repeat-y, #004b9b;
+          color: #003d8b;
+          background-size: auto; }
         .gridwrapper .gridwrapper-inner .gridwrapper-inner-section.zoom.orange {
-          background: #e84f35;
-          color: #e3412a; }
+          background: url("../images/red_horizontal.png") center center repeat-x, url("../images/red_vertical.png") center center repeat-y, #e84f35;
+          color: #e3412a;
+          background-size: auto; }
         .gridwrapper .gridwrapper-inner .gridwrapper-inner-section.zoom.sky-blue {
-          background: #9cd6f0;
-          color: #8dcded; }
+          background: url("../images/cyan_horizontal.png") center center repeat-x, url("../images/cyan_vertical.png") center center repeat-y, #9cd6f0;
+          color: #8dcded;
+          background-size: auto; }
     .gridwrapper .gridwrapper-inner .react-draggable {
       height: 48px;
       width: 41px;
@@ -4168,7 +4173,8 @@ li.rc-time-picker-panel-select-option-disabled:hover {
         align-items: center;
         justify-content: center;
         flex-direction: column;
-        position: relative; }
+        position: relative;
+        touch-action: manipulation; }
         .gridwrapper .gridwrapper-inner .react-draggable .react-draggable-handle .user-colour-dot {
           content: "";
           display: block;
@@ -4303,100 +4309,145 @@ li.rc-time-picker-panel-select-option-disabled:hover {
           color: white !important; }
         .gridwrapper .gridwrapper-inner .react-draggable.is-selected .person-icon:before {
           color: white; }
-      .gridwrapper .gridwrapper-inner .react-draggable.trajectory-pos-12 .react-draggable-handle:before {
+      .gridwrapper .gridwrapper-inner .react-draggable .react-draggable-handle:before {
         content: "";
-        display: block;
+        display: none;
         position: absolute;
+        width: 0;
+        height: 0;
+        color: transparent; }
+      .gridwrapper .gridwrapper-inner .react-draggable.size-s .react-draggable-handle:before {
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-bottom: 5px solid #fff; }
+      .gridwrapper .gridwrapper-inner .react-draggable.size-s.trajectory-pos-12 .react-draggable-handle:before {
+        display: block;
+        transform: rotate(0deg);
         top: -10px;
-        width: 0;
-        height: 0;
-        border-style: solid;
-        border-width: 0 9px 9px 0;
-        border-color: transparent #ffffff transparent transparent;
-        transform: rotate(-45deg); }
-      .gridwrapper .gridwrapper-inner .react-draggable.trajectory-pos-130 .react-draggable-handle:before {
-        content: "";
+        left: 15px; }
+      .gridwrapper .gridwrapper-inner .react-draggable.size-s.trajectory-pos-130 .react-draggable-handle:before {
         display: block;
-        position: absolute;
-        width: 0;
+        transform: rotate(52deg);
         top: 0;
-        right: 0;
-        height: 0;
-        border-style: solid;
-        border-width: 9px 0 0 9px;
-        border-color: transparent transparent transparent #ffffff;
-        transform: rotate(180deg); }
-      .gridwrapper .gridwrapper-inner .react-draggable.trajectory-pos-3 .react-draggable-handle:before {
-        content: "";
+        right: -8px; }
+      .gridwrapper .gridwrapper-inner .react-draggable.size-s.trajectory-pos-3 .react-draggable-handle:before {
         display: block;
-        position: absolute;
-        bottom: calc(50% - 9px);
-        right: -10px;
-        width: 0;
-        height: 0;
-        border-style: solid;
-        border-width: 0 0 9px 9px;
-        border-color: transparent transparent transparent #ffffff;
-        transform: rotate(135deg); }
-      .gridwrapper .gridwrapper-inner .react-draggable.trajectory-pos-430 .react-draggable-handle:before {
-        content: "";
+        transform: rotate(90deg);
+        top: 18px;
+        right: -13px; }
+      .gridwrapper .gridwrapper-inner .react-draggable.size-s.trajectory-pos-430 .react-draggable-handle:before {
         display: block;
-        position: absolute;
-        bottom: -5px;
-        right: 0;
-        width: 0;
-        height: 0;
-        border-style: solid;
-        border-width: 0 0 9px 9px;
-        border-color: transparent transparent transparent #ffffff;
-        transform: rotate(180deg); }
-      .gridwrapper .gridwrapper-inner .react-draggable.trajectory-pos-6 .react-draggable-handle:before {
-        content: "";
+        transform: rotate(128deg);
+        bottom: -2px;
+        right: -10px; }
+      .gridwrapper .gridwrapper-inner .react-draggable.size-s.trajectory-pos-6 .react-draggable-handle:before {
         display: block;
-        position: absolute;
-        bottom: -24px;
-        left: calc(50% - 5px);
-        width: 0;
-        height: 0;
-        border-style: solid;
-        border-width: 0 0 9px 9px;
-        border-color: transparent transparent transparent #ffffff;
-        transform: rotate(-135deg); }
-      .gridwrapper .gridwrapper-inner .react-draggable.trajectory-pos-730 .react-draggable-handle:before {
-        content: "";
+        transform: rotate(180deg);
+        bottom: -18px;
+        right: 13px; }
+      .gridwrapper .gridwrapper-inner .react-draggable.size-s.trajectory-pos-730 .react-draggable-handle:before {
         display: block;
-        position: absolute;
+        transform: rotate(236deg);
+        bottom: -2px;
+        left: -9px; }
+      .gridwrapper .gridwrapper-inner .react-draggable.size-s.trajectory-pos-9 .react-draggable-handle:before {
+        display: block;
+        transform: rotate(272deg);
+        bottom: 14px;
+        left: -14px; }
+      .gridwrapper .gridwrapper-inner .react-draggable.size-s.trajectory-pos-1030 .react-draggable-handle:before {
+        display: block;
+        transform: rotate(300deg);
+        top: 4px;
+        left: -12px; }
+      .gridwrapper .gridwrapper-inner .react-draggable.size-m .react-draggable-handle:before {
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-bottom: 6px solid #fff; }
+      .gridwrapper .gridwrapper-inner .react-draggable.size-m.trajectory-pos-12 .react-draggable-handle:before {
+        display: block;
+        transform: rotate(0deg);
+        top: -13px;
+        left: 25px; }
+      .gridwrapper .gridwrapper-inner .react-draggable.size-m.trajectory-pos-130 .react-draggable-handle:before {
+        display: block;
+        transform: rotate(60deg);
+        top: 9px;
+        right: -11px; }
+      .gridwrapper .gridwrapper-inner .react-draggable.size-m.trajectory-pos-3 .react-draggable-handle:before {
+        display: block;
+        transform: rotate(90deg);
+        top: 28px;
+        right: -16px; }
+      .gridwrapper .gridwrapper-inner .react-draggable.size-m.trajectory-pos-430 .react-draggable-handle:before {
+        display: block;
+        transform: rotate(134deg);
+        bottom: -2px;
+        right: -6px; }
+      .gridwrapper .gridwrapper-inner .react-draggable.size-m.trajectory-pos-6 .react-draggable-handle:before {
+        display: block;
+        transform: rotate(180deg);
+        bottom: -20px;
+        right: 24px; }
+      .gridwrapper .gridwrapper-inner .react-draggable.size-m.trajectory-pos-730 .react-draggable-handle:before {
+        display: block;
+        transform: rotate(232deg);
         bottom: 0;
-        left: -5px;
-        width: 0;
-        height: 0;
-        border-style: solid;
-        border-width: 0 0 9px 9px;
-        border-color: transparent transparent transparent #ffffff;
-        transform: rotate(-85deg); }
-      .gridwrapper .gridwrapper-inner .react-draggable.trajectory-pos-9 .react-draggable-handle:before {
-        content: "";
+        left: -7px; }
+      .gridwrapper .gridwrapper-inner .react-draggable.size-m.trajectory-pos-9 .react-draggable-handle:before {
         display: block;
-        position: absolute;
-        top: calc(50% - 2px);
-        left: -10px;
-        width: 0;
-        height: 0;
-        border-style: solid;
-        border-width: 0 0 9px 9px;
-        border-color: transparent transparent transparent #ffffff;
-        transform: rotate(-45deg); }
-      .gridwrapper .gridwrapper-inner .react-draggable.trajectory-pos-1030 .react-draggable-handle:before {
-        content: "";
+        transform: rotate(272deg);
+        bottom: 29px;
+        left: -15px; }
+      .gridwrapper .gridwrapper-inner .react-draggable.size-m.trajectory-pos-1030 .react-draggable-handle:before {
         display: block;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 0;
-        height: 0;
-        border-style: solid;
-        border-width: 0 0 9px 9px;
-        border-color: transparent transparent transparent #ffffff; }
+        transform: rotate(306deg);
+        top: 4px;
+        left: -11px; }
+      .gridwrapper .gridwrapper-inner .react-draggable.size-l .react-draggable-handle:before {
+        border-left: 7px solid transparent;
+        border-right: 7px solid transparent;
+        border-bottom: 7px solid #fff; }
+      .gridwrapper .gridwrapper-inner .react-draggable.size-l.trajectory-pos-12 .react-draggable-handle:before {
+        display: block;
+        transform: rotate(0deg);
+        top: -15px;
+        left: 34px; }
+      .gridwrapper .gridwrapper-inner .react-draggable.size-l.trajectory-pos-130 .react-draggable-handle:before {
+        display: block;
+        transform: rotate(59deg);
+        top: 10px;
+        right: -9px; }
+      .gridwrapper .gridwrapper-inner .react-draggable.size-l.trajectory-pos-3 .react-draggable-handle:before {
+        display: block;
+        transform: rotate(90deg);
+        top: 40px;
+        right: -17px; }
+      .gridwrapper .gridwrapper-inner .react-draggable.size-l.trajectory-pos-430 .react-draggable-handle:before {
+        display: block;
+        transform: rotate(131deg);
+        bottom: 4px;
+        right: -3px; }
+      .gridwrapper .gridwrapper-inner .react-draggable.size-l.trajectory-pos-6 .react-draggable-handle:before {
+        display: block;
+        transform: rotate(180deg);
+        bottom: -23px;
+        right: 34px; }
+      .gridwrapper .gridwrapper-inner .react-draggable.size-l.trajectory-pos-730 .react-draggable-handle:before {
+        display: block;
+        transform: rotate(232deg);
+        bottom: 7px;
+        left: -10px; }
+      .gridwrapper .gridwrapper-inner .react-draggable.size-l.trajectory-pos-9 .react-draggable-handle:before {
+        display: block;
+        transform: rotate(272deg);
+        bottom: 40px;
+        left: -16px; }
+      .gridwrapper .gridwrapper-inner .react-draggable.size-l.trajectory-pos-1030 .react-draggable-handle:before {
+        display: block;
+        transform: rotate(306deg);
+        top: 4px;
+        left: -9px; }
       .gridwrapper .gridwrapper-inner .react-draggable.cluster-item {
         display: none; }
         .gridwrapper .gridwrapper-inner .react-draggable.cluster-item.cluster-show {
@@ -4669,7 +4720,7 @@ li.rc-time-picker-panel-select-option-disabled:hover {
           margin-bottom: 10px; }
           .gridwrapper .cluster-items-right .cluster-items .cluster-body .cluster-body-inner .size-m .react-draggable-handle-title {
             position: absolute;
-            bottom: 24px;
+            bottom: 30px;
             left: 50%;
             transform: translate(-50%);
             line-height: 1; }
@@ -4861,9 +4912,10 @@ li.rc-time-picker-panel-select-option-disabled:hover {
   left: 50%;
   transform: translateX(-50%);
   border-radius: 3px;
-  overflow: hidden;
+  overflow: auto;
   text-align: center;
-  top: 7px; }
+  top: 7px;
+  -webkit-overflow-scrolling: touch; }
   .popup a {
     text-decoration: none;
     color: #1C1C1C;
@@ -4938,10 +4990,11 @@ li.rc-time-picker-panel-select-option-disabled:hover {
     text-align: center;
     border: 0px none;
     box-shadow: 1px 2px 4px 0 rgba(0, 0, 0, 0.5);
-    border-radius: 0px 0x 5px 5px;
+    border-radius: 0 0x 5px 5px;
     position: relative;
     z-index: 2;
-    overflow: auto; }
+    overflow: auto;
+    padding-bottom: 10px; }
     .popup .popup-inner form {
       flex-direction: column; }
     .popup .popup-inner .success-add-group, .popup .popup-inner .overview {
@@ -5028,6 +5081,8 @@ li.rc-time-picker-panel-select-option-disabled:hover {
   .popup .popup-inner-buttons {
     display: flex;
     flex-direction: row;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     z-index: 9999999999; }
     .popup .popup-inner-buttons .button, .popup .popup-inner-buttons .form button, .form .popup .popup-inner-buttons button {
@@ -5035,21 +5090,21 @@ li.rc-time-picker-panel-select-option-disabled:hover {
       margin: 0;
       line-height: 40px;
       font-size: 15px;
-      padding: 0px;
+      padding: 0;
       height: 50px;
       display: flex;
       align-items: center;
       justify-content: center;
       box-shadow: unset;
-      border: 0px;
+      text-align: center;
+      border: 0;
       border-top: 1px solid #1C1C1C;
       border-right: 1px solid #1C1C1C; }
       .popup .popup-inner-buttons .button:first-child, .popup .popup-inner-buttons .form button:first-child, .form .popup .popup-inner-buttons button:first-child {
         border-bottom-left-radius: 5px; }
       .popup .popup-inner-buttons .button:last-child, .popup .popup-inner-buttons .form button:last-child, .form .popup .popup-inner-buttons button:last-child {
         border-bottom-right-radius: 5px;
-        border-right: 0px;
-        display: block; }
+        border-right: 0; }
   .popup.wide {
     max-width: 550px; }
   .popup.organisations .fancylist .fancylist-item .fancylist-item-title {
@@ -5277,7 +5332,7 @@ li.rc-time-picker-panel-select-option-disabled:hover {
   left: 0px;
   width: 100%;
   background-color: white;
-  z-index: 10; }
+  z-index: 101; }
   .nav a {
     text-decoration: none; }
   .nav .project-title {

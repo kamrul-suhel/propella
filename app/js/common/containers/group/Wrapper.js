@@ -58,10 +58,12 @@ export default class GroupWrapper extends React.PureComponent {
         this.props.dispatch(fetchData({
             type: 'GROUP',
             url: `/groups/${this.props.params.groupId}`,
+            groupId: this.props.params.groupId
         }));
         this.props.dispatch(fetchData({
             type: 'PROJECT',
             url: `/projects/${this.props.params.id}`,
+            projectId: this.props.params.id
         }));
     }
 

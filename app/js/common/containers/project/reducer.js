@@ -1,4 +1,4 @@
-import {api} from 'app/utils';
+import {api, fn} from 'app/utils';
 
 const defaultState = {
     collection: {},
@@ -26,7 +26,36 @@ export function project(state = defaultState, action) {
             };
         }
         case 'PROJECT_FULFILLED': {
-            const normalizedData = api.normalizeData(state, action);
+            const projectId = action.projectId
+            const data = {...action.payload.data}
+
+            let groups = []
+            _.map(data.groups, (group) => {
+                const currentCollection = {...state.collection[projectId]}
+                if(_.includes(state.updatedGroups, group.id)){
+                    _.map(state.updatedGroups, (upGroup) => {
+                        if(upGroup === group.id){
+                            const groupIndex = _.findIndex(currentCollection.groups, (g) => { return g.id === upGroup; });
+                            groups.push(currentCollection.groups[groupIndex])
+                        }
+                    })
+                    return
+                }
+                groups.push(group)
+            })
+
+            const newAction = {
+                ...action,
+                payload:{
+                    ...action.payload,
+                    data:{
+                        ...action.payload.data,
+                        groups:[...groups]
+                    }
+                }
+            }
+
+            const normalizedData = api.normalizeData(state, newAction);
             return {
                 ...state,
                 isLoading: false,
@@ -63,7 +92,9 @@ export function project(state = defaultState, action) {
             // Put group id
             let updatedGroups = [...state.updatedGroups];
             _.remove(updatedGroups, (g)=> {return g === action.payload.group.id})
-            updatedGroups.push(action.payload.group.id)
+            if(!action.payload.save){
+                updatedGroups.push(action.payload.group.id)
+            }
 
             return {
                 ...state,

@@ -1077,5 +1077,124 @@ export default {
                     maxY:100
                 }
         }
+    },
+
+    /**
+     * Detect is click happen inside draggable item or not
+     * @param eventClasses
+     * @returns {boolean}
+     */
+    isClickInside(eventClasses){
+        if(_.includes(eventClasses, "react-draggable-handle")){
+            return true
+        }
+
+        if(_.includes(eventClasses, "react-draggable-handle-title")){
+            return true
+        }
+
+        if(_.includes(eventClasses, "button-round-inside")){
+            return true
+        }
+
+        if(_.includes(eventClasses, "user-colour-dot")){
+            return true
+        }
+
+        if(_.includes(eventClasses, "react-draggable-title")){
+            return true
+        }
+        if(_.includes(eventClasses, "react-draggable-actions")){
+            return true
+        }
+
+        if(_.includes(eventClasses, "person-icon")){
+            return true
+        }
+
+        if(_.includes(eventClasses, "person-abbr")){
+            return true
+        }
+
+        // check if in popup box is open
+        const popupBox = document.getElementById('popup')
+
+        if(popupBox){
+            return true;
+        }
+
+        return false
+    },
+
+    /**
+     * generate previous link base on current link
+     * @param params
+     * @param location
+     * @returns {string}
+     */
+    previousLink (params, location) {
+        if(location.pathname.match(/^\/projects\/[0-9]*\/groups\/[0-9]*\/organisations\/people\/zoom/)){
+            return `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.organisations}/${url.people}`
+        }
+
+        else if (
+            location.pathname.match(
+                /^\/projects\/[0-9]*\/groups\/[0-9]*\/zoom/
+            )
+        ) {
+            return `/${url.projects}/${params.id}/${url.groups}/${params.groupId}`;
+        }
+
+        else if (
+            location.pathname.match(
+                /^\/projects\/[0-9]*\/groups\/[0-9]*\/organisations\/people/
+            )
+        ) {
+            return `/${url.projects}/${params.id}/${url.groups}/${params.groupId}`;
+        }
+
+        else if (
+            location.pathname.match(
+                /^\/projects\/[0-9]*\/groups\/[0-9]*\/organisations/
+            )
+        ) {
+            return `/${url.projects}/${params.id}/${url.groups}/${params.groupId}`;
+        }
+
+        else if (
+            location.pathname.match(/^\/projects\/[0-9]*\/groups\/[0-9]*\/people/)
+        ) {
+            return `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.organisations}/${url.people}`;
+        }
+
+        else if (location.pathname.match(/^\/projects\/[0-9]*\/groups\/[0-9]/)) {
+            return `/${url.projects}/${params.id}`;
+        }
+
+        else if (location.pathname.match(/^\/projects\/[0-9]*\/groups/)) {
+            return `/${url.projects}/${params.id}`;
+        }
+
+        else if (location.pathname.match(/^\/projects\/[0-9]*/)) {
+            return `/${url.projects}/${params.id}/groups`;
+        }
+
+        else if (
+            location.pathname.match(/^\/projects\/[0-9]*\/groups\/[0-9]\/edit/)
+        ) {
+        }
+
+        return "/";
+    },
+
+    /**
+     *
+     * @returns {HTMLCollectionOf<HTMLElementTagNameMap[string]>}
+     */
+    getRootElementForLock(){
+        const html = document.getElementsByTagName('html')
+        let containerHeight = document.getElementById('app')
+        containerHeight.style.height = window.innerHeight - 40 + 'px'
+        return html
     }
 }

@@ -5,9 +5,11 @@
     left: 50%;
     transform: translateX(-50%);
     border-radius: 3px;
-    overflow: hidden;
+    overflow: auto;
     text-align: center;
     top:7px;
+    -webkit-overflow-scrolling: touch;
+
     a {
         text-decoration: none;
         color: #1C1C1C;
@@ -98,10 +100,11 @@
         text-align: center;
         border: 0px none;
         box-shadow: 1px 2px 4px 0 rgba(0,0,0,0.50);
-        border-radius: 0px 0x 5px 5px;
+        border-radius: 0 0x 5px 5px;
         position:relative;
         z-index:2;
         overflow: auto;
+        padding-bottom:10px;
         
         form {
             flex-direction: column;
@@ -209,6 +212,8 @@
     .popup-inner-buttons {
         display: flex;
         flex-direction: row;
+        align-items:center;
+        justify-content:center;
         width: 100%;
         z-index:9999999999;
         .button {
@@ -216,13 +221,14 @@
             margin: 0;
             line-height: 40px;
             font-size: 15px;
-            padding: 0px;
+            padding: 0;
             height: 50px;
             display: flex;
             align-items: center;
             justify-content: center;
             box-shadow: unset;
-            border: 0px;
+            text-align:center;
+            border: 0;
             border-top: 1px solid $brand-color-dark;
             border-right: 1px solid $brand-color-dark;
             &:first-child{
@@ -230,8 +236,7 @@
             }
             &:last-child{
                 border-bottom-right-radius: 5px;
-                border-right: 0px;
-                display:block;
+                border-right: 0;
             }
         }
     }

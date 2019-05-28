@@ -44,14 +44,10 @@ export default class Cluster extends Component {
                                         onClick={() => this.props.handleClusterItem(item)}
                                     >
                                         <div className="react-draggable-handle">
-                                            {item.icon_path ? (
-                                                <img className="react-draggable-handle-icon"
-                                                     src={`${item.icon_path}`}/>
-                                            ) : (
-                                                <ReactFitText compressor={.4}>
-                                                    <div className="react-draggable-handle-title">{item.abbreviation}</div>
-                                                </ReactFitText>
-                                            )}
+                                            <ReactFitText compressor={.4}>
+                                                <div className="react-draggable-handle-title">{item.abbreviation}</div>
+                                            </ReactFitText>
+
                                             <span className="user-colour-dot"
                                                   style={{backgroundColor: item.profile_colour}}></span>
                                         </div>
@@ -91,12 +87,8 @@ export default class Cluster extends Component {
                 <div handleid={clusterIds}
                      className={classes}>
                     <div className="react-draggable-handle cluster-handle">
-                        {item.icon_path ? (
-                            <img className="react-draggable-handle-icon"
-                                 src={`${item.icon_path}`}/>
-                        ) : (
-                            <div className="react-draggable-handle-title">{_.size(clusterIds)}</div>
-                        )}
+
+                        <div className="react-draggable-handle-title">{_.size(clusterIds)}</div>
                         <span className="user-colour-dot"
                               style={{backgroundColor: item.profile_colour}}></span>
                     </div>
