@@ -29,28 +29,31 @@ export function project(state = defaultState, action) {
             const projectId = action.projectId
             const data = {...action.payload.data}
 
+            // Check is there updatedGroups has value
             let groups = []
             _.map(data.groups, (group) => {
                 const currentCollection = {...state.collection[projectId]}
-                if(_.includes(state.updatedGroups, group.id)){
+                if (_.includes(state.updatedGroups, group.id)) {
                     _.map(state.updatedGroups, (upGroup) => {
-                        if(upGroup === group.id){
-                            const groupIndex = _.findIndex(currentCollection.groups, (g) => { return g.id === upGroup; });
+                        if (upGroup === group.id) {
+                            const groupIndex = _.findIndex(currentCollection.groups, (g) => {
+                                return g.id === upGroup;
+                            });
                             groups.push(currentCollection.groups[groupIndex])
                         }
                     })
-                    return
+                }else{
+                    groups.push(group)
                 }
-                groups.push(group)
             })
 
             const newAction = {
                 ...action,
-                payload:{
+                payload: {
                     ...action.payload,
-                    data:{
+                    data: {
                         ...action.payload.data,
-                        groups:[...groups]
+                        groups: [...groups]
                     }
                 }
             }
@@ -91,14 +94,16 @@ export function project(state = defaultState, action) {
 
             // Put group id
             let updatedGroups = [...state.updatedGroups];
-            _.remove(updatedGroups, (g)=> {return g === action.payload.group.id})
-            if(!action.payload.save){
+            _.remove(updatedGroups, (g) => {
+                return g === action.payload.group.id
+            })
+            if (!action.payload.save) {
                 updatedGroups.push(action.payload.group.id)
             }
 
             return {
                 ...state,
-                updatedGroups:[...updatedGroups],
+                updatedGroups: [...updatedGroups],
                 isLoading: false,
                 collection: state.collection
             }

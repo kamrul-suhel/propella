@@ -274,7 +274,6 @@ export default class PeopleWrapper extends React.PureComponent {
             group,
             params,
             container,
-            people,
             location,
             groups
         } = this.props

@@ -35,37 +35,45 @@ export default function group(state = defaultState, action) {
             let organisations = []
             let filterPeople = []
 
-            // check if organisation has been update
-            _.map(data.organisations, (organisation) => {
-                const currentCollection = {...state.collection[groupId]}
-                if (_.includes(state.updatedOrganisations, organisation.id)) {
-                    _.map(state.updatedOrganisations, (upOrganisation) => {
-                        if (upOrganisation === organisation.id) {
-                            const organisationIndex = _.findIndex(currentCollection.organisations, (g) => {
-                                return g.id === upOrganisation;
-                            });
-                            organisations.push(currentCollection.organisations[organisationIndex])
-                        }
-                    })
-                    return
-                }
-                organisations.push(organisation)
-            })
+            // check if organisation has updated
+            if (state.updatedOrganisations.length > 0) {
+                _.map(data.organisations, (organisation) => {
+                    const currentCollection = {...state.collection[groupId]}
+                    if (_.includes(state.updatedOrganisations, organisation.id)) {
+                        _.map(state.updatedOrganisations, (upOrganisation) => {
+                            if (upOrganisation === organisation.id) {
+                                const organisationIndex = _.findIndex(currentCollection.organisations, (g) => {
+                                    return g.id === upOrganisation;
+                                });
+                                organisations.push(currentCollection.organisations[organisationIndex])
+                            }
+                        })
+                    } else {
+                        organisations.push(organisation)
+                    }
+                })
+            } else {
+                organisations = [...data.organisations]
+            }
 
-            // Check if people has been update or not
-            _.map(data.people, (people) => {
-                const currentCollection = {...state.collection[groupId]}
-                if (_.includes(state.updatedPeople, people.id)) {
-                    _.map(state.updatedPeople, (upPeople) => {
-                        if (upPeople === people.id) {
-                            const peopleIndex = _.findIndex(currentCollection.people, (p) => p.id === upPeople);
-                            filterPeople.push(currentCollection.people[peopleIndex])
-                        }
-                    })
-                    return
-                }
-                filterPeople.push(people)
-            })
+            // Check if people has  updated value or not
+            if (state.updatedPeople.length > 0) {
+                _.map(data.people, (people) => {
+                    const currentCollection = {...state.collection[groupId]}
+                    if (_.includes(state.updatedPeople, people.id)) {
+                        _.map(state.updatedPeople, (upPeople) => {
+                            if (upPeople === people.id) {
+                                const peopleIndex = _.findIndex(currentCollection.people, (p) => p.id === upPeople);
+                                filterPeople.push(currentCollection.people[peopleIndex])
+                            }
+                        })
+                    } else {
+                        filterPeople.push(people)
+                    }
+                })
+            } else {
+                filterPeople = [...data.people]
+            }
 
             const newAction = {
                 ...action,
@@ -115,15 +123,44 @@ export default function group(state = defaultState, action) {
         }
 
         case 'GROUP_PEOPLE_UPDATED': {
+            // Check is this people position has changed
+            const groupId = action.payload.groupId
+            const selectedPeopleId = +action.payload.personId  // change type to number for strict type check
+            const updatedPeople = [...state.updatedPeople]
+            let filterAction = {}
+
+            if(updatedPeople.length > 0){
+                if(_.includes(updatedPeople, selectedPeopleId)){
+                    _.map(state.collection[groupId].people, (people) => {
+                        if(selectedPeopleId === people.id){
+                            let newPeople = {...action.payload.person}
+                            newPeople.positionX = people.positionX
+                            newPeople.positionY = people.positionY
+                            filterAction = {
+                                ...action,
+                                payload:{
+                                    ...action.payload,
+                                    person: newPeople
+                                }
+                            }
+                        }
+                    })
+                }else{
+                    filterAction = {...action}
+                }
+            }else{
+                filterAction = {...action}
+            }
+
             return {
                 ...state,
                 isLoading: false,
                 collection: {
                     ...state.collection,
-                    [action.payload.groupId]: {
-                        ...state.collection[action.payload.groupId],
-                        people: _.map(state.collection[action.payload.groupId].people, (p) => {
-                            return (action.payload.person.id === p.id) ? action.payload.person : p
+                    [groupId]: {
+                        ...state.collection[groupId],
+                        people: _.map(state.collection[groupId].people, (p) => {
+                            return (filterAction.payload.person.id === p.id) ? filterAction.payload.person : p
                         })
                     }
                 }
@@ -131,15 +168,43 @@ export default function group(state = defaultState, action) {
         }
 
         case 'GROUP_ORGANISATION_UPDATED': {
+            // Check is this organisation position has changed
+            const groupId = action.payload.groupId
+            const selectedOrganisationId = +action.payload.organisation.id // change type to number for strip type check
+            const updatedOrganisations = [...state.updatedOrganisations]
+            let filterAction = {}
+            if(updatedOrganisations.length > 0){
+                if(_.includes(updatedOrganisations, selectedOrganisationId)){
+                    _.map(state.collection[groupId].organisations, (organisation) => {
+                        if(selectedOrganisationId === organisation.id){
+                            let newOrganisation = {...action.payload.organisation}
+                            newOrganisation.positionX = organisation.positionX
+                            newOrganisation.positionY = organisation.positionY
+                            filterAction = {
+                                ...action,
+                                payload:{
+                                    ...action.payload,
+                                    organisation: newOrganiation
+                                }
+                            }
+                        }
+                    })
+                }else{
+                    filterAction = {...action}
+                }
+            }else{
+                filterAction = {...action}
+            }
+
             return {
                 ...state,
                 isLoading: false,
                 collection: {
                     ...state.collection,
-                    [action.payload.groupId]: {
-                        ...state.collection[action.payload.groupId],
-                        organisations: _.map(state.collection[action.payload.groupId].organisations, (o) => {
-                            return (action.payload.organisation.id === o.id) ? action.payload.organisation : o
+                    [filterAction.payload.groupId]: {
+                        ...state.collection[filterAction.payload.groupId],
+                        organisations: _.map(state.collection[filterAction.payload.groupId].organisations, (o) => {
+                            return (filterAction.payload.organisation.id === o.id) ? filterAction.payload.organisation : o
                         })
                     }
                 }
@@ -195,7 +260,7 @@ export default function group(state = defaultState, action) {
                 return o === action.payload.people.id
             })
 
-            if(!action.payload.save){
+            if (!action.payload.save) {
                 updatedPeople.push(action.payload.people.id)
             }
 
