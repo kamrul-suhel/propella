@@ -35,7 +35,7 @@ export default function group(state = defaultState, action) {
             let organisations = []
             let filterPeople = []
 
-            // check if organisation has updated
+            // Check organisation position updated
             if (state.updatedOrganisations.length > 0) {
                 _.map(data.organisations, (organisation) => {
                     const currentCollection = {...state.collection[groupId]}
@@ -56,7 +56,7 @@ export default function group(state = defaultState, action) {
                 organisations = [...data.organisations]
             }
 
-            // Check if people has  updated value or not
+            // Check people position updated
             if (state.updatedPeople.length > 0) {
                 _.map(data.people, (people) => {
                     const currentCollection = {...state.collection[groupId]}
@@ -233,13 +233,6 @@ export default function group(state = defaultState, action) {
             }
         }
 
-        case 'DRAGGED_ORGANISATION_CLEAR': {
-            return {
-                ...state,
-                updatedOrganisations: [],
-            }
-        }
-
         case 'GROUP_PEOPLE_DELETED': {
             return {
                 ...state,
@@ -280,6 +273,13 @@ export default function group(state = defaultState, action) {
             return {
                 ...state,
                 updatedPeople: []
+            }
+        }
+
+        case 'DRAGGED_ORGANISATION_CLEAR': {
+            return {
+                ...state,
+                updatedOrganisations: [],
             }
         }
 

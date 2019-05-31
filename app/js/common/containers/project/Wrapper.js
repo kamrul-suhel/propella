@@ -64,8 +64,8 @@ export default class ProjectWrapper extends React.PureComponent {
             project,
             dispatch
         } = this.props
-        const projectId = params.id
 
+        const projectId = params.id
         // find the id we're moving
         const groupId = Number(_.find(data.node.attributes, {name: 'handleid'}).value)
         // if we haven't moved assume its a click
