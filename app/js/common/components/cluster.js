@@ -12,7 +12,7 @@ import ReactFitText from 'react-fittext'
     }
 })
 
-export default class Cluster extends Component {
+export default class Cluster extends React.PureComponent {
 
     constructor(props) {
         super(props)

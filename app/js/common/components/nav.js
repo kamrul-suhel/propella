@@ -4,14 +4,16 @@ import {fetchData} from 'app/actions';
 import {connect} from 'react-redux';
 import { fn } from "app/utils";
 import { url } from "app/constants";
-import { makeGetGroup } from "app/containers/group/selector";
+import { makeGetGroup, makeGetGroups } from "app/containers/group/selector";
 import { makeGetMenu } from "app/reducers/menu";
 
 @connect((state, ownProps) => {
+  const getGroups = makeGetGroups();
   const getGroup = makeGetGroup();
   const getMenu = makeGetMenu();
 
   return {
+    groups: getGroups(state),
     group: getGroup(state, ownProps.params.groupId),
     me: state.me,
     menu: getMenu(state),
@@ -114,6 +116,7 @@ export default class Nav extends React.PureComponent {
   }
 
   render() {
+    const { menuOpen } = this.state
     const { project, location, group, groups, params, menu } = this.props
     const currentProject = project.collection[params.id] && project.collection[params.id]
 
@@ -126,7 +129,8 @@ export default class Nav extends React.PureComponent {
     const projectUrl = location.query.zoom ? `/${url.projects}/${params.id}` : `/${url.projects}/${params.id}`
 
     return (
-      <div className="nav" id="nav">
+
+      <div className="nav" id="nav" style={{zIndex: menuOpen ? 102 : 101}}>
         <img className="nav-logo" src="/../../../images/logo.svg" />
 
         <h2 className="project-title">{currentProject && currentProject.title}</h2>
@@ -176,9 +180,15 @@ export default class Nav extends React.PureComponent {
               {_.map(menu.collection, (item) => (
                 <li
                   key={item.ID}
-                  className={`menu-item`}
+                  className={
+                    'menu-item ' +
+                    (item.ID === 268 ? 'border' : '')
+                  }
                 >
-                  <a href={item.url}>{item.title}</a>
+                  <a className={
+                    (item.ID === 265 || item.ID === 264 ? 'text-normal' : '')
+                  }
+                     href={item.url}>{item.title}</a>
                 </li>
               ))}
             </ul>

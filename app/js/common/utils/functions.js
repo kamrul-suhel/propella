@@ -455,6 +455,7 @@ export default {
                 title: 'The Ambassador',
                 largeImage: 'Ambassador.svg',
                 iconImage: 'icon-character-ambassador',
+                defaultCoordinates: {positionX: 90, positionY: 85},
                 description: 'High royalty high loyalty organisations and people who recommend and protect. Think marketing department. Think forcefield.'
             },
             {
@@ -462,6 +463,7 @@ export default {
                 title: 'The Eager Beaver',
                 largeImage: 'Beaver.svg',
                 iconImage: 'icon-character-eager-beaver',
+                defaultCoordinates: {positionX: 48, positionY: 52},
                 description: 'Coming up fast on royalty, ripe for moving up on loyalty.'
             },
             {
@@ -469,6 +471,7 @@ export default {
                 title: 'The Deadweight',
                 largeImage: 'Deadweight.svg',
                 iconImage: 'icon-character-deadweight',
+                defaultCoordinates: {positionX: 25, positionY: 32},
                 description: 'Low Royalty, low loyalty. Going nowhere.'
             },
             // {
@@ -483,6 +486,7 @@ export default {
                 title: 'The Smiley',
                 largeImage: 'Smiley.svg',
                 iconImage: 'icon-character-smiley',
+                defaultCoordinates: {positionX: 75, positionY: 32},
                 description: 'Low royalty, high loyalty. Nice to spend time with but will never give you work or whatever else you need to succeed.'
             },
             {
@@ -490,6 +494,7 @@ export default {
                 title: 'The Assassin',
                 largeImage: '/Assassin.svg',
                 iconImage: 'icon-character-assassin',
+                defaultCoordinates: {positionX: 25, positionY: 75},
                 description: 'High royalty but negative loyalty, damaging your organisation.'
             },
             {
@@ -497,6 +502,7 @@ export default {
                 title: 'The Boomerang',
                 largeImage: 'Boomerang.svg',
                 iconImage: 'icon-character-boomerang',
+                defaultCoordinates: {positionX: 25, positionY: 75},
                 description: 'High royalty but reversed on loyalty'
             },
             {
@@ -504,6 +510,7 @@ export default {
                 title: 'The Mirage',
                 largeImage: 'Mirage.svg',
                 iconImage: 'icon-character-mirage',
+                defaultCoordinates: {positionX: 25, positionY: 75},
                 description: 'High royalty low loyalty sometimes disguised as The Prize. But, they are never going to choose you.'
             },
             {
@@ -511,6 +518,7 @@ export default {
                 title: 'The Prize',
                 largeImage: 'Prize.svg',
                 iconImage: 'icon-character-prize',
+                defaultCoordinates: {positionX: 25, positionY: 75},
                 description: 'High royalty low loyalty but worth pursuing because others will follow.'
             },
             {
@@ -518,6 +526,7 @@ export default {
                 title: 'The Trojan Horse',
                 largeImage: 'Trojan Horse.svg',
                 iconImage: 'icon-character-trojan-horse',
+                defaultCoordinates: {positionX: 25, positionY: 75},
                 description: 'High royalty low loyalty organisations where you know someone on the inside.'
             }
         ]
@@ -698,7 +707,7 @@ export default {
      * @param routeLocation
      * @returns {{positionY: number, positionX: number}}
      */
-    getPosition(item, routeLocation) {
+    getPosition(item, routeLocation = null) {
         const zoom = routeLocation.query.zoom && routeLocation.query.zoom ? routeLocation.query.zoom : null
         const container = this.getContainer()
         let positionX = item.positionX
@@ -960,6 +969,36 @@ export default {
                 return 'action-left'
             }
             return 'action-left'
+        }
+        return '';
+    },
+
+    /**
+     * Return people grid position class
+     * item position need to be percentage
+     * @param item
+     * @returns {string}
+     */
+    getPeopleColorClass(item){
+        const positionX = item.positionX;
+        const positionY = item.positionY;
+
+        if (positionX < 50) {
+            if(positionY < 50){
+                // No frill section
+                return 'orange'
+            }else{
+                // Upgrade section
+                return 'cyan'
+            }
+        } else {
+            if (positionY < 50) {
+                // Standard section
+                return 'sky-blue'
+            }else{
+                // VIP section
+                return 'blue'
+            }
         }
         return '';
     },

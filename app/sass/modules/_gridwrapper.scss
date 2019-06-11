@@ -5,10 +5,14 @@
 
   .gridwrapper-save {
     position: absolute;
-    top: 0px;
-    right: -1px;
-    background-color: rgba(255, 255, 255, .9);
-    border: 0px;
+    top: 5px;
+    right: 5px;
+    background-color: rgba(255, 255, 255, 1);
+    border: 0;
+    z-index: 101;
+    border: none;
+    border-radius: 5px;
+    padding: 0 15px;
   }
 
   .gridwrapper-inner {
@@ -171,6 +175,54 @@
           text-align: center;
           word-wrap: break-word;
           line-height:1;
+        }
+
+        &.blue{
+          .person-icon {
+            &:before{
+              color:$brand-color-2;
+            }
+          }
+
+          .person-abbr{
+            color:$brand-color-2;
+          }
+        }
+
+        &.cyan{
+          .person-icon {
+            &:before{
+              color:$brand-color-1;
+            }
+          }
+
+          .person-abbr{
+            color:$brand-color-1;
+          }
+        }
+
+        &.sky-blue{
+          .person-icon {
+            &:before{
+              color:$brand-color-4;
+            }
+          }
+
+          .person-abbr{
+            color:$brand-color-4;
+          }
+        }
+
+        &.orange{
+          .person-icon {
+            &:before{
+              color:$brand-color-3;
+            }
+          }
+
+          .person-abbr{
+            color:$brand-color-3;
+          }
         }
 
         .person-icon {

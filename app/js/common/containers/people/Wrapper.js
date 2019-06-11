@@ -348,6 +348,8 @@ export default class PeopleWrapper extends React.PureComponent {
                         clusterItemShow = 'cluster-show'
                     }
 
+                    const peoplePositionClass = fn.getPeopleColorClass(item)
+
                     let editPeopleLink = `/${url.projects}/${params.id}/groups/${group.id}/${url.people}/${item.id}`
                     editPeopleLink = location.query.zoom ? `${editPeopleLink}?zoom=${location.query.zoom}` : editPeopleLink
 
@@ -380,7 +382,7 @@ export default class PeopleWrapper extends React.PureComponent {
                                      ]
                                  }
                             >
-                                <div className="react-draggable-handle">
+                                <div className={`${peoplePositionClass} react-draggable-handle`}>
                                     <span className={`person-icon avatar-${fn.getAvatarClass(item.icon_size)}`}></span>
 
                                     <span className="person-abbr">{item.abbreviation}</span>
