@@ -60,7 +60,6 @@ class OrganisationController extends PropellaBaseController
             ->with(['people'])
             ->findOrFail($id);
 
-
         return response()->json($response);
     }
 
@@ -93,7 +92,7 @@ class OrganisationController extends PropellaBaseController
                 isset($updateOrganisation['status']) ? $organisation->status =  $updateOrganisation['status'] : '';
                 isset($updateOrganisation['type_id']) ? $organisation->type_id = $updateOrganisation['type_id'] : '';
                 isset($updateOrganisation['positionX']) ? $organisation->positionX = getPosition($updateOrganisation['positionX']) : '';
-                isset($updateOrganisation['positionY']) ? $organisation->positionY = getPositon($updateOrganisation['positionY']) : '';
+                isset($updateOrganisation['positionY']) ? $organisation->positionY = getPosition($updateOrganisation['positionY']) : '';
                 isset($updateOrganisation['trajectory']) ? $organisation->trajectory =  $updateOrganisation['trajectory'] : '';
                 isset($updateOrganisation['icon_size']) ? $organisation->icon_size = $updateOrganisation['icon_size'] : '';
 

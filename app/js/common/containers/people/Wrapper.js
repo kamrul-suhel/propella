@@ -275,7 +275,8 @@ export default class PeopleWrapper extends React.PureComponent {
             params,
             container,
             location,
-            groups
+            groups,
+            people
         } = this.props
 
         const {
@@ -383,7 +384,11 @@ export default class PeopleWrapper extends React.PureComponent {
                                  }
                             >
                                 <div className={`${peoplePositionClass} react-draggable-handle`}>
-                                    <span className={`person-icon avatar-${fn.getAvatarClass(item.icon_size)}`}></span>
+                                    {people.showCharacters && item.character_id !== 0 ?
+                                        <span className={`person-icon ${fn.getPeopleCharacter(item.character_id)['iconImage']}`}></span>
+                                        :
+                                        <span className={`person-icon avatar-${fn.getAvatarClass(item.icon_size)}`}></span>
+                                    }
 
                                     <span className="person-abbr">{item.abbreviation}</span>
                                     {selectedDraggable === item.id &&

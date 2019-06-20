@@ -105,16 +105,22 @@ export default class Description extends React.PureComponent {
                   className="project-user-select"
                 />
 
-                <TextInput
-                    autoComplete="off"
-                    name="description"
-                    label="What is this Group About?"
-                    textarea
-                    value={description}
-                    onChange={handleInputChange}
-                    validation="required"
-                    wide
-                />
+                <div className="c-tooltip c-top">
+                    <div className="c-tooltip-message">
+                        Specific description, Historic income/profit, Size, Geographical trends, Group trends, Potential for your services, External links, Media/Information sources
+                    </div>
+
+                    <TextInput
+                        autoComplete="off"
+                        name="description"
+                        label="What is this Group About?"
+                        textarea
+                        value={description}
+                        onChange={handleInputChange}
+                        validation="required"
+                        wide
+                    />
+                </div>
             </Form>
         );
     }

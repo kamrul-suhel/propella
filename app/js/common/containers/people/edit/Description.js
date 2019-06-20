@@ -115,15 +115,28 @@ export default class Description extends React.PureComponent {
 
                 </div>
 
-                <TextInput
-                    name="description"
-                    label="Give them a description"
-                    textarea
-                    value={description}
-                    onChange={handleInputChange}
-                    validation="required"
-                    wide
-                />
+                <div className="c-tooltip c-top">
+                    <div className="c-tooltip-message">
+                        Responsibilities<br/>
+                        Interests (in public domain)<br/>
+                        History and status of relationship<br/>
+                        Link to profile on website<br/>
+                        Link to LinkedIn profile<br/>
+                        Common connections<br/>
+                        Observations or issues<br/>
+                        Please ensure you adhere to GDPR guidelines when recording information.<br/>
+                        NB in next round of development maybe we could do a drop down for this or organise the information in a better way?
+                    </div>
+                    <TextInput
+                        name="description"
+                        label="Give them a description"
+                        textarea
+                        value={description}
+                        onChange={handleInputChange}
+                        validation="required"
+                        wide
+                    />
+                </div>
             </Form>
         );
     }

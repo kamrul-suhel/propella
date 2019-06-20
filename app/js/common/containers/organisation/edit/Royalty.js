@@ -19,8 +19,12 @@ export default class Royalty extends React.PureComponent {
 				<p className="form-label form-label-title">Okay now lets see where they sit on the board</p>
 				<p className="h2">Royalty</p>
 				<p className="slider-description">
-					<strong>Value, influence and power. Top drawer or bottom?</strong><br/>
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+					<strong>Value, influence and power.</strong><br/>
+					<span>For clients, targets, income sources and contacts, think about spend, potential spend, size, status, kudos ambition, confidence, success, ownership, stability, shared values around the environment and ethics. Also think about likeability and payment record.</span>
+					<span>For media, influencers and industry associations, think size, reach, quality and followers.</span>
+					<span>For suppliers, how critical are they to your success.</span>
+					<span>For internal teams, how important are they to achieve your goal?</span>
+					<span>Above 50 they will be significant to your future.</span>
 				</p>
 
 				<Slider

@@ -19,10 +19,10 @@ export default class Loyalty extends React.PureComponent {
                 <p className="form-label form-label-title">Okay now lets see where they sit on the board</p>
                 <p className="h2">Loyalty</p>
                 <p className="slider-description">
-                    <strong>Value, influence and power. Top drawer or bottom?</strong>
-                    <br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                    labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                    nisi ut aliquip ex ea commodo consequat.
+                    <strong>Knowledge, buy-in, advocacy.</strong>
+                    <br/>What is the status of your relationship with this group?  Are you recognised by this group? Is this a group where you have a reputation as provider? Are you in the top five providers? What’s your market share of work in this group? Whatever percentage that is, use that number here.
+                    <br/>
+                    You will be a player in any group above 50.
                 </p>
 
                 <Slider

@@ -32,8 +32,8 @@ $router->group(['prefix' => 'v1/projects'] , function () use ($router) {
 $router->group(['prefix' => 'v1/groups'] , function () use ($router) {
     $router->post('', 'GroupController@create');
     $router->put('', 'GroupController@updateMultiple');
-    $router->patch('/{id}', 'GroupController@update');
     $router->get('/{id}/competitors', 'GroupController@getCompetitorsByGroupId');
+    $router->patch('/{id}', 'GroupController@update');
     $router->put('/{id}', 'GroupController@update');
     $router->get('', 'GroupController@list');
     $router->get('/{id}', 'GroupController@single');

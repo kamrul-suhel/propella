@@ -20,11 +20,12 @@ export default class Loyalty extends React.PureComponent {
 
                 <p className="h2">Loyalty</p>
 
-                <p className="slider-description"><strong>Value, influence and power. Top drawer or
-                    bottom?</strong><br/>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                    aliquip ex ea commodo consequat. </p>
+                <p className="slider-description">
+                    <strong>Knowledge, buy-in, advocacy.
+                    </strong><br/>
+                    <span>How well does this person know your organisation or mission? Would they recognise your name? Do they know of your reputation? Or are they actively recommending you?</span>
+                    <span>Above the 50 line will be regular providers of work, profile, introductions, loyalty, support.</span>
+                </p>
 
                 <Slider
                     name="positionX"

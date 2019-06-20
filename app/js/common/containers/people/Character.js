@@ -69,9 +69,20 @@ export default class Edit extends React.PureComponent {
     handleSubmit = async () => {
         const {params, location} = this.props;
         const {activeSlide} = this.state;
-        const response = await api.put(`/people/${params.personId}`, {
-            character_id: activeSlide + 1
-        });
+
+        // Find the character_id by activeSlide id
+        let characterId = 0
+        _.map(fn.getPeopleCharacters(), (character, index) => {
+            if(index === activeSlide){
+                characterId = character.id
+            }
+        })
+
+        let formData = new FormData()
+        formData.append('character_id', characterId)
+
+        const response = await api.put(`/people/${params.personId}`, formData);
+
         if (!api.error(response)) {
             this.fetchGroup();
             let redirectUrl = `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}`

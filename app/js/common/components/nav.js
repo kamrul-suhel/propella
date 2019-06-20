@@ -133,7 +133,7 @@ export default class Nav extends React.PureComponent {
       <div className="nav" id="nav" style={{zIndex: menuOpen ? 102 : 101}}>
         <img className="nav-logo" src="/../../../images/logo.svg" />
 
-        <h2 className="project-title">{currentProject && currentProject.title}</h2>
+        <h2 className="project-title text-fadeout">{currentProject && currentProject.title}</h2>
 
         {params.id &&
           <React.Fragment>

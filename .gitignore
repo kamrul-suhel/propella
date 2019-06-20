@@ -72,3 +72,6 @@ api/public/images/
 api/database/mysql-diagram.mwb.bak
 
 nbproject/
+
+# Ignore feed back file
+/content

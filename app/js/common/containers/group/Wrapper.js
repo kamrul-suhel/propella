@@ -341,6 +341,7 @@ export default class GroupWrapper extends React.PureComponent {
                             return
                         }
 
+                        // Check zoom view, does this item need to show
                         const isShow = fn.isItemShow(item, location);
                         if (!isShow) {
                             return;

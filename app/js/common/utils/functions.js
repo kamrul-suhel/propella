@@ -1047,11 +1047,14 @@ export default {
         let dataSet = [];
         let clusters = []
         _.map(items, (item) => {
-            let currGroup = [
-                item.positionX,
-                item.positionY
-            ]
-            dataSet.push(currGroup)
+            // Check status of given item
+            if(item.status > 0){
+                let currGroup = [
+                    item.positionX,
+                    item.positionY
+                ]
+                dataSet.push(currGroup)
+            }
         })
 
         if (dataSet.length > 0) {

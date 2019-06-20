@@ -257,7 +257,9 @@ class GroupController extends PropellaBaseController
             ->leftJoin('organisations', 'organisations.id', '=', 'people.organisation_id')
             ->leftJoin('groups', 'groups.id', '=', 'organisations.group_id')
             ->where('groups.id', $id)
+            ->where('organisations.status', 1) // only active organisation will show
             ->whereIn('people.status', [1])
+            ->orderBy('people.title', 'asc')
             ->get();
 
         $group->people = $people;

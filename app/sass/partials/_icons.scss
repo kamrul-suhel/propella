@@ -28,3 +28,12 @@
     @extend [class^="icon-"];
     font-size:31px;
 }
+
+.icon-masks{
+ &.gray{
+     &:before{
+         color: $color-gray;
+     }
+ }
+}
+
