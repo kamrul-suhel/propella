@@ -220,6 +220,7 @@ class OrganisationController extends PropellaBaseController
         $this->request->has('group_id') ? $organisation->group_id = (int) $this->request->group_id : '';
         $this->request->has('status') ? $organisation->status =  $this->request->status : '';
         $this->request->has('type_id') ? $organisation->type_id = $this->request->type_id : '';
+        $this->request->has('character_id') ? $organisation->character_id = $this->request->character_id : '';
         $this->request->has('positionX') ? $organisation->positionX = getPosition($this->request->positionX) : '';
         $this->request->has('positionY') ? $organisation->positionY = getPosition($this->request->positionY) : '';
         $this->request->has('trajectory') ? $organisation->trajectory =  $this->request->trajectory : '';

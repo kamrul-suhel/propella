@@ -533,10 +533,11 @@ export default {
     },
 
     getPeopleCharacter(id) {
-        if (id === 0) {
+        if (id === 0 || id === null) {
             return {}
         }
-        const totalArray = this.getPeopleCharacters().length
+        const totalArray = this.getPeopleCharacters().length + 1 // reason is we disable one character. Pirate
+
         if (totalArray < id) {
             return _.find(this.getPeopleCharacters(), {id: 1})
         }

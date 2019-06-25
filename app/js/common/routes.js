@@ -51,7 +51,10 @@ const Routes = (
                             <IndexRoute component={Organisation.List}/>
                             <Route path={url.people} component={People.PeopleWrapper}/>
                             <Route path={`${url.people}/${url.zoom}`} component={People.PeopleWrapper}/>
-                            <Route path=":organisationId" component={Organisation.Edit} activeNav/>
+                            <Route path=":organisationId" activeNav>
+                                <IndexRoute component={Organisation.Edit}/>
+                                <Route path={url.characters} component={Group.Character} activeNav/>
+                            </Route>
                             <Route path={url.organisations} component={Organisation.Edit} activeNav/>
                         </Route>
                         <Route path={url.people}>

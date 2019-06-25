@@ -4,7 +4,7 @@ import {fetchData} from 'app/actions';
 import {connect} from 'react-redux';
 import {Form, Checkbox, ContentLoader} from '@xanda/react-components';
 import {FancyList, FancyListItem, Popup} from 'app/components';
-import {api} from 'app/utils';
+import {api, fn} from 'app/utils';
 import {url} from 'app/constants';
 import {makeGetGroup, makeGetGroups} from 'app/containers/group/selector';
 import {GroupWrapper} from 'app/containers/group';
@@ -61,6 +61,8 @@ export default class List extends React.PureComponent {
         const addPeopleUrl = location.query.zoom ? `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}/add?organisation_id=${organisation.id}&zoom=${location.query.zoom}` :
             `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}/add?organisation_id=${organisation.id}`
 
+        const character = fn.getPeopleCharacter(organisation.character_id)
+
         return (
             <FancyListItem
                 key={organisation.id}
@@ -81,14 +83,31 @@ export default class List extends React.PureComponent {
                             styled
                             className="switch"
                         />
+
                         <Link
                             to={editOrganiationUrl}
                             className="icon-pencil"
                         />
+
                         <Link
                             to={addPeopleUrl}
                             className="icon-add-people"
                         />
+
+                        {organisation.character_id !== 0 ? (
+                            <Link
+                                to={`/${url.projects}/${params.id}/groups/${params.groupId}/${url.organisations}/${organisation.id}/${url.characters}?character=${character.id}`}
+                                className={character['iconImage']}
+                                title={character['title']}
+                            />
+                        ) : (
+                            <Link
+                                to={`/${url.projects}/${params.id}/groups/${params.groupId}/${url.organisations}/${organisation.id}/${url.characters}`}
+                                className="icon-masks gray"
+                                title={character['title']}
+                            />
+                        )}
+
                         <span
                             className="clickable icon-bin"
                             type="button"

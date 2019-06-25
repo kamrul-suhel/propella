@@ -365,6 +365,7 @@ export default class GroupWrapper extends React.PureComponent {
                             `/${url.projects}/${params.id}/groups/${group.id}/${url.organisations}/${item.id}`
 
                         const peopleUrl = `/${url.projects}/${params.id}/groups/${group.id}/${url.organisations}/${url.people}`
+                        let assignCharacterLink = `/${url.projects}/${params.id}/groups/${group.id}/${url.organisations}/${item.id}/${url.characters}`
 
                         return (
                             <Draggable
@@ -405,7 +406,13 @@ export default class GroupWrapper extends React.PureComponent {
                                     }
 
                                     {selectedDraggable === item.id &&
-                                    <div className={`react-draggable-actions ${actionPositionClass}`}>
+                                    <div className={`react-draggable-actions group-actions ${actionPositionClass}`}>
+                                        <Link className="button-round five"
+                                              to={assignCharacterLink}>
+                                            <span className="button-round-inside icon-masks"/>
+                                            Assign<br/>Character
+                                        </Link>
+
                                         <Link className="button-round first"
                                               to={groupEditUrl}>
                                             <span className="button-round-inside icon-pencil"/>

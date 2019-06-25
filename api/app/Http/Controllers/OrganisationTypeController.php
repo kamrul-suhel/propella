@@ -78,7 +78,6 @@ class OrganisationTypeController extends PropellaBaseController
 
             return response()->json($response, 422);
         }
-
         return response()->json(['success' => true]);
     }
 
