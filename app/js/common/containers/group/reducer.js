@@ -269,7 +269,7 @@ export default function group(state = defaultState, action) {
             };
         }
 
-        case 'CLEAR_DRAGGED_PEOPLE': {
+        case 'DRAGGED_PEOPLE_RESET': {
             return {
                 ...state,
                 updatedPeople: []
@@ -295,6 +295,12 @@ export default function group(state = defaultState, action) {
                     }
                 }
             };
+        }
+
+        case 'GROUP_RESET': {
+            return {
+
+            }
         }
 
         default: {

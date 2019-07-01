@@ -60,8 +60,6 @@ export default class List extends React.PureComponent {
                             to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}/${person.id}`}
                             className="icon-pencil"
                         />
-                        <span type="button" onClick={() => this.handleDelete(params.groupId, person.id)}
-                              className="clickable icon-bin"/>
                         {person.character_id !== 0 ? (
                             <Link
                                 to={`/${url.projects}/${params.id}/groups/${params.groupId}/${url.people}/${person.id}/${url.characters}?character=${character.id}`}
@@ -75,6 +73,8 @@ export default class List extends React.PureComponent {
                                 title={character['title']}
                             />
                         )}
+                        <span type="button" onClick={() => this.handleDelete(params.groupId, person.id)}
+                              className="clickable icon-bin"/>
                     </React.Fragment>
                 }
                 category={person.organisation_title}

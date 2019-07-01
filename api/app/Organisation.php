@@ -66,6 +66,7 @@ class Organisation extends Model
     public static function getDefaultField(){
         return self::select([
             'organisations.id',
+            'organisations.character_id',
             'organisations.rel_user_id',
             'organisations.title',
             'organisations.description',

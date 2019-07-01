@@ -262,6 +262,22 @@ class GroupController extends PropellaBaseController
             ->orderBy('people.title', 'asc')
             ->get();
 
+        // Get coordinate for people
+        $people->map(function ($people) {
+            $ids = People::getAllId($people->parent_id);
+            $coordinates = People::select([
+                'id',
+                'positionX',
+                'positionY',
+                'icon_size',
+                'icon_path'
+            ])
+                ->whereIn('id', $ids)
+                ->orderBy('created_at', 'DESC')
+                ->get();
+            $people->coordinates = $coordinates;
+        });
+
         $group->people = $people;
 
         return response()->json($group);

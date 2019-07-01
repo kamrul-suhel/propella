@@ -17,6 +17,7 @@ export default function competitor(state = defaultState, action) {
         isLoading: true
       };
     }
+
     case "COMPETITOR_REJECTED": {
       return {
         ...state,
@@ -24,6 +25,7 @@ export default function competitor(state = defaultState, action) {
         error: action.payload.data
       };
     }
+
     case "COMPETITOR_FULFILLED": {
       const normalizedData = api.normalizeData(state, action);
       return {
@@ -32,6 +34,11 @@ export default function competitor(state = defaultState, action) {
         ...normalizedData
       };
     }
+
+    case "COMPETITOR_RESET": {
+      return defaultState;
+    }
+
     case "COMPETITOR_DELETED": {
       return {
         ...state,
@@ -39,6 +46,7 @@ export default function competitor(state = defaultState, action) {
         collection: _.pickBy(state.collection, (o) => o.id !== action.payload.id)
       };
     }
+
     default: {
       return state;
     }

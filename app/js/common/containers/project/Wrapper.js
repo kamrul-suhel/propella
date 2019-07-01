@@ -23,6 +23,7 @@ import {ContentLoader} from '@xanda/react-components'
 export default class ProjectWrapper extends React.PureComponent {
     constructor(props) {
         super(props)
+        const { location } = props
 
         this.state = {
             selectedDraggable: 0,
@@ -35,8 +36,14 @@ export default class ProjectWrapper extends React.PureComponent {
     }
 
     componentWillMount() {
+        const {location} = this.props
         document.addEventListener('mousedown', this.handleClick, false)
         document.addEventListener('touchstart', this.handleClick, false)
+
+        // If progress query params is set then do progress
+        if(location.query.progress){
+            this.getGroupCoordinate(null, location.query.progress)
+        }
     }
 
     componentWillUnmount() {
@@ -47,6 +54,48 @@ export default class ProjectWrapper extends React.PureComponent {
     componentDidMount() {
         const {location} = this.props
         !location.query.zoom && !location.query.zoomOut ? this.fetchData() : null;
+    }
+
+    getGroupCoordinate = (event = null, groupId) => {
+        const {location, router, params} = this.props
+        const {project} = this.props;
+        const {selectedGroupCoordinates} = this.state
+
+        // Check if it is zoom or not
+        if(location.query.zoom){
+            let selectedGroup = _.find(project.groups, (group) => group.id === groupId)
+            router.push({
+                pathname: `/${url.projects}/${params.id}`,
+                search: `?zoomOut=true&groupId=${groupId}`,
+            })
+            return
+        }
+
+        if (!_.isEmpty(selectedGroupCoordinates)) {
+            this.setState({selectedGroupCoordinates: {}})
+        } else {
+            // Stop other event
+            if(event !== null){
+                event.stopPropagation()
+            }
+
+            // check groupId is set in query params
+            if(location.query.groupId){
+                router.push({
+                    pathname:`/${url.projects}/${params.id}`,
+                    search: `?zoomOut=true`
+                })
+                return;
+            }
+
+            let selectedGroup = _.find(project.groups, (group) => group.id === groupId)
+
+            if (selectedGroup) {
+                this.setState({
+                    selectedGroupCoordinates: selectedGroup
+                })
+            }
+        }
     }
 
     fetchData = () => {
@@ -213,27 +262,25 @@ export default class ProjectWrapper extends React.PureComponent {
         }
     }
 
-    getGroupCoordinate = (event, groupId) => {
-        const {project} = this.props;
-        const {selectedGroupCoordinates} = this.state;
 
-        if (!_.isEmpty(selectedGroupCoordinates)) {
-            this.setState({selectedGroupCoordinates: {}})
-        } else {
-            // Stop other event
-            event.stopPropagation();
-            let selectedGroup = _.find(project.groups, (group) => group.id === groupId)
-
-            if (selectedGroup) {
-                this.setState({
-                    selectedGroupCoordinates: selectedGroup
-                })
-            }
-        }
-    }
 
     handleResetChanges = () => {
         this.fetchData()
+    }
+
+    handleGroupChange = (event, id) => {
+
+    }
+
+    renderCoordinate(selectedCoordinate){
+        let coordinate = {}
+
+        if(selectedCoordinate !== null){
+            coordinate = selectedCoordinate
+        }else{
+            coordinate = selectedCoordinate
+        }
+        return(<Coordinate group={coordinate} {...this.props}/>)
     }
 
     render() {
@@ -258,9 +305,28 @@ export default class ProjectWrapper extends React.PureComponent {
             return null
         }
 
+        let modifySelectedDraggable = selectedDraggable
+
+        // Get coordinate for selected group
+        // Come from state or query
+        let groupCoordinates = {}
+        const groupId = location.query.groupId && +location.query.groupId
+        if(groupId){
+            let selectedGroup = {}
+            _.map(project.groups, (group) => {
+                if(group.id === groupId){
+                    selectedGroup = {...group}
+                    modifySelectedDraggable = group.id
+                }
+            })
+
+            groupCoordinates = selectedGroup
+        }else{
+            groupCoordinates = {...selectedGroupCoordinates}
+        }
+
         const projectGroupIndexes = project.groups && Object.keys(projects.collection[this.props.params.id].groups)
         const clusters = fn.getClusterDataSet(project.groups, location)
-
 
         return (
             <div ref={node => this.node = node}>
@@ -293,11 +359,11 @@ export default class ProjectWrapper extends React.PureComponent {
                         const position = fn.getPosition(item, location);
 
                         // to edit project in zoom and normal mode
-                        const projectEditUrl = location.query.zoom ? `/${url.projects}/${params.id}/groups/${item.id}/edit?zoom=${location.query.zoom}&fetch=true`
+                        const projectEditUrl = location.query.zoom ? `/${url.projects}/${params.id}/${url.groups}/${item.id}/edit?zoom=${location.query.zoom}&fetch=true`
                             :
-                            `/${url.projects}/${params.id}/groups/${item.id}/edit?fetch=true`
+                            `/${url.projects}/${params.id}/${url.groups}/${item.id}/edit?fetch=true`
 
-                        const organisationUrl = `/${url.projects}/${params.id}/groups/${item.id}`
+                        const organisationUrl = `/${url.projects}/${params.id}/${url.groups}/${item.id}`
 
                         return (
                             <Draggable
@@ -312,7 +378,7 @@ export default class ProjectWrapper extends React.PureComponent {
                                 scale={1}
                                 bounds=".gridwrapper-inner-section-wrapper"
                                 onStop={this.onDraggableEventHandler}
-                                disabled={selectedDraggable === item.id && clusterItemShow === null}>
+                                disabled={modifySelectedDraggable === item.id && clusterItemShow === null}>
 
                                 <div handleid={item.id}
                                      className={
@@ -320,14 +386,14 @@ export default class ProjectWrapper extends React.PureComponent {
                                              clusterItemClass,
                                              clusterItemShow,
                                              `size-${item.icon_size}`,
-                                             (selectedDraggable && selectedDraggable !== item.id ? 'disabled' : ''),
-                                             (selectedDraggable === item.id ? 'is-selected' : ''),
+                                             (modifySelectedDraggable && modifySelectedDraggable !== item.id ? 'disabled' : ''),
+                                             (modifySelectedDraggable === item.id ? 'is-selected' : ''),
                                              item
                                          ]
                                      }
                                 >
 
-                                    {selectedDraggable === item.id &&
+                                    {modifySelectedDraggable === item.id &&
                                     <div className={`react-draggable-actions ${actionPositionClass}`}>
                                         <Link className="button-round first"
                                               to={projectEditUrl}>
@@ -337,9 +403,9 @@ export default class ProjectWrapper extends React.PureComponent {
 
                                         {item.coordinates && item.coordinates.length > 0 ? (
                                             <span className="clickable button-round second"
-                                                  onClick={(event) => fn.isZoom(location) ? null : this.getGroupCoordinate(event, item.id)}>
+                                                  onClick={(event) => this.getGroupCoordinate(event, item.id)}>
                                             <span className="button-round-inside icon-chain"/>
-                                                {_.isEmpty(selectedGroupCoordinates) ? 'Progress' : 'Hide Progress'}
+                                                {_.isEmpty(groupCoordinates) ? 'Progress' : 'Hide Progress'}
                                             </span>
                                         ) : (
                                             <span className="button-round second progress-hide">
@@ -364,9 +430,10 @@ export default class ProjectWrapper extends React.PureComponent {
                                             <div className="react-draggable-handle-title">{item.abbreviation}</div>
                                         </ReactFitText>
                                         <span className="user-colour-dot"
-                                              style={{backgroundColor: item.profile_colour}}></span>
+                                              style={{backgroundColor: item.profile_colour}}>
+                                        </span>
                                     </div>
-                                    {selectedDraggable === item.id &&
+                                    {modifySelectedDraggable === item.id &&
                                         <span className="react-draggable-title">{item.title}</span>
                                     }
                                 </div>
@@ -402,8 +469,8 @@ export default class ProjectWrapper extends React.PureComponent {
                                         [
                                             `cluster`,
                                             actionPositionClass,
-                                            (selectedDraggable && selectedDraggable !== group.id ? 'disabled' : ''),
-                                            (selectedDraggable === group.id ? 'is-selected' : ''),
+                                            (modifySelectedDraggable && modifySelectedDraggable !== group.id ? 'disabled' : ''),
+                                            (modifySelectedDraggable === group.id ? 'is-selected' : ''),
                                             group
                                         ]
                                     }
@@ -420,8 +487,11 @@ export default class ProjectWrapper extends React.PureComponent {
 
                     {this.props.children}
 
-                    {selectedGroupCoordinates.coordinates && !fn.isZoom(location) ?
-                        <Coordinate group={selectedGroupCoordinates} {...this.props}/> : ''}
+                    {
+                        groupCoordinates.coordinates && !fn.isZoom(location) ?
+                        this.renderCoordinate(groupCoordinates)
+                        : ''
+                    }
 
                     {projects.updatedGroups.length > 0 &&
                     <React.Fragment>

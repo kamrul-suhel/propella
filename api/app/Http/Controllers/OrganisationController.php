@@ -229,6 +229,7 @@ class OrganisationController extends PropellaBaseController
         if($create){
             $organisation->status = 1;
             $organisation->created_by = $this->request->authUserId;
+            $organisation->character_id = 0;
 
             if($this->request->has('icon_path') && $this->request->hasFile('icon_path')){
                 $iconPath = propellaUploadImage($this->request->icon_path, $this->folderName);

@@ -36,6 +36,10 @@ export default class List extends React.PureComponent {
   }
 
   fetchData = () => {
+    this.props.dispatch({
+      type:'COMPETITOR_RESET'
+    })
+
     this.props.dispatch(
       fetchData({
         type: "COMPETITOR",
@@ -86,7 +90,11 @@ export default class List extends React.PureComponent {
     if (window.confirm("Are you sure you want to delete this competitor?")) {
       const response = await api.delete(`competitors/${id}`)
       if (!api.error(response)) {
-        this.props.dispatch({type: 'COMPETITOR_DELETED', payload: response.data})
+        this.props.dispatch({
+          type: 'COMPETITOR_DELETED', payload: response.data
+        })
+
+        this.fetchData();
       }
     }
   }
@@ -114,7 +122,12 @@ export default class List extends React.PureComponent {
   }
 
   render() {
-    const { competitors, params, projects, group } = this.props;
+    const {
+      competitors,
+      params,
+      projects,
+      group
+    } = this.props;
 
     return (
       <ProjectWrapper {...this.props}>
@@ -128,8 +141,7 @@ export default class List extends React.PureComponent {
             buttons={
               <React.Fragment>
                 {!_.isEmpty(competitors.currentCollection) && competitors.currentCollection.length < 3 &&
-                  <Link to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.competitors}/add`} className="button">
-                    Add competitor
+                  <Link to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.competitors}/add`} className="button">Add competitor
                   </Link>
                 }
               </React.Fragment>

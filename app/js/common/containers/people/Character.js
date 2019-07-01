@@ -89,7 +89,21 @@ export default class Edit extends React.PureComponent {
             redirectUrl = location.query.zoom ? `${redirectUrl}?zoom=${location.query.zoom}` : redirectUrl
             fn.navigate(redirectUrl);
         }
-    };
+    }
+
+    handleRemoveCharacterIcon = async (characterId) => {
+        const { location, params } = this.props
+        // let formData = new FormData()
+        // formData.append('character_id', characterId)
+        // const response = await api.put(`/people/${params.personId}`, formData)
+        let cancelCharacterLink = `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}`
+        cancelCharacterLink = location.query.zoom ? `${cancelCharacterLink}?zoom=${location.query.zoom}` : cancelCharacterLink
+
+        // if (!api.error(response)) {
+            this.fetchGroup();
+            fn.navigate(cancelCharacterLink);
+        // }
+    }
 
     handleCharacterPos(event, character) {
         event.preventDefault()
@@ -122,9 +136,6 @@ export default class Edit extends React.PureComponent {
             initialSlide: (location.query.character) ? (location.query.character - 1) : 0
         };
 
-        let cancelCharacterLink = `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.organisations}/${url.people}`
-        cancelCharacterLink = location.query.zoom ? `${cancelCharacterLink}?zoom=${location.query.zoom}` : cancelCharacterLink
-
         return (
             <div className="character-container">
                 <PeopleWrapper {...this.props}>
@@ -136,12 +147,9 @@ export default class Edit extends React.PureComponent {
                             }`}
                         buttons={
                             <React.Fragment>
-                                <Link
-                                    to={cancelCharacterLink}
-                                    className="button"
-                                >
-                                    Cancel
-                                </Link>
+                                <button className="button"
+                                        onClick={() => this.handleRemoveCharacterIcon(0)}>Cancel
+                                </button>
                                 <span
                                     className="clickable button"
                                     onClick={this.handleSubmit}

@@ -115,6 +115,22 @@ export default class Edit extends React.PureComponent {
         })
     }
 
+    handleRemoveCharacterIcon = async (characterId) => {
+        const { location, params } = this.props
+        // TODO maybe feature request we need this
+        // let formData = new FormData()
+        // formData.append('character_id', characterId)
+        // const response = await api.put(`/${url.organisations}/${params.organisationId}`, formData)
+
+        let cancelCharacterLink = `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.organisations}`
+        cancelCharacterLink = location.query.zoom ? `${cancelCharacterLink}?zoom=${location.query.zoom}` : cancelCharacterLink
+
+        // if (!api.error(response)) {
+            this.fetchGroup()
+            fn.navigate(cancelCharacterLink)
+        // }
+    }
+
     render() {
         const {popup, params, location, group} = this.props;
         const {step, characterPos, selectedCharacter} = this.state;
@@ -144,12 +160,10 @@ export default class Edit extends React.PureComponent {
                             }`}
                         buttons={
                             <React.Fragment>
-                                <Link
-                                    to={cancelCharacterLink}
-                                    className="button"
-                                >
-                                    Cancel
-                                </Link>
+                                <button className="button"
+                                        onClick={() => this.handleRemoveCharacterIcon(0)}>Cancel
+                                </button>
+
                                 <span
                                     className="clickable button"
                                     onClick={this.handleSubmit}

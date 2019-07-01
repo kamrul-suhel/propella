@@ -120,7 +120,11 @@ export default class PeopleWrapper extends React.PureComponent {
         const response = await api.put(`/people`, {people: draggedPeople})
         if (!api.error(response)) {
             dispatch({
-                type: 'CLEAR_DRAGGED_PEOPLE'
+                type: 'DRAGGED_PEOPLE_RESET'
+            });
+
+            dispatch({
+                type: 'CLEAR_PEOPLE'
             });
 
             this.fetchData()

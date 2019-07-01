@@ -57,11 +57,9 @@ export default class List extends React.PureComponent {
 
         const editOrganiationUrl = location.query.zoom ? `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.organisations}/${organisation.id}?zoom=${location.query.zoom}` :
             `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.organisations}/${organisation.id}`
-
         const addPeopleUrl = location.query.zoom ? `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}/add?organisation_id=${organisation.id}&zoom=${location.query.zoom}` :
             `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}/add?organisation_id=${organisation.id}`
-
-        const character = fn.getPeopleCharacter(organisation.character_id)
+        const character = fn.getPeopleCharacter(organisation && organisation.character_id)
 
         return (
             <FancyListItem

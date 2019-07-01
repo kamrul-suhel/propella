@@ -45,6 +45,19 @@ export function organisation(state = defaultState, action) {
 			}
 		}
 
+		case 'ORGANISATION_CLEAR': {
+			// Update organisation
+			return {
+				...state,
+				collection: {},
+				currentCollection: [],
+				error: null,
+				isLoading: true,
+				misc: {},
+				pager: {}
+			}
+		}
+
 		default: {
 			return state;
 		}

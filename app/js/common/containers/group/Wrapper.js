@@ -32,7 +32,7 @@ export default class GroupWrapper extends React.PureComponent {
             selectedDraggable: 0,
             selectedCompetitor: 0,
             selectedOrganisation: {},
-            actionPositionClass:'',
+            actionPositionClass: '',
             showSelectedClusterItem: null,
             selectedCluster: []
         }
@@ -60,6 +60,7 @@ export default class GroupWrapper extends React.PureComponent {
             url: `/groups/${this.props.params.groupId}`,
             groupId: this.props.params.groupId
         }));
+
         this.props.dispatch(fetchData({
             type: 'PROJECT',
             url: `/projects/${this.props.params.id}`,
@@ -83,7 +84,7 @@ export default class GroupWrapper extends React.PureComponent {
             this.setState({'selectedDraggable': organisationId, actionPositionClass: actionPositionClass})
         } else {
             // find the organisation
-            let organisation = _.find(group.organisations, (organisation)=>{
+            let organisation = _.find(group.organisations, (organisation) => {
                 return organisation.id === organisationId
             })
             const position = fn.getPositionForSave(data, location, organisation.icon_size)
@@ -92,8 +93,8 @@ export default class GroupWrapper extends React.PureComponent {
             organisation.positionX = position.positionX
             organisation.positionY = position.positionY
             dispatch({
-                type:'DRAGGED_ORGANISATION_UPDATE',
-                payload:{
+                type: 'DRAGGED_ORGANISATION_UPDATE',
+                payload: {
                     groupId: params.groupId,
                     organisation: organisation
                 }
@@ -105,14 +106,15 @@ export default class GroupWrapper extends React.PureComponent {
         const {
             dispatch,
             groups,
-            group
+            group,
+            params
         } = this.props
 
         const updatedOrganisationIds = [...groups.updatedOrganisations];
-        let selectedOrganisations  = [];
+        let selectedOrganisations = [];
         _.map(updatedOrganisationIds, (id) => {
             const organisation = _.find(group.organisations, (o) => {
-                if(o.id === id){
+                if (o.id === id) {
                     return o;
                 }
             })
@@ -128,12 +130,20 @@ export default class GroupWrapper extends React.PureComponent {
 
         const response = await api.put(`/organisations`, {organisations: selectedOrganisations})
         if (!api.error(response)) {
-            this.fetchData();
-
             // Clear dragged organisation
             dispatch({
-                type:'DRAGGED_ORGANISATION_CLEAR'
+                type: 'DRAGGED_ORGANISATION_CLEAR'
             });
+
+            dispatch({
+                type: 'CLEAR_UPDATED_GROUP'
+            });
+
+            dispatch({
+                type: 'ORGANISATION_CLEAR'
+            });
+
+            this.fetchData();
         }
     }
 
@@ -150,9 +160,12 @@ export default class GroupWrapper extends React.PureComponent {
     }
 
     handleClusterItem = (organisation) => {
-        const { location } = this.props
+        const {location} = this.props
         const selectedOrganisation = fn.getPosition(organisation, location)
-        const actionPositionClass = fn.getDraggableActionClass({positionX: selectedOrganisation.positionX, positionY: selectedOrganisation.positionY})
+        const actionPositionClass = fn.getDraggableActionClass({
+            positionX: selectedOrganisation.positionX,
+            positionY: selectedOrganisation.positionY
+        })
         this.setState({
             selectedCluster: [],
             showSelectedClusterItem: organisation.id,
@@ -192,7 +205,8 @@ export default class GroupWrapper extends React.PureComponent {
                                                      src={`${organisation.icon_path}`}/>
                                             ) : (
                                                 <ReactFitText compressor={.6}>
-                                                    <div className="react-draggable-handle-title">{organisation.abbreviation}</div>
+                                                    <div
+                                                        className="react-draggable-handle-title">{organisation.abbreviation}</div>
                                                 </ReactFitText>
                                             )}
                                             <span className="user-colour-dot"
@@ -213,7 +227,7 @@ export default class GroupWrapper extends React.PureComponent {
             selectedOrganisation
         } = this.state
 
-        const { group } = this.props
+        const {group} = this.props
 
         if (!_.isEmpty(selectedOrganisation)) {
             this.setState({selectedOrganisation: {}})
@@ -511,7 +525,7 @@ export default class GroupWrapper extends React.PureComponent {
                                         <span className="react-draggable-title"></span>
 
                                         {_.join(selectedCluster, ',') === _.join(clusterIds, ',') &&
-                                            this.renderCurrentClusterItems(clusterIds)
+                                        this.renderCurrentClusterItems(clusterIds)
                                         }
                                     </div>
                                 </Draggable>
@@ -521,12 +535,13 @@ export default class GroupWrapper extends React.PureComponent {
 
                     {this.props.children}
 
-                    {selectedOrganisation.coordinates && !fn.isZoom(location) ? <Coordinate {...this.props} group={selectedOrganisation}/> : ''}
+                    {selectedOrganisation.coordinates && !fn.isZoom(location) ?
+                        <Coordinate {...this.props} group={selectedOrganisation}/> : ''}
 
-                    { groups.updatedOrganisations && groups.updatedOrganisations.length > 0 &&
-                        <button className="button gridwrapper-save"
-                                onClick={this.handleSaveChanges}>Save Changes
-                        </button>
+                    {groups.updatedOrganisations && groups.updatedOrganisations.length > 0 &&
+                    <button className="button gridwrapper-save"
+                            onClick={this.handleSaveChanges}>Save Changes
+                    </button>
                     }
                 </ContentLoader>
             </div>
