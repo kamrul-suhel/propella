@@ -45,7 +45,13 @@ export default function group(state = defaultState, action) {
                                 const organisationIndex = _.findIndex(currentCollection.organisations, (g) => {
                                     return g.id === upOrganisation;
                                 });
-                                organisations.push(currentCollection.organisations[organisationIndex])
+
+                                // When you create a new group that time, you do not have this object in your collection array
+                                if(organisationIndex < 0){
+                                    organisations.push(organisation)
+                                }else{
+                                    organisations.push(currentCollection.organisations[organisationIndex])
+                                }
                             }
                         })
                     } else {
@@ -184,7 +190,7 @@ export default function group(state = defaultState, action) {
                                 ...action,
                                 payload:{
                                     ...action.payload,
-                                    organisation: newOrganiation
+                                    organisation: newOrganisation
                                 }
                             }
                         }
@@ -248,6 +254,7 @@ export default function group(state = defaultState, action) {
         }
 
         case 'UPDATE_DRAGGED_PEOPLE': {
+
             let updatedPeople = [...state.updatedPeople];
             _.remove(updatedPeople, (o) => {
                 return o === action.payload.people.id
@@ -257,11 +264,10 @@ export default function group(state = defaultState, action) {
                 updatedPeople.push(action.payload.people.id)
             }
 
-            // Update organisation
+            // Update people
             const peopleIndex = _.findIndex(state.collection[action.payload.groupId].people,
                 (p) => p.id === action.payload.people.id);
-            state.collection[action.payload.groupId].people[peopleIndex] = action.payload.people
-
+            state.collection[action.payload.groupId].people[peopleIndex] = {...action.payload.people}
             return {
                 ...state,
                 updatedPeople: [...updatedPeople],

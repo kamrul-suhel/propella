@@ -35,55 +35,57 @@ export default class GridWrapper extends React.PureComponent {
     }
 
     _onTouchStart(e) {
-        const {location, router} = this.props;
-        e.persist();
+        const {location, router} = this.props
+        e.persist()
 
-        const clickedClass = e.target.classList;
+        const clickedClass = e.target.classList
         if(fn.isClickInside(clickedClass)){
-            return;
+            return
         }
 
-        const doubleTouch = this.isDblTouchTap(e);
+        const doubleTouch = this.isDblTouchTap(e)
         if (doubleTouch) {
-            const zoomLabel = fn.getZoomLabel(e.touches[0]);
-            let url = location.pathname;
+            const zoomLabel = fn.getZoomLabel(e.touches[0])
+            let url = location.pathname
             if (fn.isZoom(location)) {
                 const replace = `/zoom`
-                url = _.replace(url, replace, '');
+                url = _.replace(url, replace, '')
                 // zoom out
                 url = url + '?zoomOut=true'
-                router.push(url);
             } else {
                 // Zoom in
                 url = `${url}/zoom?zoom=${zoomLabel}`
-                router.push(url);
             }
+            router.push(url)
         }
     }
 
     onHandleDoubleClick = (event) => {
-        event.persist();
-        const {location, router} = this.props;
-        const zoomLabel = fn.getZoomLabel(event);
-        let url = location.pathname;
+        event.persist()
+        const {
+            location,
+            router
+        } = this.props
 
+        const zoomLabel = fn.getZoomLabel(event)
+        let url = location.pathname
 
-        const clickedClass = event.target.classList;
+        const clickedClass = event.target.classList
         if(fn.isClickInside(clickedClass)){
             return;
         }
 
         if (fn.isZoom(location)) {
             const replace = `/zoom`
-            url = _.replace(url, replace, '');
+            url = _.replace(url, replace, '')
             // zoom out
             url = url + '?zoomOut=true'
-            router.push(url);
         } else {
             // Zoom in
             url = `${url}/zoom?zoom=${zoomLabel}`
-            router.push(url);
         }
+
+        router.push(url)
     }
 
     isDblTouchTap(event) {

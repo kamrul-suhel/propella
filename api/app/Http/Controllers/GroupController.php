@@ -215,6 +215,7 @@ class GroupController extends PropellaBaseController
             'icon_size'
         ])
             ->whereIn('id', $groupIds)
+            ->orderBy('created_at', 'desc')
             ->get();
         $group->coordinates = $coordinates;
 
@@ -230,6 +231,7 @@ class GroupController extends PropellaBaseController
                 'rel_user_id'
             ])
                 ->whereIn('id', $ids)
+                ->orderBy('created_at', 'desc')
                 ->get();
             $organisation->coordinates = $coordinates;
         });

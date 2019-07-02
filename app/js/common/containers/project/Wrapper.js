@@ -63,7 +63,6 @@ export default class ProjectWrapper extends React.PureComponent {
 
         // Check if it is zoom or not
         if(location.query.zoom){
-            let selectedGroup = _.find(project.groups, (group) => group.id === groupId)
             router.push({
                 pathname: `/${url.projects}/${params.id}`,
                 search: `?zoomOut=true&groupId=${groupId}`,
@@ -250,6 +249,12 @@ export default class ProjectWrapper extends React.PureComponent {
     }
 
     handleClick = (e) => {
+        const {
+            location,
+            router,
+            params
+        } = this.props
+
         if (this.node) {
             if (!this.node.contains(e.target)) {
                 this.setState({
@@ -259,6 +264,14 @@ export default class ProjectWrapper extends React.PureComponent {
                     showSelectedClusterItem: null
                 })
             }
+        }
+
+        // if query params has groupId assume its a click to remove progress
+        if(location.query.groupId){
+            router.push({
+                pathname: `/${url.projects}/${params.id}`,
+                search: `?zoomOut=true`,
+            })
         }
     }
 
@@ -363,7 +376,9 @@ export default class ProjectWrapper extends React.PureComponent {
                             :
                             `/${url.projects}/${params.id}/${url.groups}/${item.id}/edit?fetch=true`
 
-                        const organisationUrl = `/${url.projects}/${params.id}/${url.groups}/${item.id}`
+
+                        const hasOrganisations = _.isEmpty(item.organisations) ? 'organisations' : ''
+                        const organisationUrl = `/${url.projects}/${params.id}/${url.groups}/${item.id}/${hasOrganisations}`
 
                         return (
                             <Draggable

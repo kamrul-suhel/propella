@@ -71,7 +71,10 @@ export default class PeopleWrapper extends React.PureComponent {
 
         if (Math.abs(data.deltaX) === 0 && Math.abs(data.deltaY) === 0) {
             const actionPositionClass = fn.getDraggableActionClass({positionX: data.x, positionY: data.y})
-            this.setState({'selectedDraggable': peopleId, actionPositionClass: actionPositionClass})
+            this.setState({
+                selectedDraggable: peopleId,
+                actionPositionClass: actionPositionClass
+            })
         } else {
             let people = _.find(group.people, (people) => {
                 return people.id === peopleId
@@ -204,6 +207,12 @@ export default class PeopleWrapper extends React.PureComponent {
     }
 
     handleClick = (e) => {
+        const {
+            location,
+            params,
+            router
+        } = this.props
+
         if (this.node) {
             if (!this.node.contains(e.target)) {
                 this.setState({
@@ -213,6 +222,14 @@ export default class PeopleWrapper extends React.PureComponent {
                     showSelectedClusterItem: null
                 })
             }
+        }
+
+        // if query params has peopleId, assume its a click to remove progress
+        if(location.query.peopleId){
+            router.push({
+                pathname: `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.organisations}/${url.people}`,
+                search: `?zoomOut=true`,
+            })
         }
     }
 
@@ -224,24 +241,63 @@ export default class PeopleWrapper extends React.PureComponent {
     }
 
     getCoordinate = async (event, peopleId) => {
-        const {selectedPeople, updatedCoordinates} = this.state;
+        const {
+            selectedPeople
+        } = this.state;
+
+        const {
+            group,
+            groups
+        } = this.props
+
+        const {
+            params,
+            location,
+            router
+        } = this.props
+
+        // Check is zoom label
+        if(location.query.zoom){
+            router.push({
+                pathname: `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.organisations}/${url.people}`,
+                search: `?zoomOut=true&peopleId=${peopleId}`,
+            })
+            return
+        }
 
         if (!_.isEmpty(selectedPeople)) {
             this.setState({selectedPeople: {}})
         } else {
             // Stop other event
-            event.stopPropagation();
+            event.stopPropagation()
+
+            if(location.query.peopleId){
+                router.push({
+                    pathname:`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.organisations}/${url.people}`,
+                    search: `?zoomOut=true`
+                })
+                return;
+            }
+
             // Get the data from server
-            const data = await api.get('people/' + peopleId);
+            const data = await api.get('people/' + peopleId)
 
-            let selectedPeople = {...data.data};
+            let selectedPeople = {...data.data}
+            _.map(groups.updatedPeople, (updatedPeopleId) => {
+                if (updatedPeopleId === selectedPeople.id) {
 
-            _.map(updatedCoordinates, (updatedCoordinate) => {
-                if (updatedCoordinate.id === selectedPeople.id) {
-                    selectedPeople.positionX = updatedCoordinate.positionX;
-                    selectedPeople.positionY = updatedCoordinate.positionY;
+                    // Find the people
+                    let foundPeople = {}
+                    _.map(group.people, (people) => {
+                        if(people.id === peopleId){
+                            foundPeople = {...people}
+                        }
+                    })
+
+                    selectedPeople.positionX = foundPeople.positionX
+                    selectedPeople.positionY = foundPeople.positionY
                 }
-            });
+            })
 
             if (selectedPeople) {
                 this.setState({
@@ -293,6 +349,20 @@ export default class PeopleWrapper extends React.PureComponent {
 
         if (!container) {
             return null
+        }
+
+        // Get selected draggable & selectedPeople from state or query params
+        let modifySelectedDraggable = selectedDraggable
+        let modifySelectedPeople = selectedPeople
+
+        const peopleId = location.query.peopleId && +location.query.peopleId
+        if(peopleId){
+            _.map(group.people, (people) => {
+                if(people.id === peopleId){
+                    modifySelectedPeople = {...people}
+                    modifySelectedDraggable = people.id
+                }
+            })
         }
 
         const clusters = fn.getClusterDataSet(group.people)
@@ -382,8 +452,8 @@ export default class PeopleWrapper extends React.PureComponent {
                                          clusterItemShow,
                                          `size-m`,
                                          `${trajectoryClass}`,
-                                         (selectedDraggable && selectedDraggable !== item.id ? 'disabled' : ''),
-                                         (selectedDraggable === item.id ? 'is-selected' : '')
+                                         (modifySelectedDraggable && modifySelectedDraggable !== item.id ? 'disabled' : ''),
+                                         (modifySelectedDraggable === item.id ? 'is-selected' : '')
                                      ]
                                  }
                             >
@@ -395,14 +465,14 @@ export default class PeopleWrapper extends React.PureComponent {
                                     }
 
                                     <span className="person-abbr">{item.abbreviation}</span>
-                                    {selectedDraggable === item.id &&
+                                    {modifySelectedDraggable === item.id &&
                                     <ReactFitText compressor={fitTextCompress}>
                                         <span className="react-draggable-title">{item.organisation_title}</span>
                                     </ReactFitText>
                                     }
                                 </div>
 
-                                {selectedDraggable === item.id &&
+                                {modifySelectedDraggable === item.id &&
                                 <div className={`react-draggable-actions ${actionPositionClass}`}>
                                     <Link className="button-round first"
                                           to={assignCharacterLink}>
@@ -412,9 +482,9 @@ export default class PeopleWrapper extends React.PureComponent {
 
                                     {item.coordinates && item.coordinates.length > 0 ? (
                                         <span className="clickable button-round second"
-                                              onClick={(event) => fn.isZoom(location) ? null : this.getCoordinate(event, item.id)}>
+                                              onClick={(event) => this.getCoordinate(event, item.id)}>
                                             <span className="button-round-inside icon-chain"/>
-                                            {_.isEmpty(selectedPeople) ? 'Progress' : 'Hide Progress'}
+                                            {_.isEmpty(modifySelectedPeople) ? 'Progress' : 'Hide Progress'}
                                             </span>
                                     ) : (
                                         <span className="button-round second progress-hide">
@@ -482,8 +552,8 @@ export default class PeopleWrapper extends React.PureComponent {
                                          [
                                              `cluster`,
                                              actionPositionClass,
-                                             (selectedDraggable && selectedDraggable !== people.id ? 'disabled' : ''),
-                                             (selectedDraggable === people.id ? 'is-selected' : ''),
+                                             (modifySelectedDraggable && modifySelectedDraggable !== people.id ? 'disabled' : ''),
+                                             (modifySelectedDraggable === people.id ? 'is-selected' : ''),
                                              people
                                          ]
                                      }
@@ -506,8 +576,8 @@ export default class PeopleWrapper extends React.PureComponent {
 
                 {this.props.children}
 
-                {selectedPeople.coordinates && !fn.isZoom(location) ?
-                    <Coordinate {...this.props} group={selectedPeople}/> : ''}
+                {modifySelectedPeople.coordinates && !fn.isZoom(location) ?
+                    <Coordinate {...this.props} group={modifySelectedPeople}/> : ''}
             </div>
         )
     }

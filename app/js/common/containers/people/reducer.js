@@ -53,11 +53,11 @@ export function people(state = defaultState, action) {
                 misc: {},
                 pager: {},
                 updatedPeople:[]
-            };
+            }
         }
 
         default: {
-            return state;
+            return state
         }
     }
 }
