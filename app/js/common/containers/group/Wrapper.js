@@ -277,12 +277,11 @@ export default class GroupWrapper extends React.PureComponent {
             group
         } = this.props
 
-        const data = await api.get('organisations/' + organisationId);
-        let selectedOrganisation = {...data.data};
+        let selectedOrganisation = {};
+        // Get organisation from group object
         _.map(group.organisations, (updatedCoordinate) => {
-            if (updatedCoordinate.id === selectedOrganisation.id) {
-                selectedOrganisation.positionX = updatedCoordinate.positionX;
-                selectedOrganisation.positionY = updatedCoordinate.positionY;
+            if (updatedCoordinate.id === organisationId) {
+                selectedOrganisation = {...updatedCoordinate}
             }
         });
         return selectedOrganisation

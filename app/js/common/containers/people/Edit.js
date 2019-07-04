@@ -152,6 +152,7 @@ export default class Edit extends React.PureComponent {
                 }
             })
 
+            this.fetchData()
             this.fetchGroup()
             let redirectUrl = `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}`
             redirectUrl = location.query.zoom ? `${redirectUrl}/${url.zoom}?zoom=${location.query.zoom}` : redirectUrl

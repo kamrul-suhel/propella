@@ -279,23 +279,11 @@ export default class PeopleWrapper extends React.PureComponent {
                 return;
             }
 
-            // Get the data from server
-            const data = await api.get('people/' + peopleId)
-
-            let selectedPeople = {...data.data}
-            _.map(groups.updatedPeople, (updatedPeopleId) => {
-                if (updatedPeopleId === selectedPeople.id) {
-
-                    // Find the people
-                    let foundPeople = {}
-                    _.map(group.people, (people) => {
-                        if(people.id === peopleId){
-                            foundPeople = {...people}
-                        }
-                    })
-
-                    selectedPeople.positionX = foundPeople.positionX
-                    selectedPeople.positionY = foundPeople.positionY
+            // Get selected people
+            let selectedPeople = {}
+            _.map(group.people, (people) => {
+                if (people.id === peopleId) {
+                    selectedPeople = {...people}
                 }
             })
 

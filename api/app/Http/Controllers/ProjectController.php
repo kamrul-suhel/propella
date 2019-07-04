@@ -289,7 +289,7 @@ class ProjectController extends PropellaBaseController
         // Check limit shapshot
         $project = Project::findOrFail($id);
         $ids = Project::getAllId($project->parent_id, $project->id);
-        if(count($ids) > 5){
+        if (count($ids) > 5) {
             return response()->json('Project snapshot limit reach.', 406);
         }
 
