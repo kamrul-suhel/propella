@@ -20,11 +20,10 @@ export default class Royalty extends React.PureComponent {
                 <p className="h2">Royalty</p>
 
                 <p className="slider-description">
-                    <strong>Value, influence and power. Top drawer or bottom?</strong>
+                    <strong>Value, influence and power.</strong>
                     <br/>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                    aliquip ex ea commodo consequat.
+                    <span>Think about status, seniority, knowledge, responsibility. What is their buying or influence power?</span>
+                    <span>How essential are they for your mission?</span>
                 </p>
                 <Slider
                     name="positionY"

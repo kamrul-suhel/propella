@@ -10,6 +10,7 @@ import { url } from "app/constants";
 import { fetchData } from "app/actions";
 import { Nav } from "app/components";
 import { ContentLoader } from "@xanda/react-components";
+import {enableBodyScroll} from "body-scroll-lock";
 
 @connect((state, ownProps) => {
   const getProjects = makeGetProjects();
@@ -28,7 +29,12 @@ export default class List extends React.PureComponent {
   }
 
   componentDidMount() {
-    this.fetchData();
+    this.fetchData()
+    // Enable body scroll for this component
+    const html = document.getElementsByTagName('html')
+    let containerHeight = document.getElementById('app');
+    containerHeight.style.height = window.innerHeight - 40 + 'px';
+    enableBodyScroll(html)
   }
 
   fetchData = () => {
@@ -52,8 +58,6 @@ export default class List extends React.PureComponent {
     const response = await api.get(`projects/${projectId}/archives`)
 
     if(!api.error(response)){
-      console.log("Project archive :", response);
-
       this.fetchData();
     }
   }
@@ -71,7 +75,6 @@ export default class List extends React.PureComponent {
     const { projects, me } = this.props;
     const { selectedProject } = this.state;
     const remainingProject = _.parseInt(me.data.limit) - _.parseInt(projects.pager.total)
-
 
     return (
       <React.Fragment>

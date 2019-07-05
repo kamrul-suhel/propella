@@ -43,8 +43,21 @@ export function people(state = defaultState, action) {
             };
         }
 
+        case 'CLEAR_PEOPLE': {
+            return {
+                ...state,
+                collection: {},
+                currentCollection: [],
+                error: null,
+                isLoading: true,
+                misc: {},
+                pager: {},
+                updatedPeople:[]
+            }
+        }
+
         default: {
-            return state;
+            return state
         }
     }
 }

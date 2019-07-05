@@ -20,6 +20,7 @@ import {GroupWrapper} from 'app/containers/group';
     const getOrganisation = selector.makeGetOrganisation();
     const getOrganisationTypes = selector.makeGetOrganisationTypes();
     const getProjectUsers = makeGetProjectUsers();
+
     return {
         organisations: getOrganisations(state),
         organisation: getOrganisation(state, ownProps.params.organisationId),
@@ -149,10 +150,9 @@ export default class Edit extends React.PureComponent {
                     save: true
                 }
             })
-            this.fetchGroup()
-            this.fetchData()
             const redirectUrl = location.query.zoom ? `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.zoom}?zoom=${location.query.zoom}` :
                 `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.organisations}`
+
             fn.navigate(redirectUrl)
         }
     }
@@ -243,7 +243,6 @@ export default class Edit extends React.PureComponent {
 
     render() {
         const {popup, params, location} = this.props
-        console.log("Popup is: ", popup)
         const {step} = this.state
         const closePath = location.query.zoom ? `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.zoom}?zoom=${location.query.zoom}` :
             `/${url.projects}/${params.id}/${url.groups}/${params.groupId}`

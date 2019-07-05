@@ -46,7 +46,14 @@ export default class Edit extends React.PureComponent {
     }
 
     componentDidUpdate(prevProps) {
-        const {person, popup, route, group, params, groups} = this.props
+        const {
+            person,
+            popup,
+            route,
+            group,
+            params,
+            groups
+        } = this.props
         const updatedPeople = groups.updatedPeople
         const personId = +params.personId
 
@@ -97,7 +104,13 @@ export default class Edit extends React.PureComponent {
     triggerSubmit = () => this.formRef.submit()
 
     handleSubmit = async () => {
-        const {popup, params, person, location, dispatch} = this.props
+        const {
+            popup,
+            params,
+            person,
+            location,
+            dispatch
+        } = this.props
         const {step} = this.state
 
         // submit an api call if your on the last step otherwise go to the next step
@@ -107,7 +120,6 @@ export default class Edit extends React.PureComponent {
         }
 
         const formData = new FormData()
-
         formData.append('title', popup.title)
         formData.append('abbreviation', popup.abbreviation)
         formData.append('description', popup.description)
@@ -128,13 +140,19 @@ export default class Edit extends React.PureComponent {
 
         if (!api.error(response)) {
             dispatch({
-                type:'UPDATE_DRAGGED_PEOPLE',
+                type: 'DRAGGED_PEOPLE_RESET'
+            })
+
+            dispatch({
+                type: 'UPDATE_DRAGGED_PEOPLE',
                 payload: {
                     groupId: params.groupId,
                     people: {...response.data},
-                    save:true
+                    save: true
                 }
             })
+
+            this.fetchData()
             this.fetchGroup()
             let redirectUrl = `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}`
             redirectUrl = location.query.zoom ? `${redirectUrl}/${url.zoom}?zoom=${location.query.zoom}` : redirectUrl
@@ -143,8 +161,14 @@ export default class Edit extends React.PureComponent {
     }
 
     popupActions = () => {
-        const {step} = this.state
-        const {person, params, location} = this.props
+        const {
+            step
+        } = this.state
+        const {
+            person,
+            params,
+            location
+        } = this.props
         let closeLink = `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.organisations}/${url.people}`
         closeLink = location.query.zoom ? `${closeLink}/zoom?zoom=${location.query.zoom}` : closeLink
 
@@ -212,8 +236,7 @@ export default class Edit extends React.PureComponent {
             handleSubmit: this.handleSubmit,
             setFormRef: this.setFormRef,
             peopleTypes: this.props.peopleTypes,
-            organisations: this.props.group.organisations,
-            peopleTypes: this.props.peopleTypes
+            organisations: this.props.group.organisations
         }
 
         switch (this.state.step) {
@@ -229,8 +252,14 @@ export default class Edit extends React.PureComponent {
     }
 
     render() {
-        const {popup, params, location} = this.props
-        const {step} = this.state;
+        const {
+            popup,
+            params,
+            location
+        } = this.props
+        const {
+            step
+        } = this.state
         let closePeopleLink = `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.organisations}/${url.people}`
         closePeopleLink = location.query.zoom ? `${closePeopleLink}/${url.zoom}?zoom=${location.query.zoom}` : closePeopleLink
 

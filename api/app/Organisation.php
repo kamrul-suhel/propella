@@ -25,6 +25,7 @@ class Organisation extends Model
         'abbreviation',
         'group_id',
         'type_id',
+        'character_id',
         'status',
         'icon_size',
         'icon_path',
@@ -65,6 +66,7 @@ class Organisation extends Model
     public static function getDefaultField(){
         return self::select([
             'organisations.id',
+            'organisations.character_id',
             'organisations.rel_user_id',
             'organisations.title',
             'organisations.description',
@@ -76,6 +78,7 @@ class Organisation extends Model
             'organisations.created_by',
             'organisations.parent_id',
             'organisations.icon_path',
+            'organisations.character_id',
             'organisations.status',
             'organisation_types.id as type_id',
             'organisation_types.title as organisation_title',

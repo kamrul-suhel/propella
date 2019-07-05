@@ -215,6 +215,7 @@ class GroupController extends PropellaBaseController
             'icon_size'
         ])
             ->whereIn('id', $groupIds)
+            ->orderBy('created_at', 'desc')
             ->get();
         $group->coordinates = $coordinates;
 
@@ -230,6 +231,7 @@ class GroupController extends PropellaBaseController
                 'rel_user_id'
             ])
                 ->whereIn('id', $ids)
+                ->orderBy('created_at', 'desc')
                 ->get();
             $organisation->coordinates = $coordinates;
         });
@@ -257,8 +259,26 @@ class GroupController extends PropellaBaseController
             ->leftJoin('organisations', 'organisations.id', '=', 'people.organisation_id')
             ->leftJoin('groups', 'groups.id', '=', 'organisations.group_id')
             ->where('groups.id', $id)
+            ->where('organisations.status', 1) // only active organisation will show
             ->whereIn('people.status', [1])
+            ->orderBy('people.title', 'asc')
             ->get();
+
+        // Get coordinate for people
+        $people->map(function ($people) {
+            $ids = People::getAllId($people->parent_id);
+            $coordinates = People::select([
+                'id',
+                'positionX',
+                'positionY',
+                'icon_size',
+                'icon_path'
+            ])
+                ->whereIn('id', $ids)
+                ->orderBy('created_at', 'DESC')
+                ->get();
+            $people->coordinates = $coordinates;
+        });
 
         $group->people = $people;
 

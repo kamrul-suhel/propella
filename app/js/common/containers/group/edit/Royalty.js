@@ -20,11 +20,11 @@ export default class Royalty extends React.PureComponent {
                 <p className="form-label form-label-title">Okay now lets see where they sit on the board</p>
                 <p className="h2">Royalty</p>
                 <p className="slider-description">
-                    <strong>Value, influence and power. Top drawer or bottom?</strong>
+                    <strong>Value, influence and power.</strong>
                     <br/>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                    aliquip ex ea commodo consequat.
+                    How important is this group to your organisation in terms of spend for your services and  contribution to your reputation. Is this group increasing or decreasing in size or value? What about existing and potential kudos?
+                    <br/>
+                    Any group above the 50 line is significant to your future.
                 </p>
 
                 <Slider

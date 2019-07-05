@@ -70,8 +70,8 @@ class Group extends Model
     public function organisationsWithOutWPUser()
     {
         return $this->hasMany('App\Organisation', 'group_id')
-            ->whereIn('status', [0, 1])
-            ->where('archive', 0);
+            ->whereIn('status', [0, 1]);
+//            ->where('archive', 0);
     }
 
     /**
@@ -80,8 +80,8 @@ class Group extends Model
     public function competitors()
     {
         return $this->hasMany('App\Competitor', 'group_id')
-            ->where('status', 1)
-            ->where('archive', 0);
+            ->where('status', 1);
+//            ->where('archive', 0);
     }
 
 

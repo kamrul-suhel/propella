@@ -60,8 +60,6 @@ export default class List extends React.PureComponent {
                             to={`/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}/${person.id}`}
                             className="icon-pencil"
                         />
-                        <span type="button" onClick={() => this.handleDelete(params.groupId, person.id)}
-                              className="clickable icon-bin"/>
                         {person.character_id !== 0 ? (
                             <Link
                                 to={`/${url.projects}/${params.id}/groups/${params.groupId}/${url.people}/${person.id}/${url.characters}?character=${character.id}`}
@@ -71,10 +69,12 @@ export default class List extends React.PureComponent {
                         ) : (
                             <Link
                                 to={`/${url.projects}/${params.id}/groups/${params.groupId}/${url.people}/${person.id}/${url.characters}`}
-                                className="icon-masks"
+                                className="icon-masks gray"
                                 title={character['title']}
                             />
                         )}
+                        <span type="button" onClick={() => this.handleDelete(params.groupId, person.id)}
+                              className="clickable icon-bin"/>
                     </React.Fragment>
                 }
                 category={person.organisation_title}
@@ -85,7 +85,7 @@ export default class List extends React.PureComponent {
     }
 
     render() {
-        const {groups, group, params, people } = this.props
+        const {groups, group, params, people} = this.props
         let organisationUrl = `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.organisations}`
 
         let addPeopleLink = `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}/add`
@@ -107,7 +107,7 @@ export default class List extends React.PureComponent {
                                 <span
                                     className="button"
                                     onClick={this.handleToggleCharacters}
-                                >{people.showCharacters ? 'View' : 'Hide'} Characters</span>
+                                >{people.showCharacters ? 'Hide' : 'View'} Characters</span>
                             </React.Fragment>
                             }
                         </React.Fragment>

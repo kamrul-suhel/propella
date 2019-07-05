@@ -32,7 +32,7 @@ export default class GroupWrapper extends React.PureComponent {
             selectedDraggable: 0,
             selectedCompetitor: 0,
             selectedOrganisation: {},
-            actionPositionClass:'',
+            actionPositionClass: '',
             showSelectedClusterItem: null,
             selectedCluster: []
         }
@@ -60,6 +60,7 @@ export default class GroupWrapper extends React.PureComponent {
             url: `/groups/${this.props.params.groupId}`,
             groupId: this.props.params.groupId
         }));
+
         this.props.dispatch(fetchData({
             type: 'PROJECT',
             url: `/projects/${this.props.params.id}`,
@@ -80,10 +81,13 @@ export default class GroupWrapper extends React.PureComponent {
 
         if (Math.abs(data.deltaX) === 0 && Math.abs(data.deltaY) === 0) {
             const actionPositionClass = fn.getDraggableActionClass({positionX: data.x, positionY: data.y})
-            this.setState({'selectedDraggable': organisationId, actionPositionClass: actionPositionClass})
+            this.setState({
+                selectedDraggable: organisationId,
+                actionPositionClass: actionPositionClass
+            })
         } else {
             // find the organisation
-            let organisation = _.find(group.organisations, (organisation)=>{
+            let organisation = _.find(group.organisations, (organisation) => {
                 return organisation.id === organisationId
             })
             const position = fn.getPositionForSave(data, location, organisation.icon_size)
@@ -91,9 +95,10 @@ export default class GroupWrapper extends React.PureComponent {
             // put dragged item into store
             organisation.positionX = position.positionX
             organisation.positionY = position.positionY
+
             dispatch({
-                type:'DRAGGED_ORGANISATION_UPDATE',
-                payload:{
+                type: 'DRAGGED_ORGANISATION_UPDATE',
+                payload: {
                     groupId: params.groupId,
                     organisation: organisation
                 }
@@ -105,14 +110,15 @@ export default class GroupWrapper extends React.PureComponent {
         const {
             dispatch,
             groups,
-            group
+            group,
+            params
         } = this.props
 
         const updatedOrganisationIds = [...groups.updatedOrganisations];
-        let selectedOrganisations  = [];
+        let selectedOrganisations = [];
         _.map(updatedOrganisationIds, (id) => {
             const organisation = _.find(group.organisations, (o) => {
-                if(o.id === id){
+                if (o.id === id) {
                     return o;
                 }
             })
@@ -128,12 +134,20 @@ export default class GroupWrapper extends React.PureComponent {
 
         const response = await api.put(`/organisations`, {organisations: selectedOrganisations})
         if (!api.error(response)) {
-            this.fetchData();
-
             // Clear dragged organisation
             dispatch({
-                type:'DRAGGED_ORGANISATION_CLEAR'
+                type: 'DRAGGED_ORGANISATION_CLEAR'
             });
+
+            dispatch({
+                type: 'CLEAR_UPDATED_GROUP'
+            });
+
+            dispatch({
+                type: 'ORGANISATION_CLEAR'
+            });
+
+            this.fetchData();
         }
     }
 
@@ -150,9 +164,12 @@ export default class GroupWrapper extends React.PureComponent {
     }
 
     handleClusterItem = (organisation) => {
-        const { location } = this.props
+        const {location} = this.props
         const selectedOrganisation = fn.getPosition(organisation, location)
-        const actionPositionClass = fn.getDraggableActionClass({positionX: selectedOrganisation.positionX, positionY: selectedOrganisation.positionY})
+        const actionPositionClass = fn.getDraggableActionClass({
+            positionX: selectedOrganisation.positionX,
+            positionY: selectedOrganisation.positionY
+        })
         this.setState({
             selectedCluster: [],
             showSelectedClusterItem: organisation.id,
@@ -192,7 +209,8 @@ export default class GroupWrapper extends React.PureComponent {
                                                      src={`${organisation.icon_path}`}/>
                                             ) : (
                                                 <ReactFitText compressor={.6}>
-                                                    <div className="react-draggable-handle-title">{organisation.abbreviation}</div>
+                                                    <div
+                                                        className="react-draggable-handle-title">{organisation.abbreviation}</div>
                                                 </ReactFitText>
                                             )}
                                             <span className="user-colour-dot"
@@ -213,22 +231,38 @@ export default class GroupWrapper extends React.PureComponent {
             selectedOrganisation
         } = this.state
 
-        const { group } = this.props
+        const {
+            params,
+            location,
+            router
+        } = this.props
+
+        // Check is zoom label
+        if(location.query.zoom){
+            router.push({
+                pathname: `/${url.projects}/${params.id}/${url.groups}/${params.groupId}`,
+                search: `?zoomOut=true&organisationId=${organisationId}`,
+            })
+            return
+        }
 
         if (!_.isEmpty(selectedOrganisation)) {
             this.setState({selectedOrganisation: {}})
         } else {
             // Stop other event
             event.stopPropagation();
+
+            // check organisation id is set in query params
+            if(location.query.organisation){
+                router.push({
+                    pathname:`/${url.projects}/${params.id}/${url.groups}/${params.groupId}`,
+                    search: `?zoomOut=true`
+                })
+                return;
+            }
+
             // Get the data from server
-            const data = await api.get('organisations/' + organisationId);
-            let selectedOrganisation = {...data.data};
-            _.map(group.organisations, (updatedCoordinate) => {
-                if (updatedCoordinate.id === selectedOrganisation.id) {
-                    selectedOrganisation.positionX = updatedCoordinate.positionX;
-                    selectedOrganisation.positionY = updatedCoordinate.positionY;
-                }
-            });
+            let selectedOrganisation = await this.getOrganisation(organisationId);
 
             if (selectedOrganisation) {
                 this.setState({
@@ -238,7 +272,28 @@ export default class GroupWrapper extends React.PureComponent {
         }
     }
 
+    getOrganisation = async (organisationId) => {
+        const {
+            group
+        } = this.props
+
+        let selectedOrganisation = {};
+        // Get organisation from group object
+        _.map(group.organisations, (updatedCoordinate) => {
+            if (updatedCoordinate.id === organisationId) {
+                selectedOrganisation = {...updatedCoordinate}
+            }
+        });
+        return selectedOrganisation
+    }
+
     handleClick = (e) => {
+        const {
+            location,
+            router,
+            params
+        } = this.props
+
         if (this.node) {
             if (!this.node.contains(e.target)) {
                 this.setState({
@@ -249,6 +304,14 @@ export default class GroupWrapper extends React.PureComponent {
                     showSelectedClusterItem: null
                 })
             }
+        }
+
+        // if query params has organisationId, assume its a click to remove progress
+        if(location.query.organisationId){
+            router.push({
+                pathname: `/${url.projects}/${params.id}/${url.groups}/${params.groupId}`,
+                search: `?zoomOut=true`,
+            })
         }
     }
 
@@ -262,7 +325,7 @@ export default class GroupWrapper extends React.PureComponent {
                 type: 'GROUP_ORGANISATION_UPDATED',
                 payload: {
                     'groupId': params.groupId,
-                    'organisation': response.data
+                    organisation: {...response.data}
                 }
             }
         )
@@ -295,6 +358,19 @@ export default class GroupWrapper extends React.PureComponent {
         // don't load unless we have the container's dimensions
         if (!container) {
             return null
+        }
+
+        let modifySelectedDraggable = selectedDraggable
+        let modifySelectedOrganisation = selectedOrganisation
+
+        const organisationId = location.query.organisationId && +location.query.organisationId
+        if(organisationId){
+            _.map(group.organisations, (organisation) => {
+                if(organisation.id === organisationId){
+                    modifySelectedOrganisation = {...organisation}
+                    modifySelectedDraggable = organisation.id
+                }
+            })
         }
 
         const clusters = fn.getClusterDataSet(group.organisations)
@@ -341,6 +417,7 @@ export default class GroupWrapper extends React.PureComponent {
                             return
                         }
 
+                        // Check zoom view, does this item need to show
                         const isShow = fn.isItemShow(item, location);
                         if (!isShow) {
                             return;
@@ -364,6 +441,7 @@ export default class GroupWrapper extends React.PureComponent {
                             `/${url.projects}/${params.id}/groups/${group.id}/${url.organisations}/${item.id}`
 
                         const peopleUrl = `/${url.projects}/${params.id}/groups/${group.id}/${url.organisations}/${url.people}`
+                        let assignCharacterLink = `/${url.projects}/${params.id}/groups/${group.id}/${url.organisations}/${item.id}/${url.characters}`
 
                         return (
                             <Draggable
@@ -386,8 +464,8 @@ export default class GroupWrapper extends React.PureComponent {
                                              clusterItemShow,
                                              `size-${item.icon_size}`,
                                              `${trajectoryClass}`,
-                                             (selectedDraggable && selectedDraggable !== item.id ? 'disabled' : ''),
-                                             (selectedDraggable === item.id ? 'is-selected' : '')
+                                             (modifySelectedDraggable && modifySelectedDraggable !== item.id ? 'disabled' : ''),
+                                             (modifySelectedDraggable === item.id ? 'is-selected' : '')
                                          ]
                                      }
                                 >
@@ -399,12 +477,18 @@ export default class GroupWrapper extends React.PureComponent {
                                         <span className="user-colour-dot"
                                               style={{backgroundColor: item.profile_colour}}></span>
                                     </div>
-                                    {selectedDraggable === item.id &&
+                                    {modifySelectedDraggable === item.id &&
                                     <span className="react-draggable-title">{item.title}</span>
                                     }
 
-                                    {selectedDraggable === item.id &&
-                                    <div className={`react-draggable-actions ${actionPositionClass}`}>
+                                    {modifySelectedDraggable === item.id &&
+                                    <div className={`react-draggable-actions group-actions ${actionPositionClass}`}>
+                                        <Link className="button-round five"
+                                              to={assignCharacterLink}>
+                                            <span className="button-round-inside icon-masks"/>
+                                            Assign<br/>Character
+                                        </Link>
+
                                         <Link className="button-round first"
                                               to={groupEditUrl}>
                                             <span className="button-round-inside icon-pencil"/>
@@ -415,7 +499,7 @@ export default class GroupWrapper extends React.PureComponent {
                                             <span className="clickable button-round second"
                                                   onClick={(event) => this.getCoordinate(event, item.id)}>
                                             <span
-                                                className="button-round-inside icon-chain"/>{_.isEmpty(selectedOrganisation) ? 'Progress' : 'Hide Progress'}
+                                                className="button-round-inside icon-chain"/>{_.isEmpty(modifySelectedOrganisation) ? 'Progress' : 'Hide Progress'}
                                         </span>
                                         ) : (
                                             <span className="button-round second progress-hide">
@@ -484,8 +568,8 @@ export default class GroupWrapper extends React.PureComponent {
                                              [
                                                  `cluster`,
                                                  actionPositionClass,
-                                                 (selectedDraggable && selectedDraggable !== organisation.id ? 'disabled' : ''),
-                                                 (selectedDraggable === organisation.id ? 'is-selected' : ''),
+                                                 (modifySelectedDraggable && modifySelectedDraggable !== organisation.id ? 'disabled' : ''),
+                                                 (modifySelectedDraggable === organisation.id ? 'is-selected' : ''),
                                                  organisation
                                              ]
                                          }
@@ -503,7 +587,7 @@ export default class GroupWrapper extends React.PureComponent {
                                         <span className="react-draggable-title"></span>
 
                                         {_.join(selectedCluster, ',') === _.join(clusterIds, ',') &&
-                                            this.renderCurrentClusterItems(clusterIds)
+                                        this.renderCurrentClusterItems(clusterIds)
                                         }
                                     </div>
                                 </Draggable>
@@ -513,12 +597,13 @@ export default class GroupWrapper extends React.PureComponent {
 
                     {this.props.children}
 
-                    {selectedOrganisation.coordinates && !fn.isZoom(location) ? <Coordinate {...this.props} group={selectedOrganisation}/> : ''}
+                    {modifySelectedOrganisation.coordinates && !fn.isZoom(location) ?
+                        <Coordinate {...this.props} group={modifySelectedOrganisation}/> : ''}
 
-                    { groups.updatedOrganisations && groups.updatedOrganisations.length > 0 &&
-                        <button className="button gridwrapper-save"
-                                onClick={this.handleSaveChanges}>Save Changes
-                        </button>
+                    {groups.updatedOrganisations && groups.updatedOrganisations.length > 0 &&
+                    <button className="button gridwrapper-save"
+                            onClick={this.handleSaveChanges}>Save Changes
+                    </button>
                     }
                 </ContentLoader>
             </div>

@@ -117,16 +117,34 @@ export default class Description extends React.PureComponent {
                     />
                 </ContentLoader>
 
-                <TextInput
-                    autoComplete="off"
-                    name="description"
-                    label="Give a Description to this Organisation"
-                    textarea
-                    value={description}
-                    onChange={handleInputChange}
-                    validation="required"
-                    wide
-                />
+                <div className="c-tooltip c-top">
+                    <div className="c-tooltip-message">
+                        Specific description<br/>
+                        Overview of services<br/>
+                        Turnover and other key stats<br/>
+                        Position in industry<br/>
+                        Website link/location/phone number<br/>
+                        History and status of relationship<br/>
+                        Services bought<br/>
+                        Trends and developments<br/>
+                        Messages<br/>
+                        Stated ambition<br/>
+                        Income and reputational value to your organisation<br/>
+                        Recent news stories<br/>
+                        Corporate responsibility<br/>
+                        Interaction with your organisation’s marketing
+                    </div>
+                    <TextInput
+                        autoComplete="off"
+                        name="description"
+                        label="Give a Description to this Organisation"
+                        textarea
+                        value={description}
+                        onChange={handleInputChange}
+                        validation="required"
+                        wide
+                    />
+                </div>
             </Form>
         );
     }

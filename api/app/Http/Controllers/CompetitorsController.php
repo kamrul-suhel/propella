@@ -34,6 +34,9 @@ class CompetitorsController extends PropellaBaseController
         }
     }
 
+    /**
+     * @return mixed
+     */
     public function create(){
         // validate data.
         $this->validateData();
@@ -43,6 +46,10 @@ class CompetitorsController extends PropellaBaseController
         return response()->json($competitors);
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function update($id){
 
         $this->validateData(false);
@@ -52,29 +59,42 @@ class CompetitorsController extends PropellaBaseController
 
     }
 
+    /**
+     * @return mixed
+     */
     public function list(){
-        $competitors = Competitor::whereIn('status', [1,2])
+        $competitors = Competitor::whereIn('status', [1])
             ->get();
 
         return response()->json($competitors);
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function single($id){
         $competitor = Competitor::findOrFail($id);
         return response()->json($competitor);
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function delete($id){
         $competitor = Competitor::findOrFail($id);
-
         $competitor->status = 2;
-
         $competitor->save();
 
         return response()->json($competitor);
     }
 
 
+    /**
+     * @param null $id
+     * @return Competitor
+     */
     private function saveData($id = null){
         $competitors = !empty($id) ? Competitor::findOrFail($id) : new Competitor();
 

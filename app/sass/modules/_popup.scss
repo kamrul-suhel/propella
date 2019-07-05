@@ -389,11 +389,11 @@
     }
 
     .character-pos{
-        position: absolute;
+        position: fixed;
         top: 0;
-        left: -40px;
-        right: -40px;
-        bottom: -40px;
+        left: 0;
+        right: 0;
+        bottom: 0;
         background: #fff;
         z-index: 103;
 
@@ -403,7 +403,6 @@
             left:0;
             right:0;
             bottom:60px;
-            background-image: url('..//images/character-bg.jpg');
             background-size:100% 100%;
             padding:40px;
 
@@ -413,14 +412,69 @@
             }
 
             .character-pos-icon{
-                position:absolute;
+                position:relative;
                 width:55px;
-                height:55px;
-                background:url('../images/character-icon.png');
+                height:65px;
+                background-image: url(../images/marker-medium.svg);
                 z-index: 10;
                 background-size: cover;
                 transform: translate(0, -31px);
+
+                span{
+                    width:37px;
+                    height:37px;
+                    position: absolute;
+                    top: 12px;
+                    left: 10px;
+                    font-size: 37px;
+                }
+
+                &.blue{
+                    span{
+                        color:#004b9b;
+                    }
+                }
+
+                &.orange{
+                    span{
+                        color:#e84f35;
+                    }
+                }
+
+                &.cyan{
+                    span{
+                        color:#48b9b9;
+                    }
+                }
+
+                &.sky-blue{
+                    span{
+                        color:#9cd6f0;
+                    }
+                }
             }
+        }
+
+        .gridwrapper-x{
+            position: absolute;
+            bottom: 80px;
+            left: 60px;
+            right: 0;
+            height: 40px;
+            width: calc(100% - 121px);
+            display: flex;
+            justify-content: space-between;
+            font-size: 16px;
+        }
+
+        .gridwrapper-y{
+            top: 60px;
+            left: 20px;
+            width: 40px;
+            height: calc(100% - 181px);
+            display: flex;
+            justify-content: space-between;
+            font-size: 16px;
         }
 
         .character-pos-footer{

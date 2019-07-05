@@ -10,11 +10,24 @@ export default class CharacterPosition extends React.PureComponent {
             icon_size: 'm'
         }
         const position = fn.getPosition(selectedCh, location)
+        const characterColor = fn.getPeopleColorClass(selectedCh, location)
 
         return (
             <div className="character-pos">
-                <div className="character-pos-content">
+                <div className="gridwrapper-y">
+                    <span className="axis-image"/>
+                    <div className="top-icon">
+                        <span className="icon-slide-icon-crown"/>
+                        <p>{100}</p>
+                    </div>
+                    <div className="bottom-icon">
+                        <p>{100}</p>
+                        <span className="icon-slide-icon-jester"/>
+                    </div>
+                    <p className="axis-label">Royalty</p>
+                </div>
 
+                <div className="character-pos-content">
                     <div className="gridwrapper-inner-section-wrapper">
                         <span className="gridwrapper-inner-section">Upgraders</span>
                         <span className="gridwrapper-inner-section">VIP</span>
@@ -22,12 +35,26 @@ export default class CharacterPosition extends React.PureComponent {
                         <span className="gridwrapper-inner-section">Standard</span>
                     </div>
 
-                    <div className="character-pos-icon"
+                    <div className={`character-pos-icon ${characterColor}`}
                          style={{
-                             top: `${position.positionY + 80}px`,
-                             left: `${position.positionX + 40}px`
-                         }}></div>
-                    {/*<img src={"/images/character-bg.jpg"}/>*/}
+                             top: `${position.positionY }px`,
+                             left: `${position.positionX}px`
+                         }}>
+                        <span className={`person-icon ${fn.getPeopleCharacter(selectedCharacter.id)['iconImage']}`}></span>
+                    </div>
+                </div>
+
+                <div className="gridwrapper-x">
+                    <span className="axis-image"/>
+                    <div className="left-icon">
+                        <span className="icon-slide-icon-hate"/>
+                        <p>100</p>
+                    </div>
+                    <div className="right-icon">
+                        <p>100</p>
+                        <span className="icon-slide-icon-love"/>
+                    </div>
+                    <p className="axis-label">Loyalty</p>
                 </div>
 
                 <div className="character-pos-footer">

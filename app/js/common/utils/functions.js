@@ -463,7 +463,7 @@ export default {
                 title: 'The Eager Beaver',
                 largeImage: 'Beaver.svg',
                 iconImage: 'icon-character-eager-beaver',
-                defaultCoordinates: {positionX: 48, positionY: 52},
+                defaultCoordinates: {positionX: 58, positionY: 40},
                 description: 'Coming up fast on royalty, ripe for moving up on loyalty.'
             },
             {
@@ -471,7 +471,7 @@ export default {
                 title: 'The Deadweight',
                 largeImage: 'Deadweight.svg',
                 iconImage: 'icon-character-deadweight',
-                defaultCoordinates: {positionX: 25, positionY: 32},
+                defaultCoordinates: {positionX: 8, positionY: 15},
                 description: 'Low Royalty, low loyalty. Going nowhere.'
             },
             // {
@@ -486,7 +486,7 @@ export default {
                 title: 'The Smiley',
                 largeImage: 'Smiley.svg',
                 iconImage: 'icon-character-smiley',
-                defaultCoordinates: {positionX: 75, positionY: 32},
+                defaultCoordinates: {positionX: 85, positionY: 32},
                 description: 'Low royalty, high loyalty. Nice to spend time with but will never give you work or whatever else you need to succeed.'
             },
             {
@@ -494,7 +494,7 @@ export default {
                 title: 'The Assassin',
                 largeImage: '/Assassin.svg',
                 iconImage: 'icon-character-assassin',
-                defaultCoordinates: {positionX: 25, positionY: 75},
+                defaultCoordinates: {positionX: 0, positionY: 80},
                 description: 'High royalty but negative loyalty, damaging your organisation.'
             },
             {
@@ -502,7 +502,7 @@ export default {
                 title: 'The Boomerang',
                 largeImage: 'Boomerang.svg',
                 iconImage: 'icon-character-boomerang',
-                defaultCoordinates: {positionX: 25, positionY: 75},
+                defaultCoordinates: {positionX: 45, positionY: 70},
                 description: 'High royalty but reversed on loyalty'
             },
             {
@@ -510,7 +510,7 @@ export default {
                 title: 'The Mirage',
                 largeImage: 'Mirage.svg',
                 iconImage: 'icon-character-mirage',
-                defaultCoordinates: {positionX: 25, positionY: 75},
+                defaultCoordinates: {positionX: 10, positionY: 85},
                 description: 'High royalty low loyalty sometimes disguised as The Prize. But, they are never going to choose you.'
             },
             {
@@ -518,7 +518,7 @@ export default {
                 title: 'The Prize',
                 largeImage: 'Prize.svg',
                 iconImage: 'icon-character-prize',
-                defaultCoordinates: {positionX: 25, positionY: 75},
+                defaultCoordinates: {positionX: 27, positionY: 87},
                 description: 'High royalty low loyalty but worth pursuing because others will follow.'
             },
             {
@@ -526,17 +526,18 @@ export default {
                 title: 'The Trojan Horse',
                 largeImage: 'Trojan Horse.svg',
                 iconImage: 'icon-character-trojan-horse',
-                defaultCoordinates: {positionX: 25, positionY: 75},
+                defaultCoordinates: {positionX: 10, positionY: 60},
                 description: 'High royalty low loyalty organisations where you know someone on the inside.'
             }
         ]
     },
 
     getPeopleCharacter(id) {
-        if (id === 0) {
-            return {}
+        if (id === 0 || id === null || id === undefined) {
+            return {id: 0}
         }
-        const totalArray = this.getPeopleCharacters().length
+        const totalArray = this.getPeopleCharacters().length + 1 // reason is we disable one character. Pirate
+
         if (totalArray < id) {
             return _.find(this.getPeopleCharacters(), {id: 1})
         }
@@ -1047,11 +1048,14 @@ export default {
         let dataSet = [];
         let clusters = []
         _.map(items, (item) => {
-            let currGroup = [
-                item.positionX,
-                item.positionY
-            ]
-            dataSet.push(currGroup)
+            // Check status of given item
+            if(item.status > 0){
+                let currGroup = [
+                    item.positionX,
+                    item.positionY
+                ]
+                dataSet.push(currGroup)
+            }
         })
 
         if (dataSet.length > 0) {

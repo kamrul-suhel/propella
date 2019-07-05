@@ -7,9 +7,28 @@ use Laravel\Lumen\Routing\Controller as BaseController;
 
 class PropellaBaseController extends BaseController
 {
+    /**
+     * Http request object
+     * @var Request
+     */
     public $request;
+
+    /**
+     * Pagination per page
+     * @var int
+     */
     public $perPage;
+
+    /**
+     * Don't want pagination then send this params
+     * @var bool
+     */
     public $allData = false;
+
+    /**
+     * Get deleted or active data
+     * @var |null
+     */
     public $status;
 
     //

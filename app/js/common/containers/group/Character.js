@@ -6,17 +6,22 @@ import {fetchData} from "app/actions";
 import {api, fn} from "app/utils";
 import {connect} from "react-redux";
 import * as selector from "./selector";
-import PeopleWrapper from "./Wrapper";
+import GroupWrapper from "./Wrapper";
 import {CharacterPosition} from "app/components"
 import Slider from "react-slick";
+import {makeGetProject, makeGetProjects} from 'app/containers/project/selector'
 
 @connect((state, ownProps) => {
-    const getPeople = selector.makeGetPeople();
-    const getPerson = selector.makeGetPerson();
+    const getGroups = selector.makeGetGroups();
+    const getGroup = selector.makeGetGroup();
+    const getProjects = makeGetProjects();
+    const getProject = makeGetProject();
 
     return {
-        people: getPeople(state),
-        person: getPerson(state, ownProps.params.personId),
+        groups: getGroups(state),
+        group: getGroup(state, ownProps.params.groupId),
+        projects: getProjects(state),
+        project: getProject(state, ownProps.params.id),
         popup: state.popup
     };
 })
@@ -35,25 +40,28 @@ export default class Edit extends React.PureComponent {
 
     componentDidMount() {
         if ("add" !== this.props.params.personId) {
-            this.fetchData();
+            // this.fetchData();
         }
     }
 
     componentDidUpdate(prevProps) {
-        const {person, popup, route} = this.props;
-        if (popup.id != person.id) {
-            this.props.dispatch({type: "POPUP_UPDATED", payload: person});
-        }
+        // const {person, popup, route} = this.props;
+        // if (popup.id != person.id) {
+        //     this.props.dispatch({type: "POPUP_UPDATED", payload: person});
+        // }
     }
 
     fetchData = () => {
-        const {params} = this.props;
-        this.props.dispatch(
-            fetchData({
-                type: "PEOPLE",
-                url: `/people/${params.personId}`
-            })
-        );
+        this.props.dispatch(fetchData({
+            type: 'GROUP',
+            url: `/groups/${this.props.params.groupId}`,
+            groupId: this.props.params.groupId
+        }));
+        this.props.dispatch(fetchData({
+            type: 'PROJECT',
+            url: `/projects/${this.props.params.id}`,
+            projectId: this.props.params.id
+        }));
     };
 
     fetchGroup = () => {
@@ -81,29 +89,15 @@ export default class Edit extends React.PureComponent {
         let formData = new FormData()
         formData.append('character_id', characterId)
 
-        const response = await api.put(`/people/${params.personId}`, formData);
+        const response = await api.put(`/${url.organisations}/${params.organisationId}`, formData);
 
         if (!api.error(response)) {
             this.fetchGroup();
-            let redirectUrl = `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}`
+            let redirectUrl = `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.organisations}`
             redirectUrl = location.query.zoom ? `${redirectUrl}?zoom=${location.query.zoom}` : redirectUrl
             fn.navigate(redirectUrl);
         }
-    }
-
-    handleRemoveCharacterIcon = async (characterId) => {
-        const { location, params } = this.props
-        // let formData = new FormData()
-        // formData.append('character_id', characterId)
-        // const response = await api.put(`/people/${params.personId}`, formData)
-        let cancelCharacterLink = `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}`
-        cancelCharacterLink = location.query.zoom ? `${cancelCharacterLink}?zoom=${location.query.zoom}` : cancelCharacterLink
-
-        // if (!api.error(response)) {
-            this.fetchGroup();
-            fn.navigate(cancelCharacterLink);
-        // }
-    }
+    };
 
     handleCharacterPos(event, character) {
         event.preventDefault()
@@ -121,8 +115,24 @@ export default class Edit extends React.PureComponent {
         })
     }
 
+    handleRemoveCharacterIcon = async (characterId) => {
+        const { location, params } = this.props
+        // TODO maybe feature request we need this
+        // let formData = new FormData()
+        // formData.append('character_id', characterId)
+        // const response = await api.put(`/${url.organisations}/${params.organisationId}`, formData)
+
+        let cancelCharacterLink = `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.organisations}`
+        cancelCharacterLink = location.query.zoom ? `${cancelCharacterLink}?zoom=${location.query.zoom}` : cancelCharacterLink
+
+        // if (!api.error(response)) {
+            this.fetchGroup()
+            fn.navigate(cancelCharacterLink)
+        // }
+    }
+
     render() {
-        const {popup, params, location} = this.props;
+        const {popup, params, location, group} = this.props;
         const {step, characterPos, selectedCharacter} = this.state;
         const characters = fn.getPeopleCharacters();
 
@@ -136,12 +146,15 @@ export default class Edit extends React.PureComponent {
             initialSlide: (location.query.character) ? (location.query.character - 1) : 0
         };
 
+        let cancelCharacterLink = `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.organisations}`
+        cancelCharacterLink = location.query.zoom ? `${cancelCharacterLink}?zoom=${location.query.zoom}` : cancelCharacterLink
+
         return (
             <div className="character-container">
-                <PeopleWrapper {...this.props}>
+                <GroupWrapper {...this.props}>
                     <Popup
                         additionalClass={step !== 4 ? `people` : "people small-window"}
-                        title={popup.title ? `Person: ${popup.title}` : `New Person`}
+                        title={group.title && `Organisation: ${group.title}`}
                         closePath={`/${url.projects}/${params.id}/${url.groups}/${
                             params.groupId
                             }`}
@@ -150,6 +163,7 @@ export default class Edit extends React.PureComponent {
                                 <button className="button"
                                         onClick={() => this.handleRemoveCharacterIcon(0)}>Cancel
                                 </button>
+
                                 <span
                                     className="clickable button"
                                     onClick={this.handleSubmit}
@@ -182,7 +196,7 @@ export default class Edit extends React.PureComponent {
                             </Slider>
                         </div>
                     </Popup>
-                </PeopleWrapper>
+                </GroupWrapper>
 
                 {
                     characterPos ? <CharacterPosition {...this.props}

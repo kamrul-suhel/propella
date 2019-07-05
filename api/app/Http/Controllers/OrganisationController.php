@@ -60,7 +60,6 @@ class OrganisationController extends PropellaBaseController
             ->with(['people'])
             ->findOrFail($id);
 
-
         return response()->json($response);
     }
 
@@ -93,7 +92,7 @@ class OrganisationController extends PropellaBaseController
                 isset($updateOrganisation['status']) ? $organisation->status =  $updateOrganisation['status'] : '';
                 isset($updateOrganisation['type_id']) ? $organisation->type_id = $updateOrganisation['type_id'] : '';
                 isset($updateOrganisation['positionX']) ? $organisation->positionX = getPosition($updateOrganisation['positionX']) : '';
-                isset($updateOrganisation['positionY']) ? $organisation->positionY = getPositon($updateOrganisation['positionY']) : '';
+                isset($updateOrganisation['positionY']) ? $organisation->positionY = getPosition($updateOrganisation['positionY']) : '';
                 isset($updateOrganisation['trajectory']) ? $organisation->trajectory =  $updateOrganisation['trajectory'] : '';
                 isset($updateOrganisation['icon_size']) ? $organisation->icon_size = $updateOrganisation['icon_size'] : '';
 
@@ -221,6 +220,7 @@ class OrganisationController extends PropellaBaseController
         $this->request->has('group_id') ? $organisation->group_id = (int) $this->request->group_id : '';
         $this->request->has('status') ? $organisation->status =  $this->request->status : '';
         $this->request->has('type_id') ? $organisation->type_id = $this->request->type_id : '';
+        $this->request->has('character_id') ? $organisation->character_id = $this->request->character_id : '';
         $this->request->has('positionX') ? $organisation->positionX = getPosition($this->request->positionX) : '';
         $this->request->has('positionY') ? $organisation->positionY = getPosition($this->request->positionY) : '';
         $this->request->has('trajectory') ? $organisation->trajectory =  $this->request->trajectory : '';
@@ -229,6 +229,7 @@ class OrganisationController extends PropellaBaseController
         if($create){
             $organisation->status = 1;
             $organisation->created_by = $this->request->authUserId;
+            $organisation->character_id = 0;
 
             if($this->request->has('icon_path') && $this->request->hasFile('icon_path')){
                 $iconPath = propellaUploadImage($this->request->icon_path, $this->folderName);
