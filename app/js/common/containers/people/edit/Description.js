@@ -63,7 +63,7 @@ export default class Description extends React.PureComponent {
 
                     <div className="grid-xs-7">
                         <div className="form-group form-group-wide group-half-size">
-                            <span className="form-label">Choose Icon or Set Abbreviation <Tooltip icon="i"
+                            <span className="form-label">Upload Photo or Set Abbreviation <Tooltip icon="i"
                                                                                                   message="Upload a custom icon or enter an abbreviation"/></span>
 
                             <FileUpload
