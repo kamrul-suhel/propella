@@ -3,8 +3,7 @@
         padding:20px;
         max-height:calc(100VH - 225px);
         height:100%;
-        overflow-x:hidden;
-        overflow-y:scroll;
+        overflow: auto;
 
         &.form-loading {
 		pointer-events: none;
@@ -207,7 +206,7 @@
 		}
 
 		.form-type-radio {
-			min-width: 14px;					
+			min-width: 14px;
 		}
 	}
 
@@ -257,7 +256,7 @@
 		font-size: 20px;
 	}
         &.form-type-upload{
-                margin:0px!important;            
+                margin:0px!important;
         }
         &.group-half-size{
             .form-group{

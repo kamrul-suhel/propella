@@ -1,7 +1,6 @@
 import React from "react";
 import {Nav} from "app/components";
 import {fn} from "app/utils";
-import { disableBodyScroll } from "body-scroll-lock";
 
 const dblTouchTapMaxDelay = 300
 let latestTouchTap = {
@@ -24,7 +23,6 @@ export default class GridWrapper extends React.PureComponent {
         const html = document.getElementsByTagName('html')
         let containerHeight = document.getElementById('app');
         containerHeight.style.height = window.innerHeight - 40 + 'px';
-        disableBodyScroll(html)
 
         this.setState({
             container: {
@@ -152,8 +150,8 @@ export default class GridWrapper extends React.PureComponent {
                                 <span className="gridwrapper-inner-section">Standard</span>
                             </div>
                         }
-                        <div style={{overflow:'auto'}}>
-                        {childrenWithProps}
+                        <div className="gridwrapper-inner-content">
+                          {childrenWithProps}
                         </div>
                     </div>
 

@@ -9,6 +9,7 @@
     text-align: center;
     top:7px;
     -webkit-overflow-scrolling: touch;
+    max-height: calc(100vh - 100px);
 
     a {
         text-decoration: none;
@@ -103,9 +104,8 @@
         border-radius: 0 0x 5px 5px;
         position:relative;
         z-index:2;
-        overflow: auto;
-        padding-bottom:10px;
-        
+        overflow: hidden;
+
         form {
             flex-direction: column;
         }
@@ -219,11 +219,10 @@
         .button {
             flex: 1;
             margin: 0;
-            line-height: 40px;
+            line-height: 50px;
             font-size: 15px;
             padding: 0;
             height: 50px;
-            display: flex;
             align-items: center;
             justify-content: center;
             box-shadow: unset;

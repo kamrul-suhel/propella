@@ -2782,8 +2782,7 @@ li.rc-time-picker-panel-select-option-disabled:hover {
   padding: 20px;
   max-height: calc(100VH - 225px);
   height: 100%;
-  overflow-x: hidden;
-  overflow-y: scroll; }
+  overflow: auto; }
   .form-wrapper.form-loading {
     pointer-events: none; }
     .form-wrapper.form-loading:before {
@@ -4139,6 +4138,12 @@ li.rc-time-picker-panel-select-option-disabled:hover {
       right: 0;
       bottom: 0;
       z-index: -1; }
+    .gridwrapper .gridwrapper-inner .gridwrapper-inner-content {
+      overflow: auto;
+      height: 100%;
+      pointer-events: auto; }
+      .gridwrapper .gridwrapper-inner .gridwrapper-inner-content > div {
+        height: 100%; }
     .gridwrapper .gridwrapper-inner .gridwrapper-inner-section {
       width: 50%;
       height: 50%;
@@ -4997,7 +5002,8 @@ li.rc-time-picker-panel-select-option-disabled:hover {
   overflow: auto;
   text-align: center;
   top: 7px;
-  -webkit-overflow-scrolling: touch; }
+  -webkit-overflow-scrolling: touch;
+  max-height: calc(100vh - 100px); }
   .popup a {
     text-decoration: none;
     color: #1C1C1C;
@@ -5075,8 +5081,7 @@ li.rc-time-picker-panel-select-option-disabled:hover {
     border-radius: 0 0x 5px 5px;
     position: relative;
     z-index: 2;
-    overflow: auto;
-    padding-bottom: 10px; }
+    overflow: hidden; }
     .popup .popup-inner form {
       flex-direction: column; }
     .popup .popup-inner .success-add-group, .popup .popup-inner .overview {
@@ -5170,11 +5175,10 @@ li.rc-time-picker-panel-select-option-disabled:hover {
     .popup .popup-inner-buttons .button, .popup .popup-inner-buttons .form button, .form .popup .popup-inner-buttons button {
       flex: 1;
       margin: 0;
-      line-height: 40px;
+      line-height: 50px;
       font-size: 15px;
       padding: 0;
       height: 50px;
-      display: flex;
       align-items: center;
       justify-content: center;
       box-shadow: unset;
@@ -5899,16 +5903,24 @@ li.rc-time-picker-panel-select-option-disabled:hover {
     top: 22px;
     right: 24px; }
 
+html.scroll-lock,
+html.scroll-lock body {
+  position: fixed;
+  overflow: hidden; }
+
 body {
   font-family: "Work Sans", Arial;
   font-size: 14px;
   font-weight: 500;
   line-height: 1.3;
   color: #1C1C1C;
-  letter-spacing: -0.25px; }
+  letter-spacing: -0.25px;
+  width: 100%; }
 
 #app {
-  margin-top: 40px; }
+  margin-top: 40px;
+  width: 100%;
+  height: 100%; }
 
 * {
   box-sizing: border-box; }
