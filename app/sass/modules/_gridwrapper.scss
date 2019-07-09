@@ -31,6 +31,16 @@
       z-index: -1;
     }
 
+    .gridwrapper-inner-content {
+      overflow: auto;
+      height: 100%;
+      pointer-events: auto;
+
+      > div {
+        height: 100%;
+      }
+    }
+
     .gridwrapper-inner-section {
       width: 50%;
       height: 50%;

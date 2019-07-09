@@ -19,6 +19,15 @@ export default class AppWrapper extends React.PureComponent {
         }
     }
 
+    componentDidMount() {
+      const { id } = this.props.params;
+      if (id) {
+        document.documentElement.classList.add('scroll-lock');
+      } else {
+        document.documentElement.classList.remove('scroll-lock');
+      }
+    }
+
     fetchData = async () => {
         await this.props.dispatch(fetchData({
             type: 'ME',
