@@ -72,7 +72,7 @@ class OrganisationTypeController extends PropellaBaseController
 
             $response = array(
                 'success' => false,
-                'message' => "The following types could not be deleted because they are assigned to organisations: $typeTitles",
+                'message' => "The following types could not be deleted, because they are currently being used: $typeTitles",
                 'data'    => $organizationTypes
             );
 

@@ -31,6 +31,7 @@ class PeopleTypeController extends PropellaBaseController
             'types.*.title'   => 'required|string|min:1',
             'types.*.deleted' => 'integer|min:0|max:1'
         ]);
+
         $couldNotDelete = array();
 
         if(!$this->request->isPM){
@@ -63,7 +64,6 @@ class PeopleTypeController extends PropellaBaseController
             $peopleType->save();
         }
 
-
         if(!empty($couldNotDelete)) {
             $typeTitles = implode(",", $couldNotDelete);
 
@@ -71,7 +71,7 @@ class PeopleTypeController extends PropellaBaseController
 
             $response = array(
                 'success' => false,
-                'message' => "The following types could not be deleted because they are assigned to people: $typeTitles",
+                'message' => "The following types could not be deleted, because they are currently being used: $typeTitles",
                 'data'    => $peopleTypes
             );
 
