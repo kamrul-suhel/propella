@@ -23,7 +23,7 @@ import {ProjectWrapper} from 'app/containers/project';
         group: getGroup(state, ownProps.params.id, ownProps.params.groupId),
         popup: state.popup,
         projectUsers: getProjectUsers(state),
-        project:state.project
+        project: state.project
     };
 })
 export default class Edit extends React.PureComponent {
@@ -31,7 +31,8 @@ export default class Edit extends React.PureComponent {
         super(props)
 
         this.state = {
-            step: 1
+            step: 1,
+            formSubmitDisabled: false
         }
     }
 
@@ -81,14 +82,19 @@ export default class Edit extends React.PureComponent {
         const {popup, params, group, location, dispatch} = this.props
         const {step} = this.state
 
+
         // submit an api call if your on the last step otherwise go to the next step
         if (step < 4) {
             const newStep = step + 1
             return this.handleStepChange(newStep)
         }
 
-        const formData = new FormData()
+        // Disabled form submit after first time
+        this.setState({
+            formSubmitDisabled: true
+        })
 
+        const formData = new FormData()
         formData.append('title', popup.title)
         formData.append('abbreviation', popup.abbreviation)
         formData.append('description', popup.description)
@@ -115,9 +121,14 @@ export default class Edit extends React.PureComponent {
                 type: 'GROUP_UPDATE',
                 payload: {
                     project_id: projectId,
-                    save:true,
+                    save: true,
                     group
                 }
+            })
+
+            // Enabled form submit after process finish
+            this.setState({
+                formSubmitDisabled: false
             })
             const redirectUrl = location.query.zoom ? `/${url.projects}/${params.id}/${url.groups}/${url.zoom}?zoom=${location.query.zoom}` : `/${url.projects}/${params.id}/${url.groups}`
             fn.navigate(redirectUrl)
@@ -125,7 +136,10 @@ export default class Edit extends React.PureComponent {
     }
 
     popupActions = () => {
-        const {step} = this.state
+        const {
+            step,
+            formSubmitDisabled
+        } = this.state
         const {group, location} = this.props
         const projectUrl = location.query.zoom ? `/${url.projects}/${this.props.params.id}/zoom?zoom=${location.query.zoom}` :
             `/${url.projects}/${this.props.params.id}/${url.groups}`
@@ -183,6 +197,7 @@ export default class Edit extends React.PureComponent {
                                 className="button">Edit
                         </button>,
                         <button key={'next'}
+                                disabled={formSubmitDisabled}
                                 onClick={this.handleSubmit}
                                 type="button"
                                 className="button">
@@ -216,8 +231,14 @@ export default class Edit extends React.PureComponent {
     }
 
     render() {
-        const {popup, params, location} = this.props
-        const {step} = this.state;
+        const {
+            popup,
+            params,
+            location
+        } = this.props
+        const {
+            step
+        } = this.state;
         const closePath = location.query.zoom ? `/${url.projects}/${params.id}/zoom?zoom=${location.query.zoom}` : `/${url.projects}/${params.id}`
 
         return (
