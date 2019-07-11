@@ -35,7 +35,8 @@ export default class Edit extends React.PureComponent {
         super(props)
 
         this.state = {
-            step: 1
+            step: 1,
+            formSubmitDisabled: false
         }
     }
 
@@ -119,6 +120,10 @@ export default class Edit extends React.PureComponent {
             const newStep = step + 1
             return this.handleStepChange(newStep)
         }
+        // Disabled form submit after first time
+        this.setState({
+            formSubmitDisabled: true
+        })
 
         const formData = new FormData()
 
@@ -150,6 +155,11 @@ export default class Edit extends React.PureComponent {
                     save: true
                 }
             })
+
+            // Enabled form submit after process finish
+            this.setState({
+                formSubmitDisabled: false
+            })
             const redirectUrl = location.query.zoom ? `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.zoom}?zoom=${location.query.zoom}` :
                 `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.organisations}`
 
@@ -158,7 +168,10 @@ export default class Edit extends React.PureComponent {
     }
 
     popupActions = () => {
-        const {step} = this.state
+        const {
+            step,
+            formSubmitDisabled
+        } = this.state
         const {organisation, params, location} = this.props
         const cancelUrl = location.query.zoom ? `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.zoom}?zoom=${location.query.zoom}` :
             `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.organisations}`
@@ -196,7 +209,7 @@ export default class Edit extends React.PureComponent {
                                 onClick={() => this.handleStepChange(2)}
                                 className="button">Back
                         </button>,
-                        <button onClick={this.triggerSubmit}
+                        <button onClick={() => this.triggerSubmit()}
                                 type="button"
                                 className="button">Next
                         </button>
@@ -209,7 +222,8 @@ export default class Edit extends React.PureComponent {
                                 onClick={() => this.handleStepChange(1)}
                                 className="button">Edit
                         </button>,
-                        <button onClick={this.handleSubmit}
+                        <button onClick={() => this.handleSubmit()}
+                                disabled={formSubmitDisabled}
                                 type="button"
                                 className="button">
                             {organisation.id ? 'Update' : 'Add to board'}

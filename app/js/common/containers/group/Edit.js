@@ -79,9 +79,16 @@ export default class Edit extends React.PureComponent {
     triggerSubmit = () => this.formRef.submit()
 
     handleSubmit = async () => {
-        const {popup, params, group, location, dispatch} = this.props
-        const {step} = this.state
-
+        const {
+            popup,
+            params,
+            group,
+            location,
+            dispatch
+        } = this.props
+        const {
+            step
+        } = this.state
 
         // submit an api call if your on the last step otherwise go to the next step
         if (step < 4) {

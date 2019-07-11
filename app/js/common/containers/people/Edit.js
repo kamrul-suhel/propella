@@ -34,7 +34,8 @@ export default class Edit extends React.PureComponent {
         super(props)
 
         this.state = {
-            step: 1
+            step: 1,
+            formSubmitDisabled: false
         }
     }
 
@@ -118,6 +119,10 @@ export default class Edit extends React.PureComponent {
             const newStep = step + 1
             return this.handleStepChange(newStep)
         }
+        // Disabled form submit after first time
+        this.setState({
+            formSubmitDisabled: true
+        })
 
         const formData = new FormData()
         formData.append('title', popup.title)
@@ -152,6 +157,11 @@ export default class Edit extends React.PureComponent {
                 }
             })
 
+            // Enabled form submit after process finish
+            this.setState({
+                formSubmitDisabled: false
+            })
+
             this.fetchData()
             this.fetchGroup()
             let redirectUrl = `/${url.projects}/${params.id}/${url.groups}/${params.groupId}/${url.people}`
@@ -162,7 +172,8 @@ export default class Edit extends React.PureComponent {
 
     popupActions = () => {
         const {
-            step
+            step,
+            formSubmitDisabled
         } = this.state
         const {
             person,
@@ -220,6 +231,7 @@ export default class Edit extends React.PureComponent {
                         </button>,
                         <button onClick={this.handleSubmit}
                                 type="button"
+                                disabled={formSubmitDisabled}
                                 className="button">
                             {person.id ? 'Update' : 'Add to board'}
                         </button>
