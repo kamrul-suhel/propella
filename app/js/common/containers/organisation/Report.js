@@ -3,17 +3,20 @@ import {connect} from "react-redux";
 import {ReportList} from "app/components";
 import {fetchData} from "app/actions";
 import {makeGetGroup, makeGetGroups} from "app/containers/group/selector";
+import {makeGetProject } from 'app/containers/project/selector'
 import {Nav} from "app/components";
 import {fn} from "app/utils";
 import {ContentLoader, Table} from '@xanda/react-components';
 import {disableBodyScroll, enableBodyScroll} from "body-scroll-lock";
 
 @connect((state, ownProps) => {
-    const getGroups = makeGetGroups();
-    const getGroup = makeGetGroup();
+    const getGroups = makeGetGroups()
+    const getGroup = makeGetGroup()
+    const getProject = makeGetProject()
     return {
         groups: getGroups(state),
-        group: getGroup(state, ownProps.params.groupId)
+        group: getGroup(state, ownProps.params.groupId),
+        project: getProject(state, ownProps.params.id)
     };
 })
 export default class Report extends React.PureComponent {
@@ -42,8 +45,12 @@ export default class Report extends React.PureComponent {
     };
 
     render() {
-        const {groups, group, params} = this.props;
-
+        const {
+            groups,
+            group,
+            params,
+            project
+        } = this.props;
         return (
             <React.Fragment>
                 <Nav {...this.props} />
@@ -57,7 +64,8 @@ export default class Report extends React.PureComponent {
                             data={groups.collection}
                             isLoading={groups.isLoading}
                         >
-                            <h1>Data visual: Organisations</h1>
+                            <h3>Project: {project.title}</h3>
+                            <h3>Data visual: Organisations</h3>
                             <Table headers={[
                                 'Name',
                                 'Royalty',
@@ -70,8 +78,8 @@ export default class Report extends React.PureComponent {
                                     return (
                                         <tr key={collection.id}>
                                             <td>{collection.title}</td>
-                                            <td>{fn.convertFloatToInt(collection.positionX)}</td>
                                             <td>{fn.convertFloatToInt(collection.positionY)}</td>
+                                            <td>{fn.convertFloatToInt(collection.positionX)}</td>
                                             <td>{fn.getQuadrant(collection.positionX, collection.positionY)}</td>
                                             <td>{character.title}</td>
                                         </tr>
