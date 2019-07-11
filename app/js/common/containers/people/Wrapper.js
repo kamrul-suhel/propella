@@ -214,7 +214,7 @@ export default class PeopleWrapper extends React.PureComponent {
         } = this.props
 
         if (this.node) {
-            if (!this.node.contains(e.target)) {
+            if (this.node.isSameNode(e.target)) {
                 this.setState({
                     selectedDraggable: 0,
                     selectedPeople: {},

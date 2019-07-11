@@ -35,12 +35,13 @@ class ProjectController extends PropellaBaseController
             $userLimit = $this->request->project_limit;
             $projects = Project::where([
                 'archive' => 0,
-                'created_by' => $this->request->authUserId
+                'created_by' => $this->request->authUserId,
+                'status' => 1
             ])->get()
                 ->count();
 
             if ($projects >= $userLimit) {
-                return response()->json('User rich there limit to create project.', 406);
+                return response()->json('User reach there limit to create project.', 406);
             }
         }
 
