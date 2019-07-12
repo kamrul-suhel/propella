@@ -3462,7 +3462,11 @@ li.rc-time-picker-panel-select-option-disabled:hover {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
   z-index: 100;
   padding: 40px;
-  overflow-y: scroll; }
+  overflow-y: scroll;
+  overflow: -moz-scrollbars-none;
+  -ms-overflow-style: none; }
+  .report-component::-webkit-scrollbar {
+    width: 0 !important; }
 
 .form {
   display: block; }

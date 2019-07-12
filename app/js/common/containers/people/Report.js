@@ -70,7 +70,7 @@ export default class Report extends React.PureComponent {
                             data={groups.collection}
                             isLoading={groups.isLoading}
                         >
-                            <h3>Project: {project.title}</h3>
+                            <h2>{project.title}</h2>
                             <h3>Data visual: People</h3>
                             <Table headers={[
                                 'Name',

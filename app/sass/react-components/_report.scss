@@ -6,4 +6,7 @@
   z-index:100;
   padding:40px;
   overflow-y:scroll;
+  overflow: -moz-scrollbars-none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar { width: 0 !important }
 }
